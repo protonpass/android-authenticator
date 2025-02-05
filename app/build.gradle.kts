@@ -1,4 +1,5 @@
 import configuration.extensions.protonEnvironment
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -6,6 +7,15 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.proton.environmentConfig)
     alias(libs.plugins.dependency.guard)
+}
+
+val privateProperties = Properties().apply {
+    try {
+        load(rootDir.resolve("private.properties").inputStream())
+    } catch (exception: java.io.FileNotFoundException) {
+        // Provide empty properties to allow the app to be built without secrets
+        Properties()
+    }
 }
 
 val jobId: Int = System.getenv("CI_JOB_ID")?.take(3)?.toInt() ?: 0
@@ -31,6 +41,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        register("signingKeystore") {
+            storeFile = file("$rootDir/keystore/ProtonMail.keystore")
+            storePassword = "${privateProperties["keyStorePassword"]}"
+            keyAlias = "ProtonMail"
+            keyPassword = "${privateProperties["keyStoreKeyPassword"]}"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,6 +57,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs["signingKeystore"]
         }
     }
     compileOptions {
