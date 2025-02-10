@@ -8,17 +8,15 @@ import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-private const val ENTRY_CONTENT_TAG = "entrycontent"
-
 class EncryptionContextImpl(key: EncryptionKey) : EncryptionContext {
 
     private val secretKeySpec = SecretKeySpec(key.value(), ALGORITHM)
 
-    override fun encrypt(content: ByteArray): EncryptedByteArray {
+    override fun encrypt(content: ByteArray, encryptionTag: EncryptionTag): EncryptedByteArray {
         val cipher = cipherFactory()
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
 
-        cipher.updateAAD(ENTRY_CONTENT_TAG.encodeToByteArray())
+        cipher.updateAAD(encryptionTag.value)
 
         val cipherByteArray = cipher.doFinal(content)
         val result = ByteArray(IV_SIZE + cipherByteArray.size)
@@ -27,7 +25,7 @@ class EncryptionContextImpl(key: EncryptionKey) : EncryptionContext {
         return EncryptedByteArray(result)
     }
 
-    override fun decrypt(content: EncryptedByteArray): ByteArray {
+    override fun decrypt(content: EncryptedByteArray, encryptionTag: EncryptionTag): ByteArray {
         val cipher = cipherFactory()
 
         val iv = content.array.copyOfRange(0, IV_SIZE)
@@ -35,12 +33,11 @@ class EncryptionContextImpl(key: EncryptionKey) : EncryptionContext {
 
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, GCMParameterSpec(CIPHER_GCM_TAG_BITS, iv))
 
-        cipher.updateAAD(ENTRY_CONTENT_TAG.encodeToByteArray())
+        cipher.updateAAD(encryptionTag.value)
         try {
             return cipher.doFinal(cipherByteArray)
         } catch (e: AEADBadTagException) {
-            val tagName = ENTRY_CONTENT_TAG
-            throw BadTagException("Bad AEAD Tag when decoding content [tag=$tagName]", e)
+            throw BadTagException("Bad AEAD Tag when decoding content [tag=${encryptionTag.name}]", e)
         }
     }
 

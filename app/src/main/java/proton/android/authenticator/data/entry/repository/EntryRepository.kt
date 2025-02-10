@@ -8,6 +8,7 @@ import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryType
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.crypto.EncryptionContextProvider
+import proton.android.authenticator.crypto.EncryptionTag
 import proton.android.authenticator.data.entry.EntryEntity
 import proton.android.authenticator.data.entry.local.EntryLocalDataSource
 import proton.android.authenticator.domain.Entry
@@ -30,7 +31,7 @@ class EntryRepositoryImpl @Inject constructor(
         .map { entities: List<EntryEntity> ->
             val decrypted: List<ByteArray> =
                 encryptionContextProvider.withEncryptionContextSuspendable {
-                    entities.map { decrypt(it.content) }
+                    entities.map { decrypt(it.content, EncryptionTag.EntryContent) }
                 }
             val models: List<AuthenticatorEntryModel> =
                 rustAuthenticatorClient.deserializeEntries(decrypted)
@@ -51,7 +52,7 @@ class EntryRepositoryImpl @Inject constructor(
         val entry: AuthenticatorEntryModel = rustAuthenticatorClient.entryFromUri(uri)
         val serialised = rustAuthenticatorClient.serializeEntries(listOf(entry)).first()
         val encrypted: EncryptedByteArray = encryptionContextProvider.withEncryptionContext {
-            encrypt(serialised)
+            encrypt(serialised, EncryptionTag.EntryContent)
         }
         val now = clock.now()
         val entity = EntryEntity(
