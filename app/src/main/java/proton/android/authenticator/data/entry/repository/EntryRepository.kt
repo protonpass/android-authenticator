@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
+import proton.android.authenticator.commonrust.AuthenticatorEntryType
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.crypto.EncryptionContextProvider
 import proton.android.authenticator.data.entry.EntryEntity
@@ -48,14 +49,17 @@ class EntryRepositoryImpl @Inject constructor(
 
     override suspend fun insertUri(uri: String) {
         val entry: AuthenticatorEntryModel = rustAuthenticatorClient.entryFromUri(uri)
+        val serialised = rustAuthenticatorClient.serializeEntries(listOf(entry)).first()
         val encrypted: EncryptedByteArray = encryptionContextProvider.withEncryptionContext {
-            encrypt(entry.actions.serialize())
+            encrypt(serialised)
         }
-
         val now = clock.now()
         val entity = EntryEntity(
             content = encrypted,
-            type = EntryType.TOTP, // update lib and get it as an enum from entry.entrytype
+            type = when (entry.entryType) {
+                AuthenticatorEntryType.TOTP -> EntryType.TOTP
+                AuthenticatorEntryType.STEAM -> EntryType.STEAM
+            },
             createdAt = now,
             modifiedAt = now
         )

@@ -25,7 +25,7 @@ datetime = "0.4.0"
 core = "30.3.1"
 
 # Authenticator
-authenticatorCommon = "0.13.1"
+authenticatorCommon = "0.13.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
