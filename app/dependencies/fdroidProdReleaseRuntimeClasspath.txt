@@ -87,7 +87,7 @@ androidx.savedstate:savedstate-ktx:1.2.1
 androidx.savedstate:savedstate:1.2.1
 androidx.sqlite:sqlite-framework:2.4.0
 androidx.sqlite:sqlite:2.4.0
-androidx.startup:startup-runtime:1.1.1
+androidx.startup:startup-runtime:1.2.0
 androidx.tracing:tracing:1.0.0
 androidx.versionedparcelable:versionedparcelable:1.1.1
 androidx.viewpager:viewpager:1.0.0
