@@ -28,3 +28,30 @@ plugins {
 protonDetekt {
     threshold = 0
 }
+
+val authenticatorAar = File(rootProject.projectDir, "libs/lib-release.aar")
+val versionCatalog = extensions.findByType<VersionCatalogsExtension>()?.named("libs")
+val authenticatorCommon = versionCatalog?.findLibrary("authenticator-common")?.get()?.get()
+
+subprojects {
+    afterEvaluate {
+        configurations.configureEach {
+            withDependencies {
+                if (authenticatorCommon != null) {
+                    val removed = removeIf { dependency ->
+                        dependency.group == authenticatorCommon.module.group && dependency.name == authenticatorCommon.module.name
+                    }
+                    if (removed) {
+                        if (authenticatorAar.exists()) {
+                            val aarDependency = project.dependencies.create(files(authenticatorAar))
+                            add(aarDependency)
+                            logger.quiet("✅  Using AAR for ${authenticatorCommon.module}")
+                        } else {
+                            add(authenticatorCommon)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
