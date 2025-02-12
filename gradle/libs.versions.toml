@@ -6,6 +6,7 @@ ksp = "2.0.21-1.0.27"
 dependency-guard = "0.5.0"
 proton-environmentConfig = "1.3.1"
 proton-detekt = "1.3.1"
+sentry = "3.5.0"
 
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -17,6 +18,7 @@ composeBom = "2025.01.01"
 room = "2.6.1"
 hilt = "2.55"
 androidxHiltNavigationCompose = "1.2.0"
+startup = "1.2.0"
 
 # Kotlin
 datetime = "0.4.0"
@@ -43,6 +45,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
+androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
 
 # Room
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
@@ -55,6 +58,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 core-crypto = { module = "me.proton.core:crypto", version.ref = "core" }
 core-data = { module = "me.proton.core:data", version.ref = "core" }
 core-dataRoom = { module = "me.proton.core:data-room", version.ref = "core" }
+core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", version.ref = "core" }
 
 # Authenticator
 authenticator-common = { module = "me.proton.authenticator.common:lib", version.ref = "authenticatorCommon" }
@@ -72,3 +76,4 @@ proton-environmentConfig = { id = "me.proton.core.gradle-plugins.environment-con
 proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "proton-detekt" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }

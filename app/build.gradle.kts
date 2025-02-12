@@ -17,6 +17,7 @@
  */
 
 import configuration.extensions.protonEnvironment
+import configuration.util.toBuildConfigValue
 import java.util.Properties
 
 plugins {
@@ -27,6 +28,7 @@ plugins {
     alias(libs.plugins.dependency.guard)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.sentry)
 }
 
 val privateProperties = Properties().apply {
@@ -37,6 +39,8 @@ val privateProperties = Properties().apply {
         Properties()
     }
 }
+
+val sentryDSN: String? = System.getenv("SENTRY_DSN")
 
 val jobId: Int = System.getenv("CI_JOB_ID")?.take(3)?.toInt() ?: 0
 val appVersionName: String = "0.0.0"
@@ -59,6 +63,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
+    }
+
+    buildFeatures{
+        buildConfig = true
     }
 
     signingConfigs {
@@ -143,12 +153,18 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.startup.runtime)
 
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.core.crypto)
     implementation(libs.core.data)
     implementation(libs.core.dataRoom)
+
+    addFdroidSpecialLib(
+        default = libs.core.utilAndroidSentry,
+        fdroid = null
+    )
 
     implementation(libs.authenticator.common)
 
@@ -188,5 +204,29 @@ dependencyGuard {
             !it.contains("com.google.android.play")
             !it.contains("io.sentry")
         }
+    }
+}
+
+sentry {
+    autoInstallation.enabled.set(false)
+    ignoredBuildTypes.set(setOf("debug"))
+    ignoredFlavors.set(setOf("fdroid"))
+}
+
+fun DependencyHandlerScope.addFdroidSpecialLib(
+    default: Any,
+    fdroid: Any?
+) {
+    val devImplementation = configurations.getByName("devImplementation")
+    val alphaImplementation = configurations.getByName("alphaImplementation")
+    val playImplementation = configurations.getByName("playImplementation")
+    val fdroidImplementation = configurations.getByName("fdroidImplementation")
+
+    devImplementation(default)
+    alphaImplementation(default)
+    playImplementation(default)
+
+    fdroid?.let { dep ->
+        fdroidImplementation(dep)
     }
 }
