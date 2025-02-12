@@ -107,12 +107,13 @@ com.google.dagger:dagger:2.55
 com.google.dagger:hilt-android:2.55
 com.google.dagger:hilt-core:2.55
 com.google.guava:listenablefuture:1.0
+com.jakewharton.timber:timber:5.0.1
 com.nytimes.android:cache3:3.1.1
 io.github.reactivecircus.cache4k:cache4k-jvm:0.9.0
 io.github.reactivecircus.cache4k:cache4k:0.9.0
 jakarta.inject:jakarta.inject-api:2.0.1
 javax.inject:javax.inject:1
-me.proton.authenticator.common:lib:0.13.2
+me.proton.authenticator.common:lib:0.13.4
 me.proton.core:crypto-android:30.3.1
 me.proton.core:crypto-common:30.3.1
 me.proton.core:crypto-dagger:30.3.1
