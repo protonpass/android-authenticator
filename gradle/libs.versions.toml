@@ -19,6 +19,7 @@ room = "2.6.1"
 hilt = "2.55"
 androidxHiltNavigationCompose = "1.2.0"
 startup = "1.2.0"
+timber = "5.0.1"
 
 # Kotlin
 datetime = "0.4.0"
@@ -27,7 +28,7 @@ datetime = "0.4.0"
 core = "30.3.1"
 
 # Authenticator
-authenticatorCommon = "0.13.2"
+authenticatorCommon = "0.13.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +47,9 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
+
+# Timber
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 # Room
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }

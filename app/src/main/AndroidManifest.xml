@@ -50,6 +50,8 @@
 
             <meta-data  android:name="proton.android.authenticator.initializers.SentryInitializer"
                 android:value="androidx.startup" />
+            <meta-data  android:name="proton.android.authenticator.initializers.LoggerInitializer"
+                android:value="androidx.startup" />
         </provider>
 
         <meta-data

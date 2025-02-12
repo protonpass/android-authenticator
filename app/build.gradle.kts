@@ -139,6 +139,18 @@ android {
             }
         }
     }
+
+    sourceSets {
+        getByName("dev") {
+            kotlin.srcDir("src/nonfdroid/kotlin")
+        }
+        getByName("alpha") {
+            kotlin.srcDir("src/nonfdroid/kotlin")
+        }
+        getByName("play") {
+            kotlin.srcDir("src/nonfdroid/kotlin")
+        }
+    }
 }
 
 dependencies {
@@ -154,6 +166,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.startup.runtime)
+
+    implementation(libs.timber)
 
     implementation(libs.kotlinx.datetime)
 

@@ -18,7 +18,21 @@
 
 package proton.android.authenticator.initializers
 
-enum class BuildEnv {
-    BLACK,
-    PROD
+import android.content.Context
+import androidx.startup.Initializer
+import proton.android.authenticator.BuildConfig
+import proton.android.authenticator.common.deviceInfo
+import timber.log.Timber
+
+class LoggerInitializer : Initializer<Unit> {
+
+    override fun create(context: Context) {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
+        deviceInfo(context)
+    }
+
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf()
 }

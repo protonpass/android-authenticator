@@ -18,26 +18,28 @@
 package proton.android.authenticator.initializers
 
 import android.content.Context
+import android.os.Build
+import android.os.LocaleList
 import androidx.startup.Initializer
-import io.sentry.android.core.SentryAndroid
+import me.proton.core.util.android.sentry.TimberLogger
+import me.proton.core.util.kotlin.CoreLogger
 import proton.android.authenticator.BuildConfig
-import proton.android.authenticator.initializers.BuildFlavor.Companion.toValue
+import proton.android.authenticator.common.AuthenticatorLogger
+import proton.android.authenticator.common.deviceInfo
+import timber.log.Timber
 
-class SentryInitializer : Initializer<Unit> {
+abstract class LoggerInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        val isSentryEnabled = BuildConfig.SENTRY_DSN?.isNotBlank() == true && !BuildConfig.DEBUG
-        if (isSentryEnabled) {
-            SentryAndroid.init(context) { options ->
-                options.isDebug = BuildConfig.DEBUG
-                options.dsn = BuildConfig.SENTRY_DSN
-                options.release = BuildConfig.VERSION_NAME
-                options.environment = BuildFlavor.from(BuildConfig.FLAVOR).toValue()
-                options.isAttachAnrThreadDump = true
-            }
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
+
+        // Forward Core Logs to Timber, using TimberLogger.
+        CoreLogger.set(TimberLogger)
+
+        deviceInfo(context)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf()
 }
-

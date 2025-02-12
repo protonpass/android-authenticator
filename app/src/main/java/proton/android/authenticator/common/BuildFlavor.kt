@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.initializers
+package proton.android.authenticator.common
 
 sealed class BuildFlavor(val env: BuildEnv) {
     class Dev(env: BuildEnv) : BuildFlavor(env)
