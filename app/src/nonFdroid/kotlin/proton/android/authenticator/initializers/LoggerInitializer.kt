@@ -18,17 +18,16 @@
 package proton.android.authenticator.initializers
 
 import android.content.Context
-import android.os.Build
-import android.os.LocaleList
 import androidx.startup.Initializer
 import me.proton.core.util.android.sentry.TimberLogger
 import me.proton.core.util.kotlin.CoreLogger
 import proton.android.authenticator.BuildConfig
-import proton.android.authenticator.common.AuthenticatorLogger
+import proton.android.authenticator.common.RustLoggerImpl
 import proton.android.authenticator.common.deviceInfo
+import proton.android.authenticator.commonrust.registerAuthenticatorLogger
 import timber.log.Timber
 
-abstract class LoggerInitializer : Initializer<Unit> {
+class LoggerInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
         if (BuildConfig.DEBUG) {
@@ -37,6 +36,8 @@ abstract class LoggerInitializer : Initializer<Unit> {
 
         // Forward Core Logs to Timber, using TimberLogger.
         CoreLogger.set(TimberLogger)
+
+        registerAuthenticatorLogger(RustLoggerImpl)
 
         deviceInfo(context)
     }

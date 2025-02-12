@@ -21,7 +21,9 @@ package proton.android.authenticator.initializers
 import android.content.Context
 import androidx.startup.Initializer
 import proton.android.authenticator.BuildConfig
+import proton.android.authenticator.common.RustLoggerImpl
 import proton.android.authenticator.common.deviceInfo
+import proton.android.authenticator.commonrust.registerAuthenticatorLogger
 import timber.log.Timber
 
 class LoggerInitializer : Initializer<Unit> {
@@ -30,6 +32,8 @@ class LoggerInitializer : Initializer<Unit> {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        registerAuthenticatorLogger(RustLoggerImpl)
 
         deviceInfo(context)
     }

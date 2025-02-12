@@ -18,7 +18,19 @@
 
 package proton.android.authenticator.common
 
-import me.proton.core.util.kotlin.CoreLogger
-import me.proton.core.util.kotlin.Logger
+import proton.android.authenticator.commonrust.AuthenticatorLogLevel
+import proton.android.authenticator.commonrust.AuthenticatorLogger
+import proton.android.authenticator.common.AuthenticatorLogger as RustLogger
 
-object AuthenticatorLogger : Logger by CoreLogger
+object RustLoggerImpl : AuthenticatorLogger {
+    private const val TAG = "RustLogger"
+    override fun log(level: AuthenticatorLogLevel, message: String) {
+        when (level) {
+            AuthenticatorLogLevel.TRACE -> RustLogger.v(TAG, message)
+            AuthenticatorLogLevel.DEBUG -> RustLogger.d(TAG, message)
+            AuthenticatorLogLevel.INFO -> RustLogger.i(TAG, message)
+            AuthenticatorLogLevel.WARN -> RustLogger.w(TAG, message)
+            AuthenticatorLogLevel.ERROR -> RustLogger.w(TAG, message)
+        }
+    }
+}
