@@ -20,6 +20,7 @@ hilt = "2.55"
 androidxHiltNavigationCompose = "1.2.0"
 startup = "1.2.0"
 timber = "5.0.1"
+jna = "5.15.0"
 
 # Kotlin
 datetime = "0.4.0"
@@ -66,6 +67,7 @@ core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", versio
 
 # Authenticator
 authenticator-common = { module = "me.proton.authenticator.common:lib", version.ref = "authenticatorCommon" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna"}
 
 ## Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }

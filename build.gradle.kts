@@ -33,12 +33,13 @@ protonDetekt {
 val authenticatorAar = File(rootProject.projectDir, "libs/lib-release.aar")
 val versionCatalog = extensions.findByType<VersionCatalogsExtension>()?.named("libs")
 val authenticatorCommon = versionCatalog?.findLibrary("authenticator-common")?.get()?.get()
+val jna = versionCatalog?.findLibrary("jna")?.get()?.get()
 
 subprojects {
     afterEvaluate {
         configurations.configureEach {
             withDependencies {
-                if (authenticatorCommon != null) {
+                if (authenticatorCommon != null && jna != null) {
                     val removed = removeIf { dependency ->
                         dependency.group == authenticatorCommon.module.group && dependency.name == authenticatorCommon.module.name
                     }
@@ -46,6 +47,8 @@ subprojects {
                         if (authenticatorAar.exists()) {
                             val aarDependency = project.dependencies.create(files(authenticatorAar))
                             add(aarDependency)
+                            val jnaAarDependency = project.dependencies.create("$jna@aar")
+                            add(jnaAarDependency)
                             logger.quiet("✅  Using AAR for ${authenticatorCommon.module}")
                         } else {
                             add(authenticatorCommon)
