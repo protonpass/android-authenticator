@@ -11,14 +11,14 @@ import javax.inject.Inject
 
 internal class AppNavigationNavigator @Inject constructor(
     private val startDestination: NavigationDestination,
-    private val navigationCommandHandler: NavigationCommandHandler,
+    private val navigationCommandHandler: NavigationCommandHandler
 ) : NavigationNavigator {
 
     @Composable
     override fun NavGraphs(navController: NavHostController) {
         NavHost(
             navController = navController,
-            startDestination = startDestination,
+            startDestination = startDestination
         ) {
             homeNavigationGraph { navCommand ->
                 navigationCommandHandler.handle(navCommand, navController)

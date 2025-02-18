@@ -17,13 +17,11 @@ import javax.inject.Singleton
 internal abstract class NavigationModule {
 
     @[Binds Singleton]
-    internal abstract fun bindNavigationNavigator(
-        implementation: AppNavigationNavigator,
-    ): NavigationNavigator
+    internal abstract fun bindNavigationNavigator(implementation: AppNavigationNavigator): NavigationNavigator
 
     @[Binds Singleton]
     internal abstract fun bindNavigationCommandHandler(
-        implementation: InMemoryNavigationCommandHandler,
+        implementation: InMemoryNavigationCommandHandler
     ): NavigationCommandHandler
 
     internal companion object {
