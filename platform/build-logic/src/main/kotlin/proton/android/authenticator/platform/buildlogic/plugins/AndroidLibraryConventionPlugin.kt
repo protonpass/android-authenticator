@@ -27,6 +27,7 @@ internal class AndroidLibraryConventionPlugin : LibraryConventionPlugin() {
     override fun apply(project: Project) = with(project) {
         applyPlugin(PlatformPlugin.AndroidLibrary)
         applyPlugin(PlatformPlugin.KotlinAndroid)
+        applyPlugin(PlatformPlugin.KotlinCompose)
 
         configureAndroidEnvironment()
         configureKotlinOptions()

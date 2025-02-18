@@ -46,4 +46,5 @@ rootProject.name = "ProtonAuthenticator"
 
 include(":app")
 include(":features:home:master")
+include(":navigation")
 include(":shared:ui")

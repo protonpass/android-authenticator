@@ -1,0 +1,22 @@
+plugins {
+    id("proton.android.authenticator.plugins.libraries.android")
+
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+}
+
+android {
+    namespace = "proton.android.authenticator.navigation"
+}
+
+dependencies {
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.hilt.android)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(project(":features:home:master"))
+    implementation(project(":shared:ui"))
+
+    ksp(libs.hilt.compiler)
+}

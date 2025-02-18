@@ -3,6 +3,7 @@ activityCompose = "1.9.3"
 agpVersion = "8.7.3"
 authenticatorCommonVersion = "0.13.4"
 composeBomVersion = "2025.02.00"
+composeNavigationVersion = "2.8.7"
 coreKtxVersion = "1.13.1"
 coreVersion = "30.3.1"
 datetimeVersion = "0.4.0"
@@ -14,6 +15,7 @@ jnaVersion = "5.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 kotlinVersion = "2.0.21"
+kotlinxSerializationVersion = "1.8.0"
 kspVersion = "2.0.21-1.0.27"
 lifecycleRuntimeVersion = "2.8.7"
 protonDetektVersion = "1.3.1"
@@ -33,6 +35,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeVersion" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeVersion" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigationVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupVersion" }
@@ -54,6 +57,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 jna = { module = "net.java.dev.jna:jna", version.ref = "jnaVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 
 [bundles]
@@ -80,6 +84,7 @@ dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "depende
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "protonDetektVersion" }
 proton-environmentConfig = { id = "me.proton.core.gradle-plugins.environment-config", version.ref = "protonEnvironmentConfigVersion" }

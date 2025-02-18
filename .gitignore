@@ -24,5 +24,15 @@ config
 
 /libs
 
-# Platform
+# Features module
+features/*/*/build
+
+# Navigation module
+navigation/build
+
+# Platform module
 platform/build-logic/build
+
+# Shared module
+shared/*/build
+

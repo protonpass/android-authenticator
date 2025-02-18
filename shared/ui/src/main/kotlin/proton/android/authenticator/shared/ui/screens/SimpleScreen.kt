@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.shared.ui.screens
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import proton.android.authenticator.shared.ui.domain.screens.Screen
 
@@ -25,7 +26,7 @@ abstract class SimpleScreen : Screen {
 
     @Composable
     override fun Render() {
-        TODO("Not yet implemented")
+        Text(text = "Simple Screen")
     }
 
 }

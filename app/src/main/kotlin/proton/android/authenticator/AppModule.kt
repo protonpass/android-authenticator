@@ -18,17 +18,17 @@
 
 package proton.android.authenticator
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import dagger.hilt.android.AndroidEntryPoint
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import kotlinx.datetime.Clock
+import javax.inject.Singleton
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent { AuthenticatorApp() }
-    }
+@[Module InstallIn(SingletonComponent::class)]
+internal object AppModule {
+
+    @[Provides Singleton]
+    internal fun provideClock(): Clock = Clock.System
+
 }
