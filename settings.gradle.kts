@@ -17,6 +17,8 @@
  */
 
 pluginManagement {
+//    includeBuild("platform/build-logic")
+
     repositories {
         google {
             content {
@@ -25,12 +27,15 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+
         mavenCentral()
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+
     repositories {
         google()
         mavenCentral()
@@ -38,5 +43,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ProtonAuthenticator"
+
 include(":app")
  

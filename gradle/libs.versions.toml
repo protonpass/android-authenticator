@@ -1,85 +1,67 @@
 [versions]
-# Plugins
-agp = "8.7.3"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.27"
-dependency-guard = "0.5.0"
-proton-environmentConfig = "1.3.1"
-proton-detekt = "1.3.1"
-sentry = "3.5.0"
-
-coreKtx = "1.13.1"
+activityCompose = "1.10.0"
+agpVersion = "8.8.1"
+authenticatorCommonVersion = "0.13.4"
+composeBomVersion = "2025.02.00"
+coreKtxVersion = "1.15.0"
+coreVersion = "30.3.1"
+datetimeVersion = "0.4.0"
+dependencyGuardVersion = "0.5.0"
+espressoCoreVersion = "3.6.1"
+hiltNavigationComposeVersion = "1.2.0"
+hiltVersion = "2.55"
+jnaVersion = "5.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2025.01.01"
-room = "2.6.1"
-hilt = "2.55"
-androidxHiltNavigationCompose = "1.2.0"
-startup = "1.2.0"
-timber = "5.0.1"
-jna = "5.15.0"
-
-# Kotlin
-datetime = "0.4.0"
-
-# Core
-core = "30.3.1"
-
-# Authenticator
-authenticatorCommon = "0.13.4"
+kotlinVersion = "2.1.0"
+kspVersion = "2.1.0-1.0.29"
+lifecycleRuntimeVersion = "2.8.7"
+protonDetektVersion = "1.3.1"
+protonEnvironmentConfigVersion = "1.3.1"
+roomVersion = "2.6.1"
+sentryVersion = "3.5.0"
+startupVersion = "1.2.0"
+timberVersion = "5.0.1"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBomVersion" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeVersion" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupVersion" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
-androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
-
-# Timber
-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-
-# Room
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-
-# Kotlinx
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
-
-# Core
-core-crypto = { module = "me.proton.core:crypto", version.ref = "core" }
-core-data = { module = "me.proton.core:data", version.ref = "core" }
-core-dataRoom = { module = "me.proton.core:data-room", version.ref = "core" }
-core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", version.ref = "core" }
-
-# Authenticator
-authenticator-common = { module = "me.proton.authenticator.common:lib", version.ref = "authenticatorCommon" }
-jna = { module = "net.java.dev.jna:jna", version.ref = "jna"}
-
-## Hilt
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+authenticator-common = { module = "me.proton.authenticator.common:lib", version.ref = "authenticatorCommonVersion" }
+core-crypto = { module = "me.proton.core:crypto", version.ref = "coreVersion" }
+core-data = { module = "me.proton.core:data", version.ref = "coreVersion" }
+core-dataRoom = { module = "me.proton.core:data-room", version.ref = "coreVersion" }
+core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", version.ref = "coreVersion" }
+gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "agpVersion" }
+gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jnaVersion" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependency-guard" }
-proton-environmentConfig = { id = "me.proton.core.gradle-plugins.environment-config", version.ref = "proton-environmentConfig" }
-proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "proton-detekt" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-sentry = { id = "io.sentry.android.gradle", version.ref = "sentry" }
+android-application = { id = "com.android.application", version.ref = "agpVersion" }
+dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardVersion" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "protonDetektVersion" }
+proton-environmentConfig = { id = "me.proton.core.gradle-plugins.environment-config", version.ref = "protonEnvironmentConfigVersion" }
+sentry = { id = "io.sentry.android.gradle", version.ref = "sentryVersion" }
