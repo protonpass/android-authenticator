@@ -16,34 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    includeBuild("platform/build-logic")
+package proton.android.authenticator.shared.ui.screens
 
-    repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+import androidx.compose.runtime.Composable
+import proton.android.authenticator.shared.ui.domain.screens.Screen
 
-        mavenCentral()
-        gradlePluginPortal()
+abstract class SimpleScreen : Screen {
+
+    @Composable
+    override fun Render() {
+        TODO("Not yet implemented")
     }
+
 }
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "ProtonAuthenticator"
-
-include(":app")
-include(":features:home:master")
-include(":shared:ui")

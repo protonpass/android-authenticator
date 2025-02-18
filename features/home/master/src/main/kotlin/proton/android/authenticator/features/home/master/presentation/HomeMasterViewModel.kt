@@ -16,34 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    includeBuild("platform/build-logic")
+package proton.android.authenticator.features.home.master.presentation
 
-    repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "ProtonAuthenticator"
-
-include(":app")
-include(":features:home:master")
-include(":shared:ui")
+@HiltViewModel
+internal class HomeMasterViewModel @Inject constructor() : ViewModel()
