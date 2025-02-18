@@ -1,9 +1,9 @@
 [versions]
-activityCompose = "1.10.0"
-agpVersion = "8.8.1"
+activityCompose = "1.9.3"
+agpVersion = "8.7.3"
 authenticatorCommonVersion = "0.13.4"
 composeBomVersion = "2025.02.00"
-coreKtxVersion = "1.15.0"
+coreKtxVersion = "1.13.1"
 coreVersion = "30.3.1"
 datetimeVersion = "0.4.0"
 dependencyGuardVersion = "0.5.0"
@@ -13,8 +13,8 @@ hiltVersion = "2.55"
 jnaVersion = "5.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
-kotlinVersion = "2.1.0"
-kspVersion = "2.1.0-1.0.29"
+kotlinVersion = "2.0.21"
+kspVersion = "2.0.21-1.0.27"
 lifecycleRuntimeVersion = "2.8.7"
 protonDetektVersion = "1.3.1"
 protonEnvironmentConfigVersion = "1.3.1"
@@ -30,6 +30,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeVersion" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeVersion" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
@@ -54,6 +55,24 @@ jna = { module = "net.java.dev.jna:jna", version.ref = "jnaVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
+
+[bundles]
+android-application-implementation = [
+    "androidx-lifecycle-runtime-ktx",
+    "hilt-android",
+]
+android-application-ksp = [
+    "hilt-compiler",
+]
+feature-library-implementation = [
+    "androidx-hilt-navigation-compose",
+    "androidx-lifecycle-runtime-compose",
+    "androidx-lifecycle-runtime-ktx",
+    "hilt-android",
+]
+feature-library-ksp = [
+    "hilt-compiler",
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agpVersion" }

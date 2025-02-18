@@ -16,33 +16,20 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    includeBuild("platform/build-logic")
+package proton.android.authenticator.platform.buildlogic.plugins
 
-    repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+import org.gradle.api.Project
+import proton.android.authenticator.platform.buildlogic.domain.platform.plugins.PlatformPlugin
+import proton.android.authenticator.platform.buildlogic.domain.plugins.LibraryConventionPlugin
 
-        mavenCentral()
-        gradlePluginPortal()
+internal class AndroidLibraryConventionPlugin : LibraryConventionPlugin() {
+
+    override fun apply(project: Project) = with(project) {
+        applyPlugin(PlatformPlugin.AndroidLibrary)
+        applyPlugin(PlatformPlugin.KotlinAndroid)
+
+        configureAndroidEnvironment()
+        configureKotlinOptions()
     }
+
 }
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "ProtonAuthenticator"
-
-include(":app")
- 
