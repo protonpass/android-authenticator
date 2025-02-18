@@ -23,3 +23,6 @@ keystore
 config
 
 /libs
+
+# Platform
+platform/build-logic/build

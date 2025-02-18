@@ -21,6 +21,7 @@ package proton.android.authenticator.platform.buildlogic.plugins
 import org.gradle.api.Project
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyBundle
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyConfigurationName
+import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyModule
 import proton.android.authenticator.platform.buildlogic.domain.platform.plugins.PlatformPlugin
 import proton.android.authenticator.platform.buildlogic.domain.plugins.LibraryConventionPlugin
 
@@ -44,6 +45,11 @@ internal class FeatureLibraryConventionPlugin : LibraryConventionPlugin() {
         addBundleDependency(
             bundle = PlatformDependencyBundle.FeatureLibraryKsp,
             configurationName = PlatformDependencyConfigurationName.Ksp,
+        )
+
+        addModuleDependency(
+            module = PlatformDependencyModule.SharedUi,
+            configurationName = PlatformDependencyConfigurationName.Implementation,
         )
     }
 

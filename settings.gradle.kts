@@ -45,4 +45,4 @@ dependencyResolutionManagement {
 rootProject.name = "ProtonAuthenticator"
 
 include(":app")
- 
+include(":shared:ui")
