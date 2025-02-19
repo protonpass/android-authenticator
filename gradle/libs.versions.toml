@@ -2,6 +2,7 @@
 activityCompose = "1.9.3"
 agpVersion = "8.7.3"
 authenticatorCommonVersion = "0.13.4"
+coilVersion = "2.4.0"
 composeBomVersion = "2025.02.00"
 composeNavigationVersion = "2.8.7"
 coreKtxVersion = "1.13.1"
@@ -46,6 +47,8 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 authenticator-common = { module = "me.proton.authenticator.common:lib", version.ref = "authenticatorCommonVersion" }
+coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
 core-crypto = { module = "me.proton.core:crypto", version.ref = "coreVersion" }
 core-data = { module = "me.proton.core:data", version.ref = "coreVersion" }
 core-dataRoom = { module = "me.proton.core:data-room", version.ref = "coreVersion" }

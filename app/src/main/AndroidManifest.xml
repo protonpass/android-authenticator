@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2025 Proton AG
   ~ This file is part of Proton AG and Proton Authenticator.
   ~
@@ -19,6 +18,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -48,9 +49,11 @@
             android:exported="false"
             tools:node="merge">
 
-            <meta-data  android:name="proton.android.authenticator.initializers.SentryInitializer"
+            <meta-data
+                android:name="proton.android.authenticator.initializers.SentryInitializer"
                 android:value="androidx.startup" />
-            <meta-data  android:name="proton.android.authenticator.initializers.LoggerInitializer"
+            <meta-data
+                android:name="proton.android.authenticator.initializers.LoggerInitializer"
                 android:value="androidx.startup" />
         </provider>
 

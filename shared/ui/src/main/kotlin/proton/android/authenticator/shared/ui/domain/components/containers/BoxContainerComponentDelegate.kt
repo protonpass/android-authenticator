@@ -16,22 +16,31 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.shared.ui.domain.components.containers
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
-import proton.android.authenticator.shared.ui.domain.renders.Renderable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.components.Component
 
-class HomeMasterScreenRenderer(
-    private val onEntryClick: (entryId: String) -> Unit
-) : Renderable {
+internal class BoxContainerComponentDelegate(
+    private val modifier: Modifier,
+    private val contentAlignment: Alignment,
+    private val contents: BoxScope.() -> List<Component>
+) : ContainerComponent {
 
     @Composable
-    override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
-        HomeMasterScreen(
-            onEntryClick = onEntryClick
-        ).Render()
+    override fun Render() {
+        Box(
+            modifier = modifier,
+            contentAlignment = contentAlignment
+        ) {
+            contents().forEach { content ->
+                content.Render()
+            }
+        }
     }
 
 }

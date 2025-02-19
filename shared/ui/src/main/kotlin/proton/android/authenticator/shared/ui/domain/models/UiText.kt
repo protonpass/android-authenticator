@@ -16,22 +16,38 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.shared.ui.domain.models
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
-import proton.android.authenticator.shared.ui.domain.renders.Renderable
+import androidx.compose.runtime.Stable
+import androidx.compose.ui.res.stringResource
 
-class HomeMasterScreenRenderer(
-    private val onEntryClick: (entryId: String) -> Unit
-) : Renderable {
+sealed class UiText {
 
     @Composable
-    override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
-        HomeMasterScreen(
-            onEntryClick = onEntryClick
-        ).Render()
+    internal abstract fun asString(): String
+
+    @Stable
+    class Dynamic(private val value: String) : UiText() {
+
+        @Composable
+        override fun asString(): String = value
+
+    }
+
+    @Stable
+    class Resource(
+        @StringRes private val resId: Int,
+        private vararg val args: Any = emptyArray()
+    ) : UiText() {
+
+        @Composable
+        override fun asString(): String = stringResource(
+            id = resId,
+            formatArgs = args
+        )
+
     }
 
 }

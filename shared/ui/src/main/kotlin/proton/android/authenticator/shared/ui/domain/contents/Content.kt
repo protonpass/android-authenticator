@@ -16,22 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.shared.ui.domain.contents
 
-import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
-class HomeMasterScreenRenderer(
-    private val onEntryClick: (entryId: String) -> Unit
-) : Renderable {
-
-    @Composable
-    override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
-        HomeMasterScreen(
-            onEntryClick = onEntryClick
-        ).Render()
-    }
-
-}
+interface Content : Renderable

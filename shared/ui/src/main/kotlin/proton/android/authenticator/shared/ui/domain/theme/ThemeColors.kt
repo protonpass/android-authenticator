@@ -16,22 +16,35 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.shared.ui.domain.theme
 
-import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
-import proton.android.authenticator.shared.ui.domain.renders.Renderable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
-class HomeMasterScreenRenderer(
-    private val onEntryClick: (entryId: String) -> Unit
-) : Renderable {
+internal sealed interface ThemeColors {
 
-    @Composable
-    override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
-        HomeMasterScreen(
-            onEntryClick = onEntryClick
-        ).Render()
+    @Stable
+    val textNorm: Color
+
+    @Immutable
+    data object Dark : ThemeColors {
+
+        override val textNorm: Color = Color(color = 0xFFFFFFFF)
+
     }
 
+    @Immutable
+    data object Light : ThemeColors {
+
+        override val textNorm: Color = Color(color = 0xFF000000)
+
+    }
+
+}
+
+internal val ThemeColorScheme: ProvidableCompositionLocal<ThemeColors> = staticCompositionLocalOf {
+    ThemeColors.Light
 }

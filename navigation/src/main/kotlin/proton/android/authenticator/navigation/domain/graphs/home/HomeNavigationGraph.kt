@@ -9,7 +9,19 @@ import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<HomeNavigationDestination>(startDestination = HomeMasterNavigationDestination) {
         composable<HomeMasterNavigationDestination> {
-            HomeMasterScreenRenderer().Render()
+            HomeMasterScreenRenderer(
+                onEntryClick = { entryId ->
+                    NavigationCommand.NavigateTo(
+                        destination = HomeDetailNavigationDestination(
+                            entryId = entryId
+                        )
+                    ).also(onNavigate)
+                }
+            ).Render()
+        }
+
+        composable<HomeDetailNavigationDestination> {
+
         }
     }
 }

@@ -7,6 +7,7 @@ import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 import javax.inject.Inject
 
 internal class AppNavigationNavigator @Inject constructor(
@@ -16,12 +17,14 @@ internal class AppNavigationNavigator @Inject constructor(
 
     @Composable
     override fun NavGraphs(navController: NavHostController) {
-        NavHost(
-            navController = navController,
-            startDestination = startDestination
-        ) {
-            homeNavigationGraph { navCommand ->
-                navigationCommandHandler.handle(navCommand, navController)
+        Theme {
+            NavHost(
+                navController = navController,
+                startDestination = startDestination
+            ) {
+                homeNavigationGraph { navCommand ->
+                    navigationCommandHandler.handle(navCommand, navController)
+                }
             }
         }
     }

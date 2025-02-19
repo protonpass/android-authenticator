@@ -25,7 +25,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
-import proton.android.authenticator.ui.theme.ProtonAuthenticatorTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,11 +39,9 @@ internal class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            ProtonAuthenticatorTheme {
-                val navController = rememberNavController()
+            val navController = rememberNavController()
 
-                navigationNavigator.NavGraphs(navController)
-            }
+            navigationNavigator.NavGraphs(navController)
         }
     }
 

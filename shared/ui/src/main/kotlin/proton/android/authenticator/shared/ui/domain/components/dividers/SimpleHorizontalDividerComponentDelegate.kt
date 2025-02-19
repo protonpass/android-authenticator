@@ -16,22 +16,27 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.shared.ui.domain.components.dividers
 
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
-import proton.android.authenticator.shared.ui.domain.renders.Renderable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 
-class HomeMasterScreenRenderer(
-    private val onEntryClick: (entryId: String) -> Unit
-) : Renderable {
+internal class SimpleHorizontalDividerComponentDelegate(
+    private val modifier: Modifier,
+    private val thickness: Dp,
+    private val color: Color
+) : DividerComponent {
 
     @Composable
-    override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
-        HomeMasterScreen(
-            onEntryClick = onEntryClick
-        ).Render()
+    override fun Render() {
+        HorizontalDivider(
+            modifier = modifier,
+            thickness = thickness,
+            color = color
+        )
     }
 
 }

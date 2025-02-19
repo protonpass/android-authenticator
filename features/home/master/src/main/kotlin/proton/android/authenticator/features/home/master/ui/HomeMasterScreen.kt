@@ -18,6 +18,37 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import proton.android.authenticator.shared.ui.screens.SimpleScreen
+import proton.android.authenticator.shared.ui.contents.entries.EntryCardContent
+import proton.android.authenticator.shared.ui.domain.contents.Content
+import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
 
-internal class HomeMasterScreen : SimpleScreen()
+internal class HomeMasterScreen(
+    private val onEntryClick: (entryId: String) -> Unit
+) : ScaffoldScreen() {
+
+    override val bodyContents: List<Content> = listOf(
+        EntryCardContent(
+            imageUrl = "https://www.amazon.com/favicon.ico",
+            name = UiText.Dynamic(value = "Amazon"),
+            label = UiText.Dynamic(value = "amazon@email.com"),
+            currentCode = UiText.Dynamic(value = "920827"),
+            nextCode = UiText.Dynamic(value = "821200"),
+            remainingSeconds = 23,
+            totalSeconds = 30,
+            onClick = { onEntryClick("Entry 1") }
+
+        ),
+        EntryCardContent(
+            imageUrl = "https://proton.me/favicon.ico",
+            name = UiText.Dynamic(value = "Proton"),
+            label = UiText.Dynamic(value = "proton@email.com"),
+            currentCode = UiText.Dynamic(value = "643118"),
+            nextCode = UiText.Dynamic(value = "779656"),
+            remainingSeconds = 23,
+            totalSeconds = 30,
+            onClick = { onEntryClick("Entry 2") }
+        )
+    )
+
+}

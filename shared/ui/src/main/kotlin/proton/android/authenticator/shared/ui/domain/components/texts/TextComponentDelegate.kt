@@ -16,17 +16,26 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.screens
+package proton.android.authenticator.shared.ui.domain.components.texts
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import proton.android.authenticator.shared.ui.domain.screens.Screen
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import proton.android.authenticator.shared.ui.domain.models.UiText
 
-abstract class SimpleScreen : Screen {
+internal class TextComponentDelegate(
+    private val modifier: Modifier,
+    private val text: UiText
+) : TextComponent {
 
     @Composable
     override fun Render() {
-        Text(text = "Simple Screen")
+        Text(
+            modifier = modifier,
+            text = text.asString(),
+            color = Color.White
+        )
     }
 
 }
