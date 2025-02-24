@@ -8,8 +8,8 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
-import proton.android.authenticator.platform.buildlogic.domain.platform.config.PlatformAndroidConfig
-import proton.android.authenticator.platform.buildlogic.domain.platform.config.PlatformVersionCatalogsConfig
+import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig
+import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformVersionCatalogsConfig
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyBundle
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyConfigurationName
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyModule

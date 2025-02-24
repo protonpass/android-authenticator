@@ -3,7 +3,7 @@ package proton.android.authenticator.platform.buildlogic.domain.plugins
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import proton.android.authenticator.platform.buildlogic.domain.platform.config.PlatformAndroidConfig
+import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyBundle
 import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyConfigurationName
 import proton.android.authenticator.platform.buildlogic.domain.platform.plugins.PlatformPlugin
