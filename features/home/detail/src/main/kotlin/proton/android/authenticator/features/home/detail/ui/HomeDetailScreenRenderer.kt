@@ -16,36 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    includeBuild("platform/build-logic")
+package proton.android.authenticator.features.home.detail.ui
 
-    repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.home.detail.presentation.HomeDetailViewModel
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
-        mavenCentral()
-        gradlePluginPortal()
+class HomeDetailScreenRenderer : Renderable {
+
+    @Composable
+    override fun Render() = with(hiltViewModel<HomeDetailViewModel>()) {
+        val state by stateFlow.collectAsStateWithLifecycle()
+
+        HomeDetailScreen(
+            state = state
+        ).Render()
     }
+
 }
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "ProtonAuthenticator"
-
-include(":app")
-include(":features:home:detail")
-include(":features:home:master")
-include(":navigation")
-include(":shared:ui")

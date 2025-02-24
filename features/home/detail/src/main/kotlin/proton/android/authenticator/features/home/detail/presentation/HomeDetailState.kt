@@ -16,36 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    includeBuild("platform/build-logic")
+package proton.android.authenticator.features.home.detail.presentation
 
-    repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
-
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "ProtonAuthenticator"
-
-include(":app")
-include(":features:home:detail")
-include(":features:home:master")
-include(":navigation")
-include(":shared:ui")
+internal data class HomeDetailState(
+    val entryId: String = ""
+)

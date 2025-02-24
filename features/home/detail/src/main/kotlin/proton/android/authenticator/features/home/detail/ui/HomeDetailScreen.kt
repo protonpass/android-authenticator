@@ -16,36 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    includeBuild("platform/build-logic")
+package proton.android.authenticator.features.home.detail.ui
 
-    repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+import proton.android.authenticator.features.home.detail.presentation.HomeDetailState
+import proton.android.authenticator.shared.ui.domain.contents.Content
+import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
 
-        mavenCentral()
-        gradlePluginPortal()
+internal class HomeDetailScreen(private val state: HomeDetailState) : ScaffoldScreen() {
+
+    override val bodyContents: List<Content> = emptyList<Content>().also {
+        println("JIBIRI: EntryId: ${state.entryId}")
     }
+
 }
-
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-rootProject.name = "ProtonAuthenticator"
-
-include(":app")
-include(":features:home:detail")
-include(":features:home:master")
-include(":navigation")
-include(":shared:ui")
