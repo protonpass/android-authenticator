@@ -25,11 +25,12 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.components.Component
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal sealed interface ContainerComponent : Component {
 
     data class Box(
-        private val contents: BoxScope.() -> List<Component>,
+        private val contents: BoxScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val contentAlignment: Alignment = Alignment.TopStart
     ) : ContainerComponent by BoxContainerComponentDelegate(
@@ -39,7 +40,7 @@ internal sealed interface ContainerComponent : Component {
     )
 
     data class Horizontal(
-        private val contents: RowScope.() -> List<Component>,
+        private val contents: RowScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
         private val verticalAlignment: Alignment.Vertical = Alignment.Top
@@ -51,7 +52,7 @@ internal sealed interface ContainerComponent : Component {
     )
 
     data class Vertical(
-        private val contents: ColumnScope.() -> List<Component>,
+        private val contents: ColumnScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val verticalArrangement: Arrangement.Vertical = Arrangement.Top,
         private val horizontalAlignment: Alignment.Horizontal = Alignment.Start

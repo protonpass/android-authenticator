@@ -24,13 +24,13 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import proton.android.authenticator.shared.ui.domain.components.Component
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class VerticalContainerComponentDelegate(
     private val modifier: Modifier,
     private val verticalArrangement: Arrangement.Vertical,
     private val horizontalAlignment: Alignment.Horizontal,
-    private val contents: ColumnScope.() -> List<Component>
+    private val contents: ColumnScope.() -> List<Renderable>
 ) : ContainerComponent {
 
     @Composable

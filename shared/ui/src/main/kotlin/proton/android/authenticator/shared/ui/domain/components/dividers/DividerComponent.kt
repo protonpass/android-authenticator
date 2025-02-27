@@ -27,9 +27,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 internal interface DividerComponent : Component {
 
     data class SimpleHorizontal(
+        private val color: Color = Color.Gray,
         private val modifier: Modifier = Modifier,
-        private val thickness: Dp = ThemeThickness.Small,
-        private val color: Color = Color.Gray
+        private val thickness: Dp = ThemeThickness.Small
     ) : DividerComponent by SimpleHorizontalDividerComponentDelegate(
         modifier = modifier,
         thickness = thickness,

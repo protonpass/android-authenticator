@@ -27,6 +27,8 @@ internal class HomeMasterScreen(
     private val onEntryClick: (entryId: String) -> Unit
 ) : ScaffoldScreen() {
 
+    override val topBarContent: Content? = null
+
     override val bodyContents: List<Content> = listOf(
         EntryCardContent(
             imageUrl = "https://www.amazon.com/favicon.ico",
@@ -50,5 +52,7 @@ internal class HomeMasterScreen(
             onClick = { onEntryClick("Entry 2") }
         )
     )
+
+    override val bottomBarContent: Content? = null
 
 }

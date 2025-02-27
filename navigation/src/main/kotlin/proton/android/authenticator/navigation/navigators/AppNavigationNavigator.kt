@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
+import proton.android.authenticator.navigation.domain.graphs.settings.settingsNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import javax.inject.Inject
@@ -23,6 +24,10 @@ internal class AppNavigationNavigator @Inject constructor(
                 startDestination = startDestination
             ) {
                 homeNavigationGraph { navCommand ->
+                    navigationCommandHandler.handle(navCommand, navController)
+                }
+
+                settingsNavigationGraph { navCommand ->
                     navigationCommandHandler.handle(navCommand, navController)
                 }
             }

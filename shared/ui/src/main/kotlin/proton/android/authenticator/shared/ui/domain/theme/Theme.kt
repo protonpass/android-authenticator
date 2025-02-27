@@ -22,6 +22,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 
 @Composable
@@ -32,11 +33,26 @@ fun Theme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () 
     }
 
     CompositionLocalProvider(
-        ThemeColorScheme provides colorScheme
+        ThemeColorScheme provides colorScheme,
+        ThemeTypographyScheme provides ThemeTypography
     ) {
         MaterialTheme(
             colorScheme = MaterialTheme.colorScheme,
+            shapes = MaterialTheme.shapes,
+            typography = MaterialTheme.typography,
             content = content
         )
     }
+}
+
+internal object Theme {
+
+    internal val colorScheme: ThemeColors
+        @[Composable ReadOnlyComposable]
+        get() = ThemeColorScheme.current
+
+    internal val typography: ThemeTypography
+        @[Composable ReadOnlyComposable]
+        get() = ThemeTypographyScheme.current
+
 }

@@ -39,6 +39,7 @@ import proton.android.authenticator.shared.ui.domain.components.progress.Progres
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
 import proton.android.authenticator.shared.ui.domain.contents.Content
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -87,11 +88,15 @@ data class EntryCardContent(
                                         .weight(weight = 1f, fill = true),
                                     contents = {
                                         listOf(
-                                            TextComponent.Title(
-                                                text = name
+                                            TextComponent.Standard(
+                                                text = name,
+                                                color = { Theme.colorScheme.textNorm },
+                                                style = { Theme.typography.body1Regular }
                                             ),
-                                            TextComponent.Title(
-                                                text = label
+                                            TextComponent.Standard(
+                                                text = label,
+                                                color = { Theme.colorScheme.textWeak },
+                                                style = { Theme.typography.body2Regular }
                                             )
                                         )
                                     }
@@ -113,19 +118,25 @@ data class EntryCardContent(
                         verticalAlignment = Alignment.CenterVertically,
                         contents = {
                             listOf(
-                                TextComponent.Title(
+                                TextComponent.Standard(
                                     modifier = Modifier.weight(weight = 1f, fill = true),
-                                    text = currentCode
+                                    text = currentCode,
+                                    color = { Theme.colorScheme.textNorm },
+                                    style = { Theme.typography.body1Regular }
                                 ),
                                 ContainerComponent.Vertical(
                                     horizontalAlignment = Alignment.End,
                                     contents = {
                                         listOf(
-                                            TextComponent.Title(
-                                                text = UiText.Dynamic(value = "Next")
+                                            TextComponent.Standard(
+                                                text = UiText.Dynamic(value = "Next"),
+                                                color = { Theme.colorScheme.textNorm },
+                                                style = { Theme.typography.body1Regular }
                                             ),
-                                            TextComponent.Title(
-                                                text = nextCode
+                                            TextComponent.Standard(
+                                                text = nextCode,
+                                                color = { Theme.colorScheme.textNorm },
+                                                style = { Theme.typography.body1Regular }
                                             )
                                         )
                                     }

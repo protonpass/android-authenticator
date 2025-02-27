@@ -22,11 +22,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal class TextComponentDelegate(
     private val modifier: Modifier,
-    private val text: UiText
+    private val text: UiText,
+    private val color: @Composable () -> Color,
+    private val style: @Composable () -> TextStyle,
+    private val textAlign: TextAlign?
 ) : TextComponent {
 
     @Composable
@@ -34,7 +39,9 @@ internal class TextComponentDelegate(
         Text(
             modifier = modifier,
             text = text.asString(),
-            color = Color.White
+            color = color(),
+            style = style(),
+            textAlign = textAlign
         )
     }
 

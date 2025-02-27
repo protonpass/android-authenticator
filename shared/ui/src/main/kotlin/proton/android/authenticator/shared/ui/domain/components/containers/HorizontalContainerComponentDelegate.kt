@@ -24,13 +24,13 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import proton.android.authenticator.shared.ui.domain.components.Component
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class HorizontalContainerComponentDelegate(
     private val modifier: Modifier,
     private val horizontalArrangement: Arrangement.Horizontal,
     private val verticalAlignment: Alignment.Vertical,
-    private val contents: RowScope.() -> List<Component>
+    private val contents: RowScope.() -> List<Renderable>
 ) : ContainerComponent {
 
     @Composable

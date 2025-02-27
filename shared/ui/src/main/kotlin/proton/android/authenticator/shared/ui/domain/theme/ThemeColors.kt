@@ -24,22 +24,169 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-internal sealed interface ThemeColors {
+internal sealed class ThemeColors {
 
     @Stable
-    val textNorm: Color
+    abstract val gradientBackgroundColor1: Color
+
+    @Stable
+    abstract val gradientBackgroundColor2: Color
+
+    @Stable
+    abstract val gradientBackgroundColor3: Color
+
+    @Stable
+    abstract val gradientBackgroundColor4: Color
+
+    @Stable
+    abstract val gradientBannerColor1: Color
+
+    @Stable
+    abstract val gradientBannerColor2: Color
+
+    @Stable
+    abstract val gradientBannerColor3: Color
+
+    @Stable
+    abstract val gradientBannerColor4: Color
+
+    @Stable
+    abstract val gradientBannerColor5: Color
+
+    @Stable
+    abstract val gradientBannerColor6: Color
+
+    @Stable
+    abstract val gradientBannerColor7: Color
+
+    @Stable
+    abstract val gradientBannerColor8: Color
+
+    @Stable
+    abstract val gradientBannerColor9: Color
+
+    @Stable
+    abstract val gradientBannerColor10: Color
+
+    @Stable
+    abstract val gradientTopBarColor1: Color
+
+    @Stable
+    abstract val gradientTopBarColor2: Color
+
+    @Stable
+    abstract val interactionPurple: Color
+
+    @Stable
+    abstract val interactionPurpleNorm: Color
+
+    @Stable
+    abstract val signalSuccess: Color
+
+    @Stable
+    abstract val textHint: Color
+
+    @Stable
+    abstract val textNorm: Color
+
+    @Stable
+    abstract val textWeak: Color
 
     @Immutable
-    data object Dark : ThemeColors {
+    data object Dark : ThemeColors() {
+
+        override val gradientBackgroundColor1: Color = Color(color = 0xFF27103D)
+
+        override val gradientBackgroundColor2: Color = Color(color = 0xFF230E43)
+
+        override val gradientBackgroundColor3: Color = Color(color = 0xFF311456)
+
+        override val gradientBackgroundColor4: Color = Color(color = 0xFF3E1865)
+
+        override val gradientBannerColor1: Color = Color(color = 0xFFFFD580)
+
+        override val gradientBannerColor2: Color = Color(color = 0xFFF6C592)
+
+        override val gradientBannerColor3: Color = Color(color = 0xFFEBB6A2)
+
+        override val gradientBannerColor4: Color = Color(color = 0xFFDFA5AF)
+
+        override val gradientBannerColor5: Color = Color(color = 0xFFD397BE)
+
+        override val gradientBannerColor6: Color = Color(color = 0xFFC486CB)
+
+        override val gradientBannerColor7: Color = Color(color = 0xFFB578D9)
+
+        override val gradientBannerColor8: Color = Color(color = 0xFFA166E5)
+
+        override val gradientBannerColor9: Color = Color(color = 0xFF8B57F2)
+
+        override val gradientBannerColor10: Color = Color(color = 0xFF704CFF)
+
+        override val gradientTopBarColor1: Color = Color(color = 0xFF50233C)
+
+        override val gradientTopBarColor2: Color = Color(color = 0xFF27103D)
+
+        override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
+
+        override val interactionPurpleNorm: Color = Color(color = 0xFF6D4AFF)
+
+        override val signalSuccess: Color = Color(color = 0xFF4AB89A)
+
+        override val textHint: Color = Color(color = 0xFF88859D)
 
         override val textNorm: Color = Color(color = 0xFFFFFFFF)
+
+        override val textWeak: Color = Color(color = 0xFFBFB9D8)
 
     }
 
     @Immutable
-    data object Light : ThemeColors {
+    data object Light : ThemeColors() {
+
+        override val gradientBackgroundColor1: Color = Color(color = 0xFF27103D)
+
+        override val gradientBackgroundColor2: Color = Color(color = 0xFF230E43)
+
+        override val gradientBackgroundColor3: Color = Color(color = 0xFF311456)
+
+        override val gradientBackgroundColor4: Color = Color(color = 0xFF3E1865)
+
+        override val gradientBannerColor1: Color = Color(color = 0xFFFFD580)
+
+        override val gradientBannerColor2: Color = Color(color = 0xFFF6C592)
+
+        override val gradientBannerColor3: Color = Color(color = 0xFFEBB6A2)
+
+        override val gradientBannerColor4: Color = Color(color = 0xFFDFA5AF)
+
+        override val gradientBannerColor5: Color = Color(color = 0xFFD397BE)
+
+        override val gradientBannerColor6: Color = Color(color = 0xFFC486CB)
+
+        override val gradientBannerColor7: Color = Color(color = 0xFFB578D9)
+
+        override val gradientBannerColor8: Color = Color(color = 0xFFA166E5)
+
+        override val gradientBannerColor9: Color = Color(color = 0xFF8B57F2)
+
+        override val gradientBannerColor10: Color = Color(color = 0xFF704CFF)
+
+        override val gradientTopBarColor1: Color = Color(color = 0xFF50233C)
+
+        override val gradientTopBarColor2: Color = Color(color = 0xFF27103D)
+
+        override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
+
+        override val interactionPurpleNorm: Color = Color(color = 0xFF6D4AFF)
+
+        override val signalSuccess: Color = Color(color = 0xFF4AB89A)
+
+        override val textHint: Color = Color(color = 0xFF88859D)
 
         override val textNorm: Color = Color(color = 0xFF000000)
+
+        override val textWeak: Color = Color(color = 0xFFBFB9D8)
 
     }
 

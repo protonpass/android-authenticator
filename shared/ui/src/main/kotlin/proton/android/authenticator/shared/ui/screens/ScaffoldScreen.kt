@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.shared.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -28,38 +27,32 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.contents.Content
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.Screen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
-@Suppress("MagicNumber")
 abstract class ScaffoldScreen : Screen {
 
+    abstract val topBarContent: Content?
+
     abstract val bodyContents: List<Content>
+
+    abstract val bottomBarContent: Content?
 
     @Composable
     override fun Render() {
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xFF2A0C2B),
-                            Color(0xFF23063F),
-                            Color(0xFF26093F)
-                        ),
-                        startY = -400f
-                    )
-                ),
+                .backgroundScreenGradient(),
             containerColor = Color.Transparent,
             topBar = {
-
+                topBarContent?.Render()
             },
             bottomBar = {
-
+                bottomBarContent?.Render()
             }
         ) { innerPaddingValues ->
             LazyColumn(
@@ -71,7 +64,7 @@ abstract class ScaffoldScreen : Screen {
                 items(bodyContents) { bodyContent ->
                     bodyContent.Render()
 
-                    Spacer(modifier = Modifier.height(height = ThemePadding.Small))
+                    Spacer(modifier = Modifier.height(height = ThemePadding.Medium))
                 }
             }
         }

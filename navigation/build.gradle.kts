@@ -17,6 +17,7 @@ dependencies {
 
     implementation(project(":features:home:detail"))
     implementation(project(":features:home:master"))
+    implementation(project(":features:settings:master"))
     implementation(project(":shared:ui"))
 
     ksp(libs.hilt.compiler)

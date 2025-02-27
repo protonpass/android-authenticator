@@ -18,11 +18,38 @@
 
 package proton.android.authenticator.shared.ui.domain.components.images
 
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.components.Component
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiImage
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal sealed interface ImageComponent : Component {
+
+    data class Icon(
+        private val icon: UiIcon,
+        private val modifier: Modifier = Modifier,
+        private val contentDescription: UiText? = null,
+        private val alignment: Alignment = Alignment.Center
+    ) : ImageComponent by IconImageComponentDelegate(
+        modifier = modifier,
+        icon = icon,
+        contentDescription = contentDescription,
+        alignment = alignment
+    )
+
+    data class Local(
+        private val image: UiImage,
+        private val modifier: Modifier = Modifier,
+        private val contentDescription: UiText? = null,
+        private val alignment: Alignment = Alignment.Center
+    ) : ImageComponent by LocalImageComponentDelegate(
+        modifier = modifier,
+        image = image,
+        contentDescription = contentDescription,
+        alignment = alignment
+    )
 
     data class Network(
         private val url: String,

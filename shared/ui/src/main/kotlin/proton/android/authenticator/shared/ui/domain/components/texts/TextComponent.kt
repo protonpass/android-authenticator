@@ -18,18 +18,28 @@
 
 package proton.android.authenticator.shared.ui.domain.components.texts
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.shared.ui.domain.components.Component
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal sealed interface TextComponent : Component {
 
-    data class Title(
+    data class Standard(
         private val text: UiText,
-        private val modifier: Modifier = Modifier
+        private val color: @Composable () -> Color,
+        private val style: @Composable () -> TextStyle,
+        private val modifier: Modifier = Modifier,
+        private val textAlign: TextAlign? = null
     ) : TextComponent by TextComponentDelegate(
         modifier = modifier,
-        text = text
+        text = text,
+        color = color,
+        style = style,
+        textAlign = textAlign
     )
 
 }

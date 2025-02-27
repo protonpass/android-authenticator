@@ -1,0 +1,50 @@
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="settings_screen_title">Settings</string>
+
+    <string name="settings_security_section">Security</string>
+    <string name="settings_security_title_backup">Backup</string>
+    <string name="settings_security_description_backup">Proton Authenticator will periodically save all the data to Google Cloud.</string>
+    <string name="settings_security_title_sync">Sync between devices</string>
+    <string name="settings_security_title_lock">App lock</string>
+    <string name="settings_security_title_reveal">Tap to reveal codes</string>
+
+    <string name="settings_appearance_section">Appearance</string>
+    <string name="settings_appearance_title_theme">Theme</string>
+    <string name="settings_appearance_title_style">List style</string>
+
+    <string name="settings_data_management_section">Manage your data</string>
+    <string name="settings_data_management_title_import">Import</string>
+    <string name="settings_data_management_title_export">Export</string>
+
+    <string name="settings_support_section">Support</string>
+    <string name="settings_support_title_how_to">How to use Proton Authenticator</string>
+    <string name="settings_support_title_feedback">Feedback</string>
+
+    <string name="settings_discover_section">Discover Proton</string>
+    <string name="settings_discover_title_pass" translatable="false">Proton Pass</string>
+    <string name="settings_discover_title_vpn" translatable="false">Proton VPN</string>
+    <string name="settings_discover_title_mail" translatable="false">Proton Mail</string>
+    <string name="settings_discover_title_drive" translatable="false">Proton Drive</string>
+    <string name="settings_discover_title_calendar" translatable="false">Proton Calendar</string>
+    <string name="settings_discover_title_wallet" translatable="false">Proton Wallet</string>
+
+    <string name="settings_app_version">Version 0.1.0</string>
+</resources>

@@ -23,12 +23,12 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import proton.android.authenticator.shared.ui.domain.components.Component
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class BoxContainerComponentDelegate(
     private val modifier: Modifier,
     private val contentAlignment: Alignment,
-    private val contents: BoxScope.() -> List<Component>
+    private val contents: BoxScope.() -> List<Renderable>
 ) : ContainerComponent {
 
     @Composable
