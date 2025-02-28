@@ -16,31 +16,34 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.components.progress
+package proton.android.authenticator.shared.ui.domain.components.bars
 
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import proton.android.authenticator.shared.ui.domain.components.containers.ContainerComponent
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
-internal class CircularProgressComponentDelegate(
-    private val modifier: Modifier,
-    private val color: @Composable () -> Color,
-    private val trackColor: @Composable () -> Color,
-    private val progress: Float
-) : ProgressComponent {
+internal class BottomSelectableBarComponentDelegate(
+    private val selectedContent: Renderable,
+    private val unselectedContent: Renderable,
+    private val isSelected: Boolean,
+    private val modifier: Modifier
+) : BarComponent {
 
     @Composable
     override fun Render() {
-        CircularProgressIndicator(
+        val content = remember(isSelected) {
+            if (isSelected) selectedContent
+            else unselectedContent
+        }
+
+        ContainerComponent.Box(
             modifier = modifier,
-            color = color(),
-            trackColor = trackColor(),
-            strokeWidth = 4.dp,
-            progress = { progress },
-            gapSize = 0.dp
-        )
+            contents = {
+                listOf(content)
+            }
+        ).Render()
     }
 
 }

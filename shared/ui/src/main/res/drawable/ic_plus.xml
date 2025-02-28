@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M13,3L13,3A1,1 0,0 1,14 4L14,20A1,1 0,0 1,13 21L13,21A1,1 0,0 1,12 20L12,4A1,1 0,0 1,13 3z"
+      android:fillColor="#0C0C14"/>
+  <path
+      android:pathData="M22,12L22,12A1,1 0,0 1,21 13L5,13A1,1 0,0 1,4 12L4,12A1,1 0,0 1,5 11L21,11A1,1 0,0 1,22 12z"
+      android:fillColor="#0C0C14"/>
+</vector>

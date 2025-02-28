@@ -39,29 +39,19 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Stable
-internal fun Modifier.containerSection() = composed {
-    clip(shape = RoundedCornerShape(size = 16.dp))
-        .border(
-            width = ThemeThickness.Small,
-            color = Color.White.copy(alpha = 0.12f),
-            shape = RoundedCornerShape(size = 16.dp)
-        )
-        .background(color = Color.White.copy(alpha = 0.08f))
-}
-
-@Stable
 internal fun Modifier.containerBanner() = composed {
+    val shape = RoundedCornerShape(size = 16.dp)
     var y by remember { mutableFloatStateOf(0f) }
 
     onGloballyPositioned { coordinates ->
         val positionInRoot = coordinates.positionInRoot()
         y = positionInRoot.y + coordinates.size.height
     }
-        .clip(shape = RoundedCornerShape(size = 16.dp))
+        .clip(shape = shape)
         .border(
             width = ThemeThickness.Small,
             color = Color.White.copy(alpha = 0.12f),
-            shape = RoundedCornerShape(size = 16.dp)
+            shape = shape
         )
         .background(
             brush = Brush.radialGradient(
@@ -85,4 +75,36 @@ internal fun Modifier.containerBanner() = composed {
             )
         )
         .background(color = Color.Black.copy(alpha = 0.5f))
+}
+
+@Stable
+internal fun Modifier.containerSection() = composed {
+    val shape = RoundedCornerShape(size = 16.dp)
+
+    clip(shape = shape)
+        .border(
+            width = ThemeThickness.Small,
+            color = Color.White.copy(alpha = 0.12f),
+            shape = shape
+        )
+        .background(color = Color.White.copy(alpha = 0.08f))
+}
+
+@Stable
+internal fun Modifier.containerShadow() = composed {
+    val shape = RoundedCornerShape(size = 8.dp)
+
+    dropShadow(shape = shape)
+        .clip(shape = shape)
+        .border(
+            width = ThemeThickness.None,
+            color = Color.Black.copy(alpha = 0.75f),
+            shape = shape
+        )
+        .background(color = Color.Black.copy(alpha = 0.2f))
+        .innerShadowDouble(
+            shape = shape,
+            offsetX = 2.dp,
+            offsetY = 2.dp
+        )
 }

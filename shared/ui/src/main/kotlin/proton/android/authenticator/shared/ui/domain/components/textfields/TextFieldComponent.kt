@@ -16,35 +16,21 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.components.progress
+package proton.android.authenticator.shared.ui.domain.components.textfields
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.components.Component
 
-internal sealed interface ProgressComponent : Component {
+internal sealed interface TextFieldComponent : Component {
 
-    data class Circular(
-        private val modifier: Modifier = Modifier,
-        private val color: @Composable () -> Color,
-        private val trackColor: @Composable () -> Color,
-        private val progress: Float
-    ) : ProgressComponent by CircularProgressComponentDelegate(
-        modifier = modifier,
-        color = color,
-        trackColor = trackColor,
-        progress = progress
-    )
-
-    data class CircularCounter(
-        private val current: Int,
-        private val total: Int,
+    data class Standard(
+        private val value: String,
+        private val onValueChange: (String) -> Unit,
         private val modifier: Modifier = Modifier
-    ) : ProgressComponent by CircularCounterProgressComponentDelegate(
+    ) : TextFieldComponent by StandardTextFieldComponentDelegate(
         modifier = modifier,
-        current = current,
-        total = total
+        value = value,
+        onValueChange = onValueChange
     )
 
 }

@@ -24,13 +24,17 @@ import proton.android.authenticator.features.home.master.presentation.HomeMaster
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 class HomeMasterScreenRenderer(
-    private val onEntryClick: (entryId: String) -> Unit
+    private val onEntryClick: (entryId: String) -> Unit,
+    private val onSettingsClick: () -> Unit,
+    private val onAddClick: () -> Unit
 ) : Renderable {
 
     @Composable
     override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
         HomeMasterScreen(
-            onEntryClick = onEntryClick
+            onEntryClick = onEntryClick,
+            onSettingsClick = onSettingsClick,
+            onAddClick = onAddClick
         ).Render()
     }
 

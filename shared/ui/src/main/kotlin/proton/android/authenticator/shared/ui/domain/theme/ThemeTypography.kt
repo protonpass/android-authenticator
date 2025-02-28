@@ -31,6 +31,16 @@ import androidx.compose.ui.unit.sp
 internal object ThemeTypography {
 
     @Stable
+    internal val body1Medium: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 15.sp,
+            lineHeight = 22.sp
+        )
+
+    @Stable
     internal val body1Regular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
@@ -71,6 +81,16 @@ internal object ThemeTypography {
         )
 
     @Stable
+    internal val compactMedium: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 12.sp,
+            lineHeight = 18.sp
+        )
+
+    @Stable
     internal val emphasized: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
@@ -100,8 +120,29 @@ internal object ThemeTypography {
             lineHeight = 26.sp
         )
 
+    @Stable
+    internal val monoMedium1: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 26.sp,
+            lineHeight = 26.sp
+        )
+
+    @Stable
+    internal val monoMedium2: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp,
+            lineHeight = 14.sp
+        )
+
 }
 
-internal val ThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> = staticCompositionLocalOf {
-    ThemeTypography
-}
+internal val ThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> =
+    staticCompositionLocalOf {
+        ThemeTypography
+    }

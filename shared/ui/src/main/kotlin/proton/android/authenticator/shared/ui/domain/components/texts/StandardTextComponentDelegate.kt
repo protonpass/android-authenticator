@@ -26,7 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
-internal class TextComponentDelegate(
+internal class StandardTextComponentDelegate(
     private val modifier: Modifier,
     private val text: UiText,
     private val color: @Composable () -> Color,

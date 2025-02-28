@@ -18,13 +18,18 @@
 
 package proton.android.authenticator.features.home.master.ui
 
+import proton.android.authenticator.shared.ui.contents.bars.SearchBottomBarContent
 import proton.android.authenticator.shared.ui.contents.entries.EntryCardContent
 import proton.android.authenticator.shared.ui.domain.contents.Content
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
+import proton.android.authenticator.shared.ui.R as uiR
 
 internal class HomeMasterScreen(
-    private val onEntryClick: (entryId: String) -> Unit
+    onEntryClick: (entryId: String) -> Unit,
+    onSettingsClick: () -> Unit,
+    onAddClick: () -> Unit
 ) : ScaffoldScreen() {
 
     override val topBarContent: Content? = null
@@ -53,6 +58,12 @@ internal class HomeMasterScreen(
         )
     )
 
-    override val bottomBarContent: Content? = null
+    override val bottomBarContent: Content? = SearchBottomBarContent(
+        query = "",
+        leadingIcon = UiIcon.Resource(resId = uiR.drawable.ic_settings),
+        onLeadingIconClick = onSettingsClick,
+        trailingIcon = UiIcon.Resource(resId = uiR.drawable.ic_plus),
+        onTrailingIconClick = onAddClick
+    )
 
 }

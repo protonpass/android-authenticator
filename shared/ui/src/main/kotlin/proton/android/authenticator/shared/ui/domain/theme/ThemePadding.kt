@@ -27,9 +27,18 @@ internal object ThemePadding {
     internal val None = 0.dp
 
     @Stable
+    internal val ExtraSmall = 4.dp
+
+    @Stable
     internal val Small = 8.dp
 
     @Stable
+    internal val MediumSmall = 12.dp
+
+    @Stable
     internal val Medium = 16.dp
+
+    @Stable
+    internal val MediumLarge = 24.dp
 
 }

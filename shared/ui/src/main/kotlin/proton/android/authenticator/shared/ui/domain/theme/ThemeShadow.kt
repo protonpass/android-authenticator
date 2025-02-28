@@ -16,31 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.components.progress
+package proton.android.authenticator.shared.ui.domain.theme
 
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.Stable
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Shadow
 
-internal class CircularProgressComponentDelegate(
-    private val modifier: Modifier,
-    private val color: @Composable () -> Color,
-    private val trackColor: @Composable () -> Color,
-    private val progress: Float
-) : ProgressComponent {
+internal object ThemeShadow {
 
-    @Composable
-    override fun Render() {
-        CircularProgressIndicator(
-            modifier = modifier,
-            color = color(),
-            trackColor = trackColor(),
-            strokeWidth = 4.dp,
-            progress = { progress },
-            gapSize = 0.dp
+    @Stable
+    internal val TextDefault: Shadow
+        @[Composable ReadOnlyComposable]
+        get() = Shadow(
+            color = Color.Black,
+            offset = Offset(x = 2f, y = 2f),
+            blurRadius = 2f
         )
-    }
 
 }

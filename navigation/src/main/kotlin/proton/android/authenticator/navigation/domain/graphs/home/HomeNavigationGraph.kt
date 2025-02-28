@@ -13,11 +13,18 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
         composable<HomeMasterNavigationDestination> {
             HomeMasterScreenRenderer(
                 onEntryClick = { entryId ->
-//                    NavigationCommand.NavigateTo(
-//                        destination = HomeDetailNavigationDestination(
-//                            entryId = entryId
-//                        )
-//                    ).also(onNavigate)
+                    NavigationCommand.NavigateTo(
+                        destination = HomeDetailNavigationDestination(
+                            entryId = entryId
+                        )
+                    ).also(onNavigate)
+                },
+                onSettingsClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsNavigationDestination
+                    ).also(onNavigate)
+                },
+                onAddClick = {
                     NavigationCommand.NavigateTo(
                         destination = SettingsNavigationDestination
                     ).also(onNavigate)

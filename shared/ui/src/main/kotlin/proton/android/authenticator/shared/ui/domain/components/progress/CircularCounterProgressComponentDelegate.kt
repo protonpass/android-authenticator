@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.components.containers.ContainerComponent
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -46,13 +45,14 @@ internal class CircularCounterProgressComponentDelegate(
             contents = {
                 listOf(
                     ProgressComponent.Circular(
-                        color = Color.Green,
+                        color = { Theme.colorScheme.signalSuccess },
+                        trackColor = { Theme.colorScheme.signalSuccess.copy(alpha = 0.2f) },
                         progress = progress
                     ),
                     TextComponent.Standard(
                         text = UiText.Dynamic(value = current.toString()),
                         color = { Theme.colorScheme.textNorm },
-                        style = { Theme.typography.body1Regular }
+                        style = { Theme.typography.compactMedium }
                     )
                 )
             }

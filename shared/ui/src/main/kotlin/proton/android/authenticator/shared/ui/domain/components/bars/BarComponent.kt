@@ -22,8 +22,21 @@ import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.components.Component
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal sealed interface BarComponent : Component {
+
+    data class BottomSelectableBar(
+        private val selectedContent: Renderable,
+        private val unselectedContent: Renderable,
+        private val isSelected: Boolean,
+        private val modifier: Modifier = Modifier
+    ) : BarComponent by BottomSelectableBarComponentDelegate(
+        modifier = modifier,
+        isSelected = isSelected,
+        selectedContent = selectedContent,
+        unselectedContent = unselectedContent
+    )
 
     data class TopCenterAligned(
         private val title: UiText,

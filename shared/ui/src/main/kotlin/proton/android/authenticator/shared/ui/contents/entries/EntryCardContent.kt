@@ -18,8 +18,6 @@
 
 package proton.android.authenticator.shared.ui.contents.entries
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,11 +37,12 @@ import proton.android.authenticator.shared.ui.domain.components.progress.Progres
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
 import proton.android.authenticator.shared.ui.domain.contents.Content
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.modifiers.containerSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
-@Suppress("MagicNumber")
 data class EntryCardContent(
     private val imageUrl: String,
     private val name: UiText,
@@ -60,25 +59,23 @@ data class EntryCardContent(
         ContainerComponent.Vertical(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = RoundedCornerShape(size = 16.dp))
-                .border(
-                    width = 1.dp,
-                    color = Color.Blue,
-                    shape = RoundedCornerShape(size = 16.dp)
-                )
-                .background(color = Color(0x26213E66))
-                .clickable { onClick() }
-                .padding(all = ThemePadding.Medium),
+                .containerSection()
+                .clickable { onClick() },
             contents = {
                 listOf(
                     ContainerComponent.Horizontal(
+                        modifier = Modifier.padding(
+                            start = ThemePadding.Medium,
+                            top = ThemePadding.Medium,
+                            end = ThemePadding.Medium
+                        ),
                         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
                         verticalAlignment = Alignment.CenterVertically,
                         contents = {
                             listOf(
                                 ImageComponent.Network(
                                     modifier = Modifier
-                                        .size(size = 40.dp)
+                                        .size(size = 30.dp)
                                         .clip(shape = RoundedCornerShape(size = 8.dp)),
                                     url = imageUrl
                                 ),
@@ -102,6 +99,7 @@ data class EntryCardContent(
                                     }
                                 ),
                                 ProgressComponent.CircularCounter(
+                                    modifier = Modifier.size(size = 36.dp),
                                     current = remainingSeconds,
                                     total = totalSeconds
                                 )
@@ -111,32 +109,48 @@ data class EntryCardContent(
                     DividerComponent.DoubleHorizontal(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = ThemePadding.Small)
+                            .padding(vertical = ThemePadding.Small),
+                        topColor = Color.Black.copy(alpha = 0.2f),
+                        bottomColor = Color.White.copy(alpha = 0.12f)
                     ),
                     ContainerComponent.Horizontal(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.padding(
+                            start = ThemePadding.Medium,
+                            end = ThemePadding.Medium,
+                            bottom = ThemePadding.Medium
+                        ),
                         verticalAlignment = Alignment.CenterVertically,
                         contents = {
                             listOf(
-                                TextComponent.Standard(
+                                TextComponent.Totp(
                                     modifier = Modifier.weight(weight = 1f, fill = true),
                                     text = currentCode,
                                     color = { Theme.colorScheme.textNorm },
-                                    style = { Theme.typography.body1Regular }
+                                    style = {
+                                        Theme.typography.monoMedium1
+                                            .copy(shadow = ThemeShadow.TextDefault)
+                                    }
                                 ),
                                 ContainerComponent.Vertical(
+                                    verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall),
                                     horizontalAlignment = Alignment.End,
                                     contents = {
                                         listOf(
                                             TextComponent.Standard(
                                                 text = UiText.Dynamic(value = "Next"),
-                                                color = { Theme.colorScheme.textNorm },
-                                                style = { Theme.typography.body1Regular }
+                                                color = { Theme.colorScheme.textWeak },
+                                                style = {
+                                                    Theme.typography.body1Regular
+                                                        .copy(shadow = ThemeShadow.TextDefault)
+                                                }
                                             ),
                                             TextComponent.Standard(
                                                 text = nextCode,
                                                 color = { Theme.colorScheme.textNorm },
-                                                style = { Theme.typography.body1Regular }
+                                                style = {
+                                                    Theme.typography.monoMedium2
+                                                        .copy(shadow = ThemeShadow.TextDefault)
+                                                }
                                             )
                                         )
                                     }

@@ -28,13 +28,25 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal sealed interface TextComponent : Component {
 
+    data class Totp(
+        private val text: UiText,
+        private val color: @Composable () -> Color,
+        private val style: @Composable () -> TextStyle,
+        private val modifier: Modifier = Modifier
+    ) : TextComponent by TotpTextComponentDelegate(
+        modifier = modifier,
+        text = text,
+        color = color,
+        style = style
+    )
+
     data class Standard(
         private val text: UiText,
         private val color: @Composable () -> Color,
         private val style: @Composable () -> TextStyle,
         private val modifier: Modifier = Modifier,
         private val textAlign: TextAlign? = null
-    ) : TextComponent by TextComponentDelegate(
+    ) : TextComponent by StandardTextComponentDelegate(
         modifier = modifier,
         text = text,
         color = color,

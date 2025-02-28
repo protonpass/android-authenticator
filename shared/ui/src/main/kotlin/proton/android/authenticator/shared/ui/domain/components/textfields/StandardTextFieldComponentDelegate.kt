@@ -16,30 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.components.progress
+package proton.android.authenticator.shared.ui.domain.components.textfields
 
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 
-internal class CircularProgressComponentDelegate(
-    private val modifier: Modifier,
-    private val color: @Composable () -> Color,
-    private val trackColor: @Composable () -> Color,
-    private val progress: Float
-) : ProgressComponent {
+internal class StandardTextFieldComponentDelegate(
+    private val value: String,
+    private val onValueChange: (String) -> Unit,
+    private val modifier: Modifier = Modifier
+) : TextFieldComponent {
 
     @Composable
     override fun Render() {
-        CircularProgressIndicator(
+        TextField(
             modifier = modifier,
-            color = color(),
-            trackColor = trackColor(),
-            strokeWidth = 4.dp,
-            progress = { progress },
-            gapSize = 0.dp
+            value = value,
+            onValueChange = onValueChange
         )
     }
 
