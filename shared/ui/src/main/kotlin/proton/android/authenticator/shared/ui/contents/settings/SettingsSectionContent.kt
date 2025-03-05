@@ -47,7 +47,7 @@ data class SettingsSectionContent(
                 listOf(
                     TextComponent.Standard(
                         modifier = Modifier.padding(start = ThemeSpacing.Medium),
-                        text = name.apply { this.mode = UiText.Mode.Uppercase },
+                        text = name,
                         color = { Theme.colorScheme.textWeak },
                         style = { Theme.typography.header }
                     ),

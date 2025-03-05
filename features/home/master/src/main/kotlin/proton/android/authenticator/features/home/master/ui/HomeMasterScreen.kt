@@ -23,6 +23,7 @@ import proton.android.authenticator.shared.ui.contents.entries.EntryCardContent
 import proton.android.authenticator.shared.ui.domain.contents.Content
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.R as uiR
 
@@ -40,7 +41,10 @@ internal class HomeMasterScreen(
             name = UiText.Dynamic(value = "Amazon"),
             label = UiText.Dynamic(value = "amazon@email.com"),
             currentCode = UiText.Dynamic(value = "920827"),
-            nextCode = UiText.Dynamic(value = "821200"),
+            nextCode = UiText.Dynamic(
+                value = "821200",
+                masks = listOf(UiTextMask.Totp)
+            ),
             remainingSeconds = 23,
             totalSeconds = 30,
             onClick = { onEntryClick("Entry 1") }
@@ -51,7 +55,10 @@ internal class HomeMasterScreen(
             name = UiText.Dynamic(value = "Proton"),
             label = UiText.Dynamic(value = "proton@email.com"),
             currentCode = UiText.Dynamic(value = "643118"),
-            nextCode = UiText.Dynamic(value = "779656"),
+            nextCode = UiText.Dynamic(
+                value = "779656",
+                masks = listOf(UiTextMask.Totp)
+            ),
             remainingSeconds = 23,
             totalSeconds = 30,
             onClick = { onEntryClick("Entry 2") }

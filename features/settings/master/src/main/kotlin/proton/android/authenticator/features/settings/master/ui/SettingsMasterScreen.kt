@@ -29,6 +29,7 @@ import proton.android.authenticator.shared.ui.contents.settings.SettingsVersionR
 import proton.android.authenticator.shared.ui.domain.contents.Content
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.R as uiR
 
@@ -51,7 +52,10 @@ internal class SettingsMasterScreen(
             onDismissClick = {}
         ),
         SettingsSectionContent(
-            name = UiText.Resource(resId = R.string.settings_security_section),
+            name = UiText.Resource(
+                resId = R.string.settings_security_section,
+                masks = listOf(UiTextMask.Uppercase)
+            ),
             settingsRows = listOf(
                 SettingsToggleRowContent(
                     title = UiText.Resource(resId = R.string.settings_security_title_backup),
@@ -81,7 +85,10 @@ internal class SettingsMasterScreen(
             )
         ),
         SettingsSectionContent(
-            name = UiText.Resource(resId = R.string.settings_appearance_section),
+            name = UiText.Resource(
+                resId = R.string.settings_appearance_section,
+                masks = listOf(UiTextMask.Uppercase)
+            ),
             settingsRows = listOf(
                 SettingsSelectorRowContent(
                     title = UiText.Resource(resId = R.string.settings_appearance_title_theme),
@@ -103,7 +110,10 @@ internal class SettingsMasterScreen(
             )
         ),
         SettingsSectionContent(
-            name = UiText.Resource(resId = R.string.settings_data_management_section),
+            name = UiText.Resource(
+                resId = R.string.settings_data_management_section,
+                masks = listOf(UiTextMask.Uppercase)
+            ),
             settingsRows = listOf(
                 SettingsSimpleRowContent(
                     title = UiText.Resource(resId = R.string.settings_data_management_title_import)
@@ -114,7 +124,10 @@ internal class SettingsMasterScreen(
             )
         ),
         SettingsSectionContent(
-            name = UiText.Resource(resId = R.string.settings_support_section),
+            name = UiText.Resource(
+                resId = R.string.settings_support_section,
+                masks = listOf(UiTextMask.Uppercase)
+            ),
             settingsRows = listOf(
                 SettingsSimpleRowContent(
                     title = UiText.Resource(resId = R.string.settings_support_title_how_to)
@@ -125,7 +138,10 @@ internal class SettingsMasterScreen(
             )
         ),
         SettingsSectionContent(
-            name = UiText.Resource(resId = R.string.settings_discover_section),
+            name = UiText.Resource(
+                resId = R.string.settings_discover_section,
+                masks = listOf(UiTextMask.Uppercase)
+            ),
             settingsRows = listOf(
                 SettingsSimpleRowContent(
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_pass),

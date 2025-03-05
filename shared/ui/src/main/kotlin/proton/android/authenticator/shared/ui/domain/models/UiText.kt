@@ -22,52 +22,40 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
-import proton.android.authenticator.shared.ui.domain.models.UiText.Mode
 
 sealed class UiText {
-
-    internal enum class Mode {
-        Default,
-        Lowercase,
-        Uppercase
-    }
-
-    internal abstract var mode: Mode
 
     @Composable
     internal abstract fun asString(): String
 
     @Stable
     class Dynamic(
-        private val value: String
+        private val value: String,
+        private val masks: List<UiTextMask> = emptyList()
     ) : UiText() {
 
-        override var mode: Mode = Mode.Default
-
         @Composable
-        override fun asString(): String = value.applyMode(mode)
+        override fun asString(): String = value.applyMasks(masks)
 
     }
 
     @Stable
     class Resource(
         @StringRes private val resId: Int,
-        private vararg val args: Any = emptyArray()
+        private vararg val args: Any = emptyArray(),
+        private val masks: List<UiTextMask> = emptyList()
     ) : UiText() {
 
 
-        override var mode: Mode = Mode.Default
-
         @Composable
         override fun asString(): String = stringResource(id = resId, formatArgs = args)
-            .applyMode(mode)
+            .applyMasks(masks)
 
     }
 
 }
 
-private fun String.applyMode(mode: Mode): String = when (mode) {
-    Mode.Default -> this
-    Mode.Lowercase -> lowercase()
-    Mode.Uppercase -> uppercase()
-}
+private fun String.applyMasks(masks: List<UiTextMask>): String = masks
+    .fold(this) { currentText, mask ->
+        mask.apply(currentText)
+    }
