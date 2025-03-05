@@ -18,43 +18,31 @@
 
 package proton.android.authenticator.shared.ui.domain.components.bars
 
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import proton.android.authenticator.shared.ui.domain.components.buttons.ButtonComponent
+import proton.android.authenticator.shared.ui.domain.components.Component
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
-import proton.android.authenticator.shared.ui.domain.models.UiIcon
-import proton.android.authenticator.shared.ui.domain.models.UiText
-import proton.android.authenticator.shared.ui.domain.theme.Theme
 
-internal class TopCenterAlignedBarComponent(
+internal class TopAppBarComponentDelegate(
     private val modifier: Modifier,
-    private val title: UiText,
-    private val navigationIcon: UiIcon? = null,
-    private val onNavigationClick: () -> Unit = {}
+    private val title: TextComponent,
+    private val actions: List<Component>
 ) : BarComponent {
 
     @[Composable OptIn(ExperimentalMaterial3Api::class)]
     override fun Render() {
-        CenterAlignedTopAppBar(
+        TopAppBar(
             modifier = modifier,
             title = {
-                TextComponent.Standard(
-                    text = title,
-                    color = { Theme.colorScheme.textNorm },
-                    style = { Theme.typography.emphasized }
-                ).Render()
+                title.Render()
             },
-            navigationIcon = {
-                navigationIcon?.let { icon ->
-                    ButtonComponent.Icon(
-                        icon = icon,
-                        tint = { Theme.colorScheme.interactionPurple },
-                        onClick = onNavigationClick
-                    ).Render()
+            actions = {
+                actions.forEach { action ->
+                    action.Render()
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors().copy(

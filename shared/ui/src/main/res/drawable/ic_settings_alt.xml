@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportWidth="20"
+    android:viewportHeight="20">
+    <group>
+        <clip-path android:pathData="M0,0h20v20H0z" />
+        <path
+            android:fillColor="#0C0C14"
+            android:fillType="evenOdd"
+            android:pathData="M7.533,1.347c-0.031,0.159 -0.031,0.349 -0.031,0.729 0,0.615 0,0.923 -0.055,1.131a1.667,1.667 0,0 1,-2.051 1.185c-0.208,-0.057 -0.474,-0.21 -1.007,-0.518 -0.329,-0.19 -0.493,-0.285 -0.645,-0.338a1.667,1.667 0,0 0,-1.8 0.483c-0.105,0.12 -0.2,0.285 -0.39,0.614l-0.425,0.736c-0.19,0.329 -0.284,0.493 -0.337,0.645 -0.22,0.642 -0.03,1.354 0.482,1.8 0.122,0.105 0.286,0.2 0.615,0.39 0.533,0.307 0.8,0.461 0.952,0.612a1.667,1.667 0,0 1,0 2.37c-0.153,0.15 -0.42,0.305 -0.952,0.612 -0.329,0.19 -0.493,0.285 -0.615,0.39a1.667,1.667 0,0 0,-0.482 1.8c0.052,0.152 0.147,0.316 0.337,0.645l0.425,0.736c0.19,0.329 0.285,0.493 0.39,0.614a1.666,1.666 0,0 0,1.8 0.482c0.152,-0.052 0.316,-0.147 0.645,-0.337 0.533,-0.307 0.8,-0.461 1.006,-0.518a1.667,1.667 0,0 1,2.052 1.185c0.055,0.208 0.055,0.515 0.055,1.13 0,0.38 0,0.57 0.03,0.727 0.13,0.666 0.652,1.187 1.318,1.317 0.158,0.031 0.347,0.031 0.727,0.031h0.85c0.38,0 0.57,0 0.727,-0.03a1.667,1.667 0,0 0,1.317 -1.318c0.03,-0.158 0.03,-0.348 0.03,-0.727 0,-0.615 0,-0.922 0.056,-1.13a1.667,1.667 0,0 1,2.051 -1.185c0.208,0.057 0.474,0.21 1.007,0.518 0.329,0.19 0.493,0.285 0.646,0.337 0.641,0.221 1.353,0.03 1.798,-0.482 0.106,-0.12 0.201,-0.285 0.39,-0.614h0.001l0.425,-0.736c0.19,-0.329 0.284,-0.493 0.337,-0.645 0.22,-0.642 0.03,-1.354 -0.482,-1.8 -0.122,-0.105 -0.286,-0.2 -0.615,-0.39 -0.533,-0.307 -0.8,-0.461 -0.952,-0.613a1.667,1.667 0,0 1,0 -2.369c0.153,-0.15 0.419,-0.305 0.952,-0.612 0.329,-0.19 0.493,-0.285 0.615,-0.39a1.667,1.667 0,0 0,0.482 -1.8c-0.053,-0.152 -0.148,-0.316 -0.337,-0.645l-0.425,-0.736c-0.19,-0.329 -0.285,-0.493 -0.39,-0.614a1.667,1.667 0,0 0,-1.8 -0.483c-0.152,0.053 -0.316,0.148 -0.645,0.338 -0.533,0.307 -0.8,0.461 -1.007,0.518a1.667,1.667 0,0 1,-2.052 -1.185c-0.054,-0.208 -0.054,-0.516 -0.054,-1.131 0,-0.38 0,-0.57 -0.03,-0.729A1.667,1.667 0,0 0,11.154 0.031C10.995,0 10.806,0 10.426,0h-0.848c-0.38,0 -0.57,0 -0.729,0.03 -0.666,0.13 -1.186,0.651 -1.316,1.317ZM10,14a4,4 0,1 0,0 -8,4 4,0 0,0 0,8Z"
+            tools:ignore="VectorPath" />
+    </group>
+</vector>

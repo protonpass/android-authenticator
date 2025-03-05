@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.master.ui
 
+import proton.android.authenticator.shared.ui.contents.bars.AppTopBarContent
 import proton.android.authenticator.shared.ui.contents.bars.SearchBottomBarContent
 import proton.android.authenticator.shared.ui.contents.entries.EntryCardContent
 import proton.android.authenticator.shared.ui.domain.contents.Content
@@ -33,7 +34,10 @@ internal class HomeMasterScreen(
     onAddClick: () -> Unit
 ) : ScaffoldScreen() {
 
-    override val topBarContent: Content? = null
+    override val topBarContent: Content? = AppTopBarContent(
+        title = UiText.Dynamic("Authenticator"),
+        onActionClick = onSettingsClick
+    )
 
     override val bodyContents: List<Content> = listOf(
         EntryCardContent(

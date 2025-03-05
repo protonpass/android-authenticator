@@ -140,6 +140,16 @@ internal object ThemeTypography {
             lineHeight = 14.sp
         )
 
+    @Stable
+    internal val title: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 32.sp,
+            lineHeight = 38.sp
+        )
+
 }
 
 internal val ThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> =
