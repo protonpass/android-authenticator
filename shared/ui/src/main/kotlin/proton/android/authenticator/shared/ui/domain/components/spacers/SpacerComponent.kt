@@ -16,8 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.shared.ui.domain.components.spacers
 
-internal data class HomeMasterState(
-    internal val entries: List<HomeMasterEntryModel>
-)
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.components.Component
+
+internal data class SpacerComponent(private val modifier: Modifier) : Component {
+
+    @Composable
+    override fun Render() {
+        Spacer(modifier = modifier)
+    }
+
+}

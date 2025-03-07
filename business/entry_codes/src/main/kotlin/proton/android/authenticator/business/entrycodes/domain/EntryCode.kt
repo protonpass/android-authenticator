@@ -16,8 +16,26 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.business.entrycodes.domain
 
-internal data class HomeMasterState(
-    internal val entries: List<HomeMasterEntryModel>
-)
+internal class EntryCode private constructor(
+    val currentCode: String,
+    val nextCode: String,
+    val remainingSeconds: Int
+) {
+
+    internal companion object {
+
+        internal fun fromPrimitives(
+            currentCode: String,
+            nextCode: String,
+            remainingSeconds: Int
+        ): EntryCode = EntryCode(
+            currentCode = currentCode,
+            nextCode = nextCode,
+            remainingSeconds = remainingSeconds
+        )
+
+    }
+
+}

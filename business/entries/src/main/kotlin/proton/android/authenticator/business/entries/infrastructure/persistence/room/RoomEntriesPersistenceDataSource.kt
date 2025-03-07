@@ -39,22 +39,25 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
 
     override fun observeAll(): Flow<List<Entry>> = entriesDao.observeAll()
         .map { entryEntities ->
-            entryEntities.map { entryEntity ->
-                encryptionContextProvider.withEncryptionContext {
+            encryptionContextProvider.withEncryptionContext {
+                entryEntities.map { entryEntity ->
                     decrypt(entryEntity.content, EncryptionTag.EntryContent)
-                }.let { decryptedEntityContent ->
-                    authenticatorClient.deserializeEntries(listOf(decryptedEntityContent)).first()
-                }.let { entryModel ->
-                    Entry.fromPrimitives(
-                        id = entryEntity.id,
-                        name = entryModel.name,
-                        uri = entryModel.uri,
-                        period = entryModel.period,
-                        note = entryModel.note,
-                        type = entryModel.entryType.ordinal,
-                        createdAt = entryEntity.createdAt,
-                        modifiedAt = entryEntity.modifiedAt
-                    )
+                        .let { decryptedEntityContent ->
+                            authenticatorClient.deserializeEntries(listOf(decryptedEntityContent))
+                                .first()
+                        }
+                        .let { entryModel ->
+                            Entry.fromPrimitives(
+                                id = entryEntity.id,
+                                name = entryModel.name,
+                                uri = entryModel.uri,
+                                period = entryModel.period,
+                                note = entryModel.note,
+                                type = entryModel.entryType.ordinal,
+                                createdAt = entryEntity.createdAt,
+                                modifiedAt = entryEntity.modifiedAt
+                            )
+                        }
                 }
             }
         }

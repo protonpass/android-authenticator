@@ -44,6 +44,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SearchBottomBarContent(
+    override val id: String,
     private val query: String,
     private val leadingIcon: UiIcon? = null,
     private val onLeadingIconClick: () -> Unit = {},

@@ -26,7 +26,10 @@ import proton.android.authenticator.shared.ui.domain.components.texts.TextCompon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
-data class SettingsVersionRowContent(private val text: UiText) : SettingsRowContent {
+data class SettingsVersionRowContent(
+    override val id: String,
+    private val text: UiText
+) : SettingsRowContent {
 
     @Composable
     override fun Render() {

@@ -16,8 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.business.entrycodes.application.shared.responses
 
-internal data class HomeMasterState(
-    internal val entries: List<HomeMasterEntryModel>
+import proton.android.authenticator.business.entrycodes.domain.EntryCode
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryResponse
+
+data class EntryCodeQueryResponse(
+    val currentCode: String,
+    val nextCode: String,
+    val remainingSeconds: Int
+) : QueryResponse
+
+internal fun EntryCode.toQueryResponse(): EntryCodeQueryResponse = EntryCodeQueryResponse(
+    currentCode = currentCode,
+    nextCode = nextCode,
+    remainingSeconds = remainingSeconds
 )

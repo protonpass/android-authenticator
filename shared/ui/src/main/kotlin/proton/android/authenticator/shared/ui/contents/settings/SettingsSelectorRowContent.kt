@@ -35,6 +35,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SettingsSelectorRowContent(
+    override val id: String,
     private val title: UiText,
     private val selectedOption: UiText,
     private val options: List<UiText>,

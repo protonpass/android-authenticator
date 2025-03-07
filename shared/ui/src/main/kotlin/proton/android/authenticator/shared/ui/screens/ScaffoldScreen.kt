@@ -61,7 +61,10 @@ abstract class ScaffoldScreen : Screen {
                     .padding(all = ThemePadding.Medium),
                 contentPadding = innerPaddingValues
             ) {
-                items(bodyContents) { bodyContent ->
+                items(
+                    items = bodyContents,
+                    key = { bodyContent -> bodyContent.id }
+                ) { bodyContent ->
                     bodyContent.Render()
 
                     Spacer(modifier = Modifier.height(height = ThemePadding.Medium))

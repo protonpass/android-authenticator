@@ -38,6 +38,7 @@ internal class SettingsMasterScreen(
 ) : ScaffoldScreen() {
 
     override val topBarContent: Content = CenterAlignedTopBarContent(
+        id = "",
         title = UiText.Resource(resId = R.string.settings_screen_title),
         navigationIcon = UiIcon.Resource(resId = uiR.drawable.ic_arrow_left),
         onNavigationClick = onNavigationClick
@@ -45,6 +46,7 @@ internal class SettingsMasterScreen(
 
     override val bodyContents: List<Content> = listOf(
         PromoBannerContent(
+            id = "",
             title = UiText.Dynamic("Proton Pass"),
             description = UiText.Dynamic("Free password manager with identity protection."),
             actionText = UiText.Dynamic("Get Proton Pass"),
@@ -52,23 +54,27 @@ internal class SettingsMasterScreen(
             onDismissClick = {}
         ),
         SettingsSectionContent(
+            id = "",
             name = UiText.Resource(
                 resId = R.string.settings_security_section,
                 masks = listOf(UiTextMask.Uppercase)
             ),
             settingsRows = listOf(
                 SettingsToggleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_security_title_backup),
                     description = UiText.Resource(resId = R.string.settings_security_description_backup),
                     isChecked = true,
                     onCheckedChange = {}
                 ),
                 SettingsToggleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_security_title_sync),
                     isChecked = false,
                     onCheckedChange = {}
                 ),
                 SettingsSelectorRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_security_title_lock),
                     selectedOption = UiText.Dynamic("Biometric"),
                     options = listOf(
@@ -78,6 +84,7 @@ internal class SettingsMasterScreen(
                     )
                 ),
                 SettingsToggleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_security_title_reveal),
                     isChecked = true,
                     onCheckedChange = {}
@@ -85,12 +92,14 @@ internal class SettingsMasterScreen(
             )
         ),
         SettingsSectionContent(
+            id = "",
             name = UiText.Resource(
                 resId = R.string.settings_appearance_section,
                 masks = listOf(UiTextMask.Uppercase)
             ),
             settingsRows = listOf(
                 SettingsSelectorRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_appearance_title_theme),
                     selectedOption = UiText.Dynamic("Dark"),
                     options = listOf(
@@ -100,6 +109,7 @@ internal class SettingsMasterScreen(
                     )
                 ),
                 SettingsSelectorRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_appearance_title_style),
                     selectedOption = UiText.Dynamic("Expanded"),
                     options = listOf(
@@ -110,66 +120,80 @@ internal class SettingsMasterScreen(
             )
         ),
         SettingsSectionContent(
+            id = "",
             name = UiText.Resource(
                 resId = R.string.settings_data_management_section,
                 masks = listOf(UiTextMask.Uppercase)
             ),
             settingsRows = listOf(
                 SettingsSimpleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_data_management_title_import)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_data_management_title_export)
                 )
             )
         ),
         SettingsSectionContent(
+            id = "",
             name = UiText.Resource(
                 resId = R.string.settings_support_section,
                 masks = listOf(UiTextMask.Uppercase)
             ),
             settingsRows = listOf(
                 SettingsSimpleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_support_title_how_to)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     title = UiText.Resource(resId = R.string.settings_support_title_feedback)
                 )
             )
         ),
         SettingsSectionContent(
+            id = "",
             name = UiText.Resource(
                 resId = R.string.settings_discover_section,
                 masks = listOf(UiTextMask.Uppercase)
             ),
             settingsRows = listOf(
                 SettingsSimpleRowContent(
+                    id = "",
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_pass),
                     title = UiText.Resource(resId = R.string.settings_discover_title_pass)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_vpn),
                     title = UiText.Resource(resId = R.string.settings_discover_title_vpn)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_mail),
                     title = UiText.Resource(resId = R.string.settings_discover_title_mail)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_drive),
                     title = UiText.Resource(resId = R.string.settings_discover_title_drive)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_calendar),
                     title = UiText.Resource(resId = R.string.settings_discover_title_calendar)
                 ),
                 SettingsSimpleRowContent(
+                    id = "",
                     icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_wallet),
                     title = UiText.Resource(resId = R.string.settings_discover_title_wallet)
                 )
             )
         ),
         SettingsVersionRowContent(
+            id = "",
             text = UiText.Resource(resId = R.string.settings_app_version)
         )
     )

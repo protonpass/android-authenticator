@@ -28,6 +28,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 
 data class CenterAlignedTopBarContent(
+    override val id: String,
     private val title: UiText,
     private val navigationIcon: UiIcon? = null,
     private val onNavigationClick: () -> Unit = {}

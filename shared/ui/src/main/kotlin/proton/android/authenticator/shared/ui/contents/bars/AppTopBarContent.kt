@@ -44,6 +44,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 data class AppTopBarContent(
+    override val id: String,
     private val title: UiText,
     private val onActionClick: () -> Unit
 ) : Content {

@@ -31,7 +31,7 @@ internal class CreateEntryCommandHandler @Inject constructor(
 ) : CommandHandler<CreateEntryCommand> {
 
     override suspend fun handle(command: CreateEntryCommand) {
-        authenticatorClient.entryFromUri(command.uri)
+        authenticatorClient.entryFromUri(uri = command.uri)
             .let { entryModel ->
                 Entry.create(
                     name = entryModel.name,

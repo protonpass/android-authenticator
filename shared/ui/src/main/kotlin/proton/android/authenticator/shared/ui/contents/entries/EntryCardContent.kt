@@ -44,6 +44,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class EntryCardContent(
+    override val id: String,
     private val imageUrl: String,
     private val name: UiText,
     private val label: UiText,

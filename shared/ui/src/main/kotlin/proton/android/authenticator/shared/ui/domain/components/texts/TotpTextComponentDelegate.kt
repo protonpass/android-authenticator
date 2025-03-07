@@ -19,15 +19,14 @@
 package proton.android.authenticator.shared.ui.domain.components.texts
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import proton.android.authenticator.shared.ui.domain.components.containers.ContainerComponent
+import proton.android.authenticator.shared.ui.domain.components.spacers.SpacerComponent
 import proton.android.authenticator.shared.ui.domain.models.UiText
-import proton.android.authenticator.shared.ui.domain.modifiers.containerShadow
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 internal class TotpTextComponentDelegate(
@@ -47,22 +46,17 @@ internal class TotpTextComponentDelegate(
             contents = {
                 buildList {
                     totp.map { digit ->
-                        ContainerComponent.Box(
-                            modifier = Modifier.containerShadow(),
-                            contents = {
-                                listOf(
-                                    TextComponent.Standard(
-                                        modifier = Modifier.padding(
-                                            horizontal = ThemePadding.MediumSmall.div(2),
-                                            vertical = ThemePadding.ExtraSmall
-                                        ),
-                                        text = UiText.Dynamic(value = digit.toString()),
-                                        color = { color() },
-                                        style = { style() }
-                                    )
-                                )
-                            }
-                        ).also(::add)
+                        if (digit.isDigit()) {
+                            TextComponent.Standard(
+                                text = UiText.Dynamic(value = digit.toString()),
+                                color = { color() },
+                                style = { style() }
+                            )
+                        } else {
+                            SpacerComponent(
+                                modifier = Modifier.width(width = ThemeSpacing.ExtraSmall)
+                            )
+                        }.also(::add)
                     }
                 }
 

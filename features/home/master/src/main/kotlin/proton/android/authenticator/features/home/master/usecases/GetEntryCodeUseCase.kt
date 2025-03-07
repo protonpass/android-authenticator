@@ -16,8 +16,17 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.features.home.master.usecases
 
-internal data class HomeMasterState(
-    internal val entries: List<HomeMasterEntryModel>
-)
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.entrycodes.application.find.FindEntryCodeQuery
+import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import javax.inject.Inject
+
+internal class GetEntryCodeUseCase @Inject constructor(private val queryBus: QueryBus) {
+
+    internal operator fun invoke(uri: String): Flow<EntryCodeQueryResponse> = FindEntryCodeQuery(uri)
+        .let { query -> queryBus.ask<EntryCodeQueryResponse>(query) }
+
+}

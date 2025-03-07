@@ -126,8 +126,7 @@ internal object ThemeTypography {
         get() = TextStyle(
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 24.sp,
-            lineHeight = 24.sp
+            fontSize = 28.sp
         )
 
     @Stable

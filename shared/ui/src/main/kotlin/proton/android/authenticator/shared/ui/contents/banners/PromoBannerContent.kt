@@ -46,6 +46,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 data class PromoBannerContent(
+    override val id: String,
     private val title: UiText,
     private val description: UiText,
     private val actionText: UiText,

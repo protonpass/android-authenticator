@@ -34,6 +34,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import kotlin.collections.buildList
 
 data class SettingsToggleRowContent(
+    override val id: String,
     private val title: UiText,
     private val isChecked: Boolean,
     private val onCheckedChange: (Boolean) -> Unit,

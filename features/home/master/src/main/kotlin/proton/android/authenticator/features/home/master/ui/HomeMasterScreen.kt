@@ -37,46 +37,37 @@ internal class HomeMasterScreen(
 ) : ScaffoldScreen() {
 
     override val topBarContent: Content? = AppTopBarContent(
+        id = "TopBar",
         title = UiText.Dynamic("Authenticator"),
         onActionClick = onSettingsClick
     )
 
-    override val bodyContents: List<Content> = listOf(
+    override val bodyContents: List<Content> = state.entries.map { entry ->
         EntryCardContent(
+            id = entry.id.toString(),
             imageUrl = "https://www.amazon.com/favicon.ico",
-            name = UiText.Dynamic(value = "Amazon"),
+            name = UiText.Dynamic(value = entry.name),
             label = UiText.Dynamic(value = "amazon@email.com"),
-            currentCode = UiText.Dynamic(value = "920827"),
-            nextCode = UiText.Dynamic(
-                value = "821200",
+            currentCode = UiText.Dynamic(
+                value = entry.currentCode,
                 masks = listOf(UiTextMask.Totp)
             ),
-            remainingSeconds = 23,
-            totalSeconds = 30,
+            nextCode = UiText.Dynamic(
+                value = entry.nextCode,
+                masks = listOf(UiTextMask.Totp)
+            ),
+            remainingSeconds = entry.remainingSeconds,
+            totalSeconds = entry.totalSeconds,
             onClick = { onEntryClick("Entry 1") }
-
-        ),
-        EntryCardContent(
-            imageUrl = "https://proton.me/favicon.ico",
-            name = UiText.Dynamic(value = "Proton"),
-            label = UiText.Dynamic(value = "proton@email.com"),
-            currentCode = UiText.Dynamic(value = "643118"),
-            nextCode = UiText.Dynamic(
-                value = "779656",
-                masks = listOf(UiTextMask.Totp)
-            ),
-            remainingSeconds = 23,
-            totalSeconds = 30,
-            onClick = { onEntryClick("Entry 2") }
         )
-    )
+    }
 
     override val bottomBarContent: Content? = SearchBottomBarContent(
+        id = "SearchBar",
         query = "",
         leadingIcon = UiIcon.Resource(resId = uiR.drawable.ic_settings),
         onLeadingIconClick = onSettingsClick,
         trailingIcon = UiIcon.Resource(resId = uiR.drawable.ic_plus),
         onTrailingIconClick = onAddClick
     )
-
 }
