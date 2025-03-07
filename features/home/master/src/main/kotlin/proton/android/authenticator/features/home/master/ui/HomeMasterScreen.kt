@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.master.ui
 
+import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.contents.bars.AppTopBarContent
 import proton.android.authenticator.shared.ui.contents.bars.SearchBottomBarContent
 import proton.android.authenticator.shared.ui.contents.entries.EntryCardContent
@@ -29,6 +30,7 @@ import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.R as uiR
 
 internal class HomeMasterScreen(
+    state: HomeMasterState,
     onEntryClick: (entryId: String) -> Unit,
     onSettingsClick: () -> Unit,
     onAddClick: () -> Unit

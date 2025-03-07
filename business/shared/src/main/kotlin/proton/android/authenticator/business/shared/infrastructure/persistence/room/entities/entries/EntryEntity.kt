@@ -1,0 +1,68 @@
+/*
+ * Copyright (c) 2025 Proton AG
+ * This file is part of Proton AG and Proton Authenticator.
+ *
+ * Proton Authenticator is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Authenticator is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
+
+@Entity(
+    tableName = EntryEntity.TABLE,
+    indices = [
+        Index(value = [EntryEntity.Columns.TYPE]),
+        Index(value = [EntryEntity.Columns.CREATED_AT]),
+        Index(value = [EntryEntity.Columns.MODIFIED_AT]),
+        Index(value = [EntryEntity.Columns.TYPE, EntryEntity.Columns.CREATED_AT])
+    ]
+)
+data class EntryEntity(
+    @[ColumnInfo(name = Columns.ID) PrimaryKey(autoGenerate = true)] val id: Int = 0,
+    @ColumnInfo(name = Columns.ENCRYPTED_CONTENT)
+    val content: EncryptedByteArray,
+    @ColumnInfo(name = Columns.TYPE)
+    val type: Int,
+    @ColumnInfo(name = Columns.CREATED_AT)
+    val createdAt: Long,
+    @ColumnInfo(name = Columns.MODIFIED_AT)
+    val modifiedAt: Long
+) {
+
+    internal object Columns {
+
+        internal const val ID = "id"
+
+        internal const val ENCRYPTED_CONTENT = "encrypted_content"
+
+        internal const val TYPE = "type"
+
+        internal const val CREATED_AT = "created_at"
+
+        internal const val MODIFIED_AT = "modified_at"
+
+    }
+
+    internal companion object {
+
+        internal const val TABLE = "EntryEntity"
+
+    }
+
+}

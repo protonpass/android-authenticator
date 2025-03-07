@@ -21,6 +21,10 @@ gradlePlugin {
             implementationClass = "proton.android.authenticator.platform.buildlogic.plugins.AndroidLibraryConventionPlugin"
         }
 
+        register("library-business") {
+            id = "proton.android.authenticator.plugins.libraries.business"
+            implementationClass = "proton.android.authenticator.platform.buildlogic.plugins.BusinessLibraryConventionPlugin"
+        }
 
         register("library-feature") {
             id = "proton.android.authenticator.plugins.libraries.feature"

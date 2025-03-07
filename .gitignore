@@ -24,6 +24,9 @@ config
 
 /libs
 
+# Business module
+business/*/build
+
 # Features module
 features/*/*/build
 

@@ -20,6 +20,7 @@ package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
@@ -31,7 +32,10 @@ class HomeMasterScreenRenderer(
 
     @Composable
     override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
+        val state = stateFlow.collectAsStateWithLifecycle()
+
         HomeMasterScreen(
+            state = state.value,
             onEntryClick = onEntryClick,
             onSettingsClick = onSettingsClick,
             onAddClick = onAddClick

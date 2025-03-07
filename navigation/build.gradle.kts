@@ -2,6 +2,7 @@ plugins {
     id("proton.android.authenticator.plugins.libraries.android")
 
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
 }

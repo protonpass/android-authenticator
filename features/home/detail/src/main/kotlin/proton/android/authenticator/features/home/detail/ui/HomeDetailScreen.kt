@@ -26,9 +26,7 @@ internal class HomeDetailScreen(private val state: HomeDetailState) : ScaffoldSc
 
     override val topBarContent: Content? = null
 
-    override val bodyContents: List<Content> = emptyList<Content>().also {
-        println("JIBIRI: EntryId: ${state.entryId}")
-    }
+    override val bodyContents: List<Content> = emptyList<Content>()
 
     override val bottomBarContent: Content? = null
 

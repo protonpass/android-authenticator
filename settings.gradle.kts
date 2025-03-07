@@ -45,8 +45,12 @@ dependencyResolutionManagement {
 rootProject.name = "ProtonAuthenticator"
 
 include(":app")
+include(":business:entries")
+include(":business:shared")
 include(":features:home:detail")
 include(":features:home:master")
 include(":features:settings:master")
 include(":navigation")
+include(":shared:common")
+include(":shared:crypto")
 include(":shared:ui")

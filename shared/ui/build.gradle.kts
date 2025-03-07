@@ -1,5 +1,7 @@
 plugins {
     id("proton.android.authenticator.plugins.libraries.android")
+
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {

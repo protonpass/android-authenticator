@@ -18,9 +18,46 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.cash.molecule.RecompositionMode
+import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import proton.android.authenticator.features.home.master.usecases.CreateEntryUseCase
+import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class HomeMasterViewModel @Inject constructor() : ViewModel()
+internal class HomeMasterViewModel @Inject constructor(
+    private val createEntryUseCase: CreateEntryUseCase,
+    private val observeEntriesUseCase: ObserveEntriesUseCase
+) : ViewModel() {
+
+    init {
+
+        try {
+            throw IllegalStateException("JIBIRI")
+        } finally {
+            println("JIBIRI: clear!")
+        }
+
+        viewModelScope.launch {
+            createEntryUseCase(uri = "otpauth://totp/Example:alice@google.com?secret=JBSWY3DPEHPK3PXP&issuer=Example")
+        }
+    }
+
+    internal val stateFlow: StateFlow<HomeMasterState> = viewModelScope.launchMolecule(
+        mode = RecompositionMode.Immediate
+    ) {
+        val entries by observeEntriesUseCase().collectAsState(initial = emptyList())
+
+        println("JIBIRI: entries: $entries")
+
+        HomeMasterState
+    }
+
+}
