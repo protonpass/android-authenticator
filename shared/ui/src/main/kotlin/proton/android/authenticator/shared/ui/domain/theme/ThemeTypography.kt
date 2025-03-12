@@ -140,6 +140,26 @@ internal object ThemeTypography {
         )
 
     @Stable
+    internal val monoNorm1: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.Normal,
+            fontSize = 18.sp,
+            lineHeight = 18.sp
+        )
+
+    @Stable
+    internal val monoNorm2: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            lineHeight = 18.sp
+        )
+
+    @Stable
     internal val title: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(

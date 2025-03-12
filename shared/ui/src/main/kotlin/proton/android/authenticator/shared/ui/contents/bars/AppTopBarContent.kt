@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.bars.BarComponent
+import proton.android.authenticator.shared.ui.domain.components.containers.ContainerComponent
 import proton.android.authenticator.shared.ui.domain.components.icons.IconComponent
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
 import proton.android.authenticator.shared.ui.domain.contents.Content
@@ -54,7 +55,6 @@ data class AppTopBarContent(
         BarComponent.TopApp(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = ThemePadding.Medium)
                 .backgroundTopBarGradient(),
             title = TextComponent.Standard(
                 text = title,
@@ -62,31 +62,38 @@ data class AppTopBarContent(
                 style = { Theme.typography.title }
             ),
             actions = listOf(
-                IconComponent.Descriptive(
-                    modifier = Modifier
-                        .dropShadow(
-                            shape = CircleShape,
-                            color = Color.Black.copy(alpha = 0.2f),
-                            blur = 4.dp,
-                            offsetX = 0.dp,
-                            offsetY = 2.dp
-                        )
-                        .clip(shape = CircleShape)
-                        .border(
-                            shape = CircleShape,
-                            width = ThemeThickness.Small,
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.White.copy(alpha = 0.2f),
-                                    Color.White.copy(alpha = 0.01f)
-                                )
+                ContainerComponent.Box(
+                    modifier = Modifier.padding(end = ThemePadding.MediumSmall),
+                    contents = {
+                        listOf(
+                            IconComponent.Descriptive(
+                                modifier = Modifier
+                                    .dropShadow(
+                                        shape = CircleShape,
+                                        color = Color.Black.copy(alpha = 0.2f),
+                                        blur = 4.dp,
+                                        offsetX = 0.dp,
+                                        offsetY = 2.dp
+                                    )
+                                    .clip(shape = CircleShape)
+                                    .border(
+                                        shape = CircleShape,
+                                        width = ThemeThickness.Small,
+                                        brush = Brush.verticalGradient(
+                                            colors = listOf(
+                                                Color.White.copy(alpha = 0.2f),
+                                                Color.White.copy(alpha = 0.01f)
+                                            )
+                                        )
+                                    )
+                                    .background(color = Color.White.copy(alpha = 0.12f))
+                                    .clickable { onActionClick() }
+                                    .padding(all = ThemePadding.Small),
+                                icon = UiIcon.Resource(resId = R.drawable.ic_settings_alt),
+                                tint = { Theme.colorScheme.textNorm }
                             )
                         )
-                        .background(color = Color.White.copy(alpha = 0.12f))
-                        .clickable { onActionClick() }
-                        .padding(all = ThemePadding.Small),
-                    icon = UiIcon.Resource(resId = R.drawable.ic_settings_alt),
-                    tint = { Theme.colorScheme.textNorm }
+                    }
                 )
             )
         ).Render()

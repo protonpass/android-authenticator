@@ -16,18 +16,17 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.persistence
+package proton.android.authenticator.business.entries.application.delete
 
-import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import javax.inject.Inject
 
-interface PersistenceDataSource<T> {
+internal class DeleteEntryCommandHandler @Inject constructor(
+    private val deleter: EntryDeleter
+) : CommandHandler<DeleteEntryCommand> {
 
-    fun observeAll(): Flow<List<T>>
-
-    suspend fun byId(id: Int): T
-
-    suspend fun delete(item: T)
-
-    suspend fun insert(item: T)
+    override suspend fun handle(command: DeleteEntryCommand) {
+        deleter.delete(id = command.id)
+    }
 
 }

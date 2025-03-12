@@ -16,18 +16,28 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.persistence
+package proton.android.authenticator.shared.ui.domain.components.containers
 
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
-interface PersistenceDataSource<T> {
+internal class SurfaceContainerComponentDelegate(
+    private val modifier: Modifier,
+    private val content: Renderable
+) : ContainerComponent {
 
-    fun observeAll(): Flow<List<T>>
-
-    suspend fun byId(id: Int): T
-
-    suspend fun delete(item: T)
-
-    suspend fun insert(item: T)
+    @Composable
+    override fun Render() {
+        Surface(
+            modifier = modifier,
+            color = Color.Transparent,
+            content = {
+                content.Render()
+            }
+        )
+    }
 
 }

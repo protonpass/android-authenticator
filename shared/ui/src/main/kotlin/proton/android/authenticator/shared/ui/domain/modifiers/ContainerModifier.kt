@@ -87,7 +87,7 @@ internal fun Modifier.containerSection() = composed {
             color = Color.White.copy(alpha = 0.12f),
             shape = shape
         )
-        .background(color = Color.White.copy(alpha = 0.08f))
+        .background(color = Color.Black)
 }
 
 @Stable

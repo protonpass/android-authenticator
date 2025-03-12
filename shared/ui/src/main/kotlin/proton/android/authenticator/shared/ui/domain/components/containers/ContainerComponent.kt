@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.components.Component
@@ -51,6 +52,14 @@ internal sealed interface ContainerComponent : Component {
         contents = contents
     )
 
+    data class Surface(
+        private val content: Renderable,
+        private val modifier: Modifier = Modifier
+    ) : ContainerComponent by SurfaceContainerComponentDelegate(
+        modifier = modifier,
+        content = content
+    )
+
     data class Vertical(
         private val contents: ColumnScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
@@ -60,6 +69,22 @@ internal sealed interface ContainerComponent : Component {
         modifier = modifier,
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
+        contents = contents
+    )
+
+    data class VerticalList(
+        private val contents: LazyListScope.() -> List<Renderable>,
+        private val modifier: Modifier = Modifier,
+        private val reverseLayout: Boolean = false,
+        private val verticalArrangement: Arrangement.Vertical = if (reverseLayout) {
+            Arrangement.Bottom
+        } else {
+            Arrangement.Top
+        }
+    ) : ContainerComponent by VerticalListContainerComponentDelegate(
+        modifier = modifier,
+        reverseLayout = reverseLayout,
+        verticalArrangement = verticalArrangement,
         contents = contents
     )
 

@@ -21,6 +21,7 @@ package proton.android.authenticator.features.settings.master.ui
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.shared.ui.contents.banners.PromoBannerContent
 import proton.android.authenticator.shared.ui.contents.bars.CenterAlignedTopBarContent
+import proton.android.authenticator.shared.ui.contents.settings.SettingsListContent
 import proton.android.authenticator.shared.ui.contents.settings.SettingsSectionContent
 import proton.android.authenticator.shared.ui.contents.settings.SettingsSelectorRowContent
 import proton.android.authenticator.shared.ui.contents.settings.SettingsSimpleRowContent
@@ -45,156 +46,161 @@ internal class SettingsMasterScreen(
     )
 
     override val bodyContents: List<Content> = listOf(
-        PromoBannerContent(
-            id = "",
-            title = UiText.Dynamic("Proton Pass"),
-            description = UiText.Dynamic("Free password manager with identity protection."),
-            actionText = UiText.Dynamic("Get Proton Pass"),
-            onActionClick = {},
-            onDismissClick = {}
-        ),
-        SettingsSectionContent(
-            id = "",
-            name = UiText.Resource(
-                resId = R.string.settings_security_section,
-                masks = listOf(UiTextMask.Uppercase)
-            ),
-            settingsRows = listOf(
-                SettingsToggleRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_security_title_backup),
-                    description = UiText.Resource(resId = R.string.settings_security_description_backup),
-                    isChecked = true,
-                    onCheckedChange = {}
+        SettingsListContent(
+            id = "SettingsListId",
+            contents = listOf(
+                PromoBannerContent(
+                    id = "PassBanner",
+                    title = UiText.Dynamic("Proton Pass"),
+                    description = UiText.Dynamic("Free password manager with identity protection."),
+                    actionText = UiText.Dynamic("Get Proton Pass"),
+                    onActionClick = {},
+                    onDismissClick = {}
                 ),
-                SettingsToggleRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_security_title_sync),
-                    isChecked = false,
-                    onCheckedChange = {}
-                ),
-                SettingsSelectorRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_security_title_lock),
-                    selectedOption = UiText.Dynamic("Biometric"),
-                    options = listOf(
-                        UiText.Dynamic("Biometric"),
-                        UiText.Dynamic("Pin"),
-                        UiText.Dynamic("None")
+                SettingsSectionContent(
+                    id = "SettingsSection",
+                    name = UiText.Resource(
+                        resId = R.string.settings_security_section,
+                        masks = listOf(UiTextMask.Uppercase)
+                    ),
+                    settingsRows = listOf(
+                        SettingsToggleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_security_title_backup),
+                            description = UiText.Resource(resId = R.string.settings_security_description_backup),
+                            isChecked = true,
+                            onCheckedChange = {}
+                        ),
+                        SettingsToggleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_security_title_sync),
+                            isChecked = false,
+                            onCheckedChange = {}
+                        ),
+                        SettingsSelectorRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_security_title_lock),
+                            selectedOption = UiText.Dynamic("Biometric"),
+                            options = listOf(
+                                UiText.Dynamic("Biometric"),
+                                UiText.Dynamic("Pin"),
+                                UiText.Dynamic("None")
+                            )
+                        ),
+                        SettingsToggleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_security_title_reveal),
+                            isChecked = true,
+                            onCheckedChange = {}
+                        )
                     )
                 ),
-                SettingsToggleRowContent(
+                SettingsSectionContent(
                     id = "",
-                    title = UiText.Resource(resId = R.string.settings_security_title_reveal),
-                    isChecked = true,
-                    onCheckedChange = {}
-                )
-            )
-        ),
-        SettingsSectionContent(
-            id = "",
-            name = UiText.Resource(
-                resId = R.string.settings_appearance_section,
-                masks = listOf(UiTextMask.Uppercase)
-            ),
-            settingsRows = listOf(
-                SettingsSelectorRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_appearance_title_theme),
-                    selectedOption = UiText.Dynamic("Dark"),
-                    options = listOf(
-                        UiText.Dynamic("Light"),
-                        UiText.Dynamic("Dark"),
-                        UiText.Dynamic("System default")
+                    name = UiText.Resource(
+                        resId = R.string.settings_appearance_section,
+                        masks = listOf(UiTextMask.Uppercase)
+                    ),
+                    settingsRows = listOf(
+                        SettingsSelectorRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_appearance_title_theme),
+                            selectedOption = UiText.Dynamic("Dark"),
+                            options = listOf(
+                                UiText.Dynamic("Light"),
+                                UiText.Dynamic("Dark"),
+                                UiText.Dynamic("System default")
+                            )
+                        ),
+                        SettingsSelectorRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_appearance_title_style),
+                            selectedOption = UiText.Dynamic("Expanded"),
+                            options = listOf(
+                                UiText.Dynamic("Compact"),
+                                UiText.Dynamic("Expanded")
+                            )
+                        )
                     )
                 ),
-                SettingsSelectorRowContent(
+                SettingsSectionContent(
                     id = "",
-                    title = UiText.Resource(resId = R.string.settings_appearance_title_style),
-                    selectedOption = UiText.Dynamic("Expanded"),
-                    options = listOf(
-                        UiText.Dynamic("Compact"),
-                        UiText.Dynamic("Expanded")
+                    name = UiText.Resource(
+                        resId = R.string.settings_data_management_section,
+                        masks = listOf(UiTextMask.Uppercase)
+                    ),
+                    settingsRows = listOf(
+                        SettingsSimpleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_data_management_title_import)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_data_management_title_export)
+                        )
                     )
+                ),
+                SettingsSectionContent(
+                    id = "",
+                    name = UiText.Resource(
+                        resId = R.string.settings_support_section,
+                        masks = listOf(UiTextMask.Uppercase)
+                    ),
+                    settingsRows = listOf(
+                        SettingsSimpleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_support_title_how_to)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            title = UiText.Resource(resId = R.string.settings_support_title_feedback)
+                        )
+                    )
+                ),
+                SettingsSectionContent(
+                    id = "",
+                    name = UiText.Resource(
+                        resId = R.string.settings_discover_section,
+                        masks = listOf(UiTextMask.Uppercase)
+                    ),
+                    settingsRows = listOf(
+                        SettingsSimpleRowContent(
+                            id = "",
+                            icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_pass),
+                            title = UiText.Resource(resId = R.string.settings_discover_title_pass)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_vpn),
+                            title = UiText.Resource(resId = R.string.settings_discover_title_vpn)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_mail),
+                            title = UiText.Resource(resId = R.string.settings_discover_title_mail)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_drive),
+                            title = UiText.Resource(resId = R.string.settings_discover_title_drive)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_calendar),
+                            title = UiText.Resource(resId = R.string.settings_discover_title_calendar)
+                        ),
+                        SettingsSimpleRowContent(
+                            id = "",
+                            icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_wallet),
+                            title = UiText.Resource(resId = R.string.settings_discover_title_wallet)
+                        )
+                    )
+                ),
+                SettingsVersionRowContent(
+                    id = "",
+                    text = UiText.Resource(resId = R.string.settings_app_version)
                 )
             )
-        ),
-        SettingsSectionContent(
-            id = "",
-            name = UiText.Resource(
-                resId = R.string.settings_data_management_section,
-                masks = listOf(UiTextMask.Uppercase)
-            ),
-            settingsRows = listOf(
-                SettingsSimpleRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_data_management_title_import)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_data_management_title_export)
-                )
-            )
-        ),
-        SettingsSectionContent(
-            id = "",
-            name = UiText.Resource(
-                resId = R.string.settings_support_section,
-                masks = listOf(UiTextMask.Uppercase)
-            ),
-            settingsRows = listOf(
-                SettingsSimpleRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_support_title_how_to)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    title = UiText.Resource(resId = R.string.settings_support_title_feedback)
-                )
-            )
-        ),
-        SettingsSectionContent(
-            id = "",
-            name = UiText.Resource(
-                resId = R.string.settings_discover_section,
-                masks = listOf(UiTextMask.Uppercase)
-            ),
-            settingsRows = listOf(
-                SettingsSimpleRowContent(
-                    id = "",
-                    icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_pass),
-                    title = UiText.Resource(resId = R.string.settings_discover_title_pass)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_vpn),
-                    title = UiText.Resource(resId = R.string.settings_discover_title_vpn)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_mail),
-                    title = UiText.Resource(resId = R.string.settings_discover_title_mail)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_drive),
-                    title = UiText.Resource(resId = R.string.settings_discover_title_drive)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_calendar),
-                    title = UiText.Resource(resId = R.string.settings_discover_title_calendar)
-                ),
-                SettingsSimpleRowContent(
-                    id = "",
-                    icon = UiIcon.Resource(resId = uiR.drawable.ic_logo_wallet),
-                    title = UiText.Resource(resId = R.string.settings_discover_title_wallet)
-                )
-            )
-        ),
-        SettingsVersionRowContent(
-            id = "",
-            text = UiText.Resource(resId = R.string.settings_app_version)
         )
     )
 

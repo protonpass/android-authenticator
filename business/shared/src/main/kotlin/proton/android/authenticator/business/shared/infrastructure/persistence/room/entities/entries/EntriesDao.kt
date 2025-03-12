@@ -19,6 +19,7 @@
 package proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +29,12 @@ interface EntriesDao {
 
     @Query("SELECT * FROM ${EntryEntity.TABLE}")
     fun observeAll(): Flow<List<EntryEntity>>
+
+    @Query("SELECT * FROM ${EntryEntity.TABLE} WHERE id = :id")
+    suspend fun byId(id: Int): EntryEntity
+
+    @Delete
+    suspend fun delete(entryEntity: EntryEntity)
 
     @Upsert
     suspend fun upsert(entryEntity: EntryEntity)

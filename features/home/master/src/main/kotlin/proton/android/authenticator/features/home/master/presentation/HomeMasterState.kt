@@ -18,6 +18,49 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
-internal data class HomeMasterState(
-    internal val entries: List<HomeMasterEntryModel>
-)
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import proton.android.authenticator.business.entries.application.shared.responses.EntryQueryResponse
+import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
+
+internal class HomeMasterState private constructor(
+    private val entryModelsMap: MutableState<MutableMap<Int, HomeMasterEntryModel>>
+) {
+
+    internal val entryModels: List<HomeMasterEntryModel>
+        get() = entryModelsMap
+            .value
+            .values
+            .toList()
+
+    internal val hasEntryModels: Boolean = entryModels.isNotEmpty()
+
+    internal companion object {
+
+        @Composable
+        internal fun create(
+            entries: List<EntryQueryResponse>,
+            entryCodes: List<EntryCodeQueryResponse>
+        ): HomeMasterState {
+            return entries
+                .zip(entryCodes) { entry, entryCode ->
+                    HomeMasterEntryModel(
+                        id = entry.id,
+                        name = entry.name,
+                        currentCode = entryCode.currentCode,
+                        nextCode = entryCode.nextCode,
+                        remainingSeconds = entryCode.remainingSeconds,
+                        totalSeconds = entry.period,
+                        isRevealed = false
+                    )
+                }
+                .associateBy { entryModel -> entryModel.id }
+                .toMutableMap()
+                .let(::mutableStateOf)
+                .let(::HomeMasterState)
+        }
+
+    }
+
+}

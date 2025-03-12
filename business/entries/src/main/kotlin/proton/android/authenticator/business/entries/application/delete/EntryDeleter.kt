@@ -16,18 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.persistence
+package proton.android.authenticator.business.entries.application.delete
 
-import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.entries.domain.EntriesRepository
+import javax.inject.Inject
 
-interface PersistenceDataSource<T> {
+internal class EntryDeleter @Inject constructor(private val entriesRepository: EntriesRepository) {
 
-    fun observeAll(): Flow<List<T>>
-
-    suspend fun byId(id: Int): T
-
-    suspend fun delete(item: T)
-
-    suspend fun insert(item: T)
+    internal suspend fun delete(id: Int) {
+        entriesRepository.find(id)
+            .also { entry ->
+                entriesRepository.remove(entry)
+            }
+    }
 
 }

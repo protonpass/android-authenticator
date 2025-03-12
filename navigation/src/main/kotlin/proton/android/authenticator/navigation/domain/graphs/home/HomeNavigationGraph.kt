@@ -12,7 +12,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
     navigation<HomeNavigationDestination>(startDestination = HomeMasterNavigationDestination) {
         composable<HomeMasterNavigationDestination> {
             HomeMasterScreenRenderer(
-                onEntryClick = { entryId ->
+                onEditEntryClick = { entryId ->
                     NavigationCommand.NavigateTo(
                         destination = HomeDetailNavigationDestination(
                             entryId = entryId

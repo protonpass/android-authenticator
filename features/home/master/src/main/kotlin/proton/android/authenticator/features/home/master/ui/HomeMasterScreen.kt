@@ -21,7 +21,9 @@ package proton.android.authenticator.features.home.master.ui
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.contents.bars.AppTopBarContent
 import proton.android.authenticator.shared.ui.contents.bars.SearchBottomBarContent
+import proton.android.authenticator.shared.ui.contents.empty.EmptyPlaceholderContent
 import proton.android.authenticator.shared.ui.contents.entries.EntryCardContent
+import proton.android.authenticator.shared.ui.contents.entries.EntryCardListContent
 import proton.android.authenticator.shared.ui.domain.contents.Content
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -31,9 +33,11 @@ import proton.android.authenticator.shared.ui.R as uiR
 
 internal class HomeMasterScreen(
     state: HomeMasterState,
-    onEntryClick: (entryId: String) -> Unit,
+    onEntryClick: (String) -> Unit,
     onSettingsClick: () -> Unit,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    onEditEntryClick: (String) -> Unit,
+    onDeleteEntryClick: (String) -> Unit
 ) : ScaffoldScreen() {
 
     override val topBarContent: Content? = AppTopBarContent(
@@ -42,24 +46,40 @@ internal class HomeMasterScreen(
         onActionClick = onSettingsClick
     )
 
-    override val bodyContents: List<Content> = state.entries.map { entry ->
-        EntryCardContent(
-            id = entry.id.toString(),
-            imageUrl = "https://www.amazon.com/favicon.ico",
-            name = UiText.Dynamic(value = entry.name),
-            label = UiText.Dynamic(value = "amazon@email.com"),
-            currentCode = UiText.Dynamic(
-                value = entry.currentCode,
-                masks = listOf(UiTextMask.Totp)
-            ),
-            nextCode = UiText.Dynamic(
-                value = entry.nextCode,
-                masks = listOf(UiTextMask.Totp)
-            ),
-            remainingSeconds = entry.remainingSeconds,
-            totalSeconds = entry.totalSeconds,
-            onClick = { onEntryClick("Entry 1") }
-        )
+    override val bodyContents: List<Content> = buildList {
+        if (state.hasEntryModels) {
+            EntryCardListContent(
+                id = "EntryList",
+                contents = state.entryModels.map { entry ->
+                    EntryCardContent(
+                        id = entry.id.toString(),
+                        imageUrl = "https://www.amazon.com/favicon.ico",
+                        name = UiText.Dynamic(value = entry.name),
+                        label = UiText.Dynamic(value = "amazon@email.com"),
+                        currentCode = UiText.Dynamic(
+                            value = entry.currentCode,
+                            masks = listOf(UiTextMask.Totp)
+                        ),
+                        nextCode = UiText.Dynamic(
+                            value = entry.nextCode,
+                            masks = listOf(UiTextMask.Totp)
+                        ),
+                        remainingSeconds = entry.remainingSeconds,
+                        totalSeconds = entry.totalSeconds,
+                        isRevealed = entry.isRevealed,
+                        onClick = onEntryClick,
+                        onEditClick = onEditEntryClick,
+                        onDeleteClick = onDeleteEntryClick
+                    )
+                }
+            ).also(::add)
+        } else {
+            EmptyPlaceholderContent(
+                id = "EmptyPlaceholder",
+                title = UiText.Dynamic("No codes yet"),
+                subtitle = UiText.Dynamic("Protect your accounts with an extra layer of security.")
+            ).also(::add)
+        }
     }
 
     override val bottomBarContent: Content? = SearchBottomBarContent(

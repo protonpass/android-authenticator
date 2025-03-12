@@ -18,14 +18,12 @@
 
 package proton.android.authenticator.shared.ui.screens
 
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.contents.Content
@@ -55,19 +53,16 @@ abstract class ScaffoldScreen : Screen {
                 bottomBarContent?.Render()
             }
         ) { innerPaddingValues ->
-            LazyColumn(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(all = ThemePadding.Medium),
-                contentPadding = innerPaddingValues
+                    .padding(paddingValues = innerPaddingValues)
+                    .padding(all = ThemePadding.Medium)
             ) {
-                items(
-                    items = bodyContents,
-                    key = { bodyContent -> bodyContent.id }
-                ) { bodyContent ->
-                    bodyContent.Render()
-
-                    Spacer(modifier = Modifier.height(height = ThemePadding.Medium))
+                bodyContents.forEach { bodyContent ->
+                    key(bodyContent.id) {
+                        bodyContent.Render()
+                    }
                 }
             }
         }

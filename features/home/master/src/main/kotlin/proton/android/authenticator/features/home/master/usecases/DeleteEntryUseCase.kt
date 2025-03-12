@@ -16,18 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.persistence
+package proton.android.authenticator.features.home.master.usecases
 
-import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.entries.application.delete.DeleteEntryCommand
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
+import javax.inject.Inject
 
-interface PersistenceDataSource<T> {
+internal class DeleteEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    fun observeAll(): Flow<List<T>>
-
-    suspend fun byId(id: Int): T
-
-    suspend fun delete(item: T)
-
-    suspend fun insert(item: T)
+    internal suspend operator fun invoke(id: Int) {
+        DeleteEntryCommand(id = id)
+            .also { command ->
+                commandBus.dispatch(command)
+            }
+    }
 
 }

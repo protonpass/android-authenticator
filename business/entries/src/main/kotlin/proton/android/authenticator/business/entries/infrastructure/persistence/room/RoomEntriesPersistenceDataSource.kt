@@ -27,6 +27,7 @@ import proton.android.authenticator.business.shared.infrastructure.persistence.r
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryType
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContext
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
 import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
@@ -41,54 +42,82 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
         .map { entryEntities ->
             encryptionContextProvider.withEncryptionContext {
                 entryEntities.map { entryEntity ->
-                    decrypt(entryEntity.content, EncryptionTag.EntryContent)
-                        .let { decryptedEntityContent ->
-                            authenticatorClient.deserializeEntries(listOf(decryptedEntityContent))
-                                .first()
-                        }
-                        .let { entryModel ->
-                            Entry.fromPrimitives(
-                                id = entryEntity.id,
-                                name = entryModel.name,
-                                uri = entryModel.uri,
-                                period = entryModel.period,
-                                note = entryModel.note,
-                                type = entryModel.entryType.ordinal,
-                                createdAt = entryEntity.createdAt,
-                                modifiedAt = entryEntity.modifiedAt
-                            )
-                        }
+                    entryEntity.toDomain(this@withEncryptionContext, authenticatorClient)
                 }
             }
         }
 
-    override suspend fun insert(entry: Entry) {
-        AuthenticatorEntryModel(
-            name = entry.name,
-            uri = entry.uri,
-            period = entry.period,
-            note = entry.note,
-            entryType = AuthenticatorEntryType.TOTP
-        )
-            .let { entryModel ->
-                authenticatorClient.serializeEntries(listOf(entryModel)).first()
-            }
-            .let { decryptedEntityContent ->
-                encryptionContextProvider.withEncryptionContext {
-                    encrypt(decryptedEntityContent, EncryptionTag.EntryContent)
+    override suspend fun byId(id: Int): Entry = encryptionContextProvider.withEncryptionContext {
+        entriesDao.byId(id).toDomain(this@withEncryptionContext, authenticatorClient)
+    }
+
+    override suspend fun delete(entry: Entry) {
+        encryptionContextProvider.withEncryptionContext {
+
+            println("JIBIRI: delete entry: ${entry.id}")
+
+            entry.toEntity(authenticatorClient, this@withEncryptionContext)
+                .also { entryEntity ->
+                    println("JIBIRI: delete entryEntity: $entryEntity")
+                    entriesDao.delete(entryEntity)
                 }
-            }
-            .let { encryptedEntityContent ->
-                EntryEntity(
-                    content = encryptedEntityContent,
-                    type = entry.type.value,
-                    createdAt = entry.createdAt,
-                    modifiedAt = entry.modifiedAt
-                )
-            }
-            .also { entryEntity ->
-                entriesDao.upsert(entryEntity)
-            }
+        }
+    }
+
+    override suspend fun insert(entry: Entry) {
+        encryptionContextProvider.withEncryptionContext {
+            entry.toEntity(authenticatorClient, this@withEncryptionContext)
+                .also { entryEntity ->
+                    entriesDao.upsert(entryEntity)
+                }
+        }
     }
 
 }
+
+private fun Entry.toEntity(
+    authenticatorClient: AuthenticatorMobileClientInterface,
+    encryptionContext: EncryptionContext
+): EntryEntity = AuthenticatorEntryModel(
+    name = name,
+    uri = uri,
+    period = period,
+    note = note,
+    entryType = AuthenticatorEntryType.TOTP
+)
+    .let { entryModel ->
+        authenticatorClient.serializeEntries(listOf(entryModel)).first()
+    }
+    .let { decryptedEntityContent ->
+        encryptionContext.encrypt(decryptedEntityContent, EncryptionTag.EntryContent)
+    }
+    .let { encryptedEntityContent ->
+        EntryEntity(
+            id = id,
+            content = encryptedEntityContent,
+            type = type.value,
+            createdAt = createdAt,
+            modifiedAt = modifiedAt
+        )
+    }
+
+private fun EntryEntity.toDomain(
+    encryptionContext: EncryptionContext,
+    authenticatorClient: AuthenticatorMobileClientInterface
+): Entry = encryptionContext.decrypt(content, EncryptionTag.EntryContent)
+    .let { decryptedEntityContent ->
+        authenticatorClient.deserializeEntries(listOf(decryptedEntityContent))
+            .first()
+    }
+    .let { entryModel ->
+        Entry.fromPrimitives(
+            id = id,
+            name = entryModel.name,
+            uri = entryModel.uri,
+            period = entryModel.period,
+            note = entryModel.note,
+            type = entryModel.entryType.ordinal,
+            createdAt = createdAt,
+            modifiedAt = modifiedAt
+        )
+    }

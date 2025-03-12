@@ -27,11 +27,10 @@ import proton.android.authenticator.shared.common.domain.infrastructure.queries.
 import javax.inject.Inject
 
 internal class FindAllEntriesQueryHandler @Inject constructor(
-    private val allEntriesFinder: AllEntriesFinder
+    private val finder: AllEntriesFinder
 ) : QueryHandler<FindAllEntriesQuery, EntriesQueryResponse> {
 
-    override fun handle(query: FindAllEntriesQuery): Flow<EntriesQueryResponse> = allEntriesFinder
-        .findAll()
+    override fun handle(query: FindAllEntriesQuery): Flow<EntriesQueryResponse> = finder.findAll()
         .map(List<Entry>::toQueryResponse)
 
 }

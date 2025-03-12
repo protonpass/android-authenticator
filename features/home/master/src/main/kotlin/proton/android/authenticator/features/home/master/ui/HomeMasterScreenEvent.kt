@@ -16,18 +16,15 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.persistence
+package proton.android.authenticator.features.home.master.ui
 
-import kotlinx.coroutines.flow.Flow
+internal sealed interface HomeMasterScreenEvent {
 
-interface PersistenceDataSource<T> {
+    data object OnAddClick : HomeMasterScreenEvent
 
-    fun observeAll(): Flow<List<T>>
+    @JvmInline
+    value class OnDeleteClick(val entryId: Int) : HomeMasterScreenEvent
 
-    suspend fun byId(id: Int): T
-
-    suspend fun delete(item: T)
-
-    suspend fun insert(item: T)
+    data object OnSettingsClick : HomeMasterScreenEvent
 
 }

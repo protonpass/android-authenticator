@@ -25,6 +25,8 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
 import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
 import proton.android.authenticator.business.entries.application.create.CreateEntryCommandHandler
+import proton.android.authenticator.business.entries.application.delete.DeleteEntryCommand
+import proton.android.authenticator.business.entries.application.delete.DeleteEntryCommandHandler
 import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQuery
 import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQueryHandler
 import proton.android.authenticator.business.entries.domain.EntriesRepository
@@ -43,6 +45,9 @@ internal abstract class BusinessEntriesModule {
 
     @[Binds Singleton IntoMap CommandHandlerKey(CreateEntryCommand::class)]
     internal abstract fun bindCreateEntryCommandHandler(impl: CreateEntryCommandHandler): CommandHandler<*>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(DeleteEntryCommand::class)]
+    internal abstract fun bindDeleteEntryCommandHandler(impl: DeleteEntryCommandHandler): CommandHandler<*>
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindAllEntriesQuery::class)]
     internal abstract fun bindFindAllEntriesQueryHandler(impl: FindAllEntriesQueryHandler): QueryHandler<*, *>

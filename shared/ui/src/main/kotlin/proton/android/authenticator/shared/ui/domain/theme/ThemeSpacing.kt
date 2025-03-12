@@ -36,6 +36,9 @@ internal object ThemeSpacing {
     internal val Medium = 16.dp
 
     @Stable
+    internal val MediumLarge = 24.dp
+
+    @Stable
     internal val Large = 32.dp
 
 }
