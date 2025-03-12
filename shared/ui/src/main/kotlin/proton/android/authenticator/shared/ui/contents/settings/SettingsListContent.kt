@@ -25,13 +25,14 @@ import proton.android.authenticator.shared.ui.domain.contents.Content
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SettingsListContent(
-    override val id: String,
+    override val renderId: String,
     private val contents: List<Content>
 ) : Content {
 
     @Composable
     override fun Render() {
         ContainerComponent.VerticalList(
+            renderId = renderId,
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge),
             contents = { contents }
         ).Render()

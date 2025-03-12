@@ -45,7 +45,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 data class AppTopBarContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val onActionClick: () -> Unit
 ) : Content {
@@ -53,20 +53,24 @@ data class AppTopBarContent(
     @Composable
     override fun Render() {
         BarComponent.TopApp(
+            renderId = renderId,
             modifier = Modifier
                 .fillMaxWidth()
                 .backgroundTopBarGradient(),
             title = TextComponent.Standard(
+                renderId = "$renderId-title",
                 text = title,
                 color = { Theme.colorScheme.textNorm },
                 style = { Theme.typography.title }
             ),
             actions = listOf(
                 ContainerComponent.Box(
+                    renderId = "$renderId-actions",
                     modifier = Modifier.padding(end = ThemePadding.MediumSmall),
                     contents = {
                         listOf(
                             IconComponent.Descriptive(
+                                renderId = "$renderId-action",
                                 modifier = Modifier
                                     .dropShadow(
                                         shape = CircleShape,

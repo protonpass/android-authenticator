@@ -24,9 +24,11 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class VerticalListContainerComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val reverseLayout: Boolean,
     private val verticalArrangement: Arrangement.Vertical,
@@ -36,12 +38,13 @@ internal class VerticalListContainerComponentDelegate(
     @Composable
     override fun Render() {
         LazyColumn(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             reverseLayout = reverseLayout,
             verticalArrangement = verticalArrangement
         ) {
             items(
-                items = contents()
+                items = contents(),
+                key = { content -> content.renderId }
             ) { content ->
                 content.Render()
             }

@@ -31,21 +31,25 @@ import proton.android.authenticator.shared.ui.domain.renders.Renderable
 internal sealed interface ContainerComponent : Component {
 
     data class Box(
+        override val renderId: String,
         private val contents: BoxScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val contentAlignment: Alignment = Alignment.TopStart
     ) : ContainerComponent by BoxContainerComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         contentAlignment = contentAlignment,
         contents = contents
     )
 
     data class Horizontal(
+        override val renderId: String,
         private val contents: RowScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
         private val verticalAlignment: Alignment.Vertical = Alignment.Top
     ) : ContainerComponent by HorizontalContainerComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = verticalAlignment,
@@ -53,19 +57,23 @@ internal sealed interface ContainerComponent : Component {
     )
 
     data class Surface(
+        override val renderId: String,
         private val content: Renderable,
         private val modifier: Modifier = Modifier
     ) : ContainerComponent by SurfaceContainerComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         content = content
     )
 
     data class Vertical(
+        override val renderId: String,
         private val contents: ColumnScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val verticalArrangement: Arrangement.Vertical = Arrangement.Top,
         private val horizontalAlignment: Alignment.Horizontal = Alignment.Start
     ) : ContainerComponent by VerticalContainerComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         verticalArrangement = verticalArrangement,
         horizontalAlignment = horizontalAlignment,
@@ -73,6 +81,7 @@ internal sealed interface ContainerComponent : Component {
     )
 
     data class VerticalList(
+        override val renderId: String,
         private val contents: LazyListScope.() -> List<Renderable>,
         private val modifier: Modifier = Modifier,
         private val reverseLayout: Boolean = false,
@@ -82,6 +91,7 @@ internal sealed interface ContainerComponent : Component {
             Arrangement.Top
         }
     ) : ContainerComponent by VerticalListContainerComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         reverseLayout = reverseLayout,
         verticalArrangement = verticalArrangement,

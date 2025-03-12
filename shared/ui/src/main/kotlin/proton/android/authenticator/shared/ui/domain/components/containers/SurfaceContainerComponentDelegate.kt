@@ -22,9 +22,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class SurfaceContainerComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val content: Renderable
 ) : ContainerComponent {
@@ -32,7 +34,7 @@ internal class SurfaceContainerComponentDelegate(
     @Composable
     override fun Render() {
         Surface(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             color = Color.Transparent,
             content = {
                 content.Render()

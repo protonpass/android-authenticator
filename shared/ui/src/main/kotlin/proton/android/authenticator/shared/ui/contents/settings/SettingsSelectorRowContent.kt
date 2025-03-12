@@ -35,7 +35,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SettingsSelectorRowContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val selectedOption: UiText,
     private val options: List<UiText>,
@@ -45,6 +45,7 @@ data class SettingsSelectorRowContent(
     @Composable
     override fun Render() {
         ContainerComponent.Horizontal(
+            renderId = renderId,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = ThemePadding.Medium),
@@ -53,17 +54,20 @@ data class SettingsSelectorRowContent(
             contents = {
                 listOf(
                     TextComponent.Standard(
+                        renderId = "$renderId-title",
                         modifier = Modifier.weight(weight = 1f, fill = true),
                         text = title,
                         color = { Theme.colorScheme.textNorm },
                         style = { Theme.typography.body1Regular }
                     ),
                     TextComponent.Standard(
+                        renderId = "$renderId-option",
                         text = selectedOption,
                         color = { Theme.colorScheme.textNorm },
                         style = { Theme.typography.body1Regular }
                     ),
                     IconComponent.Descriptive(
+                        renderId = "$renderId-icon",
                         icon = UiIcon.Resource(resId = R.drawable.ic_chevron_tiny_right),
                         tint = { Theme.colorScheme.textWeak }
                     )

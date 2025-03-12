@@ -24,6 +24,8 @@ import proton.android.authenticator.shared.ui.screens.ScaffoldScreen
 
 internal class HomeDetailScreen(private val state: HomeDetailState) : ScaffoldScreen() {
 
+    override val renderId: String = "HomeDetailScreen"
+
     override val topBarContent: Content? = null
 
     override val bodyContents: List<Content> = emptyList<Content>()

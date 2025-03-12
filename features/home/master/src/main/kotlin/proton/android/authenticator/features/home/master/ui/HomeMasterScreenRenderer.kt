@@ -30,6 +30,8 @@ class HomeMasterScreenRenderer(
     private val onAddClick: () -> Unit
 ) : Renderable {
 
+    override val renderId: String = "HomeMasterScreenRenderer"
+
     @Composable
     override fun Render() = with(hiltViewModel<HomeMasterViewModel>()) {
         val state = stateFlow.collectAsStateWithLifecycle()

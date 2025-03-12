@@ -24,9 +24,11 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class VerticalContainerComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val verticalArrangement: Arrangement.Vertical,
     private val horizontalAlignment: Alignment.Horizontal,
@@ -36,7 +38,7 @@ internal class VerticalContainerComponentDelegate(
     @Composable
     override fun Render() {
         Column(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             verticalArrangement = verticalArrangement,
             horizontalAlignment = horizontalAlignment
         ) {

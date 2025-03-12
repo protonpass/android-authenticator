@@ -34,7 +34,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import kotlin.collections.buildList
 
 data class SettingsToggleRowContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val isChecked: Boolean,
     private val onCheckedChange: (Boolean) -> Unit,
@@ -44,6 +44,7 @@ data class SettingsToggleRowContent(
     @Composable
     override fun Render() {
         ContainerComponent.Horizontal(
+            renderId = renderId,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = ThemePadding.Medium),
@@ -52,11 +53,13 @@ data class SettingsToggleRowContent(
             contents = {
                 listOf(
                     ContainerComponent.Vertical(
+                        renderId = "$renderId-vertical",
                         modifier = Modifier.weight(weight = 1f, fill = true),
                         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall),
                         contents = {
                             buildList {
                                 TextComponent.Standard(
+                                    renderId = "$renderId-title",
                                     text = title,
                                     color = { Theme.colorScheme.textNorm },
                                     style = { Theme.typography.body1Regular }
@@ -64,6 +67,7 @@ data class SettingsToggleRowContent(
 
                                 if (description != null) {
                                     TextComponent.Standard(
+                                        renderId = "$renderId-description",
                                         text = description,
                                         color = { Theme.colorScheme.textWeak },
                                         style = { Theme.typography.body2Regular }
@@ -73,6 +77,7 @@ data class SettingsToggleRowContent(
                         }
                     ),
                     ToggleComponent.Switch(
+                        renderId = "$renderId-toggle",
                         isChecked = isChecked,
                         onCheckedChange = onCheckedChange
                     )

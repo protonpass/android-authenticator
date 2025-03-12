@@ -22,10 +22,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal class IconImageComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val icon: UiIcon,
     private val contentDescription: UiText?,
@@ -35,7 +37,7 @@ internal class IconImageComponentDelegate(
     @Composable
     override fun Render() {
         Image(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             painter = icon.asPainter(),
             contentDescription = contentDescription?.asString(),
             alignment = alignment

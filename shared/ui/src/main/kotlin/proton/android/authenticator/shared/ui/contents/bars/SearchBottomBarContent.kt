@@ -44,7 +44,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SearchBottomBarContent(
-    override val id: String,
+    override val renderId: String,
     private val query: String,
     private val leadingIcon: UiIcon? = null,
     private val onLeadingIconClick: () -> Unit = {},
@@ -57,14 +57,17 @@ data class SearchBottomBarContent(
         var isSelected = remember { mutableStateOf(false) }
 
         BarComponent.BottomSelectableBar(
+            renderId = renderId,
             modifier = Modifier.fillMaxWidth(),
             isSelected = isSelected.value,
             selectedContent = TextFieldComponent.Standard(
+                renderId = "$renderId-selected",
                 modifier = Modifier.fillMaxWidth(),
                 value = query,
                 onValueChange = {}
             ),
             unselectedContent = ContainerComponent.Box(
+                renderId = "$renderId-unselected",
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = Color.DarkGray)
@@ -75,6 +78,7 @@ data class SearchBottomBarContent(
                 contents = {
                     listOf(
                         ContainerComponent.Box(
+                            renderId = "$renderId-search",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = ThemePadding.Small)
@@ -87,6 +91,7 @@ data class SearchBottomBarContent(
                                 buildList {
                                     leadingIcon?.let { icon ->
                                         IconComponent.Actionable(
+                                            renderId = "$renderId-leading-icon",
                                             modifier = Modifier.align(alignment = Alignment.CenterStart),
                                             icon = leadingIcon,
                                             onClick = onLeadingIconClick,
@@ -95,17 +100,20 @@ data class SearchBottomBarContent(
                                     }
 
                                     ContainerComponent.Horizontal(
+                                        renderId = "$renderId-search-bar",
                                         modifier = Modifier.align(alignment = Alignment.Center),
                                         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall),
                                         verticalAlignment = Alignment.CenterVertically,
                                         contents = {
                                             listOf(
                                                 IconComponent.Descriptive(
+                                                    renderId = "$renderId-search-icon",
                                                     modifier = Modifier.size(size = 15.dp),
                                                     icon = UiIcon.Resource(resId = R.drawable.ic_magnifier),
                                                     tint = { Theme.colorScheme.textWeak }
                                                 ),
                                                 TextComponent.Standard(
+                                                    renderId = "$renderId-search-text",
                                                     text = UiText.Dynamic("Search"),
                                                     color = { Theme.colorScheme.textWeak },
                                                     style = { Theme.typography.body1Medium }
@@ -116,6 +124,7 @@ data class SearchBottomBarContent(
 
                                     trailingIcon?.let { icon ->
                                         IconComponent.Actionable(
+                                            renderId = "$renderId-trailing-icon",
                                             modifier = Modifier.align(alignment = Alignment.CenterEnd),
                                             icon = icon,
                                             onClick = onTrailingIconClick,

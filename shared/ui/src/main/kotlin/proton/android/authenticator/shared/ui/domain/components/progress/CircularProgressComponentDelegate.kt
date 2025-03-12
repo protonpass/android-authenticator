@@ -22,9 +22,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 internal class CircularProgressComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val color: @Composable () -> Color,
     private val trackColor: @Composable () -> Color,
@@ -34,7 +36,7 @@ internal class CircularProgressComponentDelegate(
     @Composable
     override fun Render() {
         CircularProgressIndicator(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             color = color(),
             trackColor = trackColor(),
             strokeWidth = 4.dp,

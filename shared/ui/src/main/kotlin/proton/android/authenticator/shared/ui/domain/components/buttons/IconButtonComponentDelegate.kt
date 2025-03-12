@@ -22,10 +22,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.components.icons.IconComponent
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 
 internal class IconButtonComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val onClick: () -> Unit,
     private val icon: UiIcon,
@@ -35,10 +37,11 @@ internal class IconButtonComponentDelegate(
     @Composable
     override fun Render() {
         IconButton(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             onClick = onClick
         ) {
             IconComponent.Descriptive(
+                renderId = "$renderId-icon",
                 icon = icon,
                 tint = tint
             ).Render()

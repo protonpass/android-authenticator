@@ -29,11 +29,13 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 internal sealed interface ButtonComponent : Component {
 
     data class Icon(
+        override val renderId: String,
         private val icon: UiIcon,
         private val onClick: () -> Unit,
         private val modifier: Modifier = Modifier,
         private val tint: (@Composable () -> Color)? = null
     ) : ButtonComponent by IconButtonComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         onClick = onClick,
         icon = icon,
@@ -41,6 +43,7 @@ internal sealed interface ButtonComponent : Component {
     )
 
     data class Text(
+        override val renderId: String,
         private val text: UiText,
         private val onClick: () -> Unit,
         private val modifier: Modifier = Modifier,
@@ -48,6 +51,7 @@ internal sealed interface ButtonComponent : Component {
         private val textColor: (@Composable () -> Color),
         private val textStyle: (@Composable () -> TextStyle)
     ) : ButtonComponent by TextButtonComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         onClick = onClick,
         text = text,

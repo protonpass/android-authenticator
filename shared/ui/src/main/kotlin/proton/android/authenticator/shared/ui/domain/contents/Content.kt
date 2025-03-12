@@ -20,8 +20,4 @@ package proton.android.authenticator.shared.ui.domain.contents
 
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
-interface Content : Renderable {
-
-    val id: String
-
-}
+interface Content : Renderable

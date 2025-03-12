@@ -24,10 +24,12 @@ import proton.android.authenticator.shared.ui.domain.components.Component
 internal sealed interface TextFieldComponent : Component {
 
     data class Standard(
+        override val renderId: String,
         private val value: String,
         private val onValueChange: (String) -> Unit,
         private val modifier: Modifier = Modifier
     ) : TextFieldComponent by StandardTextFieldComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         value = value,
         onValueChange = onValueChange

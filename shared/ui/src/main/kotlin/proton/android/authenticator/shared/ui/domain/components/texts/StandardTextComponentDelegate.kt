@@ -22,11 +22,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal class StandardTextComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val text: UiText,
     private val color: @Composable () -> Color,
@@ -37,7 +39,7 @@ internal class StandardTextComponentDelegate(
     @Composable
     override fun Render() {
         Text(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             text = text.asString(),
             color = color(),
             style = style(),

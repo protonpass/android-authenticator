@@ -24,10 +24,12 @@ import proton.android.authenticator.shared.ui.domain.components.Component
 internal sealed interface ToggleComponent : Component {
 
     data class Switch(
+        override val renderId: String,
         private val isChecked: Boolean,
         private val onCheckedChange: (Boolean) -> Unit,
         private val modifier: Modifier = Modifier
     ) : ToggleComponent by SwitchToggleComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         isChecked = isChecked,
         onCheckedChange = onCheckedChange

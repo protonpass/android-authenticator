@@ -27,6 +27,8 @@ import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 class HomeDetailScreenRenderer : Renderable {
 
+    override val renderId: String = "HomeDetailScreenRenderer"
+
     @Composable
     override fun Render() = with(hiltViewModel<HomeDetailViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()

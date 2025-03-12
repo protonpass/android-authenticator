@@ -28,12 +28,14 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 internal sealed interface IconComponent : Component {
 
     data class Actionable(
+        override val renderId: String,
         private val icon: UiIcon,
         private val onClick: () -> Unit,
         private val modifier: Modifier = Modifier,
         private val contentDescription: UiText? = null,
         private val tint: (@Composable () -> Color)? = null
     ) : IconComponent by ActionableIconComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         icon = icon,
         onClick = onClick,
@@ -42,11 +44,13 @@ internal sealed interface IconComponent : Component {
     )
 
     data class Descriptive(
+        override val renderId: String,
         private val icon: UiIcon,
         private val modifier: Modifier = Modifier,
         private val contentDescription: UiText? = null,
         private val tint: (@Composable () -> Color)? = null
     ) : IconComponent by DescriptiveIconComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         icon = icon,
         contentDescription = contentDescription,

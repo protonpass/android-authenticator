@@ -24,10 +24,12 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal class ActionableIconComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val icon: UiIcon,
     private val onClick: () -> Unit,
@@ -38,7 +40,9 @@ internal class ActionableIconComponentDelegate(
     @Composable
     override fun Render() {
         Icon(
-            modifier = modifier.clickable(onClick = onClick),
+            modifier = modifier
+                .testTag(tag = renderId)
+                .clickable(onClick = onClick),
             painter = icon.asPainter(),
             contentDescription = contentDescription?.asString(),
             tint = tint?.invoke() ?: LocalContentColor.current

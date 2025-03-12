@@ -46,7 +46,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 data class PromoBannerContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val description: UiText,
     private val actionText: UiText,
@@ -57,6 +57,7 @@ data class PromoBannerContent(
     @Composable
     override fun Render() {
         ContainerComponent.Box(
+            renderId = renderId,
             modifier = Modifier
                 .fillMaxWidth()
                 .containerBanner()
@@ -64,6 +65,7 @@ data class PromoBannerContent(
             contents = {
                 listOf(
                     ImageComponent.Local(
+                        renderId = "$renderId-image",
                         modifier = Modifier
                             .align(alignment = Alignment.BottomEnd)
                             .size(size = 180.dp)
@@ -71,18 +73,22 @@ data class PromoBannerContent(
                         image = UiImage.Resource(resId = uiR.drawable.pass_preview)
                     ),
                     ContainerComponent.Vertical(
+                        renderId = "$renderId-vertical",
                         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
                         contents = {
                             listOf(
                                 ContainerComponent.Box(
+                                    renderId = "$renderId-box",
                                     modifier = Modifier.fillMaxWidth(),
                                     contents = {
                                         listOf(
                                             ImageComponent.Local(
+                                                renderId = "$renderId-logo",
                                                 modifier = Modifier.align(alignment = Alignment.CenterStart),
                                                 image = UiImage.Resource(resId = uiR.drawable.ic_logo_pass_36)
                                             ),
                                             IconComponent.Actionable(
+                                                renderId = "$renderId-close",
                                                 modifier = Modifier
                                                     .align(alignment = Alignment.TopEnd)
                                                     .clip(shape = CircleShape),
@@ -96,9 +102,11 @@ data class PromoBannerContent(
                                     }
                                 ),
                                 ContainerComponent.Horizontal(
+                                    renderId = "$renderId-horizontal",
                                     contents = {
                                         listOf(
                                             ContainerComponent.Vertical(
+                                                renderId = "$renderId-vertical",
                                                 modifier = Modifier.width(width = 180.dp),
                                                 verticalArrangement = Arrangement.spacedBy(
                                                     space = ThemeSpacing.ExtraSmall
@@ -106,11 +114,13 @@ data class PromoBannerContent(
                                                 contents = {
                                                     listOf(
                                                         TextComponent.Standard(
+                                                            renderId = "$renderId-title",
                                                             text = title,
                                                             color = { Theme.colorScheme.textNorm },
                                                             style = { Theme.typography.headline }
                                                         ),
                                                         TextComponent.Standard(
+                                                            renderId = "$renderId-description",
                                                             text = description,
                                                             color = { Theme.colorScheme.textNorm },
                                                             style = { Theme.typography.body1Regular }
@@ -122,6 +132,7 @@ data class PromoBannerContent(
                                     }
                                 ),
                                 ButtonComponent.Text(
+                                    renderId = "$renderId-button",
                                     text = actionText,
                                     onClick = onActionClick,
                                     color = { Theme.colorScheme.interactionPurpleNorm },

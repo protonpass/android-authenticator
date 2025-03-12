@@ -40,8 +40,10 @@ internal class HomeMasterScreen(
     onDeleteEntryClick: (String) -> Unit
 ) : ScaffoldScreen() {
 
+    override val renderId: String = SCREEN_ID
+
     override val topBarContent: Content? = AppTopBarContent(
-        id = "TopBar",
+        renderId = TOP_BAR_ID,
         title = UiText.Dynamic("Authenticator"),
         onActionClick = onSettingsClick
     )
@@ -49,9 +51,10 @@ internal class HomeMasterScreen(
     override val bodyContents: List<Content> = buildList {
         if (state.hasEntryModels) {
             EntryCardListContent(
-                id = "EntryList",
+                renderId = BODY_ENTRY_LIST_ID,
                 contents = state.entryModels.map { entry ->
                     EntryCardContent(
+                        renderId = "${BODY_ENTRY_LIST_ID}-${entry.id}",
                         id = entry.id.toString(),
                         imageUrl = "https://www.amazon.com/favicon.ico",
                         name = UiText.Dynamic(value = entry.name),
@@ -75,19 +78,34 @@ internal class HomeMasterScreen(
             ).also(::add)
         } else {
             EmptyPlaceholderContent(
-                id = "EmptyPlaceholder",
+                renderId = BODY_EMPTY_PLACEHOLDER_ID,
                 title = UiText.Dynamic("No codes yet"),
                 subtitle = UiText.Dynamic("Protect your accounts with an extra layer of security.")
             ).also(::add)
         }
     }
 
-    override val bottomBarContent: Content? = SearchBottomBarContent(
-        id = "SearchBar",
+    override val bottomBarContent: Content = SearchBottomBarContent(
+        renderId = BOTTOM_BAR_ID,
         query = "",
         leadingIcon = UiIcon.Resource(resId = uiR.drawable.ic_settings),
         onLeadingIconClick = onSettingsClick,
         trailingIcon = UiIcon.Resource(resId = uiR.drawable.ic_plus),
         onTrailingIconClick = onAddClick
     )
+
+    private companion object {
+
+        private const val SCREEN_ID = "HomeMasterScreen"
+
+        private const val TOP_BAR_ID = "${SCREEN_ID}TopBar"
+
+        private const val BODY_ENTRY_LIST_ID = "${SCREEN_ID}EntryList"
+
+        private const val BODY_EMPTY_PLACEHOLDER_ID = "${SCREEN_ID}EmptyPlaceholder"
+
+        private const val BOTTOM_BAR_ID = "${SCREEN_ID}BottomBar"
+
+    }
+
 }

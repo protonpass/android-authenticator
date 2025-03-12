@@ -60,7 +60,7 @@ abstract class ScaffoldScreen : Screen {
                     .padding(all = ThemePadding.Medium)
             ) {
                 bodyContents.forEach { bodyContent ->
-                    key(bodyContent.id) {
+                    key(bodyContent.renderId) {
                         bodyContent.Render()
                     }
                 }

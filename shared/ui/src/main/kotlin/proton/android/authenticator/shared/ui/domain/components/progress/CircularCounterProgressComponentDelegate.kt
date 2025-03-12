@@ -35,6 +35,7 @@ private const val PROGRESS_ANIMATION_LABEL = "TOTP Progress Animation"
 private const val PROGRESS_ANIMATION_DURATION_MILLIS = 1_000
 
 internal class CircularCounterProgressComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val current: Int,
     private val total: Int
@@ -56,16 +57,19 @@ internal class CircularCounterProgressComponentDelegate(
         )
 
         ContainerComponent.Box(
+            renderId = renderId,
             modifier = modifier,
             contentAlignment = Alignment.Center,
             contents = {
                 listOf(
                     ProgressComponent.Circular(
+                        renderId = "$renderId-progress",
                         color = { Theme.colorScheme.signalSuccess },
                         trackColor = { Theme.colorScheme.signalSuccess.copy(alpha = 0.2f) },
                         progress = animatedProgress
                     ),
                     TextComponent.Standard(
+                        renderId = "$renderId-text",
                         text = UiText.Dynamic(value = current.toString()),
                         color = { Theme.colorScheme.textNorm },
                         style = { Theme.typography.compactMedium }

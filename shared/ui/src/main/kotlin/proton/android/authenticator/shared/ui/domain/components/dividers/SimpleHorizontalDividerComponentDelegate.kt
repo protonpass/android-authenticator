@@ -22,9 +22,11 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 
 internal class SimpleHorizontalDividerComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val thickness: Dp,
     private val color: Color
@@ -33,7 +35,7 @@ internal class SimpleHorizontalDividerComponentDelegate(
     @Composable
     override fun Render() {
         HorizontalDivider(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             thickness = thickness,
             color = color
         )

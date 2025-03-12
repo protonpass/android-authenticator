@@ -28,11 +28,13 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 internal sealed interface ImageComponent : Component {
 
     data class Icon(
+        override val renderId: String,
         private val icon: UiIcon,
         private val modifier: Modifier = Modifier,
         private val contentDescription: UiText? = null,
         private val alignment: Alignment = Alignment.Center
     ) : ImageComponent by IconImageComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         icon = icon,
         contentDescription = contentDescription,
@@ -40,11 +42,13 @@ internal sealed interface ImageComponent : Component {
     )
 
     data class Local(
+        override val renderId: String,
         private val image: UiImage,
         private val modifier: Modifier = Modifier,
         private val contentDescription: UiText? = null,
         private val alignment: Alignment = Alignment.Center
     ) : ImageComponent by LocalImageComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         image = image,
         contentDescription = contentDescription,
@@ -52,10 +56,12 @@ internal sealed interface ImageComponent : Component {
     )
 
     data class Network(
+        override val renderId: String,
         private val url: String,
         private val modifier: Modifier = Modifier,
         private val contentDescription: UiText? = null
     ) : ImageComponent by NetworkImageComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         url = url,
         contentDescription = contentDescription

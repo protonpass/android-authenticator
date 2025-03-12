@@ -23,9 +23,11 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class BoxContainerComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val contentAlignment: Alignment,
     private val contents: BoxScope.() -> List<Renderable>
@@ -34,7 +36,7 @@ internal class BoxContainerComponentDelegate(
     @Composable
     override fun Render() {
         Box(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             contentAlignment = contentAlignment
         ) {
             contents().forEach { content ->

@@ -34,7 +34,7 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SettingsSectionContent(
-    override val id: String,
+    override val renderId: String,
     private val name: UiText,
     private val settingsRows: List<SettingsRowContent>
 ) : Content {
@@ -42,17 +42,20 @@ data class SettingsSectionContent(
     @Composable
     override fun Render() {
         ContainerComponent.Vertical(
+            renderId = renderId,
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
             contents = {
                 listOf(
                     TextComponent.Standard(
+                        renderId = "$renderId-name",
                         modifier = Modifier.padding(start = ThemeSpacing.Medium),
                         text = name,
                         color = { Theme.colorScheme.textWeak },
                         style = { Theme.typography.header }
                     ),
                     ContainerComponent.Vertical(
+                        renderId = "$renderId-vertical",
                         modifier = Modifier
                             .fillMaxWidth()
                             .containerSection(),
@@ -63,6 +66,8 @@ data class SettingsSectionContent(
 
                                     if (index < settingsRows.lastIndex) {
                                         DividerComponent.SimpleHorizontal(
+                                            renderId = "$renderId-divider-$index",
+                                            modifier = Modifier.padding(vertical = ThemeSpacing.Small),
                                             color = Color.White.copy(alpha = 0.12f)
                                         ).also(::add)
                                     }

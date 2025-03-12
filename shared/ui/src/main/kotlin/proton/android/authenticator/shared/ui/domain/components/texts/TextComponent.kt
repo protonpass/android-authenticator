@@ -29,11 +29,13 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 internal sealed interface TextComponent : Component {
 
     data class Totp(
+        override val renderId: String,
         private val text: UiText,
         private val color: @Composable () -> Color,
         private val style: @Composable () -> TextStyle,
         private val modifier: Modifier = Modifier
     ) : TextComponent by TotpTextComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         text = text,
         color = color,
@@ -41,12 +43,14 @@ internal sealed interface TextComponent : Component {
     )
 
     data class Standard(
+        override val renderId: String,
         private val text: UiText,
         private val color: @Composable () -> Color,
         private val style: @Composable () -> TextStyle,
         private val modifier: Modifier = Modifier,
         private val textAlign: TextAlign? = null
     ) : TextComponent by StandardTextComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         text = text,
         color = color,

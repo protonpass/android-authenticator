@@ -36,7 +36,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class SettingsSimpleRowContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val icon: UiIcon? = null
 ) : SettingsRowContent {
@@ -44,6 +44,7 @@ data class SettingsSimpleRowContent(
     @Composable
     override fun Render() {
         ContainerComponent.Horizontal(
+            renderId = renderId,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = ThemePadding.Medium),
@@ -53,11 +54,13 @@ data class SettingsSimpleRowContent(
                 buildList {
                     if (icon != null) {
                         ImageComponent.Icon(
+                            renderId = "$renderId-icon",
                             icon = icon
                         ).also(::add)
                     }
 
                     TextComponent.Standard(
+                        renderId = "$renderId-title",
                         modifier = Modifier.weight(weight = 1f, fill = true),
                         text = title,
                         color = { Theme.colorScheme.textNorm },
@@ -65,6 +68,7 @@ data class SettingsSimpleRowContent(
                     ).also(::add)
 
                     IconComponent.Descriptive(
+                        renderId = "$renderId-chevron",
                         icon = UiIcon.Resource(resId = R.drawable.ic_chevron_tiny_right),
                         tint = { Theme.colorScheme.textWeak }
                     ).also(::add)

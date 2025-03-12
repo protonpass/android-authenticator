@@ -26,11 +26,13 @@ import proton.android.authenticator.shared.ui.domain.components.Component
 internal sealed interface ProgressComponent : Component {
 
     data class Circular(
+        override val renderId: String,
         private val modifier: Modifier = Modifier,
         private val color: @Composable () -> Color,
         private val trackColor: @Composable () -> Color,
         private val progress: Float
     ) : ProgressComponent by CircularProgressComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         color = color,
         trackColor = trackColor,
@@ -38,10 +40,12 @@ internal sealed interface ProgressComponent : Component {
     )
 
     data class CircularCounter(
+        override val renderId: String,
         private val current: Int,
         private val total: Int,
         private val modifier: Modifier = Modifier
     ) : ProgressComponent by CircularCounterProgressComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         current = current,
         total = total

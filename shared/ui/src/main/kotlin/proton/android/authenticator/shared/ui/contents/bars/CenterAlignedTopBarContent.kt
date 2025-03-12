@@ -28,7 +28,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 
 data class CenterAlignedTopBarContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val navigationIcon: UiIcon? = null,
     private val onNavigationClick: () -> Unit = {}
@@ -37,6 +37,7 @@ data class CenterAlignedTopBarContent(
     @Composable
     override fun Render() {
         BarComponent.TopCenterAligned(
+            renderId = renderId,
             modifier = Modifier
                 .fillMaxWidth()
                 .backgroundTopBarGradient(),

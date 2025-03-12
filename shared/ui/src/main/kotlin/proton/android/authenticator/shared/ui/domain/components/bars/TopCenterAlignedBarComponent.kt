@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.components.buttons.ButtonComponent
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
@@ -31,6 +32,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 internal class TopCenterAlignedBarComponent(
+    override val renderId: String,
     private val modifier: Modifier,
     private val title: UiText,
     private val navigationIcon: UiIcon? = null,
@@ -40,9 +42,10 @@ internal class TopCenterAlignedBarComponent(
     @[Composable OptIn(ExperimentalMaterial3Api::class)]
     override fun Render() {
         CenterAlignedTopAppBar(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             title = {
                 TextComponent.Standard(
+                    renderId = "$renderId-title",
                     text = title,
                     color = { Theme.colorScheme.textNorm },
                     style = { Theme.typography.emphasized }
@@ -51,6 +54,7 @@ internal class TopCenterAlignedBarComponent(
             navigationIcon = {
                 navigationIcon?.let { icon ->
                     ButtonComponent.Icon(
+                        renderId = "$renderId-navigation-icon",
                         icon = icon,
                         tint = { Theme.colorScheme.interactionPurple },
                         onClick = onNavigationClick

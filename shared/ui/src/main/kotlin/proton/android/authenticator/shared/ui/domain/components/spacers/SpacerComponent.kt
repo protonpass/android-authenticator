@@ -21,13 +21,17 @@ package proton.android.authenticator.shared.ui.domain.components.spacers
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.components.Component
 
-internal data class SpacerComponent(private val modifier: Modifier) : Component {
+internal data class SpacerComponent(
+    override val renderId: String,
+    private val modifier: Modifier
+) : Component {
 
     @Composable
     override fun Render() {
-        Spacer(modifier = modifier)
+        Spacer(modifier = modifier.testTag(tag = renderId))
     }
 
 }

@@ -37,7 +37,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 data class EmptyPlaceholderContent(
-    override val id: String,
+    override val renderId: String,
     private val title: UiText,
     private val subtitle: UiText
 ) : Content {
@@ -45,26 +45,31 @@ data class EmptyPlaceholderContent(
     @Composable
     override fun Render() {
         ContainerComponent.Box(
+            renderId = renderId,
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
             contents = {
                 listOf(
                     ContainerComponent.Vertical(
+                        renderId = "$renderId-content",
                         modifier = Modifier.padding(horizontal = ThemePadding.Large),
                         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         contents = {
                             listOf(
                                 ImageComponent.Local(
+                                    renderId = "$renderId-image",
                                     image = UiImage.Resource(resId = uiR.drawable.ic_placeholder_saturn)
                                 ),
                                 TextComponent.Standard(
+                                    renderId = "$renderId-title",
                                     text = title,
                                     color = { Theme.colorScheme.textNorm },
                                     style = { Theme.typography.monoNorm1 },
                                     textAlign = TextAlign.Center
                                 ),
                                 TextComponent.Standard(
+                                    renderId = "$renderId-subtitle",
                                     text = subtitle,
                                     color = { Theme.colorScheme.textNorm },
                                     style = { Theme.typography.monoNorm2 },

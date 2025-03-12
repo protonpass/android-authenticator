@@ -25,6 +25,7 @@ import proton.android.authenticator.shared.ui.domain.components.Component
 internal sealed interface SwipeComponent : Component {
 
     data class Actions(
+        override val renderId: String,
         private val content: Component,
         private val actions: RowScope.() -> List<Component>,
         private val isRevealed: Boolean,
@@ -32,6 +33,7 @@ internal sealed interface SwipeComponent : Component {
         private val onExpanded: () -> Unit = {},
         private val onCollapsed: () -> Unit = {}
     ) : SwipeComponent by ActionsSwipeComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         content = content,
         actions = actions,

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import proton.android.authenticator.shared.ui.domain.components.containers.ContainerComponent
 
 internal class DoubleHorizontalDividerComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val topThickness: Dp,
     private val topColor: Color,
@@ -35,14 +36,17 @@ internal class DoubleHorizontalDividerComponentDelegate(
     @Composable
     override fun Render() {
         ContainerComponent.Vertical(
+            renderId = renderId,
             modifier = modifier,
             contents = {
                 listOf(
                     DividerComponent.SimpleHorizontal(
+                        renderId = "$renderId-top",
                         thickness = topThickness,
                         color = topColor
                     ),
                     DividerComponent.SimpleHorizontal(
+                        renderId = "$renderId-bottom",
                         thickness = bottomThickness,
                         color = bottomColor
                     )

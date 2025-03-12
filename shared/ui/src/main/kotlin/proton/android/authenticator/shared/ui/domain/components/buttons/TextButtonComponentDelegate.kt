@@ -23,11 +23,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import proton.android.authenticator.shared.ui.domain.components.texts.TextComponent
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal data class TextButtonComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val onClick: () -> Unit,
     private val text: UiText,
@@ -39,13 +41,14 @@ internal data class TextButtonComponentDelegate(
     @Composable
     override fun Render() {
         Button(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             onClick = onClick,
             colors = ButtonDefaults.buttonColors().copy(
                 containerColor = color()
             )
         ) {
             TextComponent.Standard(
+                renderId = "$renderId-text",
                 text = text,
                 color = textColor,
                 style = textStyle

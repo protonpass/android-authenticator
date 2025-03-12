@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -30,6 +31,7 @@ import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal class NetworkImageComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val url: String,
     private val contentDescription: UiText?
@@ -46,7 +48,7 @@ internal class NetworkImageComponentDelegate(
         }
 
         AsyncImage(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             model = model,
             contentDescription = contentDescription?.asString(),
             contentScale = ContentScale.Crop,

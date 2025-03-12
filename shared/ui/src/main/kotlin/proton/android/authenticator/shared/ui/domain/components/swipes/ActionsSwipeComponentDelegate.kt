@@ -46,6 +46,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import kotlin.math.roundToInt
 
 internal class ActionsSwipeComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val content: Component,
     private val actions: RowScope.() -> List<Component>,
@@ -76,12 +77,14 @@ internal class ActionsSwipeComponentDelegate(
         }
 
         ContainerComponent.Box(
+            renderId = renderId,
             modifier = modifier
                 .fillMaxWidth()
                 .height(intrinsicSize = IntrinsicSize.Min),
             contents = {
                 listOf(
                     ContainerComponent.Horizontal(
+                        renderId = "$renderId-actions",
                         modifier = Modifier
                             .align(alignment = Alignment.CenterEnd)
                             .onSizeChanged { size ->
@@ -92,6 +95,7 @@ internal class ActionsSwipeComponentDelegate(
                         contents = actions
                     ),
                     ContainerComponent.Surface(
+                        renderId = "$renderId-content",
                         modifier = Modifier
                             .fillMaxSize()
                             .offset { IntOffset(offset.value.roundToInt(), 0) }

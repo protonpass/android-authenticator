@@ -21,8 +21,10 @@ package proton.android.authenticator.shared.ui.domain.components.textfields
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 
 internal class StandardTextFieldComponentDelegate(
+    override val renderId: String,
     private val value: String,
     private val onValueChange: (String) -> Unit,
     private val modifier: Modifier = Modifier
@@ -31,7 +33,7 @@ internal class StandardTextFieldComponentDelegate(
     @Composable
     override fun Render() {
         TextField(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             value = value,
             onValueChange = onValueChange
         )

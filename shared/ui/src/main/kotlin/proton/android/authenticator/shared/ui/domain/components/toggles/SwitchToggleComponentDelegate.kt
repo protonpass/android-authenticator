@@ -23,9 +23,11 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 internal class SwitchToggleComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val isChecked: Boolean,
     private val onCheckedChange: (Boolean) -> Unit
@@ -34,7 +36,7 @@ internal class SwitchToggleComponentDelegate(
     @Composable
     override fun Render() {
         Switch(
-            modifier = modifier,
+            modifier = modifier.testTag(tag = renderId),
             checked = isChecked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors().copy(

@@ -28,11 +28,13 @@ import proton.android.authenticator.shared.ui.domain.renders.Renderable
 internal sealed interface BarComponent : Component {
 
     data class BottomSelectableBar(
+        override val renderId: String,
         private val selectedContent: Renderable,
         private val unselectedContent: Renderable,
         private val isSelected: Boolean,
         private val modifier: Modifier = Modifier
     ) : BarComponent by BottomSelectableBarComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         isSelected = isSelected,
         selectedContent = selectedContent,
@@ -40,21 +42,25 @@ internal sealed interface BarComponent : Component {
     )
 
     data class TopApp(
+        override val renderId: String,
         private val title: TextComponent,
         private val modifier: Modifier = Modifier,
         private val actions: List<Component> = emptyList()
     ) : BarComponent by TopAppBarComponentDelegate(
+        renderId = renderId,
         modifier = modifier,
         title = title,
         actions = actions
     )
 
     data class TopCenterAligned(
+        override val renderId: String,
         private val title: UiText,
         private val modifier: Modifier = Modifier,
         private val navigationIcon: UiIcon? = null,
         private val onNavigationClick: () -> Unit = {}
     ) : BarComponent by TopCenterAlignedBarComponent(
+        renderId = renderId,
         modifier = modifier,
         title = title,
         navigationIcon = navigationIcon,

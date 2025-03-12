@@ -27,13 +27,14 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 data class SettingsVersionRowContent(
-    override val id: String,
+    override val renderId: String,
     private val text: UiText
 ) : SettingsRowContent {
 
     @Composable
     override fun Render() {
         TextComponent.Standard(
+            renderId = renderId,
             modifier = Modifier.fillMaxWidth(),
             text = text,
             color = { Theme.colorScheme.textWeak },

@@ -25,6 +25,7 @@ import proton.android.authenticator.shared.ui.domain.components.containers.Conta
 import proton.android.authenticator.shared.ui.domain.renders.Renderable
 
 internal class BottomSelectableBarComponentDelegate(
+    override val renderId: String,
     private val selectedContent: Renderable,
     private val unselectedContent: Renderable,
     private val isSelected: Boolean,
@@ -39,6 +40,7 @@ internal class BottomSelectableBarComponentDelegate(
         }
 
         ContainerComponent.Box(
+            renderId = renderId,
             modifier = modifier,
             contents = {
                 listOf(content)

@@ -30,6 +30,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 internal class TotpTextComponentDelegate(
+    override val renderId: String,
     private val modifier: Modifier,
     private val text: UiText,
     private val color: @Composable () -> Color,
@@ -41,6 +42,7 @@ internal class TotpTextComponentDelegate(
         val totp = text.asString()
 
         ContainerComponent.Horizontal(
+            renderId = renderId,
             modifier = modifier,
             horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall),
             contents = {
@@ -48,12 +50,14 @@ internal class TotpTextComponentDelegate(
                     totp.map { digit ->
                         if (digit.isDigit()) {
                             TextComponent.Standard(
+                                renderId = "$renderId-$digit",
                                 text = UiText.Dynamic(value = digit.toString()),
                                 color = { color() },
                                 style = { style() }
                             )
                         } else {
                             SpacerComponent(
+                                renderId = "$renderId-$digit-spacer",
                                 modifier = Modifier.width(width = ThemeSpacing.ExtraSmall)
                             )
                         }.also(::add)

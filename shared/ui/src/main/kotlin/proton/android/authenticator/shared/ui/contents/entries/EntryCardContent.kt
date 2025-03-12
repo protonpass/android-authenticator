@@ -47,7 +47,8 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 data class EntryCardContent(
-    override val id: String,
+    override val renderId: String,
+    private val id: String,
     private val imageUrl: String,
     private val name: UiText,
     private val label: UiText,
@@ -64,10 +65,12 @@ data class EntryCardContent(
     @Composable
     override fun Render() {
         SwipeComponent.Actions(
+            renderId = renderId,
             isRevealed = isRevealed,
             actions = {
                 listOf(
                     ContainerComponent.Vertical(
+                        renderId = "$renderId-actions",
                         modifier = Modifier
                             .fillMaxHeight()
                             .containerSection()
@@ -75,6 +78,7 @@ data class EntryCardContent(
                         contents = {
                             listOf(
                                 TextComponent.Standard(
+                                    renderId = "$renderId-edit",
                                     modifier = Modifier
                                         .weight(1f, fill = true)
                                         .clickable { onEditClick(id) },
@@ -84,6 +88,7 @@ data class EntryCardContent(
                                     style = { Theme.typography.body1Medium }
                                 ),
                                 TextComponent.Standard(
+                                    renderId = "$renderId-delete",
                                     modifier = Modifier
                                         .weight(1f, fill = true)
                                         .clickable { onDeleteClick(id) },
@@ -97,6 +102,7 @@ data class EntryCardContent(
                 )
             },
             content = ContainerComponent.Vertical(
+                renderId = "$renderId-content",
                 modifier = Modifier
                     .fillMaxWidth()
                     .containerSection()
@@ -104,6 +110,7 @@ data class EntryCardContent(
                 contents = {
                     listOf(
                         ContainerComponent.Horizontal(
+                            renderId = "$renderId-horizontal",
                             modifier = Modifier.padding(
                                 start = ThemePadding.Medium,
                                 top = ThemePadding.Medium,
@@ -114,23 +121,27 @@ data class EntryCardContent(
                             contents = {
                                 listOf(
                                     ImageComponent.Network(
+                                        renderId = "$renderId-image",
                                         modifier = Modifier
                                             .size(size = 30.dp)
                                             .clip(shape = RoundedCornerShape(size = 8.dp)),
                                         url = imageUrl
                                     ),
                                     ContainerComponent.Vertical(
+                                        renderId = "$renderId-vertical",
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .weight(weight = 1f, fill = true),
                                         contents = {
                                             listOf(
                                                 TextComponent.Standard(
+                                                    renderId = "$renderId-name",
                                                     text = name,
                                                     color = { Theme.colorScheme.textNorm },
                                                     style = { Theme.typography.body1Regular }
                                                 ),
                                                 TextComponent.Standard(
+                                                    renderId = "$renderId-label",
                                                     text = label,
                                                     color = { Theme.colorScheme.textWeak },
                                                     style = { Theme.typography.body2Regular }
@@ -139,6 +150,7 @@ data class EntryCardContent(
                                         }
                                     ),
                                     ProgressComponent.CircularCounter(
+                                        renderId = "$renderId-progress",
                                         modifier = Modifier.size(size = 36.dp),
                                         current = remainingSeconds,
                                         total = totalSeconds
@@ -147,6 +159,7 @@ data class EntryCardContent(
                             }
                         ),
                         DividerComponent.DoubleHorizontal(
+                            renderId = "$renderId-divider",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = ThemePadding.Small),
@@ -154,6 +167,7 @@ data class EntryCardContent(
                             bottomColor = Color.White.copy(alpha = 0.12f)
                         ),
                         ContainerComponent.Horizontal(
+                            renderId = "$renderId-horizontal",
                             modifier = Modifier.padding(
                                 start = ThemePadding.Medium,
                                 end = ThemePadding.Medium,
@@ -163,6 +177,7 @@ data class EntryCardContent(
                             contents = {
                                 listOf(
                                     TextComponent.Totp(
+                                        renderId = "$renderId-totp",
                                         modifier = Modifier.weight(weight = 1f, fill = true),
                                         text = currentCode,
                                         color = { Theme.colorScheme.textNorm },
@@ -172,6 +187,7 @@ data class EntryCardContent(
                                         }
                                     ),
                                     ContainerComponent.Vertical(
+                                        renderId = "$renderId-vertical",
                                         verticalArrangement = Arrangement.spacedBy(
                                             space = ThemeSpacing.ExtraSmall
                                         ),
@@ -179,6 +195,8 @@ data class EntryCardContent(
                                         contents = {
                                             listOf(
                                                 TextComponent.Standard(
+                                                    renderId = "$renderId-next",
+                                                    modifier = Modifier.padding(end = ThemePadding.Small),
                                                     text = UiText.Dynamic(value = "Next"),
                                                     color = { Theme.colorScheme.textWeak },
                                                     style = {
@@ -187,6 +205,7 @@ data class EntryCardContent(
                                                     }
                                                 ),
                                                 TextComponent.Standard(
+                                                    renderId = "$renderId-next-code",
                                                     text = nextCode,
                                                     color = { Theme.colorScheme.textNorm },
                                                     style = {
