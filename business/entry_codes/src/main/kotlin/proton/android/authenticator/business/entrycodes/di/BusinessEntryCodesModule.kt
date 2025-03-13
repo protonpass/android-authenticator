@@ -25,6 +25,8 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
 import proton.android.authenticator.business.entrycodes.application.find.FindEntryCodeQuery
 import proton.android.authenticator.business.entrycodes.application.find.FindEntryCodeQueryHandler
+import proton.android.authenticator.business.entrycodes.application.search.SearchEntryCodesQuery
+import proton.android.authenticator.business.entrycodes.application.search.SearchEntryCodesQueryHandler
 import proton.android.authenticator.shared.common.di.QueryHandlerKey
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
 import javax.inject.Singleton
@@ -34,5 +36,8 @@ internal abstract class BusinessEntryCodesModule {
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindEntryCodeQuery::class)]
     internal abstract fun bindFindEntryCodeQueryHandler(impl: FindEntryCodeQueryHandler): QueryHandler<*, *>
+
+    @[Binds Singleton IntoMap QueryHandlerKey(SearchEntryCodesQuery::class)]
+    internal abstract fun bindSearchEntryCodesQueryHandler(impl: SearchEntryCodesQueryHandler): QueryHandler<*, *>
 
 }

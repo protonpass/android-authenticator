@@ -16,15 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.business.entrycodes.application.search
 
-internal data class HomeMasterEntryModel(
-    internal val id: Int,
-    internal val name: String,
-    internal val issuer: String,
-    internal val currentCode: String,
-    internal val nextCode: String,
-    internal val remainingSeconds: Int,
-    internal val totalSeconds: Int,
-    internal val isRevealed: Boolean
-)
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
+
+data class SearchEntryCodesQuery(internal val uris: List<String>) : Query

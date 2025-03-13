@@ -57,8 +57,8 @@ internal class HomeMasterScreen(
                         renderId = "${BODY_ENTRY_LIST_ID}-${entry.id}",
                         id = entry.id.toString(),
                         imageUrl = "https://www.amazon.com/favicon.ico",
+                        issuer = UiText.Dynamic(value = entry.issuer),
                         name = UiText.Dynamic(value = entry.name),
-                        label = UiText.Dynamic(value = "amazon@email.com"),
                         currentCode = UiText.Dynamic(
                             value = entry.currentCode,
                             masks = listOf(UiTextMask.Totp)

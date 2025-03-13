@@ -19,10 +19,12 @@
 package proton.android.authenticator.business.entries.domain
 
 import kotlinx.datetime.Clock
+import kotlin.String
 
 internal class Entry private constructor(
     val id: Int,
     val name: String,
+    val issuer: String,
     val uri: String,
     val period: UShort,
     val note: String?,
@@ -36,6 +38,7 @@ internal class Entry private constructor(
         @Suppress("LongParameterList")
         internal fun create(
             name: String,
+            issuer: String,
             uri: String,
             period: UShort,
             note: String?,
@@ -44,6 +47,7 @@ internal class Entry private constructor(
         ): Entry = Entry(
             id = 0,
             name = name,
+            issuer = issuer,
             uri = uri,
             period = period,
             note = note,
@@ -56,6 +60,7 @@ internal class Entry private constructor(
         internal fun fromPrimitives(
             id: Int,
             name: String,
+            issuer: String,
             uri: String,
             period: UShort,
             note: String?,
@@ -65,6 +70,7 @@ internal class Entry private constructor(
         ): Entry = Entry(
             id = id,
             name = name,
+            issuer = issuer,
             uri = uri,
             period = period,
             note = note,

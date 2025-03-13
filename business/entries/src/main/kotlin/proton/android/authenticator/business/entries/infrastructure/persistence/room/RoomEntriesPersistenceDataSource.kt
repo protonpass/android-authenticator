@@ -53,12 +53,8 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
 
     override suspend fun delete(entry: Entry) {
         encryptionContextProvider.withEncryptionContext {
-
-            println("JIBIRI: delete entry: ${entry.id}")
-
             entry.toEntity(authenticatorClient, this@withEncryptionContext)
                 .also { entryEntity ->
-                    println("JIBIRI: delete entryEntity: $entryEntity")
                     entriesDao.delete(entryEntity)
                 }
         }
@@ -80,6 +76,7 @@ private fun Entry.toEntity(
     encryptionContext: EncryptionContext
 ): EntryEntity = AuthenticatorEntryModel(
     name = name,
+    issuer = issuer,
     uri = uri,
     period = period,
     note = note,
@@ -113,6 +110,7 @@ private fun EntryEntity.toDomain(
         Entry.fromPrimitives(
             id = id,
             name = entryModel.name,
+            issuer = entryModel.issuer,
             uri = entryModel.uri,
             period = entryModel.period,
             note = entryModel.note,

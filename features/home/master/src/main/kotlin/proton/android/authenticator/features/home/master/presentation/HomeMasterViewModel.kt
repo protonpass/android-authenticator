@@ -18,65 +18,91 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
+import app.cash.molecule.moleculeFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import proton.android.authenticator.business.entries.application.shared.responses.EntryQueryResponse
-import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
 import proton.android.authenticator.features.home.master.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
-import proton.android.authenticator.features.home.master.usecases.GetEntryCodeUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
+import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
 import javax.inject.Inject
+import kotlin.math.floor
 
-@HiltViewModel
+@[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeMasterViewModel @Inject constructor(
     private val createEntryUseCase: CreateEntryUseCase,
-    private val observeEntriesUseCase: ObserveEntriesUseCase,
-    private val getEntryCodeUseCase: GetEntryCodeUseCase,
+    observeEntriesUseCase: ObserveEntriesUseCase,
+    observeEntryCodesUseCase: ObserveEntryCodesUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase
 ) : ViewModel() {
+
+    private val entryCodePeriods = mutableSetOf<Int>()
+
+    private val entriesFlow = observeEntriesUseCase()
+        .onEach { entriesResponse ->
+            entriesResponse.forEach { entryResponse ->
+                entryCodePeriods.add(entryResponse.period)
+            }
+        }
+        .shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
+        )
+
+    private val entryCodesFlow = entriesFlow
+        .mapLatest { entriesResponse ->
+            entriesResponse.map { entryResponse -> entryResponse.uri }
+        }
+        .flatMapLatest { entryUris ->
+            observeEntryCodesUseCase(entryUris)
+        }
+
+    private val entryCodeRemainingTimesFlow = moleculeFlow(mode = RecompositionMode.Immediate) {
+        var remainingTimesMap by remember { mutableStateOf(emptyMap<Int, Int>()) }
+
+        LaunchedEffect(Unit) {
+            while (isActive) {
+                delay(1_000)
+                entryCodePeriods.forEach { period ->
+                    val remainingTime =
+                        period - floor(System.currentTimeMillis().toDouble() / 1000) % period
+
+                    remainingTimesMap += mapOf(period to remainingTime.toInt())
+                }
+            }
+        }
+
+        remainingTimesMap
+    }
 
     internal val stateFlow: StateFlow<HomeMasterState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
-        val entries = getEntries()
-        val entryCodes = getEntryCodes(entries)
         val state = HomeMasterState.create(
-            entries = entries,
-            entryCodes = entryCodes
+            entriesFlow = entriesFlow,
+            entryCodesFlow = entryCodesFlow,
+            entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow
         )
 
         state
-    }
-
-    @Composable
-    private fun getEntries(): List<EntryQueryResponse> {
-        val entriesResponse by observeEntriesUseCase().collectAsState(emptyList())
-
-        return entriesResponse
-    }
-
-    @Composable
-    private fun getEntryCodes(entries: List<EntryQueryResponse>): List<EntryCodeQueryResponse> {
-        val entryCodesResponse by entries
-            .map { entryResponse ->
-                getEntryCodeUseCase(entryResponse.uri)
-            }
-            .let { entryCodesFlows ->
-                combine(entryCodesFlows) { it.toList() }
-            }
-            .collectAsState(emptyList())
-
-        return entryCodesResponse
     }
 
     internal fun onCopyEntryCode(entryCode: String) {

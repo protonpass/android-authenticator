@@ -50,8 +50,8 @@ data class EntryCardContent(
     override val renderId: String,
     private val id: String,
     private val imageUrl: String,
+    private val issuer: UiText,
     private val name: UiText,
-    private val label: UiText,
     private val currentCode: UiText,
     private val nextCode: UiText,
     private val remainingSeconds: Int,
@@ -136,13 +136,13 @@ data class EntryCardContent(
                                             listOf(
                                                 TextComponent.Standard(
                                                     renderId = "$renderId-name",
-                                                    text = name,
+                                                    text = issuer,
                                                     color = { Theme.colorScheme.textNorm },
                                                     style = { Theme.typography.body1Regular }
                                                 ),
                                                 TextComponent.Standard(
                                                     renderId = "$renderId-label",
-                                                    text = label,
+                                                    text = name,
                                                     color = { Theme.colorScheme.textWeak },
                                                     style = { Theme.typography.body2Regular }
                                                 )

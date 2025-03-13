@@ -35,6 +35,7 @@ internal class CreateEntryCommandHandler @Inject constructor(
             .let { entryModel ->
                 Entry.create(
                     name = entryModel.name,
+                    issuer = entryModel.issuer,
                     uri = entryModel.uri,
                     period = entryModel.period,
                     note = entryModel.note,

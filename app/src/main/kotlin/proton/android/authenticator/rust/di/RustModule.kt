@@ -22,8 +22,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.datetime.Clock
 import proton.android.authenticator.commonrust.AuthenticatorMobileClient
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.commonrust.MobileCurrentTimeProvider
+import proton.android.authenticator.commonrust.MobileTotpGenerator
 import javax.inject.Singleton
 
 @Module
@@ -32,4 +35,16 @@ object RustModule {
 
     @[Provides Singleton]
     fun bindAuthenticatorMobileClient(): AuthenticatorMobileClientInterface = AuthenticatorMobileClient()
+
+    @[Provides Singleton]
+    fun provideMobileTotpGenerator(clock: Clock): MobileTotpGenerator = MobileTotpGenerator(
+        period = 500u,
+        onlyOnCodeChange = true,
+        currentTime = object : MobileCurrentTimeProvider {
+            override fun now(): ULong = clock.now()
+                .epochSeconds
+                .toULong()
+        }
+    )
+
 }

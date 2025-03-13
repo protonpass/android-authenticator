@@ -16,15 +16,14 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.business.entrycodes.application.shared.responses
 
-internal sealed interface HomeMasterScreenEvent {
+import proton.android.authenticator.business.entrycodes.domain.EntryCode
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryResponse
 
-    data object OnAddClick : HomeMasterScreenEvent
+data class EntryCodesQueryResponse(
+    val entryCodes: List<EntryCodeQueryResponse>
+) : QueryResponse
 
-    @JvmInline
-    value class OnDeleteClick(val entryId: Int) : HomeMasterScreenEvent
-
-    data object OnSettingsClick : HomeMasterScreenEvent
-
-}
+internal fun List<EntryCode>.toQueryResponse(): EntryCodesQueryResponse = map(EntryCode::toQueryResponse)
+    .let(::EntryCodesQueryResponse)

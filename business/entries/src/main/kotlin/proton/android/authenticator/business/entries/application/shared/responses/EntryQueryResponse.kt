@@ -24,6 +24,7 @@ import proton.android.authenticator.shared.common.domain.infrastructure.queries.
 data class EntryQueryResponse(
     val id: Int,
     val name: String,
+    val issuer: String,
     val uri: String,
     val period: Int
 ) : QueryResponse
@@ -31,6 +32,7 @@ data class EntryQueryResponse(
 internal fun Entry.toQueryResponse(): EntryQueryResponse = EntryQueryResponse(
     id = id,
     name = name,
+    issuer = issuer,
     uri = uri,
     period = period.toInt()
 )

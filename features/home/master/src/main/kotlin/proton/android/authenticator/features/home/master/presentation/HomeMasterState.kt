@@ -20,7 +20,10 @@ package proton.android.authenticator.features.home.master.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.entries.application.shared.responses.EntryQueryResponse
 import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
 
@@ -40,21 +43,27 @@ internal class HomeMasterState private constructor(
 
         @Composable
         internal fun create(
-            entries: List<EntryQueryResponse>,
-            entryCodes: List<EntryCodeQueryResponse>
+            entriesFlow: Flow<List<EntryQueryResponse>>,
+            entryCodesFlow: Flow<List<EntryCodeQueryResponse>>,
+            entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>
         ): HomeMasterState {
-            return entries
-                .zip(entryCodes) { entry, entryCode ->
-                    HomeMasterEntryModel(
-                        id = entry.id,
-                        name = entry.name,
-                        currentCode = entryCode.currentCode,
-                        nextCode = entryCode.nextCode,
-                        remainingSeconds = entryCode.remainingSeconds,
-                        totalSeconds = entry.period,
-                        isRevealed = false
-                    )
-                }
+            val entries by entriesFlow.collectAsState(emptyList())
+            val entryCodes by entryCodesFlow.collectAsState(emptyList())
+            val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
+
+
+            return entries.zip(entryCodes) { entry, entryCode ->
+                HomeMasterEntryModel(
+                    id = entry.id,
+                    name = entry.name,
+                    issuer = entry.issuer,
+                    currentCode = entryCode.currentCode,
+                    nextCode = entryCode.nextCode,
+                    remainingSeconds = entryCodesRemainingTimes.getOrDefault(entry.period, 0),
+                    totalSeconds = entry.period,
+                    isRevealed = false
+                )
+            }
                 .associateBy { entryModel -> entryModel.id }
                 .toMutableMap()
                 .let(::mutableStateOf)
