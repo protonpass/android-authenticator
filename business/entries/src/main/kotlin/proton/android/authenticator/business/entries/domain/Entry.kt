@@ -18,67 +18,25 @@
 
 package proton.android.authenticator.business.entries.domain
 
-import kotlinx.datetime.Clock
-import kotlin.String
+import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 
-internal class Entry private constructor(
+data class Entry(
     val id: Int,
-    val name: String,
-    val issuer: String,
-    val uri: String,
-    val period: UShort,
-    val note: String?,
-    val type: EntryType,
     val createdAt: Long,
-    val modifiedAt: Long
+    val modifiedAt: Long,
+    internal val model: AuthenticatorEntryModel
 ) {
 
-    internal companion object {
+    val issuer: String = model.issuer
 
-        @Suppress("LongParameterList")
-        internal fun create(
-            name: String,
-            issuer: String,
-            uri: String,
-            period: UShort,
-            note: String?,
-            type: Int,
-            clock: Clock
-        ): Entry = Entry(
-            id = 0,
-            name = name,
-            issuer = issuer,
-            uri = uri,
-            period = period,
-            note = note,
-            type = EntryType.from(type),
-            createdAt = clock.now().toEpochMilliseconds(),
-            modifiedAt = clock.now().toEpochMilliseconds()
-        )
+    val name: String = model.name
 
-        @Suppress("LongParameterList")
-        internal fun fromPrimitives(
-            id: Int,
-            name: String,
-            issuer: String,
-            uri: String,
-            period: UShort,
-            note: String?,
-            type: Int,
-            createdAt: Long,
-            modifiedAt: Long
-        ): Entry = Entry(
-            id = id,
-            name = name,
-            issuer = issuer,
-            uri = uri,
-            period = period,
-            note = note,
-            type = EntryType.from(type),
-            createdAt = createdAt,
-            modifiedAt = modifiedAt
-        )
+    val note: String? = model.note
 
-    }
+    val period: Int = model.period.toInt()
+
+    val type: EntryType = EntryType.from(value = model.entryType.ordinal)
+
+    val uri: String = model.uri
 
 }

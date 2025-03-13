@@ -19,22 +19,18 @@
 package proton.android.authenticator.features.home.master.presentation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.entries.application.shared.responses.EntryQueryResponse
+import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
 
 internal class HomeMasterState private constructor(
-    private val entryModelsMap: MutableState<MutableMap<Int, HomeMasterEntryModel>>
+    private val entryModelsMap: Map<Int, HomeMasterEntryModel>
 ) {
 
     internal val entryModels: List<HomeMasterEntryModel>
-        get() = entryModelsMap
-            .value
-            .values
+        get() = entryModelsMap.values
             .toList()
 
     internal val hasEntryModels: Boolean = entryModels.isNotEmpty()
@@ -43,7 +39,7 @@ internal class HomeMasterState private constructor(
 
         @Composable
         internal fun create(
-            entriesFlow: Flow<List<EntryQueryResponse>>,
+            entriesFlow: Flow<List<Entry>>,
             entryCodesFlow: Flow<List<EntryCodeQueryResponse>>,
             entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>
         ): HomeMasterState {
@@ -60,13 +56,10 @@ internal class HomeMasterState private constructor(
                     currentCode = entryCode.currentCode,
                     nextCode = entryCode.nextCode,
                     remainingSeconds = entryCodesRemainingTimes.getOrDefault(entry.period, 0),
-                    totalSeconds = entry.period,
-                    isRevealed = false
+                    totalSeconds = entry.period
                 )
             }
                 .associateBy { entryModel -> entryModel.id }
-                .toMutableMap()
-                .let(::mutableStateOf)
                 .let(::HomeMasterState)
         }
 

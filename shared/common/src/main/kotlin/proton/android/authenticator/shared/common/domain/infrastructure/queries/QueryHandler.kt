@@ -20,7 +20,7 @@ package proton.android.authenticator.shared.common.domain.infrastructure.queries
 
 import kotlinx.coroutines.flow.Flow
 
-interface QueryHandler<in Q : Query, out R : QueryResponse> {
+interface QueryHandler<in Q : Query, out R : Any> {
 
     fun handle(query: Q): Flow<R>
 

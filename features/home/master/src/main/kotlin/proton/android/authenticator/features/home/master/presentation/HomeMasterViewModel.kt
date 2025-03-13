@@ -57,9 +57,9 @@ internal class HomeMasterViewModel @Inject constructor(
     private val entryCodePeriods = mutableSetOf<Int>()
 
     private val entriesFlow = observeEntriesUseCase()
-        .onEach { entriesResponse ->
-            entriesResponse.forEach { entryResponse ->
-                entryCodePeriods.add(entryResponse.period)
+        .onEach { entries ->
+            entries.forEach { entry ->
+                entryCodePeriods.add(entry.period)
             }
         }
         .shareIn(
@@ -68,8 +68,8 @@ internal class HomeMasterViewModel @Inject constructor(
         )
 
     private val entryCodesFlow = entriesFlow
-        .mapLatest { entriesResponse ->
-            entriesResponse.map { entryResponse -> entryResponse.uri }
+        .mapLatest { entries ->
+            entries.map { entry -> entry.uri }
         }
         .flatMapLatest { entryUris ->
             observeEntryCodesUseCase(entryUris)
@@ -80,13 +80,14 @@ internal class HomeMasterViewModel @Inject constructor(
 
         LaunchedEffect(Unit) {
             while (isActive) {
-                delay(1_000)
                 entryCodePeriods.forEach { period ->
                     val remainingTime =
                         period - floor(System.currentTimeMillis().toDouble() / 1000) % period
 
                     remainingTimesMap += mapOf(period to remainingTime.toInt())
                 }
+
+                delay(REMAINING_TIME_INTERVAL_MILLIS)
             }
         }
 
@@ -113,6 +114,12 @@ internal class HomeMasterViewModel @Inject constructor(
         viewModelScope.launch {
             deleteEntryUseCase(id = entryId.toInt())
         }
+    }
+
+    private companion object {
+
+        private const val REMAINING_TIME_INTERVAL_MILLIS = 1_000L
+
     }
 
 }

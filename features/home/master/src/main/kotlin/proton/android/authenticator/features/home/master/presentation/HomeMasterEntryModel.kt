@@ -25,6 +25,5 @@ internal data class HomeMasterEntryModel(
     internal val currentCode: String,
     internal val nextCode: String,
     internal val remainingSeconds: Int,
-    internal val totalSeconds: Int,
-    internal val isRevealed: Boolean
+    internal val totalSeconds: Int
 )

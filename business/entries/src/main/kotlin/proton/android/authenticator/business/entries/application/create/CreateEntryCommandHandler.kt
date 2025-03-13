@@ -31,21 +31,16 @@ internal class CreateEntryCommandHandler @Inject constructor(
 ) : CommandHandler<CreateEntryCommand> {
 
     override suspend fun handle(command: CreateEntryCommand) {
-        authenticatorClient.entryFromUri(uri = command.uri)
-            .let { entryModel ->
-                Entry.create(
-                    name = entryModel.name,
-                    issuer = entryModel.issuer,
-                    uri = entryModel.uri,
-                    period = entryModel.period,
-                    note = entryModel.note,
-                    type = entryModel.entryType.ordinal,
-                    clock = clock
-                )
-            }
-            .also { newEntry ->
-                creator.create(newEntry)
-            }
+        val currentTimestamp = clock.now().toEpochMilliseconds()
+
+        Entry(
+            id = 0,
+            model = authenticatorClient.entryFromUri(uri = command.uri),
+            createdAt = currentTimestamp,
+            modifiedAt = currentTimestamp
+        ).also { newEntry ->
+            creator.create(newEntry)
+        }
     }
 
 }

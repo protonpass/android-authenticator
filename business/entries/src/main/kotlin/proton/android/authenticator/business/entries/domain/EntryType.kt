@@ -18,9 +18,16 @@
 
 package proton.android.authenticator.business.entries.domain
 
-internal enum class EntryType(val value: Int) {
+import proton.android.authenticator.commonrust.AuthenticatorEntryType
+
+enum class EntryType(val value: Int) {
     TOTP(value = 0),
     STEAM(value = 1);
+
+    internal fun asAuthenticatorEntryType(): AuthenticatorEntryType = when (this) {
+        TOTP -> AuthenticatorEntryType.TOTP
+        STEAM -> AuthenticatorEntryType.STEAM
+    }
 
     internal companion object {
 

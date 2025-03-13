@@ -19,18 +19,14 @@
 package proton.android.authenticator.business.entries.application.findall
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import proton.android.authenticator.business.entries.application.shared.responses.EntriesQueryResponse
-import proton.android.authenticator.business.entries.application.shared.responses.toQueryResponse
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
 import javax.inject.Inject
 
 internal class FindAllEntriesQueryHandler @Inject constructor(
     private val finder: AllEntriesFinder
-) : QueryHandler<FindAllEntriesQuery, EntriesQueryResponse> {
+) : QueryHandler<FindAllEntriesQuery, List<Entry>> {
 
-    override fun handle(query: FindAllEntriesQuery): Flow<EntriesQueryResponse> = finder.findAll()
-        .map(List<Entry>::toQueryResponse)
+    override fun handle(query: FindAllEntriesQuery): Flow<List<Entry>> = finder.findAll()
 
 }

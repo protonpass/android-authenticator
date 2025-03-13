@@ -25,7 +25,6 @@ import proton.android.authenticator.business.shared.domain.infrastructure.persis
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntryEntity
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.AuthenticatorEntryType
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContext
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
@@ -78,12 +77,12 @@ private fun Entry.toEntity(
     name = name,
     issuer = issuer,
     uri = uri,
-    period = period,
+    period = period.toUShort(),
     note = note,
-    entryType = AuthenticatorEntryType.TOTP
+    entryType = type.asAuthenticatorEntryType()
 )
     .let { entryModel ->
-        authenticatorClient.serializeEntries(listOf(entryModel)).first()
+        authenticatorClient.serializeEntry(entryModel)
     }
     .let { decryptedEntityContent ->
         encryptionContext.encrypt(decryptedEntityContent, EncryptionTag.EntryContent)
@@ -103,18 +102,12 @@ private fun EntryEntity.toDomain(
     authenticatorClient: AuthenticatorMobileClientInterface
 ): Entry = encryptionContext.decrypt(content, EncryptionTag.EntryContent)
     .let { decryptedEntityContent ->
-        authenticatorClient.deserializeEntries(listOf(decryptedEntityContent))
-            .first()
+        authenticatorClient.deserializeEntry(decryptedEntityContent)
     }
     .let { entryModel ->
-        Entry.fromPrimitives(
+        Entry(
             id = id,
-            name = entryModel.name,
-            issuer = entryModel.issuer,
-            uri = entryModel.uri,
-            period = entryModel.period,
-            note = entryModel.note,
-            type = entryModel.entryType.ordinal,
+            model = entryModel,
             createdAt = createdAt,
             modifiedAt = modifiedAt
         )
