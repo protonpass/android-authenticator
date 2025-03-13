@@ -85,6 +85,8 @@ feature-library-implementation = [
     "androidx-hilt-navigation-compose",
     "androidx-lifecycle-runtime-compose",
     "androidx-lifecycle-runtime-ktx",
+    "androidx-material3",
+    "androidx-ui",
     "hilt-android",
     "molecule",
 ]

@@ -28,10 +28,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-internal object ThemeTypography {
+object ThemeTypography {
 
     @Stable
-    internal val body1Medium: TextStyle
+    val body1Medium: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -41,7 +41,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val body1Regular: TextStyle
+    val body1Regular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -51,7 +51,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val body2Medium: TextStyle
+    val body2Medium: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -61,7 +61,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val body2Regular: TextStyle
+    val body2Regular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -71,7 +71,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val captionRegular: TextStyle
+    val captionRegular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -81,7 +81,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val compactMedium: TextStyle
+    val compactMedium: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -91,7 +91,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val emphasized: TextStyle
+    val emphasized: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -101,7 +101,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val header: TextStyle
+    val header: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -111,7 +111,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val headline: TextStyle
+    val headline: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -121,7 +121,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val monoMedium1: TextStyle
+    val monoMedium1: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.Monospace,
@@ -130,7 +130,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val monoMedium2: TextStyle
+    val monoMedium2: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.Monospace,
@@ -140,17 +140,17 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val monoNorm1: TextStyle
+    val monoNorm1: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.Normal,
-            fontSize = 18.sp,
-            lineHeight = 18.sp
+            fontSize = 20.sp,
+            lineHeight = 20.sp
         )
 
     @Stable
-    internal val monoNorm2: TextStyle
+    val monoNorm2: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.Monospace,
@@ -160,7 +160,7 @@ internal object ThemeTypography {
         )
 
     @Stable
-    internal val title: TextStyle
+    val title: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
@@ -171,7 +171,7 @@ internal object ThemeTypography {
 
 }
 
-internal val ThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> =
+val ThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> =
     staticCompositionLocalOf {
         ThemeTypography
     }

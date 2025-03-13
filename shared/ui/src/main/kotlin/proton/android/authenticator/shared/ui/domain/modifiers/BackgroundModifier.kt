@@ -35,21 +35,20 @@ import androidx.compose.ui.unit.IntSize
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 @Stable
-internal fun Modifier.backgroundScreenGradient() = composed {
+fun Modifier.backgroundScreenGradient() = composed {
     background(
         brush = Brush.verticalGradient(
             colors = listOf(
                 Theme.colorScheme.gradientBackgroundColor1,
                 Theme.colorScheme.gradientBackgroundColor2,
-                Theme.colorScheme.gradientBackgroundColor3,
-                Theme.colorScheme.gradientBackgroundColor4
+                Theme.colorScheme.gradientBackgroundColor3
             )
         )
     )
 }
 
 @Stable
-internal fun Modifier.backgroundTopBarGradient() = composed {
+fun Modifier.backgroundTopBarGradient() = composed {
     var x by remember { mutableFloatStateOf(0f) }
     var size by remember { mutableStateOf(IntSize.Zero) }
 

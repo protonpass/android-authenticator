@@ -62,7 +62,7 @@ internal fun Modifier.containerBanner() = composed {
                     Theme.colorScheme.gradientBannerColor4,
                     Theme.colorScheme.gradientBannerColor5,
                     Theme.colorScheme.gradientBannerColor6,
-                    Theme.colorScheme.gradientBannerColor6,
+                    Theme.colorScheme.gradientBannerColor7,
                     Theme.colorScheme.gradientBannerColor8,
                     Theme.colorScheme.gradientBannerColor9,
                     Theme.colorScheme.gradientBannerColor10
@@ -78,7 +78,7 @@ internal fun Modifier.containerBanner() = composed {
 }
 
 @Stable
-internal fun Modifier.containerSection() = composed {
+fun Modifier.containerSection() = composed {
     val shape = RoundedCornerShape(size = 16.dp)
 
     clip(shape = shape)
@@ -87,7 +87,7 @@ internal fun Modifier.containerSection() = composed {
             color = Color.White.copy(alpha = 0.12f),
             shape = shape
         )
-        .background(color = Color.Black)
+        .background(color = Color.White.copy(alpha = 0.1f))
 }
 
 @Stable

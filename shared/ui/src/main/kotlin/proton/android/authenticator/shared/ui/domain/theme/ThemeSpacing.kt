@@ -21,24 +21,24 @@ package proton.android.authenticator.shared.ui.domain.theme
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.dp
 
-internal object ThemeSpacing {
+object ThemeSpacing {
 
     @Stable
-    internal val None = 0.dp
+    val None = 0.dp
 
     @Stable
-    internal val ExtraSmall = 4.dp
+    val ExtraSmall = 4.dp
 
     @Stable
-    internal val Small = 8.dp
+    val Small = 8.dp
 
     @Stable
-    internal val Medium = 16.dp
+    val Medium = 16.dp
 
     @Stable
-    internal val MediumLarge = 24.dp
+    val MediumLarge = 24.dp
 
     @Stable
-    internal val Large = 32.dp
+    val Large = 32.dp
 
 }

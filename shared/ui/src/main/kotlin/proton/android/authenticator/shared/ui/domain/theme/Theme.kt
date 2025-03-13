@@ -45,13 +45,13 @@ fun Theme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () 
     }
 }
 
-internal object Theme {
+object Theme {
 
-    internal val colorScheme: ThemeColors
+    val colorScheme: ThemeColors
         @[Composable ReadOnlyComposable]
         get() = ThemeColorScheme.current
 
-    internal val typography: ThemeTypography
+    val typography: ThemeTypography
         @[Composable ReadOnlyComposable]
         get() = ThemeTypographyScheme.current
 

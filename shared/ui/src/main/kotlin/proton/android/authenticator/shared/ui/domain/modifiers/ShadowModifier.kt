@@ -133,7 +133,7 @@ internal fun Modifier.innerShadow(
 }
 
 @Stable
-internal fun Modifier.dropShadow(
+fun Modifier.dropShadow(
     shape: Shape,
     color: Color = Color.White.copy(alpha = 0.08f),
     blur: Dp = 1.dp,

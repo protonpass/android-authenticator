@@ -25,10 +25,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 
-internal object ThemeShadow {
+object ThemeShadow {
 
     @Stable
-    internal val TextDefault: Shadow
+    val TextDefault: Shadow
         @[Composable ReadOnlyComposable]
         get() = Shadow(
             color = Color.Black,

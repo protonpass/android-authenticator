@@ -21,12 +21,12 @@ package proton.android.authenticator.shared.ui.domain.theme
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.unit.dp
 
-internal object ThemeThickness {
+object ThemeThickness {
 
     @Stable
-    internal val None = 0.dp
+    val None = 0.dp
 
     @Stable
-    internal val Small = 1.dp
+    val Small = 1.dp
 
 }
