@@ -27,8 +27,6 @@ class SettingsMasterScreenRenderer(
     private val onNavigationClick: () -> Unit
 ) : Renderable {
 
-    override val renderId: String = "SettingsMasterScreenRenderer"
-
     @Composable
     override fun Render() = with(hiltViewModel<SettingsMasterViewModel>()) {
         SettingsScreen(onNavigationClick = onNavigationClick)

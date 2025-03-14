@@ -16,7 +16,6 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(project(":features:home:detail"))
     implementation(project(":features:home:master"))
     implementation(project(":features:settings:master"))
     implementation(project(":shared:ui"))

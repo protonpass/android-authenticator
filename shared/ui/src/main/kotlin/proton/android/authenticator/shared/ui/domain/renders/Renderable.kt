@@ -22,8 +22,6 @@ import androidx.compose.runtime.Composable
 
 interface Renderable {
 
-    val renderId: String
-
     @Composable
     fun Render()
 
