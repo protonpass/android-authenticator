@@ -18,20 +18,26 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
-import proton.android.authenticator.shared.ui.domain.renders.Renderable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import proton.android.authenticator.features.settings.master.R
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
-class SettingsMasterScreenRenderer(
-    private val onNavigationClick: () -> Unit
-) : Renderable {
-
-    override val renderId: String = "SettingsMasterScreenRenderer"
-
-    @Composable
-    override fun Render() = with(hiltViewModel<SettingsMasterViewModel>()) {
-        SettingsScreen(onNavigationClick = onNavigationClick)
-    }
-
+@Composable
+internal fun SettingsVersionRow() {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = ThemePadding.Medium),
+        text = stringResource(id = R.string.settings_app_version),
+        color = Theme.colorScheme.textWeak,
+        style = Theme.typography.captionRegular,
+        textAlign = TextAlign.Center
+    )
 }

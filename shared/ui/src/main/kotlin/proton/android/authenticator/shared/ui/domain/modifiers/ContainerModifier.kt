@@ -39,7 +39,7 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Stable
-internal fun Modifier.containerBanner() = composed {
+fun Modifier.containerBanner() = composed {
     val shape = RoundedCornerShape(size = 16.dp)
     var y by remember { mutableFloatStateOf(0f) }
 
