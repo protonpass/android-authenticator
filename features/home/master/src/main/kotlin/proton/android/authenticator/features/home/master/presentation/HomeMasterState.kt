@@ -23,7 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.entries.domain.Entry
-import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
+import proton.android.authenticator.business.entrycodes.domain.EntryCode
 
 internal class HomeMasterState private constructor(
     private val entryModelsMap: Map<Int, HomeMasterEntryModel>
@@ -40,13 +40,12 @@ internal class HomeMasterState private constructor(
         @Composable
         internal fun create(
             entriesFlow: Flow<List<Entry>>,
-            entryCodesFlow: Flow<List<EntryCodeQueryResponse>>,
+            entryCodesFlow: Flow<List<EntryCode>>,
             entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>
         ): HomeMasterState {
             val entries by entriesFlow.collectAsState(emptyList())
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
-
 
             return entries.zip(entryCodes) { entry, entryCode ->
                 HomeMasterEntryModel(

@@ -45,10 +45,9 @@ internal class EntryCodesSearcher @Inject constructor(
                 callback = object : MobileTotpGeneratorCallback {
                     override fun onCodes(codes: List<AuthenticatorCodeResponse>) {
                         codes.map { entryCodeResponse ->
-                            EntryCode.fromPrimitives(
+                            EntryCode(
                                 currentCode = entryCodeResponse.currentCode,
-                                nextCode = entryCodeResponse.nextCode,
-                                remainingSeconds = 44
+                                nextCode = entryCodeResponse.nextCode
                             )
                         }.also(::trySend)
                     }

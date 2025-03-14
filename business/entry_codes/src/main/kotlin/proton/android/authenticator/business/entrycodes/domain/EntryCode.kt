@@ -18,24 +18,7 @@
 
 package proton.android.authenticator.business.entrycodes.domain
 
-internal class EntryCode private constructor(
+data class EntryCode(
     val currentCode: String,
-    val nextCode: String,
-    val remainingSeconds: Int
-) {
-
-    internal companion object {
-
-        internal fun fromPrimitives(
-            currentCode: String,
-            nextCode: String,
-            remainingSeconds: Int
-        ): EntryCode = EntryCode(
-            currentCode = currentCode,
-            nextCode = nextCode,
-            remainingSeconds = remainingSeconds
-        )
-
-    }
-
-}
+    val nextCode: String
+)

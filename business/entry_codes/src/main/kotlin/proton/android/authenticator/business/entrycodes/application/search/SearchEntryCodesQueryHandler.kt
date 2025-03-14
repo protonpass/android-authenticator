@@ -19,19 +19,15 @@
 package proton.android.authenticator.business.entrycodes.application.search
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodesQueryResponse
-import proton.android.authenticator.business.entrycodes.application.shared.responses.toQueryResponse
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
 import javax.inject.Inject
 
 internal class SearchEntryCodesQueryHandler @Inject constructor(
     private val searcher: EntryCodesSearcher
-) : QueryHandler<SearchEntryCodesQuery, EntryCodesQueryResponse> {
+) : QueryHandler<SearchEntryCodesQuery, List<EntryCode>> {
 
-    override fun handle(query: SearchEntryCodesQuery): Flow<EntryCodesQueryResponse> = query.uris
+    override fun handle(query: SearchEntryCodesQuery): Flow<List<EntryCode>> = query.uris
         .let(searcher::search)
-        .map(List<EntryCode>::toQueryResponse)
 
 }

@@ -19,17 +19,14 @@
 package proton.android.authenticator.features.home.master.usecases
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import proton.android.authenticator.business.entrycodes.application.search.SearchEntryCodesQuery
-import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodeQueryResponse
-import proton.android.authenticator.business.entrycodes.application.shared.responses.EntryCodesQueryResponse
+import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
 
 internal class ObserveEntryCodesUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    internal operator fun invoke(uris: List<String>): Flow<List<EntryCodeQueryResponse>> = SearchEntryCodesQuery(uris)
-        .let { query -> queryBus.ask<EntryCodesQueryResponse>(query) }
-        .map { entryCodesResponse -> entryCodesResponse.entryCodes }
+    internal operator fun invoke(uris: List<String>): Flow<List<EntryCode>> = SearchEntryCodesQuery(uris)
+        .let { query -> queryBus.ask(query) }
 
 }
