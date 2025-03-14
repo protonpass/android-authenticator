@@ -1,7 +1,7 @@
 [versions]
 activityCompose = "1.9.3"
 agpVersion = "8.7.3"
-authenticatorCommonVersion = "0.15.0"
+authenticatorCommonVersion = "0.15.1"
 coilVersion = "2.4.0"
 composeBomVersion = "2025.02.00"
 composeNavigationVersion = "2.8.7"
