@@ -38,7 +38,7 @@ object RustModule {
 
     @[Provides Singleton]
     fun provideMobileTotpGenerator(clock: Clock): MobileTotpGenerator = MobileTotpGenerator(
-        period = 500u,
+        periodMs = 500u,
         onlyOnCodeChange = true,
         currentTime = object : MobileCurrentTimeProvider {
             override fun now(): ULong = clock.now()

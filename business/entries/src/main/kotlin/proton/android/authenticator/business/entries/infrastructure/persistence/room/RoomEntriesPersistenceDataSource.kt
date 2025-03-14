@@ -74,8 +74,10 @@ private fun Entry.toEntity(
     authenticatorClient: AuthenticatorMobileClientInterface,
     encryptionContext: EncryptionContext
 ): EntryEntity = AuthenticatorEntryModel(
+    id = id.toString(),
     name = name,
     issuer = issuer,
+    secret = secret,
     uri = uri,
     period = period.toUShort(),
     note = note,

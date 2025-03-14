@@ -24,7 +24,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
                         destination = SettingsNavigationDestination
                     ).also(onNavigate)
                 },
-                onAddClick = {
+                onNewEntryClick = {
                     NavigationCommand.NavigateTo(
                         destination = SettingsNavigationDestination
                     ).also(onNavigate)

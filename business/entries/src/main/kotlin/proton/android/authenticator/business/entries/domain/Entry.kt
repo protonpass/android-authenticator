@@ -35,6 +35,8 @@ data class Entry(
 
     val period: Int = model.period.toInt()
 
+    val secret: String = model.secret
+
     val type: EntryType = EntryType.from(value = model.entryType.ordinal)
 
     val uri: String = model.uri

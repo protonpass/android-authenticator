@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,9 +47,10 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
-internal fun HomeEntry(entryModel: HomeMasterEntryModel) {
+internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: HomeMasterEntryModel) -> Unit) {
     Column(
         modifier = Modifier
+            .clickable { onClick(entryModel) }
             .fillMaxWidth()
             .containerSection()
     ) {

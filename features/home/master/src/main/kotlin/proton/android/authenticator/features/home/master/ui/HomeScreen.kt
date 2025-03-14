@@ -23,11 +23,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 
 @Composable
-internal fun HomeScreen(state: HomeMasterState, onSettingsClick: () -> Unit) = with(state) {
+internal fun HomeScreen(
+    state: HomeMasterState,
+    onEntryQueryChange: (String) -> Unit,
+    onNewEntryClick: () -> Unit,
+    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
+    onSettingsClick: () -> Unit
+) = with(state) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -37,13 +44,17 @@ internal fun HomeScreen(state: HomeMasterState, onSettingsClick: () -> Unit) = w
             HomeTopBar(onSettingsClick = onSettingsClick)
         },
         bottomBar = {
-
+            HomeBottomBar(
+                onEntryQueryChange = onEntryQueryChange,
+                onNewEntryClick = onNewEntryClick
+            )
         }
     ) { paddingValues ->
         if (hasEntryModels) {
             HomeEntries(
                 paddingValues = paddingValues,
-                entryModels = entryModels
+                entryModels = entryModels,
+                onEntryClick = onDeleteEntryClick
             )
         } else {
             HomeEmpty(paddingValues = paddingValues)

@@ -41,11 +41,13 @@ internal class HomeMasterState private constructor(
         internal fun create(
             entriesFlow: Flow<List<Entry>>,
             entryCodesFlow: Flow<List<EntryCode>>,
-            entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>
+            entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>,
+            entrySearchQueryFlow: Flow<String>
         ): HomeMasterState {
             val entries by entriesFlow.collectAsState(emptyList())
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
+            val entrySearchQuery by entrySearchQueryFlow.collectAsState("")
 
             return entries.zip(entryCodes) { entry, entryCode ->
                 HomeMasterEntryModel(
@@ -58,6 +60,10 @@ internal class HomeMasterState private constructor(
                     totalSeconds = entry.period
                 )
             }
+                .filter { entryModel ->
+                    if (entrySearchQuery.isEmpty()) true
+                    else entryModel.name.contains(entrySearchQuery, ignoreCase = true)
+                }
                 .associateBy { entryModel -> entryModel.id }
                 .let(::HomeMasterState)
         }

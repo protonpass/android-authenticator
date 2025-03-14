@@ -28,7 +28,7 @@ import proton.android.authenticator.shared.ui.domain.renders.Renderable
 class HomeMasterScreenRenderer(
     private val onEditEntryClick: (String) -> Unit,
     private val onSettingsClick: () -> Unit,
-    private val onAddClick: () -> Unit
+    private val onNewEntryClick: () -> Unit
 ) : Renderable {
 
     override val renderId: String = "HomeMasterScreenRenderer"
@@ -39,6 +39,9 @@ class HomeMasterScreenRenderer(
 
         HomeScreen(
             state = state,
+            onEntryQueryChange = ::onUpdateEntrySearchQuery,
+            onNewEntryClick = onNewEntryClick,
+            onDeleteEntryClick = ::onDeleteEntry,
             onSettingsClick = onSettingsClick
         )
     }

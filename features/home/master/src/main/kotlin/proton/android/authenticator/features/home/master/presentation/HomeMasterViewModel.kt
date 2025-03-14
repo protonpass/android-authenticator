@@ -30,9 +30,12 @@ import app.cash.molecule.launchMolecule
 import app.cash.molecule.moleculeFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
@@ -55,6 +58,15 @@ internal class HomeMasterViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val entryCodePeriods = mutableSetOf<Int>()
+
+    private val entrySearchQueryFlow = MutableStateFlow(SEARCH_QUERY_DEFAULT_VALUE)
+
+    @OptIn(FlowPreview::class)
+    private val entrySearchQueryDebouncedFlow = entrySearchQueryFlow
+        .debounce { entrySearchQuery ->
+            if (entrySearchQuery.isEmpty()) SEARCH_QUERY_EMPTY_DEBOUNCE_MILLIS
+            else SEARCH_QUERY_DEBOUNCE_MILLIS
+        }
 
     private val entriesFlow = observeEntriesUseCase()
         .onEach { entries ->
@@ -98,6 +110,7 @@ internal class HomeMasterViewModel @Inject constructor(
         mode = RecompositionMode.Immediate
     ) {
         val state = HomeMasterState.create(
+            entrySearchQueryFlow = entrySearchQueryDebouncedFlow,
             entriesFlow = entriesFlow,
             entryCodesFlow = entryCodesFlow,
             entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow
@@ -106,19 +119,25 @@ internal class HomeMasterViewModel @Inject constructor(
         state
     }
 
-    internal fun onCopyEntryCode(entryCode: String) {
-        println("JIBIRI: copy entry code: $entryCode")
+    internal fun onDeleteEntry(entryModel: HomeMasterEntryModel) {
+        viewModelScope.launch {
+            deleteEntryUseCase(id = entryModel.id)
+        }
     }
 
-    internal fun onDeleteEntry(entryId: String) {
-        viewModelScope.launch {
-            deleteEntryUseCase(id = entryId.toInt())
-        }
+    internal fun onUpdateEntrySearchQuery(searchQuery: String) {
+        entrySearchQueryFlow.value = searchQuery
     }
 
     private companion object {
 
         private const val REMAINING_TIME_INTERVAL_MILLIS = 1_000L
+
+        private const val SEARCH_QUERY_DEFAULT_VALUE = ""
+
+        private const val SEARCH_QUERY_EMPTY_DEBOUNCE_MILLIS = 0L
+
+        private const val SEARCH_QUERY_DEBOUNCE_MILLIS = 500L
 
     }
 
