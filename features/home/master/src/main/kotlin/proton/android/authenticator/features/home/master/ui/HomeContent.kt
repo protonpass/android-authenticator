@@ -44,10 +44,12 @@ internal fun HomeContent(
             HomeTopBar(onSettingsClick = onSettingsClick)
         },
         bottomBar = {
-            HomeBottomBar(
-                onEntryQueryChange = onEntryQueryChange,
-                onNewEntryClick = onNewEntryClick
-            )
+            if (hasEntryModels) {
+                HomeBottomBar(
+                    onEntryQueryChange = onEntryQueryChange,
+                    onNewEntryClick = onNewEntryClick
+                )
+            }
         }
     ) { paddingValues ->
         if (hasEntryModels) {
