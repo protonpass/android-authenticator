@@ -16,53 +16,35 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.ui
+package proton.android.authenticator.features.home.manual.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterState
+import proton.android.authenticator.features.home.manual.R
+import proton.android.authenticator.features.home.manual.presentation.HomeManualState
+import proton.android.authenticator.shared.ui.domain.components.bars.CenterAlignedTopBar
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-internal fun HomeContent(
-    state: HomeMasterState,
-    onEntryQueryChange: (String) -> Unit,
-    onNewEntryClick: () -> Unit,
-    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    onSettingsClick: () -> Unit
-) = with(state) {
+internal fun HomeManualContent(state: HomeManualState, onNavigationClick: () -> Unit) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .backgroundScreenGradient(),
         containerColor = Color.Transparent,
         topBar = {
-            HomeTopBar(onSettingsClick = onSettingsClick)
-        },
-        bottomBar = {
-            if (hasEntryModels) {
-                HomeBottomBar(
-                    onEntryQueryChange = onEntryQueryChange,
-                    onNewEntryClick = onNewEntryClick
-                )
-            }
+            CenterAlignedTopBar(
+                title = UiText.Resource(resId = R.string.home_manual_screen_title),
+                navigationIcon = UiIcon.Resource(resId = uiR.drawable.ic_arrow_left),
+                onNavigationClick = onNavigationClick
+            )
         }
     ) { paddingValues ->
-        if (hasEntryModels) {
-            HomeEntries(
-                paddingValues = paddingValues,
-                entryModels = entryModels,
-                onEntryClick = onDeleteEntryClick
-            )
-        } else {
-            HomeEmpty(
-                paddingValues = paddingValues,
-                onNewEntryClick = onNewEntryClick
-            )
-        }
     }
 }

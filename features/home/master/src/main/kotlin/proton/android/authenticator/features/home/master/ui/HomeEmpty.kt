@@ -45,7 +45,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-internal fun HomeEmpty(paddingValues: PaddingValues) {
+internal fun HomeEmpty(paddingValues: PaddingValues, onNewEntryClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +86,7 @@ internal fun HomeEmpty(paddingValues: PaddingValues) {
             Button(
                 contentPadding = PaddingValues(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                onClick = {}
+                onClick = onNewEntryClick
             ) {
                 Box(
                     modifier = Modifier
