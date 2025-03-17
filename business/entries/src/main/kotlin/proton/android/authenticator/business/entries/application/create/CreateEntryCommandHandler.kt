@@ -34,7 +34,7 @@ internal class CreateEntryCommandHandler @Inject constructor(
         val currentTimestamp = clock.now().toEpochMilliseconds()
 
         Entry(
-            id = 0,
+            id = 0, // will be replaced by id provided from Rust once it is implemented
             model = authenticatorClient.entryFromUri(uri = command.uri),
             createdAt = currentTimestamp,
             modifiedAt = currentTimestamp

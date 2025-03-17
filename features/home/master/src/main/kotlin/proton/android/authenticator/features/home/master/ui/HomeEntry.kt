@@ -37,8 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
+import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.modifiers.containerSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -160,7 +162,7 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = "Next",
+                    text = stringResource(id = R.string.action_next),
                     color = Theme.colorScheme.textWeak,
                     style = Theme.typography.body1Regular
                         .copy(shadow = ThemeShadow.TextDefault)

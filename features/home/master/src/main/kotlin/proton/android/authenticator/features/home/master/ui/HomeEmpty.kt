@@ -35,12 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
+import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun HomeEmpty(paddingValues: PaddingValues) {
@@ -55,7 +57,7 @@ internal fun HomeEmpty(paddingValues: PaddingValues) {
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_placeholder_saturn),
+                painter = painterResource(id = uiR.drawable.ic_placeholder_saturn),
                 contentDescription = null
             )
 
@@ -64,7 +66,7 @@ internal fun HomeEmpty(paddingValues: PaddingValues) {
                 verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
             ) {
                 Text(
-                    text = "No codes yet",
+                    text = stringResource(id = R.string.home_empty_title),
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textNorm,
                     style = Theme.typography.monoNorm1
@@ -73,7 +75,7 @@ internal fun HomeEmpty(paddingValues: PaddingValues) {
 
                 Text(
                     modifier = Modifier.padding(horizontal = ThemePadding.Large),
-                    text = "Protect your accounts with an extra layer of security.",
+                    text = stringResource(id = R.string.home_empty_description),
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textWeak,
                     style = Theme.typography.monoNorm2
@@ -103,7 +105,7 @@ internal fun HomeEmpty(paddingValues: PaddingValues) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Create New Code",
+                        text = stringResource(id = R.string.home_empty_action),
                         color = Theme.colorScheme.textNorm,
                         style = Theme.typography.body1Medium
                     )

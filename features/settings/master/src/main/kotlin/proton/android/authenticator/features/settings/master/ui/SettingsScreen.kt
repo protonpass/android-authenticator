@@ -23,8 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
 
 @Composable
-fun SettingsScreen(
-    onNavigationClick: () -> Unit,
-) = with(hiltViewModel<SettingsMasterViewModel>()) {
+fun SettingsScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<SettingsMasterViewModel>()) {
     SettingsContent(onNavigationClick = onNavigationClick)
 }

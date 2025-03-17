@@ -36,13 +36,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 import proton.android.authenticator.shared.ui.domain.modifiers.dropShadow
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
+import proton.android.authenticator.shared.ui.R as uiR
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
 internal fun HomeTopBar(onSettingsClick: () -> Unit) {
@@ -52,7 +54,7 @@ internal fun HomeTopBar(onSettingsClick: () -> Unit) {
             .backgroundTopBarGradient(),
         title = {
             Text(
-                text = "Authenticator",
+                text = stringResource(id = R.string.home_screen_title),
                 color = Theme.colorScheme.textNorm,
                 style = Theme.typography.title
             )
@@ -85,7 +87,7 @@ internal fun HomeTopBar(onSettingsClick: () -> Unit) {
                         )
                         .background(color = Color.White.copy(alpha = 0.12f))
                         .padding(all = ThemePadding.Small),
-                    painter = painterResource(R.drawable.ic_settings_alt),
+                    painter = painterResource(uiR.drawable.ic_settings_alt),
                     tint = Theme.colorScheme.textNorm,
                     contentDescription = null
                 )
