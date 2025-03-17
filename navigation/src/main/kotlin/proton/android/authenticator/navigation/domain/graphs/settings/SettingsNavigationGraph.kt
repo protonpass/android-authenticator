@@ -21,17 +21,17 @@ package proton.android.authenticator.navigation.domain.graphs.settings
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import proton.android.authenticator.features.settings.master.ui.SettingsMasterScreenRenderer
+import proton.android.authenticator.features.settings.master.ui.SettingsScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 
 internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<SettingsNavigationDestination>(startDestination = SettingsMasterNavigationDestination) {
         composable<SettingsMasterNavigationDestination> {
-            SettingsMasterScreenRenderer(
+            SettingsScreen(
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 }
-            ).Render()
+            )
         }
     }
 }

@@ -18,46 +18,25 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
-import proton.android.authenticator.features.home.master.presentation.HomeMasterState
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
 
 @Composable
-internal fun HomeScreen(
-    state: HomeMasterState,
-    onEntryQueryChange: (String) -> Unit,
-    onNewEntryClick: () -> Unit,
-    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    onSettingsClick: () -> Unit
-) = with(state) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        containerColor = Color.Transparent,
-        topBar = {
-            HomeTopBar(onSettingsClick = onSettingsClick)
-        },
-        bottomBar = {
-            HomeBottomBar(
-                onEntryQueryChange = onEntryQueryChange,
-                onNewEntryClick = onNewEntryClick
-            )
-        }
-    ) { paddingValues ->
-        if (hasEntryModels) {
-            HomeEntries(
-                paddingValues = paddingValues,
-                entryModels = entryModels,
-                onEntryClick = onDeleteEntryClick
-            )
-        } else {
-            HomeEmpty(paddingValues = paddingValues)
-        }
-    }
+fun HomeScreen(
+    onEditEntryClick: (String) -> Unit,
+    onSettingsClick: () -> Unit,
+    onNewEntryClick: () -> Unit
+) = with(hiltViewModel<HomeMasterViewModel>()) {
+    val state by stateFlow.collectAsStateWithLifecycle()
+
+    HomeContent(
+        state = state,
+        onEntryQueryChange = ::onUpdateEntrySearchQuery,
+        onNewEntryClick = onNewEntryClick,
+        onDeleteEntryClick = ::onDeleteEntry,
+        onSettingsClick = onSettingsClick
+    )
 }
