@@ -18,4 +18,5 @@
 
 <resources>
     <string name="action_next">Next</string>
+    <string name="action_required">Required</string>
 </resources>

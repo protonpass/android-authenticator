@@ -86,7 +86,8 @@ fun FormTab(
                     text = {
                         Text(
                             text = tab,
-                            color = Theme.colorScheme.textNorm
+                            color = Theme.colorScheme.textNorm,
+                            style = Theme.typography.body1Regular
                         )
                     }
                 )

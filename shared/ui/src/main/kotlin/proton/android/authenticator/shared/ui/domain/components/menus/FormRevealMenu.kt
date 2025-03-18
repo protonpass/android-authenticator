@@ -20,14 +20,10 @@ package proton.android.authenticator.shared.ui.domain.components.menus
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,29 +36,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 
 @Composable
-fun FormDropdownMenu(
+fun FormRevealMenu(
     title: String,
-    selectedOption: String,
-    options: List<String>,
-    onOptionSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isRevealed by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { isExpanded = !isExpanded }
-    ) {
+    if (isRevealed) {
+        content()
+    } else {
         Row(
             modifier = modifier
                 .clip(shape = RoundedCornerShape(size = ThemeRadius.MediumSmall))
+                .clickable { isRevealed = true }
                 .background(color = Color.DarkGray)
                 .padding(
                     horizontal = ThemePadding.Medium,
@@ -77,41 +71,12 @@ fun FormDropdownMenu(
                 style = Theme.typography.body1Regular
             )
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
-            ) {
-                Text(
-                    text = selectedOption,
-                    color = Theme.colorScheme.textNorm,
-                    style = Theme.typography.body1Regular
-                )
-
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_selector),
-                    contentDescription = null,
-                    tint = Theme.colorScheme.textNorm
-                )
-            }
-        }
-
-        DropdownMenu(
-            modifier = modifier,
-            expanded = isExpanded,
-            onDismissRequest = { isExpanded = false }
-        ) {
-            options.forEachIndexed { index, option ->
-                DropdownMenuItem(
-                    text = {
-                        Text(option)
-                    },
-                    onClick = {
-                        isExpanded = false
-
-                        onOptionSelected(index)
-                    }
-                )
-            }
+            Icon(
+                modifier = Modifier.size(size = 16.dp),
+                painter = painterResource(id = R.drawable.ic_plus),
+                contentDescription = null,
+                tint = Theme.colorScheme.textNorm
+            )
         }
     }
 }

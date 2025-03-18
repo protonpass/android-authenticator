@@ -18,14 +18,21 @@
 
 package proton.android.authenticator.shared.ui.domain.components.textfields
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 
 @Composable
 fun FormTextField(
@@ -33,7 +40,9 @@ fun FormTextField(
     label: String,
     placeholder: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isRequired: Boolean = false,
+    isSingleLine: Boolean = true
 ) {
     var value by remember { mutableStateOf(initialValue) }
 
@@ -46,10 +55,29 @@ fun FormTextField(
             onValueChange(newValue)
         },
         label = {
-            Text(text = label)
+            if (isRequired) {
+                Text(text = "$label (${stringResource(id = R.string.action_required)})")
+            } else {
+                Text(text = label)
+            }
         },
         placeholder = {
             Text(text = placeholder)
-        }
+        },
+        singleLine = isSingleLine,
+        shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+        textStyle = Theme.typography.body1Regular,
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = Theme.colorScheme.textNorm,
+            unfocusedTextColor = Theme.colorScheme.textNorm,
+            focusedLabelColor = Theme.colorScheme.textNorm,
+            unfocusedLabelColor = Theme.colorScheme.textNorm,
+            focusedPlaceholderColor = Theme.colorScheme.textNorm.copy(alpha = 0.6F),
+            focusedContainerColor = Color.Black.copy(alpha = 0.5F),
+            unfocusedContainerColor = Color.Black.copy(alpha = 0.5F),
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        )
     )
 }
