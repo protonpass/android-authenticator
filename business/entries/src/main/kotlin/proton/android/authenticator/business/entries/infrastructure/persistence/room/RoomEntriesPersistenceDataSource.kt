@@ -46,9 +46,12 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
             }
         }
 
-    override suspend fun byId(id: Int): Entry = encryptionContextProvider.withEncryptionContext {
-        entriesDao.byId(id).toDomain(this@withEncryptionContext, authenticatorClient)
-    }
+    override fun byId(id: Int): Flow<Entry> = entriesDao.observeById(id)
+        .map { entryEntity ->
+            encryptionContextProvider.withEncryptionContext {
+                entryEntity.toDomain(this@withEncryptionContext, authenticatorClient)
+            }
+        }
 
     override suspend fun delete(entry: Entry) {
         encryptionContextProvider.withEncryptionContext {

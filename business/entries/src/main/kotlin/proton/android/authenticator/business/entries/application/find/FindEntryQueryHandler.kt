@@ -16,6 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.infrastructure.queries
+package proton.android.authenticator.business.entries.application.find
 
-interface QueryResponse
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
+import javax.inject.Inject
+
+internal class FindEntryQueryHandler @Inject constructor(
+    private val finder: EntryFinder
+) : QueryHandler<FindEntryQuery, Entry> {
+
+    override fun handle(query: FindEntryQuery): Flow<Entry> = query.id
+        .toInt()
+        .let(finder::find)
+
+}

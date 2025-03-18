@@ -16,28 +16,40 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.manual.ui
+package proton.android.authenticator.shared.ui.domain.components.textfields
 
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import proton.android.authenticator.features.home.manual.presentation.HomeManualViewModel
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 
 @Composable
-fun HomeManualScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<HomeManualViewModel>()) {
-    val state by stateFlow.collectAsStateWithLifecycle()
+fun FormTextField(
+    initialValue: String,
+    label: String,
+    placeholder: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var value by remember { mutableStateOf(initialValue) }
 
-    HomeManualContent(
-        state = state,
-        onNavigationClick = onNavigationClick,
-        onSubmitFormClick = ::onSubmitForm,
-        onTitleChange = ::onTitleChange,
-        onSecretChange = ::onSecretChange,
-        onIssuerChange = ::onIssuerChange,
-        onDigitsChange = ::onDigitsChange,
-        onTimeIntervalChange = ::onTimeIntervalChange,
-        onAlgorithmChange = ::onAlgorithmChange,
-        onTypeChange = ::onTypeChange
+    TextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = { newValue ->
+            value = newValue
+
+            onValueChange(newValue)
+        },
+        label = {
+            Text(text = label)
+        },
+        placeholder = {
+            Text(text = placeholder)
+        }
     )
 }

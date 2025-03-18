@@ -24,7 +24,7 @@ internal interface EntriesRepository {
 
     fun findAll(): Flow<List<Entry>>
 
-    suspend fun find(id: Int): Entry
+    fun find(id: Int): Flow<Entry>
 
     suspend fun save(entry: Entry)
 

@@ -16,19 +16,34 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.usecases
+package proton.android.authenticator.features.home.manual.usecases
 
 import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
+import proton.android.authenticator.business.entries.domain.EntryType
+import proton.android.authenticator.features.home.manual.presentation.HomeManualFormModel
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 internal class CreateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(uri: String) {
-        CreateEntryCommand.FromUri(uri = uri)
-            .also { command ->
-                commandBus.dispatch(command)
-            }
+    internal suspend operator fun invoke(formModel: HomeManualFormModel) {
+        when (formModel.type) {
+            EntryType.TOTP -> CreateEntryCommand.FromTotp(
+                name = formModel.title,
+                secret = formModel.secret,
+                issuer = formModel.issuer,
+                period = formModel.timeInterval,
+                digits = formModel.digits,
+                algorithm = formModel.algorithm
+            )
+
+            EntryType.STEAM -> CreateEntryCommand.FromSteam(
+                name = formModel.title,
+                secret = formModel.secret
+            )
+        }.also { command ->
+            commandBus.dispatch(command)
+        }
     }
 
 }

@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.delete
 
+import kotlinx.coroutines.flow.first
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import javax.inject.Inject
 
@@ -25,6 +26,7 @@ internal class EntryDeleter @Inject constructor(private val entriesRepository: E
 
     internal suspend fun delete(id: Int) {
         entriesRepository.find(id)
+            .first()
             .also { entry ->
                 entriesRepository.remove(entry)
             }

@@ -22,6 +22,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface QueryBus {
 
-    fun <R : QueryResponse> ask(query: Query): Flow<R>
+    fun <R> ask(query: Query): Flow<R>
 
 }

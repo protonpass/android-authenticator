@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
-import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryResponse
 import javax.inject.Inject
 
 internal class InMemoryQueryBus @Inject constructor(
@@ -30,7 +29,7 @@ internal class InMemoryQueryBus @Inject constructor(
 ) : QueryBus {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <R : QueryResponse> ask(query: Query): Flow<R> = queryHandlers[query::class.java]
+    override fun <R> ask(query: Query): Flow<R> = queryHandlers[query::class.java]
         ?.let { queryHandler -> (queryHandler as QueryHandler<Query, R>).handle(query) }
         ?: throw IllegalArgumentException("No query handler found for query: ${query::class.simpleName}")
 

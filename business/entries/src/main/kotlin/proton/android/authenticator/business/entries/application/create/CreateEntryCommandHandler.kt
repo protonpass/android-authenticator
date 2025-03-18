@@ -20,6 +20,8 @@ package proton.android.authenticator.business.entries.application.create
 
 import kotlinx.datetime.Clock
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
+import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
@@ -31,14 +33,44 @@ internal class CreateEntryCommandHandler @Inject constructor(
 ) : CommandHandler<CreateEntryCommand> {
 
     override suspend fun handle(command: CreateEntryCommand) {
-        val currentTimestamp = clock.now().toEpochMilliseconds()
+        when (command) {
+            is CreateEntryCommand.FromSteam -> {
+                authenticatorClient.newSteamEntryFromParams(
+                    params = AuthenticatorEntrySteamCreateParameters(
+                        name = command.name,
+                        secret = command.secret,
+                        note = command.note
+                    )
+                )
+            }
 
-        Entry(
-            id = 0, // will be replaced by id provided from Rust once it is implemented
-            model = authenticatorClient.entryFromUri(uri = command.uri),
-            createdAt = currentTimestamp,
-            modifiedAt = currentTimestamp
-        ).also { newEntry ->
+            is CreateEntryCommand.FromTotp -> {
+                authenticatorClient.newTotpEntryFromParams(
+                    params = AuthenticatorEntryTotpCreateParameters(
+                        name = command.name,
+                        secret = command.secret,
+                        issuer = command.issuer,
+                        period = command.period.toUShort(),
+                        digits = command.digits.toUByte(),
+                        algorithm = command.algorithm.asAuthenticatorEntryAlgorithm(),
+                        note = command.note
+                    )
+                )
+            }
+
+            is CreateEntryCommand.FromUri -> {
+                authenticatorClient.entryFromUri(uri = command.uri)
+            }
+        }.let { model ->
+            val currentTimestamp = clock.now().toEpochMilliseconds()
+
+            Entry(
+                id = 0, // will be replaced by id provided from Rust once it is implemented
+                model = model,
+                createdAt = currentTimestamp,
+                modifiedAt = currentTimestamp
+            )
+        }.also { newEntry ->
             creator.create(newEntry)
         }
     }

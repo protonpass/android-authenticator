@@ -16,19 +16,22 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.usecases
+package proton.android.authenticator.features.home.manual.ui
 
-import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
-import javax.inject.Inject
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
-internal class CreateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
-
-    internal suspend operator fun invoke(uri: String) {
-        CreateEntryCommand.FromUri(uri = uri)
-            .also { command ->
-                commandBus.dispatch(command)
-            }
+@Composable
+internal fun HomeManualForm(contents: List<@Composable () -> Unit>, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
+    ) {
+        contents.forEach { content ->
+            content()
+        }
     }
-
 }

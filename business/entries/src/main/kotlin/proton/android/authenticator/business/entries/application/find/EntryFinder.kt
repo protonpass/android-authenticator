@@ -16,19 +16,15 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.usecases
+package proton.android.authenticator.business.entries.application.find
 
-import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.entries.domain.EntriesRepository
+import proton.android.authenticator.business.entries.domain.Entry
 import javax.inject.Inject
 
-internal class CreateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
+internal class EntryFinder @Inject constructor(private val entriesRepository: EntriesRepository) {
 
-    internal suspend operator fun invoke(uri: String) {
-        CreateEntryCommand.FromUri(uri = uri)
-            .also { command ->
-                commandBus.dispatch(command)
-            }
-    }
+    internal fun find(id: Int): Flow<Entry> = entriesRepository.find(id)
 
 }

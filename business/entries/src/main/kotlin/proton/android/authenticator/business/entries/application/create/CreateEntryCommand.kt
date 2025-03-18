@@ -18,6 +18,28 @@
 
 package proton.android.authenticator.business.entries.application.create
 
+import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-data class CreateEntryCommand(internal val uri: String) : Command
+sealed interface CreateEntryCommand : Command {
+
+    data class FromSteam(
+        internal val name: String,
+        internal val secret: String,
+        internal val note: String? = null
+    ) : CreateEntryCommand
+
+    data class FromTotp(
+        internal val name: String,
+        internal val secret: String,
+        internal val issuer: String,
+        internal val period: Int,
+        internal val digits: Int,
+        internal val algorithm: EntryAlgorithm,
+        internal val note: String? = null
+    ) : CreateEntryCommand
+
+    @JvmInline
+    value class FromUri(internal val uri: String) : CreateEntryCommand
+
+}

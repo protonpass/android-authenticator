@@ -24,7 +24,7 @@ interface PersistenceDataSource<T> {
 
     fun observeAll(): Flow<List<T>>
 
-    suspend fun byId(id: Int): T
+    fun byId(id: Int): Flow<T>
 
     suspend fun delete(item: T)
 

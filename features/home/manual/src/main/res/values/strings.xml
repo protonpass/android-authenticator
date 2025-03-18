@@ -18,4 +18,13 @@
 
 <resources>
     <string name="home_manual_screen_title">Manual Entry</string>
+
+    <string name="home_manual_form_title_label">Title</string>
+    <string name="home_manual_form_title_placeholder">Title, account or label</string>
+    <string name="home_manual_form_secret_label">Secret</string>
+    <string name="home_manual_form_issuer_label">Issuer</string>
+    <string name="home_manual_form_digits_title">Digits</string>
+    <string name="home_manual_form_time_interval_title">Time interval</string>
+    <string name="home_manual_form_time_algorithm_title">Algorithm</string>
+    <string name="home_manual_form_time_type_title">Type</string>
 </resources>

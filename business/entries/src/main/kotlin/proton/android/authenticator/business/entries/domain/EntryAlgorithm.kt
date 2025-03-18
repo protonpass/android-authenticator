@@ -18,23 +18,26 @@
 
 package proton.android.authenticator.business.entries.domain
 
-import proton.android.authenticator.commonrust.AuthenticatorEntryType
+import proton.android.authenticator.commonrust.AuthenticatorTotpAlgorithm
 
-enum class EntryType(val value: Int) {
-    TOTP(value = 0),
-    STEAM(value = 1);
+enum class EntryAlgorithm(val value: Int) {
+    SHA1(value = 0),
+    SHA256(value = 1),
+    SHA512(value = 2);
 
-    internal fun asAuthenticatorEntryType(): AuthenticatorEntryType = when (this) {
-        TOTP -> AuthenticatorEntryType.TOTP
-        STEAM -> AuthenticatorEntryType.STEAM
+    internal fun asAuthenticatorEntryAlgorithm(): AuthenticatorTotpAlgorithm = when (this) {
+        SHA1 -> AuthenticatorTotpAlgorithm.SHA1
+        SHA256 -> AuthenticatorTotpAlgorithm.SHA256
+        SHA512 -> AuthenticatorTotpAlgorithm.SHA512
     }
 
     companion object {
 
-        fun from(value: Int): EntryType = when (value) {
-            TOTP.value -> TOTP
-            STEAM.value -> STEAM
-            else -> throw IllegalArgumentException("Unknown ${EntryType::class.simpleName}: $value")
+        fun from(value: Int): EntryAlgorithm = when (value) {
+            SHA1.value -> SHA1
+            SHA256.value -> SHA256
+            SHA512.value -> SHA512
+            else -> throw IllegalArgumentException("Unknown ${EntryAlgorithm::class.simpleName}: $value")
         }
 
     }
