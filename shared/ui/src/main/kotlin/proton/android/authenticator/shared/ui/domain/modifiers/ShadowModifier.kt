@@ -23,7 +23,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Size
@@ -44,23 +43,21 @@ internal fun Modifier.innerShadowDouble(
     offsetY: Dp = 2.dp,
     offsetX: Dp = 2.dp,
     spread: Dp = 0.dp
-) = composed {
-    innerShadow(
-        shape = shape,
-        color = color,
-        blur = blur,
-        offsetY = offsetY,
-        offsetX = offsetX,
-        spread = spread
-    ).innerShadow(
-        shape = shape,
-        color = color,
-        blur = blur,
-        offsetY = -offsetY,
-        offsetX = -offsetX,
-        spread = spread
-    )
-}
+) = innerShadow(
+    shape = shape,
+    color = color,
+    blur = blur,
+    offsetY = offsetY,
+    offsetX = offsetX,
+    spread = spread
+).innerShadow(
+    shape = shape,
+    color = color,
+    blur = blur,
+    offsetY = -offsetY,
+    offsetX = -offsetX,
+    spread = spread
+)
 
 @Stable
 internal fun Modifier.innerShadow(

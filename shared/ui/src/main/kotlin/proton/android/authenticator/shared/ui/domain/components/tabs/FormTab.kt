@@ -18,15 +18,24 @@
 
 package proton.android.authenticator.shared.ui.domain.components.tabs
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
@@ -49,16 +58,36 @@ fun FormTab(
         )
 
         TabRow(
-            selectedTabIndex = selectedTabIndex
+            modifier = modifier
+                .fillMaxWidth()
+                .shadow(
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(size = ThemeRadius.Large)
+                )
+                .clip(shape = RoundedCornerShape(size = ThemeRadius.Large)),
+            selectedTabIndex = selectedTabIndex,
+            containerColor = Color.Black,
+            indicator = {},
+            divider = {}
         ) {
             tabs.forEachIndexed { index, tab ->
+                val isSelected = selectedTabIndex == index
+
                 Tab(
+                    modifier = Modifier
+                        .padding(all = ThemeSpacing.ExtraSmall)
+                        .clip(shape = RoundedCornerShape(size = ThemeRadius.Large))
+                        .applyIf(
+                            condition = isSelected,
+                            ifTrue = { background(color = Color.DarkGray) }
+                        ),
+                    selected = isSelected,
+                    onClick = { onTabSelected(index) },
                     text = {
-                        Text(text = tab)
-                    },
-                    selected = selectedTabIndex == index,
-                    onClick = {
-                        onTabSelected(index)
+                        Text(
+                            text = tab,
+                            color = Theme.colorScheme.textNorm
+                        )
                     }
                 )
             }
