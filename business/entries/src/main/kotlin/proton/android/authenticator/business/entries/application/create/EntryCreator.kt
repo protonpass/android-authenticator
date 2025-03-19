@@ -18,14 +18,32 @@
 
 package proton.android.authenticator.business.entries.application.create
 
+import kotlinx.datetime.Clock
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.commonrust.AuthenticatorEntryModel
+import proton.android.authenticator.commonrust.AuthenticatorEntryTotpParameters
 import javax.inject.Inject
 
-internal class EntryCreator @Inject constructor(private val entriesRepository: EntriesRepository) {
+internal class EntryCreator @Inject constructor(
+    private val clock: Clock,
+    private val entriesRepository: EntriesRepository
+) {
 
-    internal suspend fun create(entry: Entry) {
-        entriesRepository.save(entry)
+    internal suspend fun create(model: AuthenticatorEntryModel, params: AuthenticatorEntryTotpParameters) {
+        clock.now()
+            .toEpochMilliseconds()
+            .let { currentTimestamp ->
+                Entry(
+                    model = model,
+                    params = params,
+                    createdAt = currentTimestamp,
+                    modifiedAt = currentTimestamp
+                )
+            }
+            .also { entry ->
+                entriesRepository.save(entry)
+            }
     }
 
 }

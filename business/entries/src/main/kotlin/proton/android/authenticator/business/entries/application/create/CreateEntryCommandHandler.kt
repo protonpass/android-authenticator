@@ -18,8 +18,6 @@
 
 package proton.android.authenticator.business.entries.application.create
 
-import kotlinx.datetime.Clock
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
@@ -28,7 +26,6 @@ import javax.inject.Inject
 
 internal class CreateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val clock: Clock,
     private val creator: EntryCreator
 ) : CommandHandler<CreateEntryCommand> {
 
@@ -61,17 +58,8 @@ internal class CreateEntryCommandHandler @Inject constructor(
             is CreateEntryCommand.FromUri -> {
                 authenticatorClient.entryFromUri(uri = command.uri)
             }
-        }.let { model ->
-            val currentTimestamp = clock.now().toEpochMilliseconds()
-
-            Entry(
-                model = model,
-                params = authenticatorClient.getTotpParams(model),
-                createdAt = currentTimestamp,
-                modifiedAt = currentTimestamp
-            )
-        }.also { newEntry ->
-            creator.create(newEntry)
+        }.also { model ->
+            creator.create(model = model, params = authenticatorClient.getTotpParams(model))
         }
     }
 
