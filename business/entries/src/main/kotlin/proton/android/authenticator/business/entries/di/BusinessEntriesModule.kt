@@ -31,6 +31,8 @@ import proton.android.authenticator.business.entries.application.find.FindEntryQ
 import proton.android.authenticator.business.entries.application.find.FindEntryQueryHandler
 import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQuery
 import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQueryHandler
+import proton.android.authenticator.business.entries.application.update.UpdateEntryCommand
+import proton.android.authenticator.business.entries.application.update.UpdateEntryCommandHandler
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.infrastructure.EntriesRepositoryImpl
@@ -62,6 +64,12 @@ internal abstract class BusinessEntriesModule {
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindAllEntriesQuery::class)]
     internal abstract fun bindFindAllEntriesQueryHandler(impl: FindAllEntriesQueryHandler): QueryHandler<*, *>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(UpdateEntryCommand.FromSteam::class)]
+    internal abstract fun bindUpdateEntryFromSteamCommandHandler(impl: UpdateEntryCommandHandler): CommandHandler<*>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(UpdateEntryCommand.FromTotp::class)]
+    internal abstract fun bindUpdateEntryFromTotpCommandHandler(impl: UpdateEntryCommandHandler): CommandHandler<*>
 
     @[Binds Singleton]
     internal abstract fun bindEntriesRepository(impl: EntriesRepositoryImpl): EntriesRepository

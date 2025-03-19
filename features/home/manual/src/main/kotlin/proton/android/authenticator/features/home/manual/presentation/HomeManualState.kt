@@ -22,19 +22,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 
 internal class HomeManualState private constructor(
+    internal val event: HomeManualEvent,
     internal val formModel: HomeManualFormModel
 ) {
 
     internal companion object {
 
+        private const val DEFAULT_DIGITS = 6
+
+        private const val DEFAULT_TIME_INTERVAL = 30
+
+        private val DEFAULT_ALGORITHM = EntryAlgorithm.SHA1
+
+        private val DEFAULT_TYPE = EntryType.TOTP
+
         @Composable
         internal fun create(
+            eventFlow: Flow<HomeManualEvent>,
             entryFlow: Flow<Entry?>,
             titleFlow: Flow<String?>,
             secretFlow: Flow<String?>,
@@ -44,51 +53,33 @@ internal class HomeManualState private constructor(
             algorithmFlow: Flow<EntryAlgorithm?>,
             typeFlow: Flow<EntryType?>
         ): HomeManualState {
+            val event by eventFlow.collectAsState(initial = HomeManualEvent.Idle)
             val entry by entryFlow.collectAsState(initial = null)
+            val title by titleFlow.collectAsState(initial = null)
+            val secret by secretFlow.collectAsState(initial = null)
+            val issuer by issuerFlow.collectAsState(initial = null)
+            val digits by digitsFlow.collectAsState(initial = null)
+            val timeInterval by timeIntervalFlow.collectAsState(initial = null)
+            val algorithm by algorithmFlow.collectAsState(initial = null)
+            val type by typeFlow.collectAsState(initial = EntryType.TOTP)
+
             val initialTitle = entry?.name.orEmpty()
             val initialSecret = entry?.secret.orEmpty()
             val initialIssuer = entry?.issuer.orEmpty()
 
-            val title by titleFlow
-                .filterNotNull()
-                .collectAsState(initial = initialTitle)
-
-            val secret by secretFlow
-                .filterNotNull()
-                .collectAsState(initial = initialSecret)
-
-            val issuer by issuerFlow
-                .filterNotNull()
-                .collectAsState(initial = initialIssuer)
-
-            val digits by digitsFlow
-                .filterNotNull()
-                .collectAsState(initial = 6)
-
-            val timeInterval by timeIntervalFlow
-                .filterNotNull()
-                .collectAsState(initial = 30)
-
-            val algorithm by algorithmFlow
-                .filterNotNull()
-                .collectAsState(initial = EntryAlgorithm.SHA1)
-
-            val type by typeFlow
-                .filterNotNull()
-                .collectAsState(initial = EntryType.TOTP)
-
             return HomeManualState(
+                event = event,
                 formModel = HomeManualFormModel(
                     initialTitle = initialTitle,
-                    title = title,
-                    initialSecret = initialTitle,
-                    secret = secret,
+                    title = title ?: initialTitle,
+                    initialSecret = initialSecret,
+                    secret = secret ?: initialSecret,
                     initialIssuer = initialIssuer,
-                    issuer = issuer,
-                    digits = digits,
-                    timeInterval = timeInterval,
-                    algorithm = algorithm,
-                    type = type
+                    issuer = issuer ?: initialIssuer,
+                    digits = digits ?: entry?.digits ?: DEFAULT_DIGITS,
+                    timeInterval = timeInterval ?: entry?.period ?: DEFAULT_TIME_INTERVAL,
+                    algorithm = algorithm ?: entry?.algorithm ?: DEFAULT_ALGORITHM,
+                    type = type ?: entry?.type ?: DEFAULT_TYPE
                 )
             )
         }

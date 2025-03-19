@@ -44,7 +44,9 @@ fun FormTextField(
     isRequired: Boolean = false,
     isSingleLine: Boolean = true
 ) {
-    var value by remember { mutableStateOf(initialValue) }
+    var value by remember(key1 = initialValue) {
+        mutableStateOf(initialValue)
+    }
 
     TextField(
         modifier = modifier,

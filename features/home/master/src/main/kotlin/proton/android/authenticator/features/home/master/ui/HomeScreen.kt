@@ -36,6 +36,7 @@ fun HomeScreen(
         state = state,
         onEntryQueryChange = ::onUpdateEntrySearchQuery,
         onNewEntryClick = onNewEntryClick,
+        onEditEntryClick = { onEditEntryClick(it.id.toString()) },
         onDeleteEntryClick = ::onDeleteEntry,
         onSettingsClick = onSettingsClick
     )

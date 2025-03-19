@@ -34,7 +34,7 @@ internal data class HomeManualFormModel(
     internal val type: EntryType
 ) {
 
-    internal val digitsOptions: List<Int> = setOf(5, 6, 7, 8)
+    internal val digitsOptions: List<Int> = setOf(6, 7, 8)
         .let { digitsOptions ->
             if (digitsOptions.contains(digits)) digitsOptions.toList()
             else digitsOptions.plus(digits).sorted()

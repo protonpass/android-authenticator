@@ -16,8 +16,31 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.delete
+package proton.android.authenticator.business.entries.application.update
 
+import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-data class DeleteEntryCommand(internal val id: String) : Command
+sealed interface UpdateEntryCommand : Command {
+
+    val id: String
+
+    data class FromSteam(
+        override val id: String,
+        internal val name: String,
+        internal val secret: String,
+        internal val note: String? = null
+    ) : UpdateEntryCommand
+
+    data class FromTotp(
+        override val id: String,
+        internal val name: String,
+        internal val secret: String,
+        internal val issuer: String,
+        internal val period: Int,
+        internal val digits: Int,
+        internal val algorithm: EntryAlgorithm,
+        internal val note: String? = null
+    ) : UpdateEntryCommand
+
+}

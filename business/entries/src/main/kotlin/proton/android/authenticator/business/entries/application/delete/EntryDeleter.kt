@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 internal class EntryDeleter @Inject constructor(private val entriesRepository: EntriesRepository) {
 
-    internal suspend fun delete(id: Int) {
+    internal suspend fun delete(id: String) {
         entriesRepository.find(id)
             .first()
             .also { entry ->

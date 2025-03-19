@@ -14,7 +14,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
             HomeScreen(
                 onEditEntryClick = { entryId ->
                     NavigationCommand.NavigateTo(
-                        destination = HomeDetailNavigationDestination(
+                        destination = HomeManualNavigationDestination(
                             entryId = entryId
                         )
                     ).also(onNavigate)
@@ -35,6 +35,12 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
         composable<HomeManualNavigationDestination> {
             HomeManualScreen(
                 onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onEntryCreated = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onEntryUpdated = {
                     onNavigate(NavigationCommand.NavigateUp)
                 }
             )

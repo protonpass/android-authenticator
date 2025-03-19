@@ -19,7 +19,7 @@
 package proton.android.authenticator.features.home.master.presentation
 
 internal data class HomeMasterEntryModel(
-    internal val id: Int,
+    internal val id: String,
     internal val name: String,
     internal val issuer: String,
     internal val currentCode: String,

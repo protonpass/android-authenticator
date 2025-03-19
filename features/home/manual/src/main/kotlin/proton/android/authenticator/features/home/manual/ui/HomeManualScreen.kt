@@ -19,14 +19,30 @@
 package proton.android.authenticator.features.home.manual.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.home.manual.presentation.HomeManualEvent
 import proton.android.authenticator.features.home.manual.presentation.HomeManualViewModel
 
 @Composable
-fun HomeManualScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<HomeManualViewModel>()) {
+fun HomeManualScreen(
+    onNavigationClick: () -> Unit,
+    onEntryCreated: () -> Unit,
+    onEntryUpdated: () -> Unit
+) = with(hiltViewModel<HomeManualViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = state.event) {
+        when (state.event) {
+            HomeManualEvent.Idle -> Unit
+            HomeManualEvent.OnEntryCreated -> onEntryCreated()
+            HomeManualEvent.OnEntryUpdated -> onEntryUpdated()
+        }
+
+        onEventConsumed(state.event)
+    }
 
     HomeManualContent(
         state = state,

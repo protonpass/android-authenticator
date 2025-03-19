@@ -34,7 +34,7 @@ import me.proton.core.crypto.common.keystore.EncryptedByteArray
     ]
 )
 data class EntryEntity(
-    @[ColumnInfo(name = Columns.ID) PrimaryKey(autoGenerate = true)] val id: Int = 0,
+    @[ColumnInfo(name = Columns.ID) PrimaryKey] val id: String,
     @ColumnInfo(name = Columns.ENCRYPTED_CONTENT)
     val content: EncryptedByteArray,
     @ColumnInfo(name = Columns.TYPE)

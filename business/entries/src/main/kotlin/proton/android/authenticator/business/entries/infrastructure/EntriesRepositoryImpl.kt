@@ -30,7 +30,7 @@ internal class EntriesRepositoryImpl @Inject constructor(
 
     override fun findAll(): Flow<List<Entry>> = localDataSource.observeAll()
 
-    override fun find(id: Int): Flow<Entry> = localDataSource.byId(id)
+    override fun find(id: String): Flow<Entry> = localDataSource.byId(id)
 
     override suspend fun save(entry: Entry) {
         localDataSource.insert(entry)

@@ -24,21 +24,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
-import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
 fun CenterAlignedTopBar(
-    title: UiText,
+    title: String,
     navigationIcon: UiIcon,
     onNavigationClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    action: String? = null,
+    isActionEnabled: Boolean = true,
+    onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier
@@ -46,7 +49,7 @@ fun CenterAlignedTopBar(
             .backgroundTopBarGradient(),
         title = {
             Text(
-                text = title.asString(),
+                text = title,
                 color = Theme.colorScheme.textNorm,
                 style = Theme.typography.emphasized
             )
@@ -58,6 +61,20 @@ fun CenterAlignedTopBar(
                     contentDescription = null,
                     tint = Theme.colorScheme.interactionPurple
                 )
+            }
+        },
+        actions = {
+            action?.let { text ->
+                TextButton(
+                    enabled = isActionEnabled,
+                    onClick = onActionClick
+                ) {
+                    Text(
+                        text = text,
+                        color = Theme.colorScheme.interactionPurple,
+                        style = Theme.typography.emphasized
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors()

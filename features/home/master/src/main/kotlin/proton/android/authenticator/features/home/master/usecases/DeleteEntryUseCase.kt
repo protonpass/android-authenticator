@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 internal class DeleteEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(id: Int) {
+    internal suspend operator fun invoke(id: String) {
         DeleteEntryCommand(id = id)
             .also { command ->
                 commandBus.dispatch(command)

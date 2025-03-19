@@ -16,25 +16,22 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.create
+package proton.android.authenticator.business.entries.application.update
 
-import kotlinx.datetime.Clock
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
 
-internal class CreateEntryCommandHandler @Inject constructor(
+internal class UpdateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val clock: Clock,
-    private val creator: EntryCreator
-) : CommandHandler<CreateEntryCommand> {
+    private val updater: EntryUpdater
+) : CommandHandler<UpdateEntryCommand> {
 
-    override suspend fun handle(command: CreateEntryCommand) {
+    override suspend fun handle(command: UpdateEntryCommand) {
         when (command) {
-            is CreateEntryCommand.FromSteam -> {
+            is UpdateEntryCommand.FromSteam -> {
                 authenticatorClient.newSteamEntryFromParams(
                     params = AuthenticatorEntrySteamCreateParameters(
                         name = command.name,
@@ -44,7 +41,7 @@ internal class CreateEntryCommandHandler @Inject constructor(
                 )
             }
 
-            is CreateEntryCommand.FromTotp -> {
+            is UpdateEntryCommand.FromTotp -> {
                 authenticatorClient.newTotpEntryFromParams(
                     params = AuthenticatorEntryTotpCreateParameters(
                         name = command.name,
@@ -57,21 +54,11 @@ internal class CreateEntryCommandHandler @Inject constructor(
                     )
                 )
             }
-
-            is CreateEntryCommand.FromUri -> {
-                authenticatorClient.entryFromUri(uri = command.uri)
-            }
         }.let { model ->
-            val currentTimestamp = clock.now().toEpochMilliseconds()
-
-            Entry(
-                model = model,
-                params = authenticatorClient.getTotpParams(model),
-                createdAt = currentTimestamp,
-                modifiedAt = currentTimestamp
+            updater.update(
+                model = model.copy(id = command.id),
+                params = authenticatorClient.getTotpParams(model)
             )
-        }.also { newEntry ->
-            creator.create(newEntry)
         }
     }
 

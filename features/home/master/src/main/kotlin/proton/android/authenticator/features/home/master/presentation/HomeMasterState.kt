@@ -26,12 +26,11 @@ import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
 
 internal class HomeMasterState private constructor(
-    private val entryModelsMap: Map<Int, HomeMasterEntryModel>
+    private val entryModelsMap: Map<String, HomeMasterEntryModel>
 ) {
 
     internal val entryModels: List<HomeMasterEntryModel>
-        get() = entryModelsMap.values
-            .toList()
+        get() = entryModelsMap.values.toList()
 
     internal val hasEntryModels: Boolean = entryModels.isNotEmpty()
 

@@ -32,6 +32,7 @@ internal fun HomeContent(
     state: HomeMasterState,
     onEntryQueryChange: (String) -> Unit,
     onNewEntryClick: () -> Unit,
+    onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
     onSettingsClick: () -> Unit
 ) = with(state) {
@@ -56,7 +57,7 @@ internal fun HomeContent(
             HomeEntries(
                 paddingValues = paddingValues,
                 entryModels = entryModels,
-                onEntryClick = onDeleteEntryClick
+                onEntryClick = onEditEntryClick
             )
         } else {
             HomeEmpty(

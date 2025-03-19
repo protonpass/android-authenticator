@@ -41,7 +41,6 @@ import proton.android.authenticator.shared.ui.domain.components.menus.FormReveal
 import proton.android.authenticator.shared.ui.domain.components.tabs.FormTab
 import proton.android.authenticator.shared.ui.domain.components.textfields.FormTextField
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
-import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
@@ -74,9 +73,12 @@ internal fun HomeManualContent(
         containerColor = Color.Transparent,
         topBar = {
             CenterAlignedTopBar(
-                title = UiText.Resource(resId = R.string.home_manual_screen_title),
+                title = stringResource(id = R.string.home_manual_screen_title),
                 navigationIcon = UiIcon.Resource(resId = uiR.drawable.ic_arrow_left),
-                onNavigationClick = onSubmitFormClick
+                onNavigationClick = onNavigationClick,
+                action = stringResource(id = uiR.string.action_save),
+                isActionEnabled = formModel.isValid,
+                onActionClick = onSubmitFormClick
             )
         }
     ) { paddingValues ->

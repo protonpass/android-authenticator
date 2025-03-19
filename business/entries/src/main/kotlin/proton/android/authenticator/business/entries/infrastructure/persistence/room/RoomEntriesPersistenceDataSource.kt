@@ -46,7 +46,7 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
             }
         }
 
-    override fun byId(id: Int): Flow<Entry> = entriesDao.observeById(id)
+    override fun byId(id: String): Flow<Entry> = entriesDao.observeById(id)
         .map { entryEntity ->
             encryptionContextProvider.withEncryptionContext {
                 entryEntity.toDomain(this@withEncryptionContext, authenticatorClient)
@@ -77,7 +77,7 @@ private fun Entry.toEntity(
     authenticatorClient: AuthenticatorMobileClientInterface,
     encryptionContext: EncryptionContext
 ): EntryEntity = AuthenticatorEntryModel(
-    id = id.toString(),
+    id = id,
     name = name,
     issuer = issuer,
     secret = secret,
@@ -111,8 +111,8 @@ private fun EntryEntity.toDomain(
     }
     .let { entryModel ->
         Entry(
-            id = id,
             model = entryModel,
+            params = authenticatorClient.getTotpParams(entryModel),
             createdAt = createdAt,
             modifiedAt = modifiedAt
         )

@@ -31,7 +31,7 @@ interface EntriesDao {
     fun observeAll(): Flow<List<EntryEntity>>
 
     @Query("SELECT * FROM ${EntryEntity.TABLE} WHERE id = :id")
-    fun observeById(id: Int): Flow<EntryEntity>
+    fun observeById(id: String): Flow<EntryEntity>
 
     @Delete
     suspend fun delete(entryEntity: EntryEntity)

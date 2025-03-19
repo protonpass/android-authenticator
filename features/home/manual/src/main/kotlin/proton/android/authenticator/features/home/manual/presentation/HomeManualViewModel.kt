@@ -25,31 +25,35 @@ import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.manual.usecases.GetEntryUseCase
+import proton.android.authenticator.features.home.manual.usecases.UpdateEntryUseCase
 import javax.inject.Inject
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeManualViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getEntryUseCase: GetEntryUseCase,
-    private val createEntryUseCase: CreateEntryUseCase
+    private val createEntryUseCase: CreateEntryUseCase,
+    private val updateEntryUseCase: UpdateEntryUseCase
 ) : ViewModel() {
 
-    private val entryFlow: Flow<Entry?> = savedStateHandle
-        .getStateFlow<String?>("entryId", null)
-        .mapLatest { entryId ->
-            if (entryId == null) null
-            else getEntryUseCase(entryId)
-        }
+    private val entryId: String? = savedStateHandle["entryId"]
+
+    private val entryFlow = flow {
+        entryId
+            ?.let { id -> getEntryUseCase(id) }
+            .also { entry -> emit(entry) }
+    }
+
+    private val eventFlow = MutableStateFlow<HomeManualEvent>(value = HomeManualEvent.Idle)
 
     private val titleFlow = MutableStateFlow<String?>(value = null)
 
@@ -69,6 +73,7 @@ internal class HomeManualViewModel @Inject constructor(
         mode = RecompositionMode.Immediate
     ) {
         HomeManualState.create(
+            eventFlow = eventFlow,
             entryFlow = entryFlow,
             titleFlow = titleFlow,
             secretFlow = secretFlow,
@@ -80,37 +85,61 @@ internal class HomeManualViewModel @Inject constructor(
         )
     }
 
+    internal fun onEventConsumed(event: HomeManualEvent) {
+        eventFlow.compareAndSet(expect = event, update = HomeManualEvent.Idle)
+    }
+
     internal fun onTitleChange(newTitle: String) {
-        titleFlow.value = newTitle.trimStart()
+        titleFlow.update { newTitle.trimStart() }
     }
 
     internal fun onSecretChange(newSecret: String) {
-        secretFlow.value = newSecret.trim()
+        secretFlow.update { newSecret.trim() }
     }
 
     internal fun onIssuerChange(newIssuer: String) {
-        issuerFlow.value = newIssuer.trimStart()
+        issuerFlow.update { newIssuer.trimStart() }
     }
 
     internal fun onDigitsChange(newDigits: Int) {
-        digitsFlow.value = newDigits
+        digitsFlow.update { newDigits }
     }
 
     internal fun onTimeIntervalChange(newTimeInterval: Int) {
-        timeIntervalFlow.value = newTimeInterval
+        timeIntervalFlow.update { newTimeInterval }
     }
 
     internal fun onAlgorithmChange(newAlgorithm: EntryAlgorithm) {
-        algorithmFlow.value = newAlgorithm
+        algorithmFlow.update { newAlgorithm }
     }
 
     internal fun onTypeChange(newType: EntryType) {
-        typeFlow.value = newType
+        typeFlow.update { newType }
     }
 
     internal fun onSubmitForm() {
+        if (entryId == null) {
+            createEntry()
+        } else {
+            updateEntry()
+        }
+    }
+
+    private fun createEntry() {
         viewModelScope.launch {
             createEntryUseCase(formModel = stateFlow.value.formModel)
+
+            eventFlow.update { HomeManualEvent.OnEntryCreated }
+        }
+    }
+
+    private fun updateEntry() {
+        if (entryId == null) return
+
+        viewModelScope.launch {
+            updateEntryUseCase(entryId = entryId, formModel = stateFlow.value.formModel)
+
+            eventFlow.update { HomeManualEvent.OnEntryUpdated }
         }
     }
 

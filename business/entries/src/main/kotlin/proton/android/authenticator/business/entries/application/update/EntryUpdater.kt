@@ -16,36 +16,31 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.domain
+package proton.android.authenticator.business.entries.application.update
 
+import kotlinx.coroutines.flow.first
+import kotlinx.datetime.Clock
+import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryTotpParameters
+import javax.inject.Inject
 
-data class Entry(
-    val createdAt: Long,
-    val modifiedAt: Long,
-    internal val model: AuthenticatorEntryModel,
-    internal val params: AuthenticatorEntryTotpParameters
+internal class EntryUpdater @Inject constructor(
+    private val clock: Clock,
+    private val entriesRepository: EntriesRepository
 ) {
 
-    val id: String = model.id
-
-    val issuer: String = model.issuer
-
-    val name: String = model.name
-
-    val note: String? = model.note
-
-    val period: Int = model.period.toInt()
-
-    val secret: String = model.secret
-
-    val type: EntryType = EntryType.from(value = model.entryType.ordinal)
-
-    val uri: String = model.uri
-
-    val algorithm: EntryAlgorithm = EntryAlgorithm.from(value = params.algorithm.ordinal)
-
-    val digits: Int = params.digits.toInt()
+    internal suspend fun update(model: AuthenticatorEntryModel, params: AuthenticatorEntryTotpParameters) {
+        entriesRepository.find(id = model.id)
+            .first()
+            .copy(
+                model = model,
+                params = params,
+                modifiedAt = clock.now().toEpochMilliseconds()
+            )
+            .also { updatedEntry ->
+                entriesRepository.save(updatedEntry)
+            }
+    }
 
 }

@@ -16,15 +16,14 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.find
+package proton.android.authenticator.features.home.manual.presentation
 
-import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.entries.domain.EntriesRepository
-import proton.android.authenticator.business.entries.domain.Entry
-import javax.inject.Inject
+internal sealed interface HomeManualEvent {
 
-internal class EntryFinder @Inject constructor(private val entriesRepository: EntriesRepository) {
+    data object Idle : HomeManualEvent
 
-    internal fun find(id: String): Flow<Entry> = entriesRepository.find(id)
+    data object OnEntryCreated : HomeManualEvent
+
+    data object OnEntryUpdated : HomeManualEvent
 
 }

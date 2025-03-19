@@ -28,7 +28,6 @@ internal class FindEntryQueryHandler @Inject constructor(
 ) : QueryHandler<FindEntryQuery, Entry> {
 
     override fun handle(query: FindEntryQuery): Flow<Entry> = query.id
-        .toInt()
         .let(finder::find)
 
 }
