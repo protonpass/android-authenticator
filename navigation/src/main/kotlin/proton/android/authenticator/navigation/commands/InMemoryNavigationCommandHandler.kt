@@ -16,6 +16,13 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
             NavigationCommand.NavigateUp -> {
                 navController.navigateUp()
             }
+
+            is NavigationCommand.PopupTo -> {
+                navController.popBackStack(
+                    route = command.destination,
+                    inclusive = command.inclusive
+                )
+            }
         }
     }
 

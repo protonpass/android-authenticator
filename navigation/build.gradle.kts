@@ -18,6 +18,7 @@ dependencies {
 
     implementation(project(":features:home:manual"))
     implementation(project(":features:home:master"))
+    implementation(project(":features:home:scan"))
     implementation(project(":features:settings:master"))
     implementation(project(":shared:ui"))
 

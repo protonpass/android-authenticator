@@ -5,6 +5,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.home.manual.ui.HomeManualScreen
 import proton.android.authenticator.features.home.master.ui.HomeScreen
+import proton.android.authenticator.features.home.scan.ui.HomeScanScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.settings.SettingsNavigationDestination
 
@@ -26,7 +27,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
                 },
                 onNewEntryClick = {
                     NavigationCommand.NavigateTo(
-                        destination = HomeManualNavigationDestination(entryId = null)
+                        destination = HomeScanNavigationDestination
                     ).also(onNavigate)
                 }
             )
@@ -38,10 +39,26 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onEntryCreated = {
-                    onNavigate(NavigationCommand.NavigateUp)
+                    NavigationCommand.PopupTo(
+                        destination = HomeNavigationDestination,
+                        inclusive = true
+                    ).also(onNavigate)
                 },
                 onEntryUpdated = {
                     onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
+        composable<HomeScanNavigationDestination> {
+            HomeScanScreen(
+                onCloseClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onEnterManuallyClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = HomeManualNavigationDestination(entryId = null)
+                    ).also(onNavigate)
                 }
             )
         }
