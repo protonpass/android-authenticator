@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.scan.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,8 @@ import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenG
 internal fun HomeScanContent(
     state: HomeScanState,
     onCloseClick: () -> Unit,
-    onEnterManuallyClick: () -> Unit
+    onEnterManuallyClick: () -> Unit,
+    onQrCodeScanned: (String) -> Unit
 ) = with(state) {
     Scaffold(
         modifier = Modifier
@@ -44,6 +46,12 @@ internal fun HomeScanContent(
             )
         }
     ) { paddingValues ->
-
+        HomeScanCamera(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues),
+            onQrCodeScanned = onQrCodeScanned,
+            onCameraError = onCloseClick
+        )
     }
 }

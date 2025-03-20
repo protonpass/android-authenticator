@@ -16,16 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.domain
+package proton.android.authenticator.features.home.scan.presentation
 
-private const val TOTP_KEY = 1
-private const val STEAM_KEY = 2
+internal sealed interface HomeScanEvent {
 
-enum class EntryType(val code: Int) {
-    TOTP(TOTP_KEY),
-    STEAM(STEAM_KEY);
+    data object Idle : HomeScanEvent
 
-    companion object {
-        fun fromCode(code: Int): EntryType? = entries.find { it.code == code }
-    }
+    data object OnEntryCreated : HomeScanEvent
+
 }

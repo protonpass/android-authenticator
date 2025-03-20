@@ -23,16 +23,36 @@ import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import proton.android.authenticator.features.home.scan.usecases.CreateEntryUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class HomeScanViewModel @Inject constructor() : ViewModel() {
+internal class HomeScanViewModel @Inject constructor(
+    private val createEntryUseCase: CreateEntryUseCase
+) : ViewModel() {
+
+    private val eventFlow = MutableStateFlow<HomeScanEvent>(value = HomeScanEvent.Idle)
 
     internal val stateFlow: StateFlow<HomeScanState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
-        HomeScanState
+        HomeScanState.create(eventFlow = eventFlow)
+    }
+
+    internal fun onConsumeEvent(event: HomeScanEvent) {
+        eventFlow.compareAndSet(expect = event, update = HomeScanEvent.Idle)
+    }
+
+    internal fun onCreateEntry(uri: String) {
+        viewModelScope.launch {
+            createEntryUseCase(uri = uri)
+
+            eventFlow.update { HomeScanEvent.OnEntryCreated }
+        }
     }
 
 }

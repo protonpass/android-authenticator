@@ -19,19 +19,34 @@
 package proton.android.authenticator.features.home.scan.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.home.scan.presentation.HomeScanEvent
 import proton.android.authenticator.features.home.scan.presentation.HomeScanViewModel
 
 @Composable
-fun HomeScanScreen(onCloseClick: () -> Unit, onEnterManuallyClick: () -> Unit) =
-    with(hiltViewModel<HomeScanViewModel>()) {
-        val state by stateFlow.collectAsStateWithLifecycle()
+fun HomeScanScreen(
+    onCloseClick: () -> Unit,
+    onManualEntryClick: () -> Unit,
+    onEntryCreated: () -> Unit
+) = with(hiltViewModel<HomeScanViewModel>()) {
+    val state by stateFlow.collectAsStateWithLifecycle()
 
-        HomeScanContent(
-            state = state,
-            onCloseClick = onCloseClick,
-            onEnterManuallyClick = onEnterManuallyClick
-        )
+    LaunchedEffect(key1 = state.event) {
+        when (state.event) {
+            HomeScanEvent.Idle -> Unit
+            HomeScanEvent.OnEntryCreated -> onEntryCreated()
+        }
+
+        onConsumeEvent(event = state.event)
     }
+
+    HomeScanContent(
+        state = state,
+        onCloseClick = onCloseClick,
+        onEnterManuallyClick = onManualEntryClick,
+        onQrCodeScanned = ::onCreateEntry
+    )
+}

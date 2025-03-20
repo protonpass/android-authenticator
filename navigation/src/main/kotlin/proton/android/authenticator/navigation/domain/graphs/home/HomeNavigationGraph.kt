@@ -40,8 +40,8 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
                 },
                 onEntryCreated = {
                     NavigationCommand.PopupTo(
-                        destination = HomeNavigationDestination,
-                        inclusive = true
+                        destination = HomeMasterNavigationDestination,
+                        inclusive = false
                     ).also(onNavigate)
                 },
                 onEntryUpdated = {
@@ -55,9 +55,15 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
                 onCloseClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 },
-                onEnterManuallyClick = {
+                onManualEntryClick = {
                     NavigationCommand.NavigateTo(
                         destination = HomeManualNavigationDestination(entryId = null)
+                    ).also(onNavigate)
+                },
+                onEntryCreated = {
+                    NavigationCommand.PopupTo(
+                        destination = HomeMasterNavigationDestination,
+                        inclusive = false
                     ).also(onNavigate)
                 }
             )

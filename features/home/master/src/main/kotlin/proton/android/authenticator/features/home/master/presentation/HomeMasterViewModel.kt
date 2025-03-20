@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import proton.android.authenticator.features.home.master.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
@@ -51,7 +50,6 @@ import kotlin.math.floor
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeMasterViewModel @Inject constructor(
-    private val createEntryUseCase: CreateEntryUseCase,
     observeEntriesUseCase: ObserveEntriesUseCase,
     observeEntryCodesUseCase: ObserveEntryCodesUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase

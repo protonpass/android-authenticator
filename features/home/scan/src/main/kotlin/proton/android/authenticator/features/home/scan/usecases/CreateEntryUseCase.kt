@@ -16,21 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator
+package proton.android.authenticator.features.home.scan.usecases
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import proton.android.authenticator.ui.home.ui.HomeScreen
-import proton.android.authenticator.ui.theme.ProtonAuthenticatorTheme
+import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
+import javax.inject.Inject
 
-@Composable
-internal fun AuthenticatorApp(modifier: Modifier = Modifier) {
-    ProtonAuthenticatorTheme {
-        Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
-            HomeScreen(Modifier.padding(innerPadding))
-        }
+internal class CreateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
+
+    internal suspend operator fun invoke(uri: String) {
+        CreateEntryCommand.FromUri(uri = uri)
+            .also { command ->
+                commandBus.dispatch(command)
+            }
     }
+
 }

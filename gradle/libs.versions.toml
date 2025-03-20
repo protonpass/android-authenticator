@@ -2,6 +2,7 @@
 activityCompose = "1.9.3"
 agpVersion = "8.7.3"
 authenticatorCommonVersion = "0.15.1"
+cameraVersion = "1.4.1"
 coilVersion = "2.4.0"
 composeBomVersion = "2025.02.00"
 composeNavigationVersion = "2.8.7"
@@ -26,9 +27,13 @@ roomVersion = "2.6.1"
 sentryVersion = "3.5.0"
 startupVersion = "1.2.0"
 timberVersion = "5.0.1"
+zxingVersion = "3.5.3"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraVersion" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraVersion" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraVersion" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBomVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
@@ -64,6 +69,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
 molecule = { module = "app.cash.molecule:molecule-runtime", version.ref = "moleculeVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxingVersion" }
 
 [bundles]
 android-application-implementation = [
