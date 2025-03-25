@@ -18,8 +18,6 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +26,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -41,34 +38,18 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import proton.android.authenticator.features.home.scan.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import kotlin.math.roundToInt
 
 @Composable
-internal fun HomeScanCameraQrMask(
-    cutoutRect: Rect,
-    onQrCodeScanned: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-
-    val imageAnalysis = remember {
-        ImageAnalysis.Builder()
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .build()
-    }
-
-    val cameraProvider = remember {
-        ProcessCameraProvider.getInstance(context)
-            .get()
-    }
-
+internal fun HomeScanCameraQrMask(cutoutRect: Rect, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             Path().apply {
@@ -124,7 +105,7 @@ internal fun HomeScanCameraQrMask(
                         x = roundRectRadiusPx,
                         y = roundRectRadiusPx
                     )
-                )
+                ).also(::addRoundRect)
             }.also { path ->
                 val lineInterval = cutoutRect.width.div(2)
                 val gapInterval = cutoutRect.width.div(2) - ThemeRadius.ExtraSmall.toPx()
@@ -155,7 +136,7 @@ internal fun HomeScanCameraQrMask(
                 }
                 .fillMaxWidth()
                 .padding(top = ThemePadding.Large),
-            text = "Point your camera at the QR code",
+            text = stringResource(id = R.string.home_scan_qr_code_hint),
             color = Theme.colorScheme.textNorm,
             style = Theme.typography.headline,
             textAlign = TextAlign.Center

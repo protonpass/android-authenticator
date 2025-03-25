@@ -28,13 +28,6 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -43,28 +36,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.PathFillType
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import proton.android.authenticator.shared.ui.domain.theme.Theme
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
-import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
-import kotlin.math.roundToInt
+import proton.android.authenticator.shared.ui.domain.analyzers.QrCodeAnalyzer
 
 @Composable
 internal fun HomeScanCamera(
@@ -75,7 +53,9 @@ internal fun HomeScanCamera(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    var cutoutRect by remember { mutableStateOf(Rect(0f, 0f, 0f, 0f)) }
+    var cutoutRect by remember {
+        mutableStateOf(Rect.Zero)
+    }
 
     val cameraProvider = remember {
         ProcessCameraProvider.getInstance(context)
@@ -93,17 +73,17 @@ internal fun HomeScanCamera(
             .build()
     }
 
-    var previewViewSize by remember {
-        mutableStateOf(Size.Zero)
-    }
-
     val imageAnalysis = remember {
         ImageAnalysis.Builder()
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
     }
 
-    var hasCamPermission by remember {
+    var previewViewSize by remember {
+        mutableStateOf(Size.Zero)
+    }
+
+    var hasCameraPermission by remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(
                 context,
@@ -111,10 +91,11 @@ internal fun HomeScanCamera(
             ) == PackageManager.PERMISSION_GRANTED
         )
     }
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { granted ->
-            hasCamPermission = granted
+            hasCameraPermission = granted
         }
     )
 
@@ -126,7 +107,7 @@ internal fun HomeScanCamera(
         onDispose { cameraProvider.unbindAll() }
     }
 
-    if (hasCamPermission) {
+    if (hasCameraPermission) {
         AndroidView(
             modifier = modifier,
             factory = { factoryContext ->
@@ -139,151 +120,57 @@ internal fun HomeScanCamera(
                     implementationMode = PreviewView.ImplementationMode.COMPATIBLE
 
                     post {
-                        previewViewSize = Size(width = width.toFloat(), height = height.toFloat())
+                        previewViewSize = Size(
+                            width = width.toFloat(),
+                            height = height.toFloat()
+                        )
                     }
                 }
 
                 preview.surfaceProvider = previewView.surfaceProvider
 
                 try {
-                    ProcessCameraProvider.getInstance(factoryContext)
-                        .get()
-                        .bindToLifecycle(
-                            lifecycleOwner,
-                            cameraSelector,
-                            preview,
-                            imageAnalysis
-                        )
-                } catch (error: IllegalStateException) {
-                    println("JIBIRI: Error creating camera preview -> ${error.message}")
+                    cameraProvider.bindToLifecycle(
+                        lifecycleOwner,
+                        cameraSelector,
+                        preview,
+                        imageAnalysis
+                    )
+                } catch (_: IllegalStateException) {
                     onCameraError()
-                } catch (error: IllegalArgumentException) {
-                    println("JIBIRI: Error creating camera preview -> ${error.message}")
+                } catch (_: IllegalArgumentException) {
                     onCameraError()
-                } catch (error: UnsupportedOperationException) {
-                    println("JIBIRI: Error creating camera preview -> ${error.message}")
+                } catch (_: UnsupportedOperationException) {
                     onCameraError()
                 }
 
                 previewView
             }
         )
+
+        HomeScanCameraQrMask(cutoutRect = cutoutRect)
     }
 
     LaunchedEffect(previewViewSize) {
-        if (previewViewSize != Size.Zero) {
-            val cutoutSize = previewViewSize.minDimension * 0.7f // 70% of the smallest dimension
-            val left = (previewViewSize.width - cutoutSize) / 2
-            val top = (previewViewSize.height - cutoutSize) / 2
-            cutoutRect = Rect(
-                left,
-                top,
-                left + cutoutSize.roundToInt(),
-                top + cutoutSize.roundToInt()
-            )
+        if (previewViewSize == Size.Zero) return@LaunchedEffect
 
-            imageAnalysis.setAnalyzer(
-                ContextCompat.getMainExecutor(context),
-                QrCodeAnalyzer(
-                    previewSize = previewViewSize,
-                    qrScanArea = cutoutRect,
-                    onQrCodeScanned = onQrCodeScanned
-                )
-            )
-        }
-    }
+        val cutoutSize = previewViewSize.minDimension * 0.7f // 70% of the smallest dimension
+        val left = previewViewSize.width.minus(cutoutSize).div(2)
+        val top = previewViewSize.height.minus(cutoutSize).div(2)
+        cutoutRect = Rect(
+            left = left,
+            top = top,
+            right = left.plus(cutoutSize),
+            bottom = top.plus(cutoutSize)
+        )
 
-    Box {
-        DrawCutoutOverlay(cutoutRect = cutoutRect)
-
-        Text(
-            modifier = Modifier
-                .offset {
-                    IntOffset(
-                        x = 0,
-                        y = cutoutRect.bottom.roundToInt()
-                    )
+        imageAnalysis.setAnalyzer(
+            ContextCompat.getMainExecutor(context),
+            QrCodeAnalyzer(
+                onQrCodeScanned = { qrCode ->
+                    cameraProvider.unbind(imageAnalysis)
+                    onQrCodeScanned(qrCode)
                 }
-                .fillMaxWidth()
-                .padding(top = ThemePadding.Large),
-            text = "Point your camera at the QR code",
-            color = Theme.colorScheme.textNorm,
-            style = Theme.typography.headline,
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
-fun DrawCutoutOverlay(cutoutRect: Rect) {
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        val canvasWidth = size.width
-        val canvasHeight = size.height
-
-        val path = Path().apply {
-            fillType = PathFillType.EvenOdd
-
-            // Add the outer rectangle (the entire canvas)
-            addRect(
-                Rect(
-                    Offset(x = 0f, 0f),
-                    Size(canvasWidth, canvasHeight)
-                )
-            )
-
-            val roundRectPadding = ThemePadding.ExtraSmall
-
-            addRoundRect(
-                RoundRect(
-                    rect = Rect(
-                        offset = Offset(
-                            x = cutoutRect.left + roundRectPadding.toPx().times(2),
-                            y = cutoutRect.top + roundRectPadding.toPx().times(2)
-                        ),
-                        size = Size(
-                            cutoutRect.width - roundRectPadding.toPx().times(4),
-                            cutoutRect.height - roundRectPadding.toPx().times(4)
-                        )
-                    ),
-                    cornerRadius = CornerRadius(x = ThemeRadius.ExtraSmall.toPx())
-                )
-            )
-        }
-
-        drawPath(
-            path = path,
-            color = Color.Black.copy(alpha = 0.6f)
-        )
-
-        val dashedRectPath = Path().apply {
-            addRoundRect(
-                RoundRect(
-                    rect = Rect(
-                        offset = Offset(cutoutRect.left.toFloat(), cutoutRect.top.toFloat()),
-                        size = Size(
-                            cutoutRect.width.toFloat(),
-                            cutoutRect.height.toFloat()
-                        )
-                    ),
-                    cornerRadius = CornerRadius(8.dp.toPx(), 8.dp.toPx())
-                )
-            )
-        }
-
-        val lineInterval = cutoutRect.width.toFloat().div(2)
-        val gapInterval = cutoutRect.width.toFloat().div(2) - ThemeRadius.ExtraSmall.toPx()
-        val phase = cutoutRect.width.toFloat().div(4) + ThemeRadius.ExtraSmall.toPx().times(1.5f)
-
-        drawPath(
-            path = dashedRectPath,
-            color = Color.White,
-            style = Stroke(
-                width = 6.dp.toPx(),
-                cap = StrokeCap.Round,
-                pathEffect = PathEffect.dashPathEffect(
-                    intervals = floatArrayOf(lineInterval, gapInterval),
-                    phase = phase
-                )
             )
         )
     }
