@@ -35,7 +35,11 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-internal fun HomeScanBottomBar(onCloseClick: () -> Unit, onEnterManuallyClick: () -> Unit) {
+internal fun HomeScanBottomBar(
+    onCloseClick: () -> Unit,
+    onEnterManuallyClick: () -> Unit,
+    onOpenGalleryClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,7 +75,7 @@ internal fun HomeScanBottomBar(onCloseClick: () -> Unit, onEnterManuallyClick: (
         }
 
         IconButton(
-            onClick = onCloseClick
+            onClick = onOpenGalleryClick
         ) {
             Icon(
                 painter = painterResource(id = uiR.drawable.ic_image),

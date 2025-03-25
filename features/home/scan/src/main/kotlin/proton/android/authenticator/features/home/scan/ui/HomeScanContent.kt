@@ -18,13 +18,20 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.scan.presentation.HomeScanState
+import proton.android.authenticator.shared.ui.domain.analyzers.QrImageDecoder
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 
 @Composable
@@ -34,6 +41,21 @@ internal fun HomeScanContent(
     onEnterManuallyClick: () -> Unit,
     onQrCodeScanned: (String) -> Unit
 ) = with(state) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    val pickMedia = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+
+        scope.launch {
+            QrImageDecoder.decode(context, uri)
+                .also { qrCode ->
+                    if (qrCode == null) println("JIBIRI: invalid QR code -> $qrCode")
+                    else onQrCodeScanned(qrCode)
+                }
+        }
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -42,7 +64,10 @@ internal fun HomeScanContent(
         bottomBar = {
             HomeScanBottomBar(
                 onCloseClick = onCloseClick,
-                onEnterManuallyClick = onEnterManuallyClick
+                onEnterManuallyClick = onEnterManuallyClick,
+                onOpenGalleryClick = {
+                    pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                }
             )
         }
     ) { paddingValues ->
