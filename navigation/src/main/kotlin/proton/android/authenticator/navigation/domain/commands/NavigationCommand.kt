@@ -6,6 +6,11 @@ internal sealed interface NavigationCommand {
 
     data class NavigateTo(internal val destination: NavigationDestination) : NavigationCommand
 
+    data class NavigateToWithPopup(
+        internal val destination: NavigationDestination,
+        internal val popDestination: NavigationDestination
+    ) : NavigationCommand
+
     data object NavigateUp : NavigationCommand
 
     data class PopupTo(

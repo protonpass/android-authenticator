@@ -21,9 +21,11 @@ package proton.android.authenticator.navigation.domain.graphs.onboarding
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
 import proton.android.authenticator.features.onboarding.imports.ui.OnboardingImportScreen
 import proton.android.authenticator.features.onboarding.master.ui.OnboardingScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 
 internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<OnboardingNavigationDestination>(startDestination = OnboardingMasterNavigationDestination) {
@@ -36,13 +38,27 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
                 }
             )
         }
+
         composable<OnboardingImportNavigationDestination> {
             OnboardingImportScreen(
                 onImportClick = {
 //                    onNavigate(OnboardingImportNavigationCommand)
                 },
                 onSkipClick = {
-//                    onNavigate(OnboardingImportNavigationCommand)
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingBiometricsNavigationDestination
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        composable<OnboardingBiometricsNavigationDestination> {
+            OnboardingBiometricsScreen(
+                onSkipClick = {
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeNavigationDestination,
+                        popDestination = OnboardingNavigationDestination
+                    ).also(onNavigate)
                 }
             )
         }
