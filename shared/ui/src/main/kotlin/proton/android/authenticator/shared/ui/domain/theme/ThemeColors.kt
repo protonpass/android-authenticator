@@ -27,13 +27,16 @@ import androidx.compose.ui.graphics.Color
 sealed class ThemeColors {
 
     @Stable
-    abstract val gradientBackgroundColor1: Color
+    abstract val backgroundGradientTop: Color
 
     @Stable
-    abstract val gradientBackgroundColor2: Color
+    abstract val backgroundGradientBottom: Color
 
     @Stable
-    abstract val gradientBackgroundColor3: Color
+    abstract val buttonGradientTop: Color
+
+    @Stable
+    abstract val buttonGradientBottom: Color
 
     @Stable
     abstract val gradientBannerColor1: Color
@@ -101,14 +104,25 @@ sealed class ThemeColors {
     @Stable
     abstract val textWeak: Color
 
+    @Stable
+    val purpleAlpha25: Color = Color(color = 0x40995EFF)
+
+    @Stable
+    val whiteAlpha12: Color = Color(color = 0x1FFFFFFF)
+
+    @Stable
+    val whiteAlpha25: Color = Color(color = 0x40FFFFFF)
+
     @Immutable
     data object Dark : ThemeColors() {
 
-        override val gradientBackgroundColor1: Color = Color(color = 0xFF3A3836)
+        override val backgroundGradientTop: Color = Color(color = 0xFF2D2A28)
 
-        override val gradientBackgroundColor2: Color = Color(color = 0xFF252321)
+        override val backgroundGradientBottom: Color = Color(color = 0xFF161514)
 
-        override val gradientBackgroundColor3: Color = Color(color = 0xFF171514)
+        override val buttonGradientTop: Color = Color(color = 0xFF7350FF)
+
+        override val buttonGradientBottom: Color = Color(color = 0xFF453099)
 
         override val gradientBannerColor1: Color = Color(color = 0xFFFFD580)
 
@@ -152,18 +166,20 @@ sealed class ThemeColors {
 
         override val textNorm: Color = Color(color = 0xFFFFFFFF)
 
-        override val textWeak: Color = Color(color = 0xFFDFDFDF)
+        override val textWeak: Color = Color(color = 0x99FFFFFF)
 
     }
 
     @Immutable
     data object Light : ThemeColors() {
 
-        override val gradientBackgroundColor1: Color = Color(color = 0xFF3A3836)
+        override val backgroundGradientTop: Color = Color(color = 0xFFF5F5F4)
 
-        override val gradientBackgroundColor2: Color = Color(color = 0xFF252321)
+        override val backgroundGradientBottom: Color = Color(color = 0xFFFAFAF9)
 
-        override val gradientBackgroundColor3: Color = Color(color = 0xFF171514)
+        override val buttonGradientTop: Color = Color(color = 0xFF7350FF)
+
+        override val buttonGradientBottom: Color = Color(color = 0xFF453099)
 
         override val gradientBannerColor1: Color = Color(color = 0xFFFFD580)
 
@@ -205,9 +221,9 @@ sealed class ThemeColors {
 
         override val textHint: Color = Color(color = 0xFF88859D)
 
-        override val textNorm: Color = Color(color = 0xFFFFFFFF)
+        override val textNorm: Color = Color(color = 0xFF44403C)
 
-        override val textWeak: Color = Color(color = 0xFFDFDFDF)
+        override val textWeak: Color = Color(color = 0xFF78716C)
 
     }
 

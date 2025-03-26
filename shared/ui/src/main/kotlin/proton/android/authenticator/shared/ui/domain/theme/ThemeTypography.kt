@@ -31,12 +31,12 @@ import androidx.compose.ui.unit.sp
 object ThemeTypography {
 
     @Stable
-    val body1Medium: TextStyle
+    val bodyRegular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 15.sp,
+            fontWeight = FontWeight.Normal,
+            fontSize = 18.sp,
             lineHeight = 22.sp
         )
 
@@ -51,21 +51,31 @@ object ThemeTypography {
         )
 
     @Stable
-    val body2Medium: TextStyle
-        @[Composable ReadOnlyComposable]
-        get() = TextStyle(
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
-            lineHeight = 18.sp
-        )
-
-    @Stable
     val body2Regular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Normal,
+            fontSize = 13.sp,
+            lineHeight = 18.sp
+        )
+
+    @Stable
+    val body1Medium: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 15.sp,
+            lineHeight = 22.sp
+        )
+
+    @Stable
+    val body2Medium: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold,
             fontSize = 13.sp,
             lineHeight = 18.sp
         )
@@ -166,6 +176,16 @@ object ThemeTypography {
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             fontSize = 32.sp,
+            lineHeight = 38.sp
+        )
+
+    @Stable
+    val subtitle: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 26.sp,
             lineHeight = 38.sp
         )
 

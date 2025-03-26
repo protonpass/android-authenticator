@@ -58,7 +58,7 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
                 .align(alignment = Alignment.BottomEnd)
                 .size(size = 180.dp)
                 .offset(x = ThemeSpacing.Large, y = ThemeSpacing.Medium),
-            painter = painterResource(id = uiR.drawable.pass_preview),
+            painter = painterResource(id = uiR.drawable.preview_pass),
             contentDescription = null
         )
 

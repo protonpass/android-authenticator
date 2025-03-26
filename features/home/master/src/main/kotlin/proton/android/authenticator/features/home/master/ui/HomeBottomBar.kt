@@ -50,7 +50,7 @@ internal fun HomeBottomBar(onEntryQueryChange: (String) -> Unit, onNewEntryClick
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Theme.colorScheme.gradientBackgroundColor3.copy(alpha = 0.97f)),
+            .background(color = Theme.colorScheme.backgroundGradientBottom.copy(alpha = 0.97f)),
         contentAlignment = Alignment.Center
     ) {
         Row(

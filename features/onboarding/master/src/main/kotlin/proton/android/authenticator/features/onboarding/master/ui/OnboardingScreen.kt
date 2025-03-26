@@ -16,35 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.theme
+package proton.android.authenticator.features.onboarding.master.ui
 
-import androidx.compose.runtime.Stable
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Composable
 
-object ThemePadding {
-
-    @Stable
-    val None = 0.dp
-
-    @Stable
-    val ExtraSmall = 4.dp
-
-    @Stable
-    val Small = 8.dp
-
-    @Stable
-    val MediumSmall = 12.dp
-
-    @Stable
-    val Medium = 16.dp
-
-    @Stable
-    val MediumLarge = 24.dp
-
-    @Stable
-    val Large = 32.dp
-
-    @Stable
-    val ExtraLarge = 64.dp
-
+@Composable
+fun OnboardingScreen(onGetStartedClick: () -> Unit) {
+    OnboardingContent(onGetStartedClick = onGetStartedClick)
 }
