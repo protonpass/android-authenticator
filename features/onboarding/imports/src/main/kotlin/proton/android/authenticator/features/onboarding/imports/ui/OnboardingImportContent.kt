@@ -16,41 +16,49 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.onboarding.master.ui
+package proton.android.authenticator.features.onboarding.imports.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import proton.android.authenticator.features.onboarding.master.R
-import proton.android.authenticator.shared.ui.domain.components.bars.SingleActionBottomBar
+import androidx.compose.ui.unit.dp
+import proton.android.authenticator.features.onboarding.imports.R
+import proton.android.authenticator.shared.ui.domain.components.bars.VerticalActionsBottomBar
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
+import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-internal fun OnboardingContent(onGetStartedClick: () -> Unit) {
+internal fun OnboardingImportContent(onImportClick: () -> Unit, onSkipClick: () -> Unit) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .backgroundScreenGradient(),
         containerColor = Color.Transparent,
         bottomBar = {
-            SingleActionBottomBar(
-                actionText = stringResource(id = R.string.onboarding_master_action),
-                onActionClick = onGetStartedClick,
-                showProtonPrivacyBrand = true
+            VerticalActionsBottomBar(
+                primaryActionText = stringResource(id = uiR.string.action_import),
+                onPrimaryActionClick = onImportClick,
+                secondaryActionText = stringResource(id = uiR.string.action_skip),
+                onSecondaryActionClick = onSkipClick
             )
         }
     ) { paddingValues ->
@@ -61,13 +69,25 @@ internal fun OnboardingContent(onGetStartedClick: () -> Unit) {
             contentAlignment = Alignment.Center
         ) {
             Column(
-                modifier = Modifier
-                    .padding(horizontal = ThemePadding.Large),
+                modifier = Modifier.padding(horizontal = ThemePadding.Large),
+                horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
             ) {
+                Image(
+                    modifier = Modifier.size(size = 300.dp),
+                    painter = painterResource(id = uiR.drawable.ic_placeholder_import),
+                    contentDescription = null
+                )
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = ThemeSpacing.Large)
+                )
+
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.onboarding_master_title),
+                    text = stringResource(id = R.string.onboarding_import_title),
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textNorm,
                     style = Theme.typography.subtitle
@@ -76,8 +96,8 @@ internal fun OnboardingContent(onGetStartedClick: () -> Unit) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = ThemePadding.Large),
-                    text = stringResource(id = R.string.onboarding_master_subtitle),
+                        .padding(horizontal = ThemePadding.Medium),
+                    text = stringResource(id = R.string.onboarding_import_subtitle),
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textWeak,
                     style = Theme.typography.bodyRegular

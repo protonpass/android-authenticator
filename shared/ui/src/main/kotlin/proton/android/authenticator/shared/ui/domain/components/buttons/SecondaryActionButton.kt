@@ -25,20 +25,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundPrimaryButton
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSecondaryButton
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
-fun PrimaryActionButton(
+fun SecondaryActionButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .backgroundPrimaryButton()
+            .backgroundSecondaryButton()
             .clickable(onClick = onClick)
             .padding(
                 horizontal = ThemePadding.Large,
@@ -48,7 +47,7 @@ fun PrimaryActionButton(
     ) {
         Text(
             text = text,
-            color = Color.White,
+            color = Theme.colorScheme.textNorm,
             style = Theme.typography.body1Medium
         )
     }

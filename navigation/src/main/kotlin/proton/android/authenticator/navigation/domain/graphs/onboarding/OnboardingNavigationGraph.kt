@@ -21,6 +21,7 @@ package proton.android.authenticator.navigation.domain.graphs.onboarding
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.onboarding.imports.ui.OnboardingImportScreen
 import proton.android.authenticator.features.onboarding.master.ui.OnboardingScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 
@@ -29,7 +30,19 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
         composable<OnboardingMasterNavigationDestination> {
             OnboardingScreen(
                 onGetStartedClick = {
-//                    onNavigate(OnboardingGetStartedNavigationCommand)
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingImportNavigationDestination
+                    ).also(onNavigate)
+                }
+            )
+        }
+        composable<OnboardingImportNavigationDestination> {
+            OnboardingImportScreen(
+                onImportClick = {
+//                    onNavigate(OnboardingImportNavigationCommand)
+                },
+                onSkipClick = {
+//                    onNavigate(OnboardingImportNavigationCommand)
                 }
             )
         }

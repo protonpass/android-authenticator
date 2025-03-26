@@ -17,9 +17,6 @@
   -->
 
 <resources>
-    <string name="action_import">Import</string>
-    <string name="action_next">Next</string>
-    <string name="action_required">Required</string>
-    <string name="action_save">Save</string>
-    <string name="action_skip">Skip</string>
+    <string name="onboarding_import_title">Import codes</string>
+    <string name="onboarding_import_subtitle">Bring your security with you. Transfer your data to stay protected.</string>
 </resources>

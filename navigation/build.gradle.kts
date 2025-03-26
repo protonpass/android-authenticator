@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":features:home:manual"))
     implementation(project(":features:home:master"))
     implementation(project(":features:home:scan"))
+    implementation(project(":features:onboarding:imports"))
     implementation(project(":features:onboarding:master"))
     implementation(project(":features:settings:master"))
     implementation(project(":shared:ui"))

@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.Paint
@@ -49,7 +50,7 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Stable
-fun Modifier.backgroundPrimaryButtonGradient() = composed {
+fun Modifier.backgroundPrimaryButton() = composed {
     dropShadow(
         shape = CircleShape,
         color = Theme.colorScheme.purpleAlpha25,
@@ -72,6 +73,17 @@ fun Modifier.backgroundPrimaryButtonGradient() = composed {
         .innerShadow(
             shape = CircleShape,
             color = Theme.colorScheme.whiteAlpha25
+        )
+}
+
+@Stable
+fun Modifier.backgroundSecondaryButton() = composed {
+    clip(shape = CircleShape)
+        .background(color = Color.Transparent)
+        .border(
+            shape = CircleShape,
+            width = ThemeThickness.Small,
+            color = Theme.colorScheme.backgroundButtonBorderWeak
         )
 }
 
