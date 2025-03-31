@@ -27,6 +27,9 @@ import androidx.compose.ui.graphics.Color
 sealed class ThemeColors {
 
     @Stable
+    abstract val accent: Color
+
+    @Stable
     abstract val backgroundButtonBorderWeak: Color
 
     @Stable
@@ -119,6 +122,8 @@ sealed class ThemeColors {
     @Immutable
     data object Dark : ThemeColors() {
 
+        override val accent: Color = Color(color = 0xFFB080FF)
+
         override val backgroundButtonBorderWeak: Color = Color(color = 0x52FFFFFF)
 
         override val backgroundGradientTop: Color = Color(color = 0xFF2D2A28)
@@ -177,6 +182,8 @@ sealed class ThemeColors {
 
     @Immutable
     data object Light : ThemeColors() {
+
+        override val accent: Color = Color(color = 0xFF6D4AFF)
 
         override val backgroundButtonBorderWeak: Color = Color(color = 0x2E000000)
 

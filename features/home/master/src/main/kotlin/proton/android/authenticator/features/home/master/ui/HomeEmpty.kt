@@ -19,28 +19,23 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.features.home.master.R
+import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
-import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
@@ -70,7 +65,6 @@ internal fun HomeEmpty(paddingValues: PaddingValues, onNewEntryClick: () -> Unit
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textNorm,
                     style = Theme.typography.monoNorm1
-                        .copy(shadow = ThemeShadow.TextDefault)
                 )
 
                 Text(
@@ -79,38 +73,13 @@ internal fun HomeEmpty(paddingValues: PaddingValues, onNewEntryClick: () -> Unit
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textWeak,
                     style = Theme.typography.monoNorm2
-                        .copy(shadow = ThemeShadow.TextDefault)
                 )
             }
 
-            Button(
-                contentPadding = PaddingValues(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            PrimaryActionButton(
+                text = stringResource(id = R.string.home_empty_action),
                 onClick = onNewEntryClick
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Theme.colorScheme.gradientButtonColor1,
-                                    Theme.colorScheme.gradientButtonColor2
-                                )
-                            )
-                        )
-                        .padding(
-                            horizontal = ThemePadding.Large,
-                            vertical = ThemePadding.Medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.home_empty_action),
-                        color = Theme.colorScheme.textNorm,
-                        style = Theme.typography.body1Medium
-                    )
-                }
-            }
+            )
         }
     }
 }

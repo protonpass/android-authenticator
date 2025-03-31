@@ -19,14 +19,19 @@
 package proton.android.authenticator.business.shared.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.dataStoreFile
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.settings.SettingsProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.AuthenticatorDatabase
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
+import proton.android.authenticator.proto.preferences.settings.SettingsPreferences
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -36,7 +41,7 @@ internal object SharedBusinessModule {
     internal fun provideUsersDao(database: AuthenticatorDatabase): EntriesDao = database.entriesDao()
 
     @[Provides Singleton]
-    internal fun provideSkeletonDatabase(@ApplicationContext context: Context): AuthenticatorDatabase =
+    internal fun provideAuthenticatorDatabase(@ApplicationContext context: Context): AuthenticatorDatabase =
         Room.databaseBuilder(
             context = context,
             klass = AuthenticatorDatabase::class.java,
@@ -44,5 +49,13 @@ internal object SharedBusinessModule {
         )
             .fallbackToDestructiveMigration()
             .build()
+
+    @[Provides Singleton]
+    internal fun provideSettingsPreferencesDataStore(
+        @ApplicationContext context: Context
+    ): DataStore<SettingsPreferences> = DataStoreFactory.create(
+        serializer = SettingsProtoPreferencesSerializer,
+        produceFile = { context.dataStoreFile("settings_preferences.pb") }
+    )
 
 }

@@ -24,11 +24,23 @@
     <string name="settings_security_description_backup">Proton Authenticator will periodically save all the data to Google Cloud.</string>
     <string name="settings_security_title_sync">Sync between devices</string>
     <string name="settings_security_title_lock">App lock</string>
-    <string name="settings_security_title_reveal">Tap to reveal codes</string>
+    <string name="settings_security_title_lock_option_biometric">Biometric</string>
+    <string name="settings_security_title_lock_option_none">None</string>
+    <string name="settings_security_title_lock_option_pin_code">Pin Code</string>
+    <string name="settings_security_title_reveal_codes">Tap to reveal codes</string>
 
     <string name="settings_appearance_section">Appearance</string>
     <string name="settings_appearance_title_theme">Theme</string>
-    <string name="settings_appearance_title_style">List style</string>
+    <string name="settings_appearance_title_theme_option_dark">Dark</string>
+    <string name="settings_appearance_title_theme_option_light">Light</string>
+    <string name="settings_appearance_title_theme_option_system">System</string>
+    <string name="settings_appearance_title_search_bar_position">Search bar position</string>
+    <string name="settings_appearance_title_search_bar_position_option_bottom">Bottom</string>
+    <string name="settings_appearance_title_search_bar_position_option_top">Top</string>
+    <string name="settings_appearance_title_digit_style">Digit style</string>
+    <string name="settings_appearance_title_digit_style_option_plain">Plain</string>
+    <string name="settings_appearance_title_digit_style_option_rich">Rich</string>
+    <string name="settings_appearance_title_animate_code_change">Animate code change</string>
 
     <string name="settings_data_management_section">Manage your data</string>
     <string name="settings_data_management_title_import">Import</string>
@@ -39,12 +51,16 @@
     <string name="settings_support_title_feedback">Feedback</string>
 
     <string name="settings_discover_section">Discover Proton</string>
-    <string name="settings_discover_title_pass" translatable="false">Proton Pass</string>
-    <string name="settings_discover_title_vpn" translatable="false">Proton VPN</string>
-    <string name="settings_discover_title_mail" translatable="false">Proton Mail</string>
-    <string name="settings_discover_title_drive" translatable="false">Proton Drive</string>
-    <string name="settings_discover_title_calendar" translatable="false">Proton Calendar</string>
-    <string name="settings_discover_title_wallet" translatable="false">Proton Wallet</string>
+    <string name="settings_discover_pass_title" translatable="false">Proton Pass</string>
+    <string name="settings_discover_pass_description">Store strong, unique passwords to avoid identity theft and breaches.</string>
+    <string name="settings_discover_vpn_title" translatable="false">Proton VPN</string>
+    <string name="settings_discover_vpn_description">Browse without being tracked and access blocked content.</string>
+    <string name="settings_discover_mail_title" translatable="false">Proton Mail</string>
+    <string name="settings_discover_mail_description">Protect your inbox from spam, tracking, and targeted ads.</string>
+    <string name="settings_discover_calendar_title" translatable="false">Proton Calendar</string>
+    <string name="settings_discover_calendar_description">Organize your schedule and keep your plans to yourself.</string>
+    <string name="settings_discover_drive_title" translatable="false">Proton Drive</string>
+    <string name="settings_discover_drive_description">Give your precious photos and files the safe home they deserve.</string>
 
     <string name="settings_app_version">Version 0.1.0</string>
 </resources>

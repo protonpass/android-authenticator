@@ -31,16 +31,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.features.settings.master.R
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.R as uiR
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
 internal fun SettingsTopBar(onNavigationClick: () -> Unit) {
     CenterAlignedTopAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .backgroundTopBarGradient(),
+        modifier = Modifier.fillMaxWidth(),
         title = {
             Text(
                 text = stringResource(id = R.string.settings_screen_title),
@@ -53,7 +50,7 @@ internal fun SettingsTopBar(onNavigationClick: () -> Unit) {
                 Icon(
                     painter = painterResource(id = uiR.drawable.ic_arrow_left),
                     contentDescription = null,
-                    tint = Theme.colorScheme.interactionPurple
+                    tint = Theme.colorScheme.accent
                 )
             }
         },

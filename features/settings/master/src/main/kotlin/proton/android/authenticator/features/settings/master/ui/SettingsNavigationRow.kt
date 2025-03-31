@@ -20,26 +20,32 @@ package proton.android.authenticator.features.settings.master.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun SettingsNavigationRow(title: String, @DrawableRes iconResId: Int? = null) {
+internal fun SettingsNavigationRow(
+    title: String,
+    onClick: () -> Unit,
+    description: String? = null,
+    @DrawableRes iconResId: Int? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(all = ThemePadding.Medium),
         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
         verticalAlignment = Alignment.CenterVertically
@@ -51,17 +57,22 @@ internal fun SettingsNavigationRow(title: String, @DrawableRes iconResId: Int? =
             )
         }
 
-        Text(
-            modifier = Modifier.weight(weight = 1f, fill = true),
-            text = title,
-            color = Theme.colorScheme.textNorm,
-            style = Theme.typography.body1Regular
-        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall)
+        ) {
+            Text(
+                text = title,
+                color = Theme.colorScheme.textNorm,
+                style = Theme.typography.body1Regular
+            )
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_chevron_tiny_right),
-            contentDescription = null,
-            tint = Theme.colorScheme.textWeak
-        )
+            description?.let { text ->
+                Text(
+                    text = text,
+                    color = Theme.colorScheme.textWeak,
+                    style = Theme.typography.body2Regular
+                )
+            }
+        }
     }
 }

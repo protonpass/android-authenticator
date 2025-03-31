@@ -18,48 +18,133 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.models.UiSelectorOption
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun SettingsSelectorRow(
+internal fun <T> SettingsSelectorRow(
     title: String,
-    selectedOption: String,
-    options: List<String>
+    options: List<UiSelectorOption<T>>,
+    onSelectedOptionChange: (T) -> Unit
 ) {
-    Row(
+    val selectedOption = remember(key1 = options) {
+        options.first(UiSelectorOption<T>::isSelected)
+    }
+
+    var isExpanded by remember { mutableStateOf(false) }
+
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = ThemePadding.Medium),
-        verticalAlignment = Alignment.CenterVertically
+            .clickable { isExpanded = !isExpanded }
     ) {
-        Text(
-            modifier = Modifier.weight(weight = 1f, fill = true),
-            text = title,
-            color = Theme.colorScheme.textNorm,
-            style = Theme.typography.body1Regular
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = ThemePadding.Medium),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.weight(weight = 1f, fill = true),
+                text = title,
+                color = Theme.colorScheme.textNorm,
+                style = Theme.typography.body1Regular
+            )
 
-        Text(
-            text = selectedOption,
-            color = Theme.colorScheme.textNorm,
-            style = Theme.typography.body1Regular
-        )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = selectedOption.text.asString(),
+                    color = Theme.colorScheme.textNorm,
+                    style = Theme.typography.body1Regular
+                )
 
-        Icon(
-            painter = painterResource(id = R.drawable.ic_chevron_tiny_right),
-            contentDescription = null,
-            tint = Theme.colorScheme.textWeak
-        )
+                Box {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_selector),
+                        contentDescription = null,
+                        tint = Theme.colorScheme.textWeak
+                    )
+
+                    DropdownMenu(
+                        expanded = isExpanded,
+                        onDismissRequest = { isExpanded = false },
+                        containerColor = Color.DarkGray
+                    ) {
+                        options.forEachIndexed { index, option ->
+                            DropdownMenuItem(
+                                text = {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(size = 16.dp),
+                                            painter = painterResource(id = R.drawable.ic_checkmark),
+                                            contentDescription = null,
+                                            tint = if (option.isSelected) {
+                                                Theme.colorScheme.textNorm
+                                            } else {
+                                                Color.Transparent
+                                            }
+                                        )
+
+                                        Text(
+                                            text = option.text.asString(),
+                                            style = Theme.typography.body2Regular
+                                        )
+
+                                    }
+                                },
+                                onClick = {
+                                    isExpanded = false
+
+                                    onSelectedOptionChange(option.value)
+                                },
+                                colors = MenuDefaults.itemColors()
+                                    .copy(
+                                        textColor = Theme.colorScheme.textNorm,
+                                        leadingIconColor = Theme.colorScheme.textNorm
+                                    )
+                            )
+
+                            if (index < options.lastIndex) {
+                                HorizontalDivider(
+                                    color = Color.White.copy(alpha = 0.12f)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

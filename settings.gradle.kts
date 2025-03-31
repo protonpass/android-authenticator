@@ -47,6 +47,7 @@ rootProject.name = "ProtonAuthenticator"
 include(":app")
 include(":business:entries")
 include(":business:entry_codes")
+include(":business:settings")
 include(":business:shared")
 include(":features:home:manual")
 include(":features:home:master")

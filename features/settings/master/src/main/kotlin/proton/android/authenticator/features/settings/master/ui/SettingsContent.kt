@@ -20,175 +20,192 @@ package proton.android.authenticator.features.settings.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
+import proton.android.authenticator.business.settings.domain.SettingsDigitType
+import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
+import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun SettingsContent(onNavigationClick: () -> Unit) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        containerColor = Color.Transparent,
-        topBar = {
-            SettingsTopBar(onNavigationClick = onNavigationClick)
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(state = rememberScrollState())
-                .padding(paddingValues = paddingValues)
-                .padding(horizontal = ThemePadding.Medium),
-            verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
-        ) {
-            SettingsPassBanner(
-                onDismissClick = {},
-                onActionClick = {}
-            )
+internal fun SettingsContent(
+    state: SettingsMasterState,
+    onBackupChange: (Boolean) -> Unit,
+    onSyncChange: (Boolean) -> Unit,
+    onAppLockTypeChange: (SettingsAppLockType) -> Unit,
+    onTapToRevealChange: (Boolean) -> Unit,
+    onThemeTypeChange: (SettingsThemeType) -> Unit,
+    onSearchBarTypeChange: (SettingsSearchBarType) -> Unit,
+    onDigitTypeChange: (SettingsDigitType) -> Unit,
+    onCodeChangeAnimationChange: (Boolean) -> Unit,
+    onDiscoverAppClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) = with(state) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
+    ) {
+        SettingsPassBanner(
+            onDismissClick = {},
+            onActionClick = {}
+        )
 
-            SettingsSection(
-                title = stringResource(id = R.string.settings_security_section),
-                contents = listOf(
-                    {
-                        SettingsToggleRow(
-                            title = stringResource(id = R.string.settings_security_title_backup),
-                            description = stringResource(id = R.string.settings_security_description_backup),
-                            isChecked = true,
-                            onCheckedChange = {}
-                        )
-                    },
-                    {
-                        SettingsSelectorRow(
-                            title = stringResource(id = R.string.settings_security_title_lock),
-                            selectedOption = "Biometric",
-                            options = listOf("Biometric", "Pin", "None")
-                        )
-                    },
-                    {
-                        SettingsToggleRow(
-                            title = stringResource(id = R.string.settings_security_title_sync),
-                            isChecked = false,
-                            onCheckedChange = {}
-                        )
-                    },
-                    {
-                        SettingsToggleRow(
-                            title = stringResource(id = R.string.settings_security_title_reveal),
-                            isChecked = true,
-                            onCheckedChange = {}
-                        )
-                    }
-                )
+        SettingsSection(
+            title = stringResource(id = R.string.settings_security_section),
+            contents = listOf(
+                {
+                    SettingsToggleRow(
+                        title = stringResource(id = R.string.settings_security_title_backup),
+                        description = stringResource(id = R.string.settings_security_description_backup),
+                        isChecked = settingsModel.isBackupEnabled,
+                        onCheckedChange = onBackupChange
+                    )
+                },
+                {
+                    SettingsToggleRow(
+                        title = stringResource(id = R.string.settings_security_title_sync),
+                        isChecked = settingsModel.isSyncEnabled,
+                        onCheckedChange = onSyncChange
+                    )
+                },
+                {
+                    SettingsSelectorRow<SettingsAppLockType>(
+                        title = stringResource(id = R.string.settings_security_title_lock),
+                        options = settingsModel.appLockOptions,
+                        onSelectedOptionChange = onAppLockTypeChange
+                    )
+                },
+                {
+                    SettingsToggleRow(
+                        title = stringResource(id = R.string.settings_security_title_reveal_codes),
+                        isChecked = settingsModel.isTapToRevealEnabled,
+                        onCheckedChange = onTapToRevealChange
+                    )
+                }
             )
+        )
 
-            SettingsSection(
-                title = stringResource(id = R.string.settings_appearance_section),
-                contents = listOf(
-                    {
-                        SettingsSelectorRow(
-                            title = stringResource(id = R.string.settings_appearance_title_theme),
-                            selectedOption = "Dark",
-                            options = listOf("Light", "Dark", "System default")
-                        )
-                    },
-                    {
-                        SettingsSelectorRow(
-                            title = stringResource(id = R.string.settings_appearance_title_style),
-                            selectedOption = "Expanded",
-                            options = listOf("Compact", "Expanded")
-                        )
-                    }
-                )
+        SettingsSection(
+            title = stringResource(id = R.string.settings_appearance_section),
+            contents = listOf(
+                {
+                    SettingsSelectorRow<SettingsThemeType>(
+                        title = stringResource(id = R.string.settings_appearance_title_theme),
+                        options = settingsModel.themeOptions,
+                        onSelectedOptionChange = onThemeTypeChange
+                    )
+                },
+                {
+                    SettingsSelectorRow<SettingsSearchBarType>(
+                        title = stringResource(id = R.string.settings_appearance_title_search_bar_position),
+                        options = settingsModel.searchBarOptions,
+                        onSelectedOptionChange = onSearchBarTypeChange
+                    )
+                },
+                {
+                    SettingsSelectorRow<SettingsDigitType>(
+                        title = stringResource(id = R.string.settings_appearance_title_digit_style),
+                        options = settingsModel.digitOptions,
+                        onSelectedOptionChange = onDigitTypeChange
+                    )
+                },
+                {
+                    SettingsToggleRow(
+                        title = stringResource(id = R.string.settings_appearance_title_animate_code_change),
+                        isChecked = settingsModel.isCodeChangeAnimationEnabled,
+                        onCheckedChange = onCodeChangeAnimationChange
+                    )
+                }
             )
+        )
 
-            SettingsSection(
-                title = stringResource(id = R.string.settings_data_management_section),
-                contents = listOf(
-                    {
-                        SettingsNavigationRow(
-                            title = stringResource(id = R.string.settings_data_management_title_import)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            title = stringResource(id = R.string.settings_data_management_title_export)
-                        )
-                    }
-                )
+        SettingsSection(
+            title = stringResource(id = R.string.settings_data_management_section),
+            contents = listOf(
+                {
+                    SettingsNavigationRow(
+                        title = stringResource(id = R.string.settings_data_management_title_import),
+                        onClick = {}
+                    )
+                },
+                {
+                    SettingsNavigationRow(
+                        title = stringResource(id = R.string.settings_data_management_title_export),
+                        onClick = {}
+                    )
+                }
             )
+        )
 
-            SettingsSection(
-                title = stringResource(id = R.string.settings_support_section),
-                contents = listOf(
-                    {
-                        SettingsNavigationRow(
-                            title = stringResource(id = R.string.settings_support_title_how_to)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            title = stringResource(id = R.string.settings_support_title_feedback)
-                        )
-                    }
-                )
+        SettingsSection(
+            title = stringResource(id = R.string.settings_support_section),
+            contents = listOf(
+                {
+                    SettingsNavigationRow(
+                        title = stringResource(id = R.string.settings_support_title_how_to),
+                        onClick = {}
+                    )
+                },
+                {
+                    SettingsNavigationRow(
+                        title = stringResource(id = R.string.settings_support_title_feedback),
+                        onClick = {}
+                    )
+                }
             )
+        )
 
-            SettingsSection(
-                title = stringResource(id = R.string.settings_discover_section),
-                contents = listOf(
-                    {
-                        SettingsNavigationRow(
-                            iconResId = uiR.drawable.ic_logo_pass,
-                            title = stringResource(id = R.string.settings_discover_title_pass)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            iconResId = uiR.drawable.ic_logo_vpn,
-                            title = stringResource(id = R.string.settings_discover_title_vpn)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            iconResId = uiR.drawable.ic_logo_mail,
-                            title = stringResource(id = R.string.settings_discover_title_mail)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            iconResId = uiR.drawable.ic_logo_drive,
-                            title = stringResource(id = R.string.settings_discover_title_drive)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            iconResId = uiR.drawable.ic_logo_calendar,
-                            title = stringResource(id = R.string.settings_discover_title_calendar)
-                        )
-                    },
-                    {
-                        SettingsNavigationRow(
-                            iconResId = uiR.drawable.ic_logo_wallet,
-                            title = stringResource(id = R.string.settings_discover_title_wallet)
-                        )
-                    }
-                )
+        SettingsSection(
+            title = stringResource(id = R.string.settings_discover_section),
+            contents = listOf(
+                {
+                    SettingsNavigationRow(
+                        iconResId = uiR.drawable.ic_logo_pass,
+                        title = stringResource(id = R.string.settings_discover_pass_title),
+                        description = stringResource(id = R.string.settings_discover_pass_description),
+                        onClick = { onDiscoverAppClick("proton.android.pass") }
+                    )
+                },
+                {
+                    SettingsNavigationRow(
+                        iconResId = uiR.drawable.ic_logo_vpn,
+                        title = stringResource(id = R.string.settings_discover_vpn_title),
+                        description = stringResource(id = R.string.settings_discover_vpn_description),
+                        onClick = { onDiscoverAppClick("ch.protonvpn.android") }
+                    )
+                },
+                {
+                    SettingsNavigationRow(
+                        iconResId = uiR.drawable.ic_logo_mail,
+                        title = stringResource(id = R.string.settings_discover_mail_title),
+                        description = stringResource(id = R.string.settings_discover_mail_description),
+                        onClick = { onDiscoverAppClick("ch.protonmail.android") }
+                    )
+                },
+                {
+                    SettingsNavigationRow(
+                        iconResId = uiR.drawable.ic_logo_calendar,
+                        title = stringResource(id = R.string.settings_discover_calendar_title),
+                        description = stringResource(id = R.string.settings_discover_calendar_description),
+                        onClick = { onDiscoverAppClick("me.proton.android.calendar") }
+                    )
+                },
+                {
+                    SettingsNavigationRow(
+                        iconResId = uiR.drawable.ic_logo_drive,
+                        title = stringResource(id = R.string.settings_discover_drive_title),
+                        description = stringResource(id = R.string.settings_discover_drive_description),
+                        onClick = { onDiscoverAppClick("me.proton.android.drive") }
+                    )
+                }
             )
+        )
 
-            SettingsVersionRow()
-        }
+        SettingsVersionRow()
     }
 }

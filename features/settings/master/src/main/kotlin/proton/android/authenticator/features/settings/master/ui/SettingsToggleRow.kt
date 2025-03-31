@@ -37,9 +37,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 @Composable
 internal fun SettingsToggleRow(
     title: String,
-    description: String? = null,
     isChecked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    description: String? = null
 ) {
     Row(
         modifier = Modifier
@@ -58,9 +58,9 @@ internal fun SettingsToggleRow(
                 style = Theme.typography.body1Regular
             )
 
-            if (description != null) {
+            description?.let { text ->
                 Text(
-                    text = description,
+                    text = text,
                     color = Theme.colorScheme.textWeak,
                     style = Theme.typography.body2Regular
                 )

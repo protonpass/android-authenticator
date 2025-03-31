@@ -90,7 +90,7 @@ fun Modifier.backgroundSecondaryButton() = composed {
 @Stable
 fun Modifier.backgroundScreenGradient() = composed {
     val image = ImageBitmap.imageResource(R.drawable.bg_texture)
-    val paintAlpha = remember { 40 }
+    val paintAlpha = remember { 38 }
 
     background(
         brush = Brush.verticalGradient(

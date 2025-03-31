@@ -96,7 +96,6 @@ fun FormDropdownMenu(
         }
 
         DropdownMenu(
-            modifier = modifier,
             expanded = isExpanded,
             onDismissRequest = { isExpanded = false }
         ) {

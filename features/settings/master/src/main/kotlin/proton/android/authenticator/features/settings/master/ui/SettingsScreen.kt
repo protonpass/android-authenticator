@@ -18,11 +18,47 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
-fun SettingsScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<SettingsMasterViewModel>()) {
-    SettingsContent(onNavigationClick = onNavigationClick)
-}
+fun SettingsScreen(onNavigationClick: () -> Unit, onDiscoverAppClick: (String) -> Unit) =
+    with(hiltViewModel<SettingsMasterViewModel>()) {
+        val state by stateFlow.collectAsStateWithLifecycle()
+
+        ScaffoldScreen(
+            topBar = {
+                SettingsTopBar(
+                    onNavigationClick = onNavigationClick
+                )
+            }
+        ) { paddingValues ->
+            SettingsContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(state = rememberScrollState())
+                    .padding(paddingValues = paddingValues)
+                    .padding(horizontal = ThemePadding.Medium),
+                state = state,
+                onBackupChange = ::onUpdateIsBackupEnabled,
+                onSyncChange = ::onUpdateIsSyncEnabled,
+                onAppLockTypeChange = ::onUpdateAppLockType,
+                onTapToRevealChange = ::onUpdateIsTapToRevealEnabled,
+                onThemeTypeChange = ::onUpdateThemeType,
+                onSearchBarTypeChange = ::onUpdateSearchBarType,
+                onDigitTypeChange = ::onUpdateDigitType,
+                onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
+                onDiscoverAppClick = onDiscoverAppClick
+            )
+        }
+    }

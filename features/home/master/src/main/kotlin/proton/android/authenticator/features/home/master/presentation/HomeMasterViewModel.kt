@@ -107,14 +107,12 @@ internal class HomeMasterViewModel @Inject constructor(
     internal val stateFlow: StateFlow<HomeMasterState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
-        val state = HomeMasterState.create(
+        HomeMasterState.create(
             entrySearchQueryFlow = entrySearchQueryDebouncedFlow,
             entriesFlow = entriesFlow,
             entryCodesFlow = entryCodesFlow,
             entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow
         )
-
-        state
     }
 
     internal fun onDeleteEntry(entryModel: HomeMasterEntryModel) {

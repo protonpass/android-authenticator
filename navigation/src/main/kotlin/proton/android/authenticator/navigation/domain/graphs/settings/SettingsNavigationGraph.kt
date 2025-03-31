@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.navigation.domain.graphs.settings
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -27,9 +28,17 @@ import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<SettingsNavigationDestination>(startDestination = SettingsMasterNavigationDestination) {
         composable<SettingsMasterNavigationDestination> {
+            val context = LocalContext.current
+
             SettingsScreen(
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
+                },
+                onDiscoverAppClick = { appPackageName ->
+                    NavigationCommand.NavigateToPlayStore(
+                        appPackageName = appPackageName,
+                        context = context
+                    ).also(onNavigate)
                 }
             )
         }

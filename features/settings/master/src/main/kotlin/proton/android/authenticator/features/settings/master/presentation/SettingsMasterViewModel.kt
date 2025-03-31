@@ -19,8 +19,81 @@
 package proton.android.authenticator.features.settings.master.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import app.cash.molecule.RecompositionMode
+import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
+import proton.android.authenticator.business.settings.domain.SettingsDigitType
+import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
+import proton.android.authenticator.business.settings.domain.SettingsThemeType
+import proton.android.authenticator.features.settings.master.usecases.ObserveSettingsUseCase
+import proton.android.authenticator.features.settings.master.usecases.UpdateSettingsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SettingsMasterViewModel @Inject constructor() : ViewModel()
+internal class SettingsMasterViewModel @Inject constructor(
+    private val observeSettingsUseCase: ObserveSettingsUseCase,
+    private val updateSettingsUseCase: UpdateSettingsUseCase
+) : ViewModel() {
+
+    private val settingsModel: SettingsMasterSettingsModel
+        get() = stateFlow.value.settingsModel
+
+    internal val stateFlow: StateFlow<SettingsMasterState> = viewModelScope.launchMolecule(
+        mode = RecompositionMode.Immediate
+    ) {
+        SettingsMasterState.create(
+            settingsFlow = observeSettingsUseCase()
+        )
+    }
+
+    internal fun onUpdateIsBackupEnabled(newIsBackupEnabled: Boolean) {
+        settingsModel.copy(isBackupEnabled = newIsBackupEnabled)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateIsSyncEnabled(newIsSyncEnabled: Boolean) {
+        settingsModel.copy(isSyncEnabled = newIsSyncEnabled)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateAppLockType(newAppLockType: SettingsAppLockType) {
+        settingsModel.copy(appLockType = newAppLockType)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateIsTapToRevealEnabled(newIsTapToRevealEnabled: Boolean) {
+        settingsModel.copy(isTapToRevealEnabled = newIsTapToRevealEnabled)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateThemeType(newThemeType: SettingsThemeType) {
+        settingsModel.copy(themeType = newThemeType)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateSearchBarType(newSearchBarType: SettingsSearchBarType) {
+        settingsModel.copy(searchBarType = newSearchBarType)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateDigitType(newDigitType: SettingsDigitType) {
+        settingsModel.copy(digitType = newDigitType)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateIsCodeChangeAnimationEnabled(newIsCodeChangeAnimationEnabled: Boolean) {
+        settingsModel.copy(isCodeChangeAnimationEnabled = newIsCodeChangeAnimationEnabled)
+            .also(::updateSettings)
+    }
+
+    private fun updateSettings(newSettingsModel: SettingsMasterSettingsModel) {
+        viewModelScope.launch {
+            updateSettingsUseCase(newSettingsModel)
+        }
+    }
+
+}

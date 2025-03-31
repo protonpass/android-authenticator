@@ -1,13 +1,14 @@
 [versions]
 activityCompose = "1.9.3"
 agpVersion = "8.7.3"
-authenticatorCommonVersion = "0.15.1"
-cameraVersion = "1.4.1"
+authenticatorCommonVersion = "0.17.0"
+cameraVersion = "1.4.2"
 coilVersion = "2.4.0"
-composeBomVersion = "2025.02.00"
-composeNavigationVersion = "2.8.7"
+composeBomVersion = "2025.03.01"
+composeNavigationVersion = "2.8.9"
 coreKtxVersion = "1.13.1"
 coreVersion = "30.3.1"
+datastoreVersion = "1.1.4"
 datetimeVersion = "0.4.0"
 dependencyGuardVersion = "0.5.0"
 espressoCoreVersion = "3.6.1"
@@ -21,6 +22,8 @@ kotlinxSerializationVersion = "1.8.0"
 kspVersion = "2.0.21-1.0.27"
 lifecycleRuntimeVersion = "2.8.7"
 moleculeVersion = "2.0.0"
+protobufPluginVersion = "0.9.4"
+protobufVersion = "4.30.2"
 protonDetektVersion = "1.3.1"
 protonEnvironmentConfigVersion = "1.3.1"
 roomVersion = "2.6.1"
@@ -36,6 +39,7 @@ androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycl
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraVersion" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBomVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastoreVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -68,6 +72,8 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
 molecule = { module = "app.cash.molecule:molecule-runtime", version.ref = "moleculeVersion" }
+protobuf-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobufVersion" }
+protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobufVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxingVersion" }
 
@@ -80,9 +86,11 @@ android-application-ksp = [
     "hilt-compiler",
 ]
 business-library-implementation = [
+    "androidx-datastore",
     "authenticator-common",
     "core-crypto",
     "hilt-android",
+    "protobuf-lite",
 ]
 business-library-ksp = [
     "hilt-compiler",
@@ -108,6 +116,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVer
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPluginVersion" }
 proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "protonDetektVersion" }
 proton-environmentConfig = { id = "me.proton.core.gradle-plugins.environment-config", version.ref = "protonEnvironmentConfigVersion" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentryVersion" }

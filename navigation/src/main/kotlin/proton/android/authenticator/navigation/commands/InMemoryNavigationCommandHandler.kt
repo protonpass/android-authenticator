@@ -1,5 +1,8 @@
 package proton.android.authenticator.navigation.commands
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
@@ -11,6 +14,28 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
         when (command) {
             is NavigationCommand.NavigateTo -> {
                 navController.navigate(route = command.destination)
+            }
+
+            is NavigationCommand.NavigateToPlayStore -> {
+                val playStoreUri = "$PLAY_STORE_APP_URI${command.appPackageName}".toUri()
+                val playStoreIntent = Intent(Intent.ACTION_VIEW, playStoreUri).apply {
+                    setPackage(PLAY_STORE_VENDOR_PACKAGE)
+                }
+
+                try {
+                    command.context.startActivity(playStoreIntent)
+                } catch (_: ActivityNotFoundException) {
+                    NavigationCommand.NavigateToUrl(
+                        url = "$PLAY_STORE_WEB_URI${command.appPackageName}",
+                        context = command.context
+                    ).also { urlCommand -> handle(urlCommand, navController) }
+                }
+            }
+
+            is NavigationCommand.NavigateToUrl -> {
+                val browserUri = command.url.toUri()
+                val browserIntent = Intent(Intent.ACTION_VIEW, browserUri)
+                command.context.startActivity(browserIntent)
             }
 
             is NavigationCommand.NavigateToWithPopup -> {
@@ -30,6 +55,16 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
                 )
             }
         }
+    }
+
+    private companion object {
+
+        private const val PLAY_STORE_APP_URI = "market://details?id="
+
+        private const val PLAY_STORE_WEB_URI = "https://play.google.com/store/apps/details?id="
+
+        private const val PLAY_STORE_VENDOR_PACKAGE = "com.android.vending"
+
     }
 
 }

@@ -45,10 +45,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-internal fun OnboardingBiometricsContent(
-    onEnableBiometricsClick: () -> Unit,
-    onSkipClick: () -> Unit
-) {
+internal fun OnboardingBiometricsContent(onEnableBiometricsClick: () -> Unit, onSkipClick: () -> Unit) {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()

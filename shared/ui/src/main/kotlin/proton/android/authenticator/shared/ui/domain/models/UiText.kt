@@ -23,16 +23,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.res.stringResource
 
-sealed class UiText {
+sealed interface UiText {
 
     @Composable
-    internal abstract fun asString(): String
+    fun asString(): String
 
     @Stable
     class Dynamic(
         private val value: String,
         private val masks: List<UiTextMask> = emptyList()
-    ) : UiText() {
+    ) : UiText {
 
         @Composable
         override fun asString(): String = value.applyMasks(masks)
@@ -41,14 +41,14 @@ sealed class UiText {
 
     @Stable
     class Resource(
-        @StringRes private val resId: Int,
+        @StringRes private val id: Int,
         private vararg val args: Any = emptyArray(),
         private val masks: List<UiTextMask> = emptyList()
-    ) : UiText() {
+    ) : UiText {
 
 
         @Composable
-        override fun asString(): String = stringResource(id = resId, formatArgs = args)
+        override fun asString(): String = stringResource(id = id, formatArgs = args)
             .applyMasks(masks)
 
     }

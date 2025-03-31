@@ -39,7 +39,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.home.master.R
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 import proton.android.authenticator.shared.ui.domain.modifiers.dropShadow
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -49,9 +48,7 @@ import proton.android.authenticator.shared.ui.R as uiR
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
 internal fun HomeTopBar(onSettingsClick: () -> Unit) {
     TopAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .backgroundTopBarGradient(),
+        modifier = Modifier.fillMaxWidth(),
         title = {
             Text(
                 text = stringResource(id = R.string.home_screen_title),

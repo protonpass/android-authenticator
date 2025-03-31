@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "proton.android.authenticator.features.settings.master"
 }
+
+dependencies {
+    implementation(project(":business:settings"))
+}
