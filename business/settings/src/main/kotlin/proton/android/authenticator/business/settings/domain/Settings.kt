@@ -26,7 +26,8 @@ data class Settings(
     val digitType: SettingsDigitType,
     val searchBarType: SettingsSearchBarType,
     val themeType: SettingsThemeType,
-    val isCodeChangeAnimationEnabled: Boolean
+    val isCodeChangeAnimationEnabled: Boolean,
+    val isPassBannerDismissed: Boolean
 ) {
 
     companion object {
@@ -39,7 +40,8 @@ data class Settings(
             themeType = SettingsThemeType.System,
             searchBarType = SettingsSearchBarType.Bottom,
             digitType = SettingsDigitType.Plain,
-            isCodeChangeAnimationEnabled = false
+            isCodeChangeAnimationEnabled = false,
+            isPassBannerDismissed = false
         )
 
     }

@@ -32,5 +32,6 @@ data class UpdateSettingsCommand(
     internal val themeType: SettingsThemeType,
     internal val searchBarType: SettingsSearchBarType,
     internal val digitType: SettingsDigitType,
-    internal val isCodeChangeAnimationEnabled: Boolean
+    internal val isCodeChangeAnimationEnabled: Boolean,
+    internal val isPassBannerDismissed: Boolean
 ) : Command

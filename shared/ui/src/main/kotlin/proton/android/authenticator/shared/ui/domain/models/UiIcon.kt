@@ -26,21 +26,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 
-sealed class UiIcon {
+sealed interface UiIcon {
 
     @Composable
-    internal abstract fun asPainter(): Painter
+    fun asPainter(): Painter
 
     @Stable
-    data class Resource(@DrawableRes private val resId: Int) : UiIcon() {
+    data class Resource(@DrawableRes private val id: Int) : UiIcon {
 
         @Composable
-        override fun asPainter(): Painter = painterResource(id = resId)
+        override fun asPainter(): Painter = painterResource(id = id)
 
     }
 
     @Stable
-    data class Vector(private val imageVector: ImageVector) : UiIcon() {
+    data class Vector(private val imageVector: ImageVector) : UiIcon {
 
         @Composable
         override fun asPainter(): Painter = rememberVectorPainter(image = imageVector)

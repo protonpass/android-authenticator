@@ -50,6 +50,7 @@ fun SettingsScreen(onNavigationClick: () -> Unit, onDiscoverAppClick: (String) -
                     .padding(paddingValues = paddingValues)
                     .padding(horizontal = ThemePadding.Medium),
                 state = state,
+                onDismissPassBanner = ::onUpdateIsPassBannerDismissed,
                 onBackupChange = ::onUpdateIsBackupEnabled,
                 onSyncChange = ::onUpdateIsSyncEnabled,
                 onAppLockTypeChange = ::onUpdateAppLockType,

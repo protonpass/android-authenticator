@@ -35,7 +35,8 @@ internal class UpdateSettingsCommandHandler @Inject constructor(
             themeType = command.themeType,
             searchBarType = command.searchBarType,
             digitType = command.digitType,
-            isCodeChangeAnimationEnabled = command.isCodeChangeAnimationEnabled
+            isCodeChangeAnimationEnabled = command.isCodeChangeAnimationEnabled,
+            isPassBannerDismissed = command.isPassBannerDismissed
         ).also { settings ->
             updater.update(settings)
         }

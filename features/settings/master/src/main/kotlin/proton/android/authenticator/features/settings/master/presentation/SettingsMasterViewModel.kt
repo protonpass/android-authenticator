@@ -30,12 +30,14 @@ import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.usecases.ObserveSettingsUseCase
+import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
 import proton.android.authenticator.features.settings.master.usecases.UpdateSettingsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SettingsMasterViewModel @Inject constructor(
     private val observeSettingsUseCase: ObserveSettingsUseCase,
+    private val observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
 
@@ -46,8 +48,14 @@ internal class SettingsMasterViewModel @Inject constructor(
         mode = RecompositionMode.Immediate
     ) {
         SettingsMasterState.create(
-            settingsFlow = observeSettingsUseCase()
+            settingsFlow = observeSettingsUseCase(),
+            uninstalledProtonAppsFlow = observeUninstalledProtonApps()
         )
+    }
+
+    internal fun onUpdateIsPassBannerDismissed() {
+        settingsModel.copy(isPassBannerDismissed = true)
+            .also(::updateSettings)
     }
 
     internal fun onUpdateIsBackupEnabled(newIsBackupEnabled: Boolean) {

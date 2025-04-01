@@ -26,6 +26,14 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <package android:name="ch.protonmail.android"/>
+        <package android:name="ch.protonvpn.android"/>
+        <package android:name="me.proton.android.calendar"/>
+        <package android:name="me.proton.android.drive"/>
+        <package android:name="proton.android.pass"/>
+    </queries>
+
     <application
         android:name=".App"
         android:allowBackup="true"

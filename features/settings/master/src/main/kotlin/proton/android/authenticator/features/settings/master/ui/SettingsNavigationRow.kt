@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,17 +29,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun SettingsNavigationRow(
-    title: String,
+    title: UiText,
     onClick: () -> Unit,
-    description: String? = null,
-    @DrawableRes iconResId: Int? = null
+    description: UiText? = null,
+    icon: UiIcon? = null
 ) {
     Row(
         modifier = Modifier
@@ -50,9 +50,9 @@ internal fun SettingsNavigationRow(
         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        iconResId?.let { iconId ->
+        icon?.let { icon ->
             Image(
-                painter = painterResource(id = iconId),
+                painter = icon.asPainter(),
                 contentDescription = null
             )
         }
@@ -61,14 +61,14 @@ internal fun SettingsNavigationRow(
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall)
         ) {
             Text(
-                text = title,
+                text = title.asString(),
                 color = Theme.colorScheme.textNorm,
                 style = Theme.typography.body1Regular
             )
 
             description?.let { text ->
                 Text(
-                    text = text,
+                    text = text.asString(),
                     color = Theme.colorScheme.textWeak,
                     style = Theme.typography.body2Regular
                 )

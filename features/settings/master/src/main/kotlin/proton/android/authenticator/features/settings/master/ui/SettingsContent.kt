@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -29,12 +30,13 @@ import proton.android.authenticator.business.settings.domain.SettingsSearchBarTy
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
+import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
-import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun SettingsContent(
     state: SettingsMasterState,
+    onDismissPassBanner: () -> Unit,
     onBackupChange: (Boolean) -> Unit,
     onSyncChange: (Boolean) -> Unit,
     onAppLockTypeChange: (SettingsAppLockType) -> Unit,
@@ -50,10 +52,13 @@ internal fun SettingsContent(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
     ) {
-        SettingsPassBanner(
-            onDismissClick = {},
-            onActionClick = {}
-        )
+
+        AnimatedVisibility(visible = bannerModel.shouldShowPassBanner) {
+            SettingsPassBanner(
+                onDismissClick = onDismissPassBanner,
+                onActionClick = { onDiscoverAppClick(bannerModel.passBannerApp.id) }
+            )
+        }
 
         SettingsSection(
             title = stringResource(id = R.string.settings_security_section),
@@ -129,13 +134,13 @@ internal fun SettingsContent(
             contents = listOf(
                 {
                     SettingsNavigationRow(
-                        title = stringResource(id = R.string.settings_data_management_title_import),
+                        title = UiText.Resource(id = R.string.settings_data_management_title_import),
                         onClick = {}
                     )
                 },
                 {
                     SettingsNavigationRow(
-                        title = stringResource(id = R.string.settings_data_management_title_export),
+                        title = UiText.Resource(id = R.string.settings_data_management_title_export),
                         onClick = {}
                     )
                 }
@@ -147,64 +152,34 @@ internal fun SettingsContent(
             contents = listOf(
                 {
                     SettingsNavigationRow(
-                        title = stringResource(id = R.string.settings_support_title_how_to),
+                        title = UiText.Resource(id = R.string.settings_support_title_how_to),
                         onClick = {}
                     )
                 },
                 {
                     SettingsNavigationRow(
-                        title = stringResource(id = R.string.settings_support_title_feedback),
+                        title = UiText.Resource(id = R.string.settings_support_title_feedback),
                         onClick = {}
                     )
                 }
             )
         )
 
-        SettingsSection(
-            title = stringResource(id = R.string.settings_discover_section),
-            contents = listOf(
-                {
-                    SettingsNavigationRow(
-                        iconResId = uiR.drawable.ic_logo_pass,
-                        title = stringResource(id = R.string.settings_discover_pass_title),
-                        description = stringResource(id = R.string.settings_discover_pass_description),
-                        onClick = { onDiscoverAppClick("proton.android.pass") }
-                    )
-                },
-                {
-                    SettingsNavigationRow(
-                        iconResId = uiR.drawable.ic_logo_vpn,
-                        title = stringResource(id = R.string.settings_discover_vpn_title),
-                        description = stringResource(id = R.string.settings_discover_vpn_description),
-                        onClick = { onDiscoverAppClick("ch.protonvpn.android") }
-                    )
-                },
-                {
-                    SettingsNavigationRow(
-                        iconResId = uiR.drawable.ic_logo_mail,
-                        title = stringResource(id = R.string.settings_discover_mail_title),
-                        description = stringResource(id = R.string.settings_discover_mail_description),
-                        onClick = { onDiscoverAppClick("ch.protonmail.android") }
-                    )
-                },
-                {
-                    SettingsNavigationRow(
-                        iconResId = uiR.drawable.ic_logo_calendar,
-                        title = stringResource(id = R.string.settings_discover_calendar_title),
-                        description = stringResource(id = R.string.settings_discover_calendar_description),
-                        onClick = { onDiscoverAppClick("me.proton.android.calendar") }
-                    )
-                },
-                {
-                    SettingsNavigationRow(
-                        iconResId = uiR.drawable.ic_logo_drive,
-                        title = stringResource(id = R.string.settings_discover_drive_title),
-                        description = stringResource(id = R.string.settings_discover_drive_description),
-                        onClick = { onDiscoverAppClick("me.proton.android.drive") }
-                    )
+        if (discoverModel.shouldShowDiscoverSection) {
+            SettingsSection(
+                title = stringResource(id = R.string.settings_discover_section),
+                contents = discoverModel.discoverProtonApps.map { discoverApp ->
+                    {
+                        SettingsNavigationRow(
+                            icon = discoverApp.icon,
+                            title = discoverApp.title,
+                            description = discoverApp.description,
+                            onClick = { onDiscoverAppClick(discoverApp.id) }
+                        )
+                    }
                 }
             )
-        )
+        }
 
         SettingsVersionRow()
     }

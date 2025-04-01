@@ -48,7 +48,8 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 themeType = settingsPreferences.themeType.toDomain(),
                 searchBarType = settingsPreferences.searchBarType.toDomain(),
                 digitType = settingsPreferences.digitType.toDomain(),
-                isCodeChangeAnimationEnabled = settingsPreferences.isCodeChangeAnimationEnabled
+                isCodeChangeAnimationEnabled = settingsPreferences.isCodeChangeAnimationEnabled,
+                isPassBannerDismissed = settingsPreferences.isPassBannerDismissed
             )
         }
 
@@ -63,6 +64,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 .setSearchBarType(settings.searchBarType.toPreferences())
                 .setDigitType(settings.digitType.toPreferences())
                 .setIsCodeChangeAnimationEnabled(settings.isCodeChangeAnimationEnabled)
+                .setIsPassBannerDismissed(settings.isPassBannerDismissed)
                 .build()
         }
     }

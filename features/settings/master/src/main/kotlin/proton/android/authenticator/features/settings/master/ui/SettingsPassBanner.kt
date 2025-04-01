@@ -37,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.domain.modifiers.containerBanner
@@ -91,13 +92,13 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
             ) {
                 Text(
                     text = "Proton Pass",
-                    color = Theme.colorScheme.textNorm,
+                    color = Color.White,
                     style = Theme.typography.headline
                 )
 
                 Text(
                     text = "Free password manager with identity protection.",
-                    color = Theme.colorScheme.textNorm,
+                    color = Color.White,
                     style = Theme.typography.body1Regular
                 )
             }

@@ -34,7 +34,8 @@ internal class UpdateSettingsUseCase @Inject constructor(private val commandBus:
             themeType = settingsModel.themeType,
             searchBarType = settingsModel.searchBarType,
             digitType = settingsModel.digitType,
-            isCodeChangeAnimationEnabled = settingsModel.isCodeChangeAnimationEnabled
+            isCodeChangeAnimationEnabled = settingsModel.isCodeChangeAnimationEnabled,
+            isPassBannerDismissed = settingsModel.isPassBannerDismissed
         ).also { command ->
             commandBus.dispatch(command)
         }

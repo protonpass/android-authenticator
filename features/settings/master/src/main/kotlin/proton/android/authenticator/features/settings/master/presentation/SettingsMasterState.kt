@@ -21,21 +21,29 @@ package proton.android.authenticator.features.settings.master.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.settings.domain.Settings
+import proton.android.authenticator.protonapps.domain.ProtonApp
 
 internal class SettingsMasterState private constructor(
-    internal val settingsModel: SettingsMasterSettingsModel
+    internal val settingsModel: SettingsMasterSettingsModel,
+    internal val discoverModel: SettingsMasterDiscoverModel,
+    internal val bannerModel: SettingsMasterBannerModel
 ) {
 
     internal companion object {
 
         @Composable
-        internal fun create(settingsFlow: Flow<Settings>): SettingsMasterState {
+        internal fun create(
+            settingsFlow: Flow<Settings>,
+            uninstalledProtonAppsFlow: Flow<List<ProtonApp>>
+        ): SettingsMasterState {
             val settings by settingsFlow.collectAsState(initial = Settings.Default)
+            val uninstalledProtonApps by uninstalledProtonAppsFlow.collectAsState(initial = emptyList())
 
-            return SettingsMasterState(
-                settingsModel = SettingsMasterSettingsModel(
+            val settingsModel = remember(key1 = settings) {
+                SettingsMasterSettingsModel(
                     isBackupEnabled = settings.isBackupEnabled,
                     isSyncEnabled = settings.isSyncEnabled,
                     isTapToRevealEnabled = settings.isTapToRevealEnabled,
@@ -43,8 +51,31 @@ internal class SettingsMasterState private constructor(
                     isCodeChangeAnimationEnabled = settings.isCodeChangeAnimationEnabled,
                     themeType = settings.themeType,
                     searchBarType = settings.searchBarType,
-                    digitType = settings.digitType
+                    digitType = settings.digitType,
+                    isPassBannerDismissed = settings.isPassBannerDismissed
                 )
+            }
+
+            val discoverModel = remember(key1 = uninstalledProtonApps) {
+                SettingsMasterDiscoverModel(
+                    uninstalledProtonApps = uninstalledProtonApps
+                )
+            }
+
+            val bannerModel = remember(
+                key1 = settings.isPassBannerDismissed,
+                key2 = uninstalledProtonApps
+            ) {
+                SettingsMasterBannerModel(
+                    isPassBannerDismissed = settings.isPassBannerDismissed,
+                    uninstalledProtonApps = uninstalledProtonApps
+                )
+            }
+
+            return SettingsMasterState(
+                settingsModel = settingsModel,
+                discoverModel = discoverModel,
+                bannerModel = bannerModel
             )
         }
     }

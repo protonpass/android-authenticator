@@ -31,7 +31,8 @@ internal data class SettingsMasterSettingsModel(
     internal val themeType: SettingsThemeType,
     internal val searchBarType: SettingsSearchBarType,
     internal val digitType: SettingsDigitType,
-    internal val isCodeChangeAnimationEnabled: Boolean
+    internal val isCodeChangeAnimationEnabled: Boolean,
+    internal val isPassBannerDismissed: Boolean
 ) {
 
     internal val appLockOptions: List<SettingsMasterAppLockOption> = listOf(

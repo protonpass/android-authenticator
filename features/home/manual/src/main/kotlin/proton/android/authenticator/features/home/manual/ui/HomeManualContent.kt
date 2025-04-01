@@ -74,7 +74,7 @@ internal fun HomeManualContent(
         topBar = {
             CenterAlignedTopBar(
                 title = stringResource(id = R.string.home_manual_screen_title),
-                navigationIcon = UiIcon.Resource(resId = uiR.drawable.ic_arrow_left),
+                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
                 onNavigationClick = onNavigationClick,
                 action = stringResource(id = uiR.string.action_save),
                 isActionEnabled = formModel.isValid,

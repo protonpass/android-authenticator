@@ -17,4 +17,5 @@ message SettingsPreferences {
   SettingsPreferencesSearchBarType search_bar_type = 6;
   SettingsPreferencesDigitType digit_type = 7;
   bool is_code_change_animation_enabled = 8;
+  bool is_pass_banner_dismissed = 9;
 }
