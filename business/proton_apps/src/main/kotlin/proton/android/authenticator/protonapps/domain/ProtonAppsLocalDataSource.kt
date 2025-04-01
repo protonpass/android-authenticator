@@ -16,15 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.protonapps.application.findall
+package proton.android.authenticator.protonapps.domain
 
 import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.protonapps.domain.ProtonApp
-import proton.android.authenticator.protonapps.domain.ProtonAppsRepository
-import javax.inject.Inject
 
-internal class AllProtonAppsFinder @Inject constructor(private val repository: ProtonAppsRepository) {
+interface ProtonAppsLocalDataSource {
 
-    internal fun findAll(): Flow<List<ProtonApp>> = repository.observeAll()
+    fun observeAll(): Flow<List<ProtonApp>>
 
 }

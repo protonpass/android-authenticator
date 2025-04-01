@@ -18,11 +18,17 @@
 
 package proton.android.authenticator.shared.common.di
 
+import android.content.Context
+import android.content.pm.PackageManager
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import proton.android.authenticator.shared.common.checkers.AndroidAppInstalledChecker
 import proton.android.authenticator.shared.common.dispatchers.AppDispatchersImpl
+import proton.android.authenticator.shared.common.domain.checkers.AppInstalledChecker
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
@@ -37,9 +43,20 @@ internal abstract class SharedCommonModule {
     internal abstract fun bindAppDispatchers(impl: AppDispatchersImpl): AppDispatchers
 
     @[Binds Singleton]
+    internal abstract fun bindAppInstalledChecker(impl: AndroidAppInstalledChecker): AppInstalledChecker
+
+    @[Binds Singleton]
     internal abstract fun bindCommandBus(impl: InMemoryCommandBus): CommandBus
 
     @[Binds Singleton]
     internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus
+
+    internal companion object {
+
+        @[Provides Singleton]
+        internal fun providePackageManager(@ApplicationContext context: Context): PackageManager =
+            context.packageManager
+
+    }
 
 }

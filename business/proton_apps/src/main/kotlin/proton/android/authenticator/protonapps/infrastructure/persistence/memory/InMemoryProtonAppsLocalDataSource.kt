@@ -16,15 +16,31 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.protonapps.application.findall
+package proton.android.authenticator.protonapps.infrastructure.persistence.memory
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import proton.android.authenticator.protonapps.domain.ProtonApp
-import proton.android.authenticator.protonapps.domain.ProtonAppsRepository
+import proton.android.authenticator.protonapps.domain.ProtonAppType
+import proton.android.authenticator.protonapps.domain.ProtonAppsLocalDataSource
+import proton.android.authenticator.shared.common.domain.checkers.AppInstalledChecker
 import javax.inject.Inject
 
-internal class AllProtonAppsFinder @Inject constructor(private val repository: ProtonAppsRepository) {
+internal class InMemoryProtonAppsLocalDataSource @Inject constructor(
+    private val appInstalledChecker: AppInstalledChecker
+) : ProtonAppsLocalDataSource {
 
-    internal fun findAll(): Flow<List<ProtonApp>> = repository.observeAll()
+    override fun observeAll(): Flow<List<ProtonApp>> = flow {
+        ProtonAppType.entries
+            .map { protonAppType ->
+                ProtonApp(
+                    type = protonAppType,
+                    isInstalled = appInstalledChecker.check(protonAppType.id)
+                )
+            }
+            .also { protonApps ->
+                emit(protonApps)
+            }
+    }
 
 }

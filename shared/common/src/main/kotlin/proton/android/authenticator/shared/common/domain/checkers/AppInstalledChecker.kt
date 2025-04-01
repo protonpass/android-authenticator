@@ -16,15 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.protonapps.application.findall
+package proton.android.authenticator.shared.common.domain.checkers
 
-import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.protonapps.domain.ProtonApp
-import proton.android.authenticator.protonapps.domain.ProtonAppsRepository
-import javax.inject.Inject
+interface AppInstalledChecker {
 
-internal class AllProtonAppsFinder @Inject constructor(private val repository: ProtonAppsRepository) {
-
-    internal fun findAll(): Flow<List<ProtonApp>> = repository.observeAll()
+    suspend fun check(packageName: String): Boolean
 
 }
