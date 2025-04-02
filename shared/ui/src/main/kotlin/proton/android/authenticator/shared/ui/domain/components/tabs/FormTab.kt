@@ -18,11 +18,11 @@
 
 package proton.android.authenticator.shared.ui.domain.components.tabs
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -30,10 +30,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundDropdownMenu
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
@@ -60,13 +58,10 @@ fun FormTab(
         TabRow(
             modifier = modifier
                 .fillMaxWidth()
-                .shadow(
-                    elevation = 4.dp,
-                    shape = RoundedCornerShape(size = ThemeRadius.Large)
-                )
-                .clip(shape = RoundedCornerShape(size = ThemeRadius.Large)),
+                .clip(shape = CircleShape),
             selectedTabIndex = selectedTabIndex,
-            containerColor = Color.Black,
+            containerColor = Theme.colorScheme.inputBackground,
+            contentColor = Theme.colorScheme.backgroundDropdown,
             indicator = {},
             divider = {}
         ) {
@@ -79,7 +74,7 @@ fun FormTab(
                         .clip(shape = RoundedCornerShape(size = ThemeRadius.Large))
                         .applyIf(
                             condition = isSelected,
-                            ifTrue = { background(color = Color.DarkGray) }
+                            ifTrue = { backgroundDropdownMenu() }
                         ),
                     selected = isSelected,
                     onClick = { onTabSelected(index) },

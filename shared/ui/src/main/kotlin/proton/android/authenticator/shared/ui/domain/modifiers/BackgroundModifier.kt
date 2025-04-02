@@ -23,16 +23,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
@@ -41,10 +36,7 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -140,25 +132,4 @@ fun Modifier.backgroundDropdownMenu() = composed {
             offsetY = 1.dp,
             blur = 0.dp
         )
-}
-
-@Stable
-fun Modifier.backgroundTopBarGradient() = composed {
-    var x by remember { mutableFloatStateOf(0f) }
-    var size by remember { mutableStateOf(IntSize.Zero) }
-
-    onGloballyPositioned { coordinates ->
-        size = coordinates.size
-        val positionInRoot = coordinates.positionInRoot()
-        x = positionInRoot.x + size.width / 2f
-    }.background(
-        brush = Brush.radialGradient(
-            colors = listOf(
-                Theme.colorScheme.gradientTopBarColor1,
-                Theme.colorScheme.gradientTopBarColor2
-            ),
-            center = Offset(x = x, y = -350f),
-            radius = 600f
-        )
-    )
 }
