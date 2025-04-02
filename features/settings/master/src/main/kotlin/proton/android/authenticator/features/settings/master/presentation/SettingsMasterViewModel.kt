@@ -29,9 +29,9 @@ import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
-import proton.android.authenticator.features.settings.master.usecases.ObserveSettingsUseCase
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
 import proton.android.authenticator.features.settings.master.usecases.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.ObserveSettingsUseCase
 import javax.inject.Inject
 
 @HiltViewModel

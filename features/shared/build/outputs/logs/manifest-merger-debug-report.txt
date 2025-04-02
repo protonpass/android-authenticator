@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml:2:13-83
+INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml:2:13-83
+	package
+		INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml
+	xmlns:android
+		ADDED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml:2:23-81
+uses-sdk
+INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml reason: use-sdk injection requested
+INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml
+INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml
+	android:targetSdkVersion
+		INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml
+	android:minSdkVersion
+		INJECTED from /Users/alextalledo/Developer/ProtonAuthenticator/features/shared/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest2698171282366363603.xml

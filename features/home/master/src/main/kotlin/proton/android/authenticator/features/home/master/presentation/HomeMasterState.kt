@@ -21,9 +21,15 @@ package proton.android.authenticator.features.home.master.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
+import proton.android.authenticator.business.settings.domain.Settings
+import proton.android.authenticator.business.settings.domain.SettingsDigitType
+import proton.android.authenticator.business.settings.domain.SettingsThemeType
+import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 
 internal class HomeMasterState private constructor(
     private val entryModelsMap: Map<String, HomeMasterEntryModel>
@@ -41,30 +47,76 @@ internal class HomeMasterState private constructor(
             entriesFlow: Flow<List<Entry>>,
             entryCodesFlow: Flow<List<EntryCode>>,
             entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>,
-            entrySearchQueryFlow: Flow<String>
+            entrySearchQueryFlow: Flow<String>,
+            settingsFlow: Flow<Settings>
         ): HomeMasterState {
             val entries by entriesFlow.collectAsState(emptyList())
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
             val entrySearchQuery by entrySearchQueryFlow.collectAsState("")
+            val settings by settingsFlow.collectAsState(Settings.Default)
 
-            return entries.zip(entryCodes) { entry, entryCode ->
-                HomeMasterEntryModel(
-                    id = entry.id,
-                    name = entry.name,
-                    issuer = entry.issuer,
-                    currentCode = entryCode.currentCode,
-                    nextCode = entryCode.nextCode,
-                    remainingSeconds = entryCodesRemainingTimes.getOrDefault(entry.period, 0),
-                    totalSeconds = entry.period
-                )
+            val animateOnCodeChange = remember(key1 = settings.isCodeChangeAnimationEnabled) {
+                settings.isCodeChangeAnimationEnabled
             }
-                .filter { entryModel ->
-                    if (entrySearchQuery.isEmpty()) true
-                    else entryModel.name.contains(entrySearchQuery, ignoreCase = true)
+
+            val showShadowsInTexts = remember(key1 = settings.themeType) {
+                when (settings.themeType) {
+                    SettingsThemeType.System -> false
+                    SettingsThemeType.Light -> false
+                    SettingsThemeType.Dark -> true
                 }
-                .associateBy { entryModel -> entryModel.id }
-                .let(::HomeMasterState)
+            }
+
+            val showBoxesInCode = remember(key1 = settings.digitType) {
+                when (settings.digitType) {
+                    SettingsDigitType.Plain -> false
+                    SettingsDigitType.Rich -> true
+                }
+            }
+
+            val entryModelsMap = remember(
+                keys = arrayOf(
+                    entrySearchQuery,
+                    entries,
+                    entryCodes,
+                    entryCodesRemainingTimes,
+                    animateOnCodeChange,
+                    showShadowsInTexts,
+                    showBoxesInCode
+                )
+            ) {
+                entries
+//                    .filter { entry ->
+//                        if (entrySearchQuery.isEmpty()) true
+//                        else entry.name.contains(entrySearchQuery, ignoreCase = true)
+//                    }
+                    .zip(entryCodes) { entry, entryCode ->
+                        HomeMasterEntryModel(
+                            id = entry.id,
+                            name = UiText.Dynamic(value = entry.name),
+                            issuer = UiText.Dynamic(value = entry.issuer),
+                            currentCode = UiText.Dynamic(
+                                value = entryCode.currentCode,
+                                masks = listOf(UiTextMask.Totp)
+                            ),
+                            nextCode = UiText.Dynamic(
+                                value = entryCode.nextCode,
+                                masks = listOf(UiTextMask.Totp)
+                            ),
+                            remainingSeconds = entryCodesRemainingTimes.getOrDefault(
+                                key = entry.period,
+                                defaultValue = 0
+                            ),
+                            totalSeconds = entry.period,
+                            animateOnCodeChange = animateOnCodeChange,
+                            showShadowsInTexts = showShadowsInTexts,
+                            showBoxesInCode = showBoxesInCode
+                        )
+                    }.associateBy { entryModel -> entryModel.id }
+            }
+
+            return HomeMasterState(entryModelsMap = entryModelsMap)
         }
 
     }

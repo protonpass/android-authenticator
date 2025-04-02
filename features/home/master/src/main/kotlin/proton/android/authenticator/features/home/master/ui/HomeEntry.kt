@@ -20,41 +20,44 @@ package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.components.codes.TotpCode
+import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
+import proton.android.authenticator.shared.ui.domain.components.indicators.TotpProgressIndicator
 import proton.android.authenticator.shared.ui.domain.modifiers.containerSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
-import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
-internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: HomeMasterEntryModel) -> Unit) {
+internal fun HomeEntry(
+    entryModel: HomeMasterEntryModel,
+    onClick: (entryModel: HomeMasterEntryModel) -> Unit
+) {
+    val showTextShadows = isSystemInDarkTheme() || entryModel.showShadowsInTexts
+
     Column(
         modifier = Modifier
-            .clickable { onClick(entryModel) }
             .fillMaxWidth()
             .containerSection()
+            .clickable { onClick(entryModel) }
     ) {
         Row(
             modifier = Modifier.padding(
@@ -73,7 +76,7 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
                         horizontal = ThemePadding.MediumSmall,
                         vertical = ThemePadding.Small
                     ),
-                text = entryModel.issuer.first().toString(),
+                text = entryModel.issuer.asString().first().toString(),
                 style = Theme.typography.headline
                     .copy(
                         brush = Brush.linearGradient(
@@ -93,52 +96,35 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
                     .weight(weight = 1f, fill = true)
             ) {
                 Text(
-                    text = entryModel.issuer,
+                    text = entryModel.issuer.asString(),
                     color = Theme.colorScheme.textNorm,
-                    style = Theme.typography.body1Regular
-                        .copy(shadow = ThemeShadow.TextDefault)
+                    style =  if(showTextShadows) {
+                        Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
+                    } else {
+                        Theme.typography.body1Regular
+                    }
                 )
 
                 Text(
-                    text = entryModel.name,
+                    text = entryModel.name.asString(),
                     color = Theme.colorScheme.textWeak,
-                    style = Theme.typography.body2Regular
-                        .copy(shadow = ThemeShadow.TextDefault)
+                    style = if(showTextShadows) {
+                        Theme.typography.body2Regular.copy(shadow = ThemeShadow.TextDefault)
+                    } else {
+                        Theme.typography.body2Regular
+                    }
                 )
             }
 
-            Box(
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(size = 36.dp),
-                    color = Theme.colorScheme.inputBorderFocused,
-                    trackColor = Theme.colorScheme.inputBorderFocused.copy(alpha = 0.2f),
-                    progress = {
-                        entryModel.remainingSeconds.toFloat() / entryModel.totalSeconds.toFloat()
-                    },
-                    gapSize = 0.dp
-                )
-
-                Text(
-                    text = entryModel.remainingSeconds.toString(),
-                    color = Theme.colorScheme.textNorm,
-                    style = Theme.typography.compactMedium
-                        .copy(shadow = ThemeShadow.TextDefault)
-                )
-            }
+            TotpProgressIndicator(
+                remainingSeconds = entryModel.remainingSeconds,
+                totalSeconds = entryModel.totalSeconds,
+                showShadowInCounter = entryModel.showShadowsInTexts
+            )
         }
 
-        HorizontalDivider(
-            modifier = Modifier.padding(top = ThemePadding.Small),
-            thickness = ThemeThickness.Small,
-            color = Color.Black.copy(alpha = 0.2f)
-        )
-
-        HorizontalDivider(
-            modifier = Modifier.padding(bottom = ThemePadding.Small),
-            thickness = ThemeThickness.Small,
-            color = Color.White.copy(alpha = 0.12f)
+        DoubleHorizontalDivider(
+            modifier = Modifier.padding(horizontal = ThemePadding.Small)
         )
 
         Row(
@@ -149,12 +135,14 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            TotpCode(
                 modifier = Modifier.weight(weight = 1f, fill = true),
-                text = entryModel.currentCode,
+                codeText = entryModel.currentCode,
+                animateCodeOnChange = entryModel.animateOnCodeChange,
+                showBoxes = entryModel.showBoxesInCode,
+                showShadows = showTextShadows,
                 color = Theme.colorScheme.textNorm,
-                style = Theme.typography.monoMedium1
-                    .copy(shadow = ThemeShadow.TextDefault)
+                style = Theme.typography.monoMedium1,
             )
 
             Column(
@@ -164,15 +152,21 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
                 Text(
                     text = stringResource(id = R.string.action_next),
                     color = Theme.colorScheme.textWeak,
-                    style = Theme.typography.body1Regular
-                        .copy(shadow = ThemeShadow.TextDefault)
+                    style = if(showTextShadows) {
+                        Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
+                    } else {
+                        Theme.typography.body1Regular
+                    }
                 )
 
                 Text(
-                    text = entryModel.nextCode,
+                    text = entryModel.nextCode.asString(),
                     color = Theme.colorScheme.textNorm,
-                    style = Theme.typography.monoMedium2
-                        .copy(shadow = ThemeShadow.TextDefault)
+                    style =  if(showTextShadows) {
+                        Theme.typography.monoMedium2.copy(shadow = ThemeShadow.TextDefault)
+                    } else {
+                        Theme.typography.monoMedium2
+                    }
                 )
             }
         }

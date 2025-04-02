@@ -9,4 +9,5 @@ android {
 dependencies {
     implementation(project(":business:entries"))
     implementation(project(":business:entry_codes"))
+    implementation(project(":business:settings"))
 }

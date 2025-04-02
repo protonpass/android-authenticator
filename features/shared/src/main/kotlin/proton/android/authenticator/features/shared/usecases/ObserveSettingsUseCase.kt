@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.usecases
+package proton.android.authenticator.features.shared.usecases
 
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.settings.application.find.FindSettingsQuery
@@ -24,8 +24,8 @@ import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
 
-internal class ObserveSettingsUseCase @Inject constructor(private val queryBus: QueryBus) {
+class ObserveSettingsUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    internal operator fun invoke(): Flow<Settings> = queryBus.ask(FindSettingsQuery)
+    operator fun invoke(): Flow<Settings> = queryBus.ask(FindSettingsQuery)
 
 }

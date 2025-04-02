@@ -99,7 +99,13 @@ sealed class ThemeColors {
     abstract val interactionPurpleStrong: Color
 
     @Stable
+    abstract val signalDanger: Color
+
+    @Stable
     abstract val signalSuccess: Color
+
+    @Stable
+    abstract val signalWarning: Color
 
     @Stable
     abstract val textHint: Color
@@ -170,7 +176,11 @@ sealed class ThemeColors {
 
         override val interactionPurpleStrong: Color = Color(color = 0xFF24212B)
 
+        override val signalDanger: Color = Color(color = 0xFFFF7979)
+
         override val signalSuccess: Color = Color(color = 0xFF4AB89A)
+
+        override val signalWarning: Color = Color(color = 0xFFFFB879)
 
         override val textHint: Color = Color(color = 0xFF88859D)
 
@@ -231,7 +241,11 @@ sealed class ThemeColors {
 
         override val interactionPurpleStrong: Color = Color(color = 0xFF24212B)
 
+        override val signalDanger: Color = Color(color = 0xFFFF7979)
+
         override val signalSuccess: Color = Color(color = 0xFF4AB89A)
+
+        override val signalWarning: Color = Color(color = 0xFFFFB879)
 
         override val textHint: Color = Color(color = 0xFF88859D)
 

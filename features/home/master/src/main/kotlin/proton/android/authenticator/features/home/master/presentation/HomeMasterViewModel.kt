@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
+import proton.android.authenticator.features.shared.usecases.ObserveSettingsUseCase
 import javax.inject.Inject
 import kotlin.math.floor
 
@@ -52,6 +53,7 @@ import kotlin.math.floor
 internal class HomeMasterViewModel @Inject constructor(
     observeEntriesUseCase: ObserveEntriesUseCase,
     observeEntryCodesUseCase: ObserveEntryCodesUseCase,
+    observeSettingsUseCase: ObserveSettingsUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase
 ) : ViewModel() {
 
@@ -111,7 +113,8 @@ internal class HomeMasterViewModel @Inject constructor(
             entrySearchQueryFlow = entrySearchQueryDebouncedFlow,
             entriesFlow = entriesFlow,
             entryCodesFlow = entryCodesFlow,
-            entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow
+            entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow,
+            settingsFlow = observeSettingsUseCase()
         )
     }
 

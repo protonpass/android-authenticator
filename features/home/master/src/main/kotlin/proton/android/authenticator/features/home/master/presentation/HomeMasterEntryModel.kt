@@ -18,12 +18,17 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
+import proton.android.authenticator.shared.ui.domain.models.UiText
+
 internal data class HomeMasterEntryModel(
     internal val id: String,
-    internal val name: String,
-    internal val issuer: String,
-    internal val currentCode: String,
-    internal val nextCode: String,
+    internal val name: UiText,
+    internal val issuer: UiText,
+    internal val currentCode: UiText,
+    internal val nextCode: UiText,
     internal val remainingSeconds: Int,
-    internal val totalSeconds: Int
+    internal val totalSeconds: Int,
+    internal val animateOnCodeChange: Boolean,
+    internal val showShadowsInTexts: Boolean,
+    internal val showBoxesInCode: Boolean
 )
