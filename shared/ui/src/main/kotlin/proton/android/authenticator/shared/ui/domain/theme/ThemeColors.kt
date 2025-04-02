@@ -123,6 +123,12 @@ sealed class ThemeColors {
     abstract val interactionPurpleNorm: Color
 
     @Stable
+    abstract val menuListBackground: Color
+
+    @Stable
+    abstract val menuListBorder: Color
+
+    @Stable
     abstract val signalDanger: Color
 
     @Stable
@@ -145,6 +151,9 @@ sealed class ThemeColors {
 
     @Stable
     val blackAlpha10: Color = Color(color = 0x19000000)
+
+    @Stable
+    val blackAlpha12: Color = Color(color = 0x1F000000)
 
     @Stable
     val purpleAlpha25: Color = Color(color = 0x40995EFF)
@@ -224,6 +233,10 @@ sealed class ThemeColors {
         override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
 
         override val interactionPurpleNorm: Color = Color(color = 0xFF6D4AFF)
+
+        override val menuListBackground: Color = Color(color = 0xFF373535)
+
+        override val menuListBorder: Color = Color(color = 0x1FFFFFFF)
 
         override val signalDanger: Color = Color(color = 0xFFFF7979)
 
@@ -305,6 +318,10 @@ sealed class ThemeColors {
         override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
 
         override val interactionPurpleNorm: Color = Color(color = 0xFF6D4AFF)
+
+        override val menuListBackground: Color = Color(color = 0xFFFFFFFF)
+
+        override val menuListBorder: Color = Color(color = 0xFFECECEC)
 
         override val signalDanger: Color = Color(color = 0xFFFF7979)
 

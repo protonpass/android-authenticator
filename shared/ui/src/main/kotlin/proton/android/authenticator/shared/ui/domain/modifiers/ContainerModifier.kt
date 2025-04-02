@@ -36,11 +36,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Stable
 fun Modifier.containerBanner() = composed {
-    val shape = RoundedCornerShape(size = 16.dp)
+    val shape = remember { RoundedCornerShape(size = ThemeRadius.Medium) }
     var y by remember { mutableFloatStateOf(0f) }
 
     onGloballyPositioned { coordinates ->
@@ -50,7 +51,7 @@ fun Modifier.containerBanner() = composed {
         .clip(shape = shape)
         .border(
             width = ThemeThickness.Small,
-            color = Color.White.copy(alpha = 0.12f),
+            color = Theme.colorScheme.whiteAlpha12,
             shape = shape
         )
         .background(
@@ -78,21 +79,8 @@ fun Modifier.containerBanner() = composed {
 }
 
 @Stable
-fun Modifier.containerSection() = composed {
-    val shape = RoundedCornerShape(size = 16.dp)
-
-    clip(shape = shape)
-        .border(
-            width = ThemeThickness.Small,
-            color = Color.White.copy(alpha = 0.12f),
-            shape = shape
-        )
-        .background(color = Color.White.copy(alpha = 0.1f))
-}
-
-@Stable
 internal fun Modifier.containerShadow() = composed {
-    val shape = RoundedCornerShape(size = 8.dp)
+    val shape = remember { RoundedCornerShape(size = ThemeRadius.Small) }
 
     dropShadow(shape = shape)
         .clip(shape = shape)

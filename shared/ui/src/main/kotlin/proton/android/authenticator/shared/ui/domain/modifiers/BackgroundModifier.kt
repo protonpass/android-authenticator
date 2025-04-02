@@ -45,12 +45,14 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Stable
 fun Modifier.backgroundPrimaryButton() = composed {
+    val shape = remember { CircleShape }
+
     dropShadow(
-        shape = CircleShape,
+        shape = shape,
         color = Theme.colorScheme.purpleAlpha25,
         blur = 24.dp
     )
-        .clip(shape = CircleShape)
+        .clip(shape = shape)
         .background(
             brush = Brush.verticalGradient(
                 colors = listOf(
@@ -60,22 +62,24 @@ fun Modifier.backgroundPrimaryButton() = composed {
             )
         )
         .border(
-            shape = CircleShape,
+            shape = shape,
             width = ThemeThickness.Small,
             color = Theme.colorScheme.whiteAlpha12
         )
         .innerShadow(
-            shape = CircleShape,
+            shape = shape,
             color = Theme.colorScheme.whiteAlpha25
         )
 }
 
 @Stable
 fun Modifier.backgroundSecondaryButton() = composed {
-    clip(shape = CircleShape)
+    val shape = remember { CircleShape }
+
+    clip(shape = shape)
         .background(color = Color.Transparent)
         .border(
-            shape = CircleShape,
+            shape = shape,
             width = ThemeThickness.Small,
             color = Theme.colorScheme.backgroundButtonBorderWeak
         )
@@ -116,6 +120,8 @@ fun Modifier.backgroundScreenGradient() = composed {
 
 @Stable
 fun Modifier.backgroundDropdownMenu() = composed {
+    val shape = remember { RoundedCornerShape(size = ThemeRadius.MediumSmall) }
+
     dropShadow(
         shape = CircleShape,
         color = Theme.colorScheme.blackAlpha8,
@@ -123,10 +129,10 @@ fun Modifier.backgroundDropdownMenu() = composed {
         offsetY = 2.dp,
         blur = 4.dp
     )
-        .clip(shape = RoundedCornerShape(size = ThemeRadius.MediumSmall))
+        .clip(shape = shape)
         .background(color = Theme.colorScheme.backgroundDropdown)
         .innerShadow(
-            shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+            shape = shape,
             color = Theme.colorScheme.whiteAlpha20,
             offsetX = 0.dp,
             offsetY = 1.dp,
@@ -136,16 +142,18 @@ fun Modifier.backgroundDropdownMenu() = composed {
 
 @Stable
 fun Modifier.backgroundActionButton() = composed {
+    val shape = remember { CircleShape }
+
     dropShadow(
-        shape = CircleShape,
+        shape = shape,
         color = Theme.colorScheme.blackAlpha10,
         offsetX = 0.dp,
         offsetY = 2.dp,
         blur = 4.dp
     )
-        .clip(shape = CircleShape)
+        .clip(shape = shape)
         .border(
-            shape = CircleShape,
+            shape = shape,
             width = ThemeThickness.Small,
             brush = Brush.verticalGradient(
                 colors = listOf(
@@ -163,10 +171,37 @@ fun Modifier.backgroundActionButton() = composed {
             )
         )
         .innerShadow(
-            shape = CircleShape,
+            shape = shape,
             color = Theme.colorScheme.whiteAlpha20,
             offsetX = 0.dp,
             offsetY = 1.dp,
             blur = 1.dp
         )
+}
+
+@Stable
+fun Modifier.backgroundSection(applyShadow: Boolean = false) = composed {
+    val shape = remember { RoundedCornerShape(size = ThemeRadius.Medium) }
+    val shadowColor = Theme.colorScheme.blackAlpha12
+
+    applyIf(
+        condition = applyShadow,
+        ifTrue = {
+            dropShadow(
+                shape = shape,
+                color = shadowColor,
+                offsetX = 0.dp,
+                offsetY = 2.dp,
+                blur = 8.dp
+            )
+        }
+    )
+        .clip(shape = shape)
+        .border(
+            width = ThemeThickness.Small,
+            color = Theme.colorScheme.menuListBorder,
+            shape = shape
+        )
+        .background(color = Theme.colorScheme.menuListBackground)
+
 }

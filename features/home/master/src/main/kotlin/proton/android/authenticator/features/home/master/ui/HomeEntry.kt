@@ -30,13 +30,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.codes.TotpCode
 import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
 import proton.android.authenticator.shared.ui.domain.components.icons.EntryIcon
 import proton.android.authenticator.shared.ui.domain.components.indicators.TotpProgressIndicator
-import proton.android.authenticator.shared.ui.domain.modifiers.containerSection
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
@@ -49,7 +50,7 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .containerSection()
+            .backgroundSection(applyShadow = true)
             .clickable { onClick(entryModel) }
     ) {
         Row(
@@ -72,6 +73,8 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
             ) {
                 Text(
                     text = entryModel.issuer.asString(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     color = Theme.colorScheme.textNorm,
                     style = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
@@ -82,6 +85,8 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
 
                 Text(
                     text = entryModel.name.asString(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     color = Theme.colorScheme.textWeak,
                     style = if (showTextShadows) {
                         Theme.typography.body2Regular.copy(shadow = ThemeShadow.TextDefault)
