@@ -86,34 +86,29 @@ internal class HomeMasterState private constructor(
                     showBoxesInCode
                 )
             ) {
-                entries
-//                    .filter { entry ->
-//                        if (entrySearchQuery.isEmpty()) true
-//                        else entry.name.contains(entrySearchQuery, ignoreCase = true)
-//                    }
-                    .zip(entryCodes) { entry, entryCode ->
-                        HomeMasterEntryModel(
-                            id = entry.id,
-                            name = UiText.Dynamic(value = entry.name),
-                            issuer = UiText.Dynamic(value = entry.issuer),
-                            currentCode = UiText.Dynamic(
-                                value = entryCode.currentCode,
-                                masks = listOf(UiTextMask.Totp)
-                            ),
-                            nextCode = UiText.Dynamic(
-                                value = entryCode.nextCode,
-                                masks = listOf(UiTextMask.Totp)
-                            ),
-                            remainingSeconds = entryCodesRemainingTimes.getOrDefault(
-                                key = entry.period,
-                                defaultValue = 0
-                            ),
-                            totalSeconds = entry.period,
-                            animateOnCodeChange = animateOnCodeChange,
-                            showShadowsInTexts = showShadowsInTexts,
-                            showBoxesInCode = showBoxesInCode
-                        )
-                    }.associateBy { entryModel -> entryModel.id }
+                entries.zip(entryCodes) { entry, entryCode ->
+                    HomeMasterEntryModel(
+                        id = entry.id,
+                        name = UiText.Dynamic(value = entry.name),
+                        issuer = UiText.Dynamic(value = entry.issuer),
+                        currentCode = UiText.Dynamic(
+                            value = entryCode.currentCode,
+                            masks = listOf(UiTextMask.Totp)
+                        ),
+                        nextCode = UiText.Dynamic(
+                            value = entryCode.nextCode,
+                            masks = listOf(UiTextMask.Totp)
+                        ),
+                        remainingSeconds = entryCodesRemainingTimes.getOrDefault(
+                            key = entry.period,
+                            defaultValue = 0
+                        ),
+                        totalSeconds = entry.period,
+                        animateOnCodeChange = animateOnCodeChange,
+                        showShadowsInTexts = showShadowsInTexts,
+                        showBoxesInCode = showBoxesInCode
+                    )
+                }.associateBy { entryModel -> entryModel.id }
             }
 
             return HomeMasterState(entryModelsMap = entryModelsMap)

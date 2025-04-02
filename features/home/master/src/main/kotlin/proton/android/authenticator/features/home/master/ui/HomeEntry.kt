@@ -47,10 +47,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun HomeEntry(
-    entryModel: HomeMasterEntryModel,
-    onClick: (entryModel: HomeMasterEntryModel) -> Unit
-) {
+internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: HomeMasterEntryModel) -> Unit) {
     val showTextShadows = isSystemInDarkTheme() || entryModel.showShadowsInTexts
 
     Column(
@@ -98,7 +95,7 @@ internal fun HomeEntry(
                 Text(
                     text = entryModel.issuer.asString(),
                     color = Theme.colorScheme.textNorm,
-                    style =  if(showTextShadows) {
+                    style = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body1Regular
@@ -108,7 +105,7 @@ internal fun HomeEntry(
                 Text(
                     text = entryModel.name.asString(),
                     color = Theme.colorScheme.textWeak,
-                    style = if(showTextShadows) {
+                    style = if (showTextShadows) {
                         Theme.typography.body2Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body2Regular
@@ -142,7 +139,7 @@ internal fun HomeEntry(
                 showBoxes = entryModel.showBoxesInCode,
                 showShadows = showTextShadows,
                 color = Theme.colorScheme.textNorm,
-                style = Theme.typography.monoMedium1,
+                style = Theme.typography.monoMedium1
             )
 
             Column(
@@ -152,7 +149,7 @@ internal fun HomeEntry(
                 Text(
                     text = stringResource(id = R.string.action_next),
                     color = Theme.colorScheme.textWeak,
-                    style = if(showTextShadows) {
+                    style = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body1Regular
@@ -162,7 +159,7 @@ internal fun HomeEntry(
                 Text(
                     text = entryModel.nextCode.asString(),
                     color = Theme.colorScheme.textNorm,
-                    style =  if(showTextShadows) {
+                    style = if (showTextShadows) {
                         Theme.typography.monoMedium2.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.monoMedium2

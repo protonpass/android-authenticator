@@ -18,7 +18,9 @@
 
 package proton.android.authenticator.shared.ui.domain.components.textfields
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -33,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
+import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
 fun FormTextField(
@@ -49,7 +52,12 @@ fun FormTextField(
     }
 
     TextField(
-        modifier = modifier,
+        modifier = modifier
+            .border(
+                shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+                width = ThemeThickness.Small,
+                color = Theme.colorScheme.inputBorder
+            ),
         value = value,
         onValueChange = { newValue ->
             value = newValue
@@ -74,12 +82,18 @@ fun FormTextField(
             unfocusedTextColor = Theme.colorScheme.textNorm,
             focusedLabelColor = Theme.colorScheme.textNorm,
             unfocusedLabelColor = Theme.colorScheme.textNorm,
-            focusedPlaceholderColor = Theme.colorScheme.textNorm.copy(alpha = 0.6F),
-            focusedContainerColor = Color.Black.copy(alpha = 0.5F),
-            unfocusedContainerColor = Color.Black.copy(alpha = 0.5F),
+            focusedPlaceholderColor = Theme.colorScheme.textWeak,
+            unfocusedPlaceholderColor = Theme.colorScheme.textWeak,
+            focusedContainerColor = Theme.colorScheme.inputBackground,
+            unfocusedContainerColor = Theme.colorScheme.inputBackground,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
+            disabledIndicatorColor = Color.Transparent,
+            cursorColor = Theme.colorScheme.accent,
+            selectionColors = TextSelectionColors(
+                handleColor = Theme.colorScheme.accent,
+                backgroundColor = Theme.colorScheme.accent.copy(alpha = 0.4F)
+            )
         )
     )
 }

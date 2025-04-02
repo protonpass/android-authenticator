@@ -87,6 +87,12 @@ sealed class ThemeColors {
     abstract val gradientTopBarColor2: Color
 
     @Stable
+    abstract val inputBackground: Color
+
+    @Stable
+    abstract val inputBorder: Color
+
+    @Stable
     abstract val inputBorderFocused: Color
 
     @Stable
@@ -168,6 +174,10 @@ sealed class ThemeColors {
 
         override val gradientTopBarColor2: Color = Color(color = 0xFF3A3836)
 
+        override val inputBackground: Color = Color(color = 0x7F000000)
+
+        override val inputBorder: Color = Color(color = 0x1FFFFFFF)
+
         override val inputBorderFocused: Color = Color(color = 0xFFA779FF)
 
         override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
@@ -232,6 +242,10 @@ sealed class ThemeColors {
         override val gradientTopBarColor1: Color = Color(color = 0xFF252321)
 
         override val gradientTopBarColor2: Color = Color(color = 0xFF3A3836)
+
+        override val inputBackground: Color = Color(color = 0x06000000)
+
+        override val inputBorder: Color = Color(color = 0x10000000)
 
         override val inputBorderFocused: Color = Color(color = 0xFFA779FF)
 

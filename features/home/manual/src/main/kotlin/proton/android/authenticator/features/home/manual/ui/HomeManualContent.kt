@@ -20,43 +20,33 @@ package proton.android.authenticator.features.home.manual.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.R
 import proton.android.authenticator.features.home.manual.presentation.HomeManualState
-import proton.android.authenticator.shared.ui.domain.components.bars.CenterAlignedTopBar
 import proton.android.authenticator.shared.ui.domain.components.menus.FormDropdownMenu
 import proton.android.authenticator.shared.ui.domain.components.menus.FormRevealMenu
 import proton.android.authenticator.shared.ui.domain.components.tabs.FormTab
 import proton.android.authenticator.shared.ui.domain.components.textfields.FormTextField
-import proton.android.authenticator.shared.ui.domain.models.UiIcon
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
-import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun HomeManualContent(
     state: HomeManualState,
-    onNavigationClick: () -> Unit,
-    onSubmitFormClick: () -> Unit,
     onTitleChange: (String) -> Unit,
     onSecretChange: (String) -> Unit,
     onIssuerChange: (String) -> Unit,
     onDigitsChange: (Int) -> Unit,
     onTimeIntervalChange: (Int) -> Unit,
     onAlgorithmChange: (EntryAlgorithm) -> Unit,
-    onTypeChange: (EntryType) -> Unit
+    onTypeChange: (EntryType) -> Unit,
+    modifier: Modifier = Modifier
 ) = with(state) {
     val digitsOptions = remember(formModel.digitsOptions) {
         formModel.digitsOptions.map(Int::toString)
@@ -66,99 +56,78 @@ internal fun HomeManualContent(
         formModel.timeIntervalOptions.map { timeInterval -> "${timeInterval}s" }
     }
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        containerColor = Color.Transparent,
-        topBar = {
-            CenterAlignedTopBar(
-                title = stringResource(id = R.string.home_manual_screen_title),
-                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
-                onNavigationClick = onNavigationClick,
-                action = stringResource(id = uiR.string.action_save),
-                isActionEnabled = formModel.isValid,
-                onActionClick = onSubmitFormClick
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(state = rememberScrollState())
-                .padding(paddingValues = paddingValues)
-                .padding(horizontal = ThemePadding.Medium),
-            verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
+    ) {
+        FormTextField(
+            modifier = Modifier.fillMaxWidth(),
+            initialValue = formModel.initialTitle,
+            label = stringResource(id = R.string.home_manual_form_title_label),
+            placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
+            onValueChange = onTitleChange
+        )
+
+        FormTextField(
+            modifier = Modifier.fillMaxWidth(),
+            initialValue = formModel.initialSecret,
+            label = stringResource(id = R.string.home_manual_form_secret_label),
+            placeholder = stringResource(id = R.string.home_manual_form_secret_label),
+            onValueChange = onSecretChange,
+            isRequired = true
+        )
+
+        FormTextField(
+            modifier = Modifier.fillMaxWidth(),
+            initialValue = formModel.initialIssuer,
+            label = stringResource(id = R.string.home_manual_form_issuer_label),
+            placeholder = stringResource(id = R.string.home_manual_form_issuer_label),
+            onValueChange = onIssuerChange
+        )
+
+        FormRevealMenu(
+            modifier = Modifier.padding(top = ThemePadding.Medium),
+            title = stringResource(id = R.string.home_manual_form_advanced_options_title)
         ) {
-            FormTextField(
-                modifier = Modifier.fillMaxWidth(),
-                initialValue = formModel.initialTitle,
-                label = stringResource(id = R.string.home_manual_form_title_label),
-                placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
-                onValueChange = onTitleChange
-            )
-
-            FormTextField(
-                modifier = Modifier.fillMaxWidth(),
-                initialValue = formModel.initialSecret,
-                label = stringResource(id = R.string.home_manual_form_secret_label),
-                placeholder = stringResource(id = R.string.home_manual_form_secret_label),
-                onValueChange = onSecretChange,
-                isRequired = true
-            )
-
-            FormTextField(
-                modifier = Modifier.fillMaxWidth(),
-                initialValue = formModel.initialIssuer,
-                label = stringResource(id = R.string.home_manual_form_issuer_label),
-                placeholder = stringResource(id = R.string.home_manual_form_issuer_label),
-                onValueChange = onIssuerChange
-            )
-
-            FormRevealMenu(
+            Column(
                 modifier = Modifier.padding(top = ThemePadding.Medium),
-                title = stringResource(id = R.string.home_manual_form_advanced_options_title)
+                verticalArrangement = Arrangement.spacedBy(space = ThemePadding.MediumLarge)
             ) {
-                Column(
-                    modifier = Modifier.padding(top = ThemePadding.Medium),
-                    verticalArrangement = Arrangement.spacedBy(space = ThemePadding.MediumLarge)
-                ) {
-                    FormDropdownMenu(
-                        title = stringResource(id = R.string.home_manual_form_digits_title),
-                        selectedOption = formModel.digits.toString(),
-                        options = digitsOptions,
-                        onOptionSelected = { index ->
-                            onDigitsChange(formModel.digitsOptions[index])
-                        }
-                    )
+                FormDropdownMenu(
+                    title = stringResource(id = R.string.home_manual_form_digits_title),
+                    selectedOption = formModel.digits.toString(),
+                    options = digitsOptions,
+                    onOptionSelected = { index ->
+                        onDigitsChange(formModel.digitsOptions[index])
+                    }
+                )
 
-                    FormDropdownMenu(
-                        title = stringResource(id = R.string.home_manual_form_time_interval_title),
-                        selectedOption = "${formModel.timeInterval}s",
-                        options = timeIntervalOptions,
-                        onOptionSelected = { index ->
-                            onTimeIntervalChange(formModel.timeIntervalOptions[index])
-                        }
-                    )
+                FormDropdownMenu(
+                    title = stringResource(id = R.string.home_manual_form_time_interval_title),
+                    selectedOption = "${formModel.timeInterval}s",
+                    options = timeIntervalOptions,
+                    onOptionSelected = { index ->
+                        onTimeIntervalChange(formModel.timeIntervalOptions[index])
+                    }
+                )
 
-                    FormTab(
-                        title = stringResource(id = R.string.home_manual_form_time_algorithm_title),
-                        selectedTabIndex = formModel.selectedAlgorithmIndex,
-                        tabs = formModel.algorithmOptions,
-                        onTabSelected = { index ->
-                            onAlgorithmChange(EntryAlgorithm.from(value = index))
-                        }
-                    )
+                FormTab(
+                    title = stringResource(id = R.string.home_manual_form_time_algorithm_title),
+                    selectedTabIndex = formModel.selectedAlgorithmIndex,
+                    tabs = formModel.algorithmOptions,
+                    onTabSelected = { index ->
+                        onAlgorithmChange(EntryAlgorithm.from(value = index))
+                    }
+                )
 
-                    FormTab(
-                        title = stringResource(id = R.string.home_manual_form_time_type_title),
-                        selectedTabIndex = formModel.selectedTypeIndex,
-                        tabs = formModel.typeOptions,
-                        onTabSelected = { index ->
-                            onTypeChange(EntryType.from(value = index))
-                        }
-                    )
-                }
+                FormTab(
+                    title = stringResource(id = R.string.home_manual_form_time_type_title),
+                    selectedTabIndex = formModel.selectedTypeIndex,
+                    tabs = formModel.typeOptions,
+                    onTabSelected = { index ->
+                        onTypeChange(EntryType.from(value = index))
+                    }
+                )
             }
         }
     }

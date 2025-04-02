@@ -73,7 +73,7 @@ fun TotpCode(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(space = separationWidth),
+        horizontalArrangement = Arrangement.spacedBy(space = separationWidth)
     ) {
         val codeString = codeText.asString()
         val previousCodeString = previousOtpCodeText.asString()

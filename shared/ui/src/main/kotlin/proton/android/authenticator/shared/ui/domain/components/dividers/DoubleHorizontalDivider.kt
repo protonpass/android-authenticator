@@ -34,7 +34,7 @@ fun DoubleHorizontalDivider(
     topColor: Color = Color.Black.copy(alpha = 0.2f),
     topThickness: Dp = ThemeThickness.Small,
     bottomColor: Color = Color.White.copy(alpha = 0.12f),
-    bottomThickness: Dp = ThemeThickness.Small,
+    bottomThickness: Dp = ThemeThickness.Small
 ) {
     Column(
         modifier = modifier

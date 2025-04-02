@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundTopBarGradient
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
@@ -44,9 +43,7 @@ fun CenterAlignedTopBar(
     onActionClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
-        modifier = modifier
-            .fillMaxWidth()
-            .backgroundTopBarGradient(),
+        modifier = modifier.fillMaxWidth(),
         title = {
             Text(
                 text = title,
@@ -59,7 +56,7 @@ fun CenterAlignedTopBar(
                 Icon(
                     painter = navigationIcon.asPainter(),
                     contentDescription = null,
-                    tint = Theme.colorScheme.interactionPurple
+                    tint = Theme.colorScheme.accent
                 )
             }
         },
@@ -71,7 +68,7 @@ fun CenterAlignedTopBar(
                 ) {
                     Text(
                         text = text,
-                        color = Theme.colorScheme.interactionPurple,
+                        color = Theme.colorScheme.accent,
                         style = Theme.typography.emphasized
                     )
                 }
