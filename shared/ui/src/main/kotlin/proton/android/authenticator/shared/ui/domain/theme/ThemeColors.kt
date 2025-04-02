@@ -102,6 +102,12 @@ sealed class ThemeColors {
     abstract val gradientTopBarColor2: Color
 
     @Stable
+    abstract val iconBackground: Color
+
+    @Stable
+    abstract val iconBorder: Color
+
+    @Stable
     abstract val inputBackground: Color
 
     @Stable
@@ -115,9 +121,6 @@ sealed class ThemeColors {
 
     @Stable
     abstract val interactionPurpleNorm: Color
-
-    @Stable
-    abstract val interactionPurpleStrong: Color
 
     @Stable
     abstract val signalDanger: Color
@@ -208,6 +211,10 @@ sealed class ThemeColors {
 
         override val gradientTopBarColor2: Color = Color(color = 0xFF3A3836)
 
+        override val iconBackground: Color = Color(color = 0xFF24212B)
+
+        override val iconBorder: Color = Color(color = 0xFF24212B)
+
         override val inputBackground: Color = Color(color = 0x7F000000)
 
         override val inputBorder: Color = Color(color = 0x1FFFFFFF)
@@ -217,8 +224,6 @@ sealed class ThemeColors {
         override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
 
         override val interactionPurpleNorm: Color = Color(color = 0xFF6D4AFF)
-
-        override val interactionPurpleStrong: Color = Color(color = 0xFF24212B)
 
         override val signalDanger: Color = Color(color = 0xFFFF7979)
 
@@ -287,6 +292,10 @@ sealed class ThemeColors {
 
         override val gradientTopBarColor2: Color = Color(color = 0xFF3A3836)
 
+        override val iconBackground: Color = Color(color = 0xFFF3EEF7)
+
+        override val iconBorder: Color = Color(color = 0x2D512877)
+
         override val inputBackground: Color = Color(color = 0x06000000)
 
         override val inputBorder: Color = Color(color = 0x10000000)
@@ -296,8 +305,6 @@ sealed class ThemeColors {
         override val interactionPurple: Color = Color(color = 0xFFCAAAFF)
 
         override val interactionPurpleNorm: Color = Color(color = 0xFF6D4AFF)
-
-        override val interactionPurpleStrong: Color = Color(color = 0xFF24212B)
 
         override val signalDanger: Color = Color(color = 0xFFFF7979)
 
@@ -315,6 +322,6 @@ sealed class ThemeColors {
 
 }
 
-internal val ThemeColorScheme: ProvidableCompositionLocal<ThemeColors> = staticCompositionLocalOf {
+internal val LocalThemeColorScheme: ProvidableCompositionLocal<ThemeColors> = staticCompositionLocalOf {
     ThemeColors.Light
 }

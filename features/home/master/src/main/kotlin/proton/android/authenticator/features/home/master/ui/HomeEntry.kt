@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -26,19 +25,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.codes.TotpCode
 import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
+import proton.android.authenticator.shared.ui.domain.components.icons.EntryIcon
 import proton.android.authenticator.shared.ui.domain.components.indicators.TotpProgressIndicator
 import proton.android.authenticator.shared.ui.domain.modifiers.containerSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -65,26 +61,8 @@ internal fun HomeEntry(entryModel: HomeMasterEntryModel, onClick: (entryModel: H
             horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier
-                    .clip(shape = RoundedCornerShape(size = 8.dp))
-                    .background(color = Theme.colorScheme.interactionPurpleStrong)
-                    .padding(
-                        horizontal = ThemePadding.MediumSmall,
-                        vertical = ThemePadding.Small
-                    ),
-                text = entryModel.issuer.asString().first().toString(),
-                style = Theme.typography.headline
-                    .copy(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Theme.colorScheme.gradientBannerColor10,
-                                Theme.colorScheme.gradientBannerColor8,
-                                Theme.colorScheme.gradientBannerColor4,
-                                Theme.colorScheme.gradientBannerColor2
-                            )
-                        )
-                    )
+            EntryIcon(
+                issuer = entryModel.issuer
             )
 
             Column(
