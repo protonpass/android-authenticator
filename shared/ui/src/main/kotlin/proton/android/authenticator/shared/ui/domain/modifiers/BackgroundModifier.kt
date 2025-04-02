@@ -21,6 +21,7 @@ package proton.android.authenticator.shared.ui.domain.modifiers
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Stable
@@ -118,6 +120,26 @@ fun Modifier.backgroundScreenGradient() = composed {
                 paint.reset()
             }
     }
+}
+
+@Stable
+fun Modifier.backgroundDropdownMenu() = composed {
+    dropShadow(
+        shape = CircleShape,
+        color = Theme.colorScheme.blackAlpha8,
+        offsetX = 0.dp,
+        offsetY = 2.dp,
+        blur = 4.dp
+    )
+        .clip(shape = RoundedCornerShape(size = ThemeRadius.MediumSmall))
+        .background(color = Theme.colorScheme.backgroundDropdown)
+        .innerShadow(
+            shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+            color = Theme.colorScheme.whiteAlpha20,
+            offsetX = 0.dp,
+            offsetY = 1.dp,
+            blur = 0.dp
+        )
 }
 
 @Stable

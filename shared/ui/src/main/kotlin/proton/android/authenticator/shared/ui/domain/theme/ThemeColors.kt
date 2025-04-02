@@ -33,6 +33,9 @@ sealed class ThemeColors {
     abstract val backgroundButtonBorderWeak: Color
 
     @Stable
+    abstract val backgroundDropdown: Color
+
+    @Stable
     abstract val backgroundGradientTop: Color
 
     @Stable
@@ -123,10 +126,16 @@ sealed class ThemeColors {
     abstract val textWeak: Color
 
     @Stable
+    val blackAlpha8: Color = Color(color = 0x14000000)
+
+    @Stable
     val purpleAlpha25: Color = Color(color = 0x40995EFF)
 
     @Stable
     val whiteAlpha12: Color = Color(color = 0x1FFFFFFF)
+
+    @Stable
+    val whiteAlpha20: Color = Color(color = 0x33FFFFFF)
 
     @Stable
     val whiteAlpha25: Color = Color(color = 0x40FFFFFF)
@@ -137,6 +146,8 @@ sealed class ThemeColors {
         override val accent: Color = Color(color = 0xFFB080FF)
 
         override val backgroundButtonBorderWeak: Color = Color(color = 0x52FFFFFF)
+
+        override val backgroundDropdown: Color = Color(color = 0x1FFFFFFF)
 
         override val backgroundGradientTop: Color = Color(color = 0xFF2D2A28)
 
@@ -206,6 +217,8 @@ sealed class ThemeColors {
         override val accent: Color = Color(color = 0xFF6D4AFF)
 
         override val backgroundButtonBorderWeak: Color = Color(color = 0x2E000000)
+
+        override val backgroundDropdown: Color = Color(color = 0xFFFFFFFF)
 
         override val backgroundGradientTop: Color = Color(color = 0xFFF5F5F4)
 
