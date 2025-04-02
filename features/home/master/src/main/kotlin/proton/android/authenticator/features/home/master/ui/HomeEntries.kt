@@ -19,7 +19,6 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,14 +29,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun HomeEntries(
-    paddingValues: PaddingValues,
-    entryModels: List<HomeMasterEntryModel>,
-    onEntryClick: (HomeMasterEntryModel) -> Unit
-) {
+internal fun HomeEntries(entryModels: List<HomeMasterEntryModel>, onEntryClick: (HomeMasterEntryModel) -> Unit) {
     LazyColumn(
         modifier = Modifier.padding(horizontal = ThemePadding.Medium),
-        contentPadding = paddingValues,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
     ) {
         items(

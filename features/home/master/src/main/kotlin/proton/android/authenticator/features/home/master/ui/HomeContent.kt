@@ -18,50 +18,28 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 
 @Composable
 internal fun HomeContent(
     state: HomeMasterState,
-    onEntryQueryChange: (String) -> Unit,
     onNewEntryClick: () -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    onSettingsClick: () -> Unit
+    modifier: Modifier = Modifier
 ) = with(state) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        containerColor = Color.Transparent,
-        topBar = {
-            HomeTopBar(onSettingsClick = onSettingsClick)
-        },
-        bottomBar = {
-            if (hasEntryModels) {
-                HomeBottomBar(
-                    onEntryQueryChange = onEntryQueryChange,
-                    onNewEntryClick = onNewEntryClick
-                )
-            }
-        }
-    ) { paddingValues ->
+    Box(modifier = modifier) {
         if (hasEntryModels) {
             HomeEntries(
-                paddingValues = paddingValues,
                 entryModels = entryModels,
                 onEntryClick = onEditEntryClick
             )
         } else {
             HomeEmpty(
-                paddingValues = paddingValues,
                 onNewEntryClick = onNewEntryClick
             )
         }

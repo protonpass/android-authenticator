@@ -133,3 +133,40 @@ fun Modifier.backgroundDropdownMenu() = composed {
             blur = 0.dp
         )
 }
+
+@Stable
+fun Modifier.backgroundActionButton() = composed {
+    dropShadow(
+        shape = CircleShape,
+        color = Theme.colorScheme.blackAlpha10,
+        offsetX = 0.dp,
+        offsetY = 2.dp,
+        blur = 4.dp
+    )
+        .clip(shape = CircleShape)
+        .border(
+            shape = CircleShape,
+            width = ThemeThickness.Small,
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    Theme.colorScheme.actionButtonBorderGradientTop,
+                    Theme.colorScheme.actionButtonBorderGradientBottom
+                )
+            )
+        )
+        .background(
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    Theme.colorScheme.actionButtonBackgroundGradientTop,
+                    Theme.colorScheme.actionButtonBackgroundGradientBottom
+                )
+            )
+        )
+        .innerShadow(
+            shape = CircleShape,
+            color = Theme.colorScheme.whiteAlpha20,
+            offsetX = 0.dp,
+            offsetY = 1.dp,
+            blur = 1.dp
+        )
+}

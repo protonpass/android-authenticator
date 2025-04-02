@@ -18,11 +18,15 @@
 
 package proton.android.authenticator.features.home.master.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
 fun HomeScreen(
@@ -32,12 +36,27 @@ fun HomeScreen(
 ) = with(hiltViewModel<HomeMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
-    HomeContent(
-        state = state,
-        onEntryQueryChange = ::onUpdateEntrySearchQuery,
-        onNewEntryClick = onNewEntryClick,
-        onEditEntryClick = { onEditEntryClick(it.id.toString()) },
-        onDeleteEntryClick = ::onDeleteEntry,
-        onSettingsClick = onSettingsClick
-    )
+    ScaffoldScreen(
+        topBar = {
+            HomeTopBar(onSettingsClick = onSettingsClick)
+        },
+        bottomBar = {
+            if (state.hasEntryModels) {
+                HomeBottomBar(
+                    onEntryQueryChange = ::onUpdateEntrySearchQuery,
+                    onNewEntryClick = onNewEntryClick
+                )
+            }
+        }
+    ) { paddingValues ->
+        HomeContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = paddingValues),
+            state = state,
+            onNewEntryClick = onNewEntryClick,
+            onEditEntryClick = { onEditEntryClick(it.id.toString()) },
+            onDeleteEntryClick = ::onDeleteEntry
+        )
+    }
 }

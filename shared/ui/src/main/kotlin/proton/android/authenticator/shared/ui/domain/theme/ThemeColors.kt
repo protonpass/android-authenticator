@@ -30,6 +30,18 @@ sealed class ThemeColors {
     abstract val accent: Color
 
     @Stable
+    abstract val actionButtonBackgroundGradientTop: Color
+
+    @Stable
+    abstract val actionButtonBackgroundGradientBottom: Color
+
+    @Stable
+    abstract val actionButtonBorderGradientTop: Color
+
+    @Stable
+    abstract val actionButtonBorderGradientBottom: Color
+
+    @Stable
     abstract val backgroundButtonBorderWeak: Color
 
     @Stable
@@ -129,6 +141,9 @@ sealed class ThemeColors {
     val blackAlpha8: Color = Color(color = 0x14000000)
 
     @Stable
+    val blackAlpha10: Color = Color(color = 0x19000000)
+
+    @Stable
     val purpleAlpha25: Color = Color(color = 0x40995EFF)
 
     @Stable
@@ -144,6 +159,14 @@ sealed class ThemeColors {
     data object Dark : ThemeColors() {
 
         override val accent: Color = Color(color = 0xFFB080FF)
+
+        override val actionButtonBackgroundGradientTop: Color = Color(color = 0x1FFFFFFF)
+
+        override val actionButtonBackgroundGradientBottom: Color = Color(color = 0x1FFFFFFF)
+
+        override val actionButtonBorderGradientTop: Color = Color(color = 0x33FFFFFF)
+
+        override val actionButtonBorderGradientBottom: Color = Color(color = 0x02FFFFFF)
 
         override val backgroundButtonBorderWeak: Color = Color(color = 0x52FFFFFF)
 
@@ -215,6 +238,14 @@ sealed class ThemeColors {
     data object Light : ThemeColors() {
 
         override val accent: Color = Color(color = 0xFF6D4AFF)
+
+        override val actionButtonBackgroundGradientTop: Color = Color(color = 0xFFF2F2F1)
+
+        override val actionButtonBackgroundGradientBottom: Color = Color(color = 0xFFFFFFFF)
+
+        override val actionButtonBorderGradientTop: Color = Color(color = 0xFFF2F2F1)
+
+        override val actionButtonBorderGradientBottom: Color = Color(color = 0xFFFFFFFF)
 
         override val backgroundButtonBorderWeak: Color = Color(color = 0x2E000000)
 
