@@ -27,9 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
+import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 fun SettingsScreen(onNavigationClick: () -> Unit, onDiscoverAppClick: (String) -> Unit) =
@@ -38,7 +43,9 @@ fun SettingsScreen(onNavigationClick: () -> Unit, onDiscoverAppClick: (String) -
 
         ScaffoldScreen(
             topBar = {
-                SettingsTopBar(
+                SmallTopBar(
+                    title = UiText.Resource(id = R.string.settings_screen_title),
+                    navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
                     onNavigationClick = onNavigationClick
                 )
             }

@@ -18,45 +18,47 @@
 
 package proton.android.authenticator.shared.ui.domain.components.bars
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
+
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
-fun CenterAlignedTopBar(
-    title: String,
+fun SmallTopBar(
+    title: UiText,
     navigationIcon: UiIcon,
     onNavigationClick: () -> Unit,
     modifier: Modifier = Modifier,
-    action: String? = null,
-    isActionEnabled: Boolean = true,
+    action: UiText? = null,
+    isActionEnabled: Boolean = false,
     onActionClick: () -> Unit = {}
 ) {
-    CenterAlignedTopAppBar(
-        modifier = modifier.fillMaxWidth(),
+    TopAppBar(
+        modifier = modifier,
         title = {
             Text(
-                text = title,
-                color = Theme.colorScheme.textNorm,
-                style = Theme.typography.emphasized
+                text = title.asString(),
+                style = Theme.typography.body1Medium
             )
         },
         navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
+            IconButton(
+                onClick = onNavigationClick
+            ) {
                 Icon(
                     painter = navigationIcon.asPainter(),
                     contentDescription = null,
-                    tint = Theme.colorScheme.accent
+                    tint = Theme.colorScheme.textNorm
                 )
             }
         },
@@ -67,14 +69,16 @@ fun CenterAlignedTopBar(
                     onClick = onActionClick
                 ) {
                     Text(
-                        text = text,
+                        text = action.asString(),
                         color = Theme.colorScheme.accent,
-                        style = Theme.typography.emphasized
+                        style = Theme.typography.body1Medium
                     )
                 }
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors()
-            .copy(containerColor = Color.Transparent)
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            titleContentColor = Theme.colorScheme.textNorm
+        )
     )
 }

@@ -26,14 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.home.manual.R
 import proton.android.authenticator.features.home.manual.presentation.HomeManualEvent
 import proton.android.authenticator.features.home.manual.presentation.HomeManualViewModel
-import proton.android.authenticator.shared.ui.domain.components.bars.CenterAlignedTopBar
+import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
@@ -58,11 +58,11 @@ fun HomeManualScreen(
 
     ScaffoldScreen(
         topBar = {
-            CenterAlignedTopBar(
-                title = stringResource(id = R.string.home_manual_screen_title),
-                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
+            SmallTopBar(
+                title = UiText.Resource(id = R.string.home_manual_screen_title),
+                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_cross),
                 onNavigationClick = onNavigationClick,
-                action = stringResource(id = uiR.string.action_save),
+                action = UiText.Resource(id = uiR.string.action_save),
                 isActionEnabled = state.formModel.isValid,
                 onActionClick = ::onSubmitForm
             )
