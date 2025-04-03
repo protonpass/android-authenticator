@@ -19,28 +19,25 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.components.textfields.SearchTextField
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundPrimaryButton
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
@@ -50,62 +47,38 @@ internal fun HomeBottomBar(onEntryQueryChange: (String) -> Unit, onNewEntryClick
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Theme.colorScheme.backgroundGradientBottom.copy(alpha = 0.97f)),
+            .background(color = Theme.colorScheme.backgroundGradientBottom.copy(alpha = 0.97f))
+            .padding(
+                start = ThemePadding.MediumLarge,
+                top = ThemePadding.Small,
+                end = ThemePadding.MediumLarge,
+                bottom = ThemePadding.Large
+            ),
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier
-                .padding(
-                    start = ThemeSpacing.Medium,
-                    top = ThemeSpacing.Medium,
-                    end = ThemeSpacing.Medium,
-                    bottom = ThemeSpacing.Large
-                ),
             horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            OutlinedTextField(
+            SearchTextField(
                 modifier = Modifier.weight(weight = 1f, fill = true),
-                shape = RoundedCornerShape(size = 32.dp),
-                value = searchQuery.value,
-                onValueChange = { newSearchQuery ->
-                    searchQuery.value = newSearchQuery
-                    onEntryQueryChange(newSearchQuery)
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_magnifier),
-                        contentDescription = null,
-                        tint = Theme.colorScheme.textWeak
-                    )
-                },
-                placeholder = {
-                    Text(
-                        text = "Search",
-                        color = Theme.colorScheme.textWeak
-                    )
+                initialValue = searchQuery.value,
+                onValueChange = { newValue ->
+                    searchQuery.value = newValue
+
+                    onEntryQueryChange(newValue)
                 }
             )
 
-            IconButton(
+            Icon(
                 modifier = Modifier
-                    .clip(CircleShape)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Theme.colorScheme.gradientButtonColor1,
-                                Theme.colorScheme.gradientButtonColor2
-                            )
-                        )
-                    ),
-                onClick = onNewEntryClick
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_plus),
-                    contentDescription = null,
-                    tint = Theme.colorScheme.textNorm
-                )
-            }
+                    .backgroundPrimaryButton()
+                    .clickable(onClick = onNewEntryClick)
+                    .padding(all = ThemePadding.MediumSmall),
+                painter = painterResource(id = R.drawable.ic_plus),
+                contentDescription = null,
+                tint = Color.White
+            )
         }
     }
 }

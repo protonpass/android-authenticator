@@ -167,6 +167,9 @@ sealed class ThemeColors {
     @Stable
     val whiteAlpha25: Color = Color(color = 0x40FFFFFF)
 
+    @Stable
+    val whiteAlpha30: Color = Color(color = 0x4CFFFFFF)
+
     @Immutable
     data object Dark : ThemeColors() {
 

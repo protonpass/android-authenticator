@@ -21,5 +21,6 @@
     <string name="action_next">Next</string>
     <string name="action_required">Required</string>
     <string name="action_save">Save</string>
+    <string name="action_search">Search</string>
     <string name="action_skip">Skip</string>
 </resources>

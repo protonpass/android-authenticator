@@ -62,11 +62,12 @@ internal fun Modifier.innerShadowDouble(
 @Stable
 internal fun Modifier.innerShadow(
     shape: Shape,
-    color: Color = Color.Black.copy(alpha = 0.4f),
+    color: Color,
     blur: Dp = 4.dp,
     offsetY: Dp = 2.dp,
     offsetX: Dp = 2.dp,
-    spread: Dp = 0.dp
+    spread: Dp = 0.dp,
+    blendMode: PorterDuff.Mode = PorterDuff.Mode.DST_OUT
 ) = drawWithContent {
     drawContent()
 
@@ -103,7 +104,7 @@ internal fun Modifier.innerShadow(
 
         paint.apply {
             this.asFrameworkPaint().apply {
-                this.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+                this.xfermode = PorterDuffXfermode(blendMode)
 
                 if (blurPixels > 0) {
                     this.maskFilter = BlurMaskFilter(blurPixels, BlurMaskFilter.Blur.NORMAL)
