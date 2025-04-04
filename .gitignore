@@ -28,6 +28,7 @@ config
 business/*/build
 
 # Features module
+features/*/build
 features/*/*/build
 
 # Navigation module
