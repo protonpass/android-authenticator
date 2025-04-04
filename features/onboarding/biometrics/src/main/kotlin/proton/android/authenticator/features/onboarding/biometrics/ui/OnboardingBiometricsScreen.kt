@@ -18,12 +18,21 @@
 
 package proton.android.authenticator.features.onboarding.biometrics.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
 fun OnboardingBiometricsScreen(onSkipClick: () -> Unit) {
-    OnboardingBiometricsContent(
-        onEnableBiometricsClick = {},
-        onSkipClick = onSkipClick
-    )
+    ScaffoldScreen { innerPaddingValues ->
+        OnboardingBiometricsContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues = innerPaddingValues),
+            onEnableBiometricsClick = {},
+            onSkipClick = onSkipClick
+        )
+    }
 }

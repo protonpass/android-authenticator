@@ -20,12 +20,15 @@ package proton.android.authenticator.features.home.scan.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -126,21 +129,25 @@ internal fun HomeScanCameraQrMask(cutoutRect: Rect, modifier: Modifier = Modifie
             }
         }
 
-        Text(
+        Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .offset {
                     IntOffset(
                         x = 0,
                         y = cutoutRect.bottom.roundToInt()
                     )
                 }
-                .fillMaxWidth()
                 .padding(top = ThemePadding.Large),
-            text = stringResource(id = R.string.home_scan_qr_code_hint),
-            color = Theme.colorScheme.textNorm,
-            style = Theme.typography.headline,
-            textAlign = TextAlign.Center
-        )
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.width(width = 160.dp),
+                text = stringResource(id = R.string.home_scan_qr_code_hint),
+                color = Color.White,
+                style = Theme.typography.bodyRegular,
+                textAlign = TextAlign.Center
+            )
+        }
     }
-
 }

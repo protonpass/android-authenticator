@@ -17,5 +17,6 @@
   -->
 
 <resources>
-    <string name="home_scan_qr_code_hint">Point your camera at the QR code</string>
+    <string name="home_scan_qr_code_hint">Point your camera at the QR code.</string>
+    <string name="home_scan_enter_manually">Enter manually</string>
 </resources>

@@ -23,14 +23,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
 import proton.android.authenticator.features.onboarding.imports.ui.OnboardingImportScreen
-import proton.android.authenticator.features.onboarding.master.ui.OnboardingScreen
+import proton.android.authenticator.features.onboarding.master.ui.OnboardingMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 
 internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<OnboardingNavigationDestination>(startDestination = OnboardingMasterNavigationDestination) {
         composable<OnboardingMasterNavigationDestination> {
-            OnboardingScreen(
+            OnboardingMasterScreen(
                 onGetStartedClick = {
                     NavigationCommand.NavigateTo(
                         destination = OnboardingImportNavigationDestination

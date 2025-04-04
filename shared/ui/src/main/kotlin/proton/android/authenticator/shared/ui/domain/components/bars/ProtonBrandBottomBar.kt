@@ -16,23 +16,32 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.onboarding.imports.ui
+package proton.android.authenticator.shared.ui.domain.components.bars
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
+import androidx.compose.ui.res.painterResource
+import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
-fun OnboardingImportScreen(onImportClick: () -> Unit, onSkipClick: () -> Unit) {
-    ScaffoldScreen { innerPaddingValues ->
-        OnboardingImportContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = innerPaddingValues),
-            onImportClick = onImportClick,
-            onSkipClick = onSkipClick
+fun ProtonBrandBottomBar() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = ThemePadding.ExtraLarge),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_proton_privacy),
+            contentDescription = null,
+            tint = Theme.colorScheme.textNorm
         )
     }
 }

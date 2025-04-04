@@ -82,7 +82,7 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
                         .clickable(onClick = onDismissClick),
                     painter = painterResource(id = uiR.drawable.ic_cross_circle_filled),
                     contentDescription = null,
-                    tint = Theme.colorScheme.textNorm.copy(alpha = 0.7f)
+                    tint = Theme.colorScheme.whiteAlpha30
                 )
             }
 

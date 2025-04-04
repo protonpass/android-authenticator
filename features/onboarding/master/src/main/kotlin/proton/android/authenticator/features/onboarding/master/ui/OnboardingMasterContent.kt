@@ -21,48 +21,43 @@ package proton.android.authenticator.features.onboarding.master.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.onboarding.master.R
-import proton.android.authenticator.shared.ui.domain.components.bars.SingleActionBottomBar
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundOnboarding
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun OnboardingContent(onGetStartedClick: () -> Unit) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        containerColor = Color.Transparent,
-        bottomBar = {
-            SingleActionBottomBar(
-                actionText = stringResource(id = R.string.onboarding_master_action),
-                onActionClick = onGetStartedClick,
-                showProtonPrivacyBrand = true
-            )
-        }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = paddingValues),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
+internal fun OnboardingMasterContent(onGetStartedClick: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        Column {
+            Box(
                 modifier = Modifier
-                    .padding(horizontal = ThemePadding.Large),
+                    .fillMaxWidth()
+                    .height(height = 380.dp)
+                    .backgroundOnboarding()
+            )
+
+            Column(
+                modifier = Modifier.padding(
+                    start = ThemePadding.Large,
+                    end = ThemePadding.Large,
+                    bottom = ThemePadding.Large
+                ),
                 verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
             ) {
                 Text(
@@ -83,6 +78,14 @@ internal fun OnboardingContent(onGetStartedClick: () -> Unit) {
                     style = Theme.typography.bodyRegular
                 )
             }
+
+            PrimaryActionButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = ThemePadding.Large),
+                text = stringResource(id = R.string.onboarding_master_action),
+                onClick = onGetStartedClick
+            )
         }
     }
 }

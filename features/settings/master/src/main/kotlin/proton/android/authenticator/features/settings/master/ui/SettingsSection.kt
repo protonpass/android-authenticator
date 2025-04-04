@@ -38,9 +38,9 @@ internal fun SettingsSection(title: String, contents: List<@Composable () -> Uni
     ) {
         Text(
             modifier = Modifier.padding(start = ThemeSpacing.Medium),
-            text = title.uppercase(),
+            text = title,
             color = Theme.colorScheme.textWeak,
-            style = Theme.typography.header
+            style = Theme.typography.body2Medium
         )
 
         Column(

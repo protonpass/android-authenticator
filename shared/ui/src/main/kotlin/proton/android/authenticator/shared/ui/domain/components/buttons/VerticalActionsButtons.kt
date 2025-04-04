@@ -16,34 +16,25 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.components.bars
+package proton.android.authenticator.shared.ui.domain.components.buttons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
-import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-fun VerticalActionsBottomBar(
+fun VerticalActionsButtons(
     primaryActionText: String,
     onPrimaryActionClick: () -> Unit,
     secondaryActionText: String,
-    onSecondaryActionClick: () -> Unit
+    onSecondaryActionClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = ThemePadding.Large,
-                end = ThemePadding.Large,
-                bottom = ThemePadding.ExtraLarge
-            ),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium)
     ) {
         PrimaryActionButton(

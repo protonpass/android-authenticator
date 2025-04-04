@@ -32,7 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.scan.presentation.HomeScanState
 import proton.android.authenticator.shared.ui.domain.analyzers.QrImageDecoder
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 
 @Composable
 internal fun HomeScanContent(
@@ -57,9 +56,7 @@ internal fun HomeScanContent(
     }
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
+        modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
         bottomBar = {
             HomeScanBottomBar(

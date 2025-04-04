@@ -18,6 +18,9 @@
 
 package proton.android.authenticator.shared.ui.domain.modifiers
 
+import android.graphics.Bitmap
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
@@ -28,12 +31,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.res.imageResource
@@ -42,6 +51,7 @@ import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
+import kotlin.math.roundToInt
 
 @Stable
 fun Modifier.backgroundPrimaryButton() = composed {
@@ -204,4 +214,117 @@ fun Modifier.backgroundSection(applyShadow: Boolean = false) = composed {
         )
         .background(color = Theme.colorScheme.menuListBackground)
 
+}
+
+@Suppress("MagicNumber", "LongMethod")
+@Stable
+fun Modifier.backgroundOnboarding() = composed {
+    val gradientShader = remember {
+        RadialGradientShader(
+            center = Offset(
+                x = -90f,
+                y = 563.5f
+            ),
+            radius = 889.99f,
+            colors = listOf(
+                Color(0xFFFFBD80),
+                Color(0xFFF17995),
+                Color(0xFFBF52FF),
+                Color(0xFF9F4CFF),
+                Color(0xFF874AFF),
+                Color(0xFF704CFF)
+            ),
+            colorStops = listOf(
+                0f,
+                0.29f,
+                0.65f,
+                0.77f,
+                0.88f,
+                1f
+            )
+        )
+    }
+
+    val paint = remember {
+        Paint().apply {
+            isAntiAlias = true
+            shader = gradientShader
+            alpha = 0.8f
+
+            asFrameworkPaint().apply {
+                xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)
+            }
+        }
+    }
+
+    val image = ImageBitmap.imageResource(id = R.drawable.preview_authenticator_dark)
+
+    val skewX = remember { 0f }
+    val skewY = remember { 0.4f }
+
+    drawWithContent {
+        drawContent()
+
+        drawIntoCanvas { canvas ->
+            canvas.apply {
+                save()
+
+                val scaledImage = Bitmap.createScaledBitmap(
+                    image.asAndroidBitmap(),
+                    231.dp.toPx().roundToInt(),
+                    390.dp.toPx().roundToInt(),
+                    false
+                )
+
+                clipRect(
+                    left = 0f,
+                    top = 0f,
+                    right = size.width,
+                    bottom = size.height.minus(100)
+                )
+
+                skew(
+                    sx = skewX,
+                    sy = -skewY
+                )
+
+                clipRect(
+                    left = 0f,
+                    top = 0f,
+                    right = size.width,
+                    bottom = size.height.plus(100)
+                )
+
+                skew(
+                    sx = skewX,
+                    sy = skewY
+                )
+
+                drawImage(
+                    image = scaledImage.asImageBitmap(),
+                    topLeft = Offset(
+                        x = size.width.div(2) - scaledImage.width.div(2),
+                        y = 0f
+                    )
+                )
+
+                restore()
+
+                skew(
+                    sx = -skewX,
+                    sy = -skewY
+                )
+
+                drawRect(
+                    rect = Rect(
+                        left = 0f,
+                        top = scaledImage.height.toFloat().plus(75),
+                        right = size.width,
+                        bottom = size.height.div(2)
+                    ),
+                    paint = paint
+                )
+            }
+        }
+    }
 }
