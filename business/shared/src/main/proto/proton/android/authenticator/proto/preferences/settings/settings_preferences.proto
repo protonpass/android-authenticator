@@ -12,7 +12,7 @@ message SettingsPreferences {
   bool is_backup_enabled = 1;
   bool is_sync_enabled = 2;
   SettingsPreferencesAppLockType app_lock_type = 3;
-  bool is_tap_to_reveal_enabled = 4;
+  bool is_hide_codes_enabled = 4;
   SettingsPreferencesThemeType theme_type = 5;
   SettingsPreferencesSearchBarType search_bar_type = 6;
   SettingsPreferencesDigitType digit_type = 7;

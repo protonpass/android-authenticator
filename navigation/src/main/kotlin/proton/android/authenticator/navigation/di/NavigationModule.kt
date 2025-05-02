@@ -8,7 +8,7 @@ import dagger.hilt.components.SingletonComponent
 import proton.android.authenticator.navigation.commands.InMemoryNavigationCommandHandler
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
-import proton.android.authenticator.navigation.domain.graphs.onboarding.OnboardingNavigationDestination
+import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.navigation.navigators.AppNavigationNavigator
 import javax.inject.Singleton
@@ -27,7 +27,7 @@ internal abstract class NavigationModule {
     internal companion object {
 
         @[Provides Singleton]
-        internal fun provideStartNavigationDestination(): NavigationDestination = OnboardingNavigationDestination
+        internal fun provideStartNavigationDestination(): NavigationDestination = HomeNavigationDestination
 
     }
 

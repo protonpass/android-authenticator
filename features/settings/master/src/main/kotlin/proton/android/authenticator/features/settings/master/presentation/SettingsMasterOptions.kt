@@ -136,6 +136,18 @@ internal sealed interface SettingsMasterSearchBarOption : UiSelectorOption<Setti
 
 internal sealed interface SettingsMasterDigitOption : UiSelectorOption<SettingsDigitType> {
 
+    data class Boxes(override val selectedType: SettingsDigitType) : SettingsMasterDigitOption {
+
+        override val isSelected: Boolean = selectedType == SettingsDigitType.Boxes
+
+        override val text: UiText = UiText.Resource(
+            id = R.string.settings_appearance_title_digit_style_option_boxes
+        )
+
+        override val value: SettingsDigitType = SettingsDigitType.Boxes
+
+    }
+
     data class Plain(override val selectedType: SettingsDigitType) : SettingsMasterDigitOption {
 
         override val isSelected: Boolean = selectedType == SettingsDigitType.Plain
@@ -145,18 +157,6 @@ internal sealed interface SettingsMasterDigitOption : UiSelectorOption<SettingsD
         )
 
         override val value: SettingsDigitType = SettingsDigitType.Plain
-
-    }
-
-    data class Rich(override val selectedType: SettingsDigitType) : SettingsMasterDigitOption {
-
-        override val isSelected: Boolean = selectedType == SettingsDigitType.Rich
-
-        override val text: UiText = UiText.Resource(
-            id = R.string.settings_appearance_title_digit_style_option_rich
-        )
-
-        override val value: SettingsDigitType = SettingsDigitType.Rich
 
     }
 

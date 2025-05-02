@@ -44,7 +44,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 isBackupEnabled = settingsPreferences.isBackupEnabled,
                 isSyncEnabled = settingsPreferences.isSyncEnabled,
                 appLockType = settingsPreferences.appLockType.toDomain(),
-                isTapToRevealEnabled = settingsPreferences.isTapToRevealEnabled,
+                isHideCodesEnabled = settingsPreferences.isHideCodesEnabled,
                 themeType = settingsPreferences.themeType.toDomain(),
                 searchBarType = settingsPreferences.searchBarType.toDomain(),
                 digitType = settingsPreferences.digitType.toDomain(),
@@ -59,7 +59,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 .setIsBackupEnabled(settings.isBackupEnabled)
                 .setIsSyncEnabled(settings.isSyncEnabled)
                 .setAppLockType(settings.appLockType.toPreferences())
-                .setIsTapToRevealEnabled(settings.isTapToRevealEnabled)
+                .setIsHideCodesEnabled(settings.isHideCodesEnabled)
                 .setThemeType(settings.themeType.toPreferences())
                 .setSearchBarType(settings.searchBarType.toPreferences())
                 .setDigitType(settings.digitType.toPreferences())
@@ -110,15 +110,15 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     }
 
     private fun SettingsPreferencesDigitType.toDomain() = when (this) {
+        SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_BOXES -> SettingsDigitType.Boxes
         SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_PLAIN -> SettingsDigitType.Plain
-        SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_RICH -> SettingsDigitType.Rich
         SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_UNSPECIFIED -> SettingsDigitType.Plain
         else -> SettingsDigitType.Plain
     }
 
     private fun SettingsDigitType.toPreferences() = when (this) {
+        SettingsDigitType.Boxes -> SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_BOXES
         SettingsDigitType.Plain -> SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_PLAIN
-        SettingsDigitType.Rich -> SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_RICH
     }
 
 }

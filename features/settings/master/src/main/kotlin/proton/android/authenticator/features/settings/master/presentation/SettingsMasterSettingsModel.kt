@@ -27,7 +27,7 @@ internal data class SettingsMasterSettingsModel(
     internal val isBackupEnabled: Boolean,
     internal val isSyncEnabled: Boolean,
     internal val appLockType: SettingsAppLockType,
-    internal val isTapToRevealEnabled: Boolean,
+    internal val isHideCodesEnabled: Boolean,
     internal val themeType: SettingsThemeType,
     internal val searchBarType: SettingsSearchBarType,
     internal val digitType: SettingsDigitType,
@@ -54,7 +54,7 @@ internal data class SettingsMasterSettingsModel(
 
     internal val digitOptions: List<SettingsMasterDigitOption> = listOf(
         SettingsMasterDigitOption.Plain(selectedType = digitType),
-        SettingsMasterDigitOption.Rich(selectedType = digitType)
+        SettingsMasterDigitOption.Boxes(selectedType = digitType)
     )
 
 }

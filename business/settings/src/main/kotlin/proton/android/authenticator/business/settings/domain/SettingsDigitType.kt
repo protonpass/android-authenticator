@@ -19,6 +19,6 @@
 package proton.android.authenticator.business.settings.domain
 
 enum class SettingsDigitType {
-    Plain,
-    Rich
+    Boxes,
+    Plain
 }

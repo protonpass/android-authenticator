@@ -46,7 +46,7 @@ internal class SettingsMasterState private constructor(
                 SettingsMasterSettingsModel(
                     isBackupEnabled = settings.isBackupEnabled,
                     isSyncEnabled = settings.isSyncEnabled,
-                    isTapToRevealEnabled = settings.isTapToRevealEnabled,
+                    isHideCodesEnabled = settings.isHideCodesEnabled,
                     appLockType = settings.appLockType,
                     isCodeChangeAnimationEnabled = settings.isCodeChangeAnimationEnabled,
                     themeType = settings.themeType,

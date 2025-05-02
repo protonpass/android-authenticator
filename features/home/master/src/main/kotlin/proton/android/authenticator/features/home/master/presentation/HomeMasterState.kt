@@ -70,8 +70,8 @@ internal class HomeMasterState private constructor(
 
             val showBoxesInCode = remember(key1 = settings.digitType) {
                 when (settings.digitType) {
+                    SettingsDigitType.Boxes -> true
                     SettingsDigitType.Plain -> false
-                    SettingsDigitType.Rich -> true
                 }
             }
 

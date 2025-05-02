@@ -30,7 +30,7 @@ internal class UpdateSettingsUseCase @Inject constructor(private val commandBus:
             isBackupEnabled = settingsModel.isBackupEnabled,
             isSyncEnabled = settingsModel.isSyncEnabled,
             appLockType = settingsModel.appLockType,
-            isTapToRevealEnabled = settingsModel.isTapToRevealEnabled,
+            isTapToRevealEnabled = settingsModel.isHideCodesEnabled,
             themeType = settingsModel.themeType,
             searchBarType = settingsModel.searchBarType,
             digitType = settingsModel.digitType,

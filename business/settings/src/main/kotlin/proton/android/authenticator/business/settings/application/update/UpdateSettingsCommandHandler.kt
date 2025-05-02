@@ -31,7 +31,7 @@ internal class UpdateSettingsCommandHandler @Inject constructor(
             isBackupEnabled = command.isBackupEnabled,
             isSyncEnabled = command.isSyncEnabled,
             appLockType = command.appLockType,
-            isTapToRevealEnabled = command.isTapToRevealEnabled,
+            isHideCodesEnabled = command.isTapToRevealEnabled,
             themeType = command.themeType,
             searchBarType = command.searchBarType,
             digitType = command.digitType,

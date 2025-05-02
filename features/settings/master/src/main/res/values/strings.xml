@@ -27,7 +27,7 @@
     <string name="settings_security_title_lock_option_biometric">Biometric</string>
     <string name="settings_security_title_lock_option_none">None</string>
     <string name="settings_security_title_lock_option_pin_code">Pin Code</string>
-    <string name="settings_security_title_reveal_codes">Tap to reveal codes</string>
+    <string name="settings_security_title_hide_codes">Hide codes</string>
 
     <string name="settings_appearance_section">Appearance</string>
     <string name="settings_appearance_title_theme">Theme</string>
@@ -39,7 +39,7 @@
     <string name="settings_appearance_title_search_bar_position_option_top">Top</string>
     <string name="settings_appearance_title_digit_style">Digit style</string>
     <string name="settings_appearance_title_digit_style_option_plain">Plain</string>
-    <string name="settings_appearance_title_digit_style_option_rich">Rich</string>
+    <string name="settings_appearance_title_digit_style_option_boxes">Boxes</string>
     <string name="settings_appearance_title_animate_code_change">Animate code change</string>
 
     <string name="settings_data_management_section">Manage your data</string>

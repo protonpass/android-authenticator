@@ -74,7 +74,7 @@ internal class SettingsMasterViewModel @Inject constructor(
     }
 
     internal fun onUpdateIsTapToRevealEnabled(newIsTapToRevealEnabled: Boolean) {
-        settingsModel.copy(isTapToRevealEnabled = newIsTapToRevealEnabled)
+        settingsModel.copy(isHideCodesEnabled = newIsTapToRevealEnabled)
             .also(::updateSettings)
     }
 

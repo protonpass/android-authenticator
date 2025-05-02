@@ -87,8 +87,8 @@ internal fun SettingsContent(
                 },
                 {
                     SettingsToggleRow(
-                        title = stringResource(id = R.string.settings_security_title_reveal_codes),
-                        isChecked = settingsModel.isTapToRevealEnabled,
+                        title = stringResource(id = R.string.settings_security_title_hide_codes),
+                        isChecked = settingsModel.isHideCodesEnabled,
                         onCheckedChange = onTapToRevealChange
                     )
                 }
