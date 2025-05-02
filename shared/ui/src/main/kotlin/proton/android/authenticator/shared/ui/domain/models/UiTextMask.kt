@@ -22,6 +22,12 @@ sealed class UiTextMask {
 
     internal abstract fun apply(original: String): String
 
+    data object Hidden : UiTextMask() {
+
+        override fun apply(original: String): String = '•'.toString().repeat(original.length)
+
+    }
+
     data object Totp : UiTextMask() {
 
         override fun apply(original: String): String {
@@ -33,12 +39,6 @@ sealed class UiTextMask {
 
             return original
         }
-
-    }
-
-    data object Uppercase : UiTextMask() {
-
-        override fun apply(original: String): String = original.uppercase()
 
     }
 

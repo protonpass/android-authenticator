@@ -56,6 +56,10 @@ internal class HomeMasterState private constructor(
             val entrySearchQuery by entrySearchQueryFlow.collectAsState("")
             val settings by settingsFlow.collectAsState(Settings.Default)
 
+            val hideCodes = remember(key1 = settings.isHideCodesEnabled) {
+                settings.isHideCodesEnabled
+            }
+
             val animateOnCodeChange = remember(key1 = settings.isCodeChangeAnimationEnabled) {
                 settings.isCodeChangeAnimationEnabled
             }
@@ -72,6 +76,15 @@ internal class HomeMasterState private constructor(
                 when (settings.digitType) {
                     SettingsDigitType.Boxes -> true
                     SettingsDigitType.Plain -> false
+                }
+            }
+
+            val codeMasks = remember(key1 = hideCodes) {
+                buildList {
+                    if (hideCodes) {
+                        add(UiTextMask.Hidden)
+                    }
+                    add(UiTextMask.Totp)
                 }
             }
 
@@ -93,11 +106,11 @@ internal class HomeMasterState private constructor(
                         issuer = UiText.Dynamic(value = entry.issuer),
                         currentCode = UiText.Dynamic(
                             value = entryCode.currentCode,
-                            masks = listOf(UiTextMask.Totp)
+                            masks = codeMasks
                         ),
                         nextCode = UiText.Dynamic(
                             value = entryCode.nextCode,
-                            masks = listOf(UiTextMask.Totp)
+                            masks = codeMasks
                         ),
                         remainingSeconds = entryCodesRemainingTimes.getOrDefault(
                             key = entry.period,

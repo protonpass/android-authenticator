@@ -107,7 +107,7 @@ fun TotpCode(
                         }
                     }
                 ) { codeDigit ->
-                    if (codeDigit.isLetterOrDigit()) {
+                    if (!codeDigit.isWhitespace()) {
                         Text(
                             modifier = Modifier
                                 .applyIf(
