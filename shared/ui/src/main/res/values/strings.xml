@@ -17,6 +17,8 @@
   -->
 
 <resources>
+    <string name="action_Delete">Delete</string>
+    <string name="action_edit">Edit</string>
     <string name="action_import">Import</string>
     <string name="action_next">Next</string>
     <string name="action_required">Required</string>

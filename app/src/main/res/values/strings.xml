@@ -17,5 +17,5 @@
   -->
 
 <resources>
-    <string name="app_name">ProtonAuthenticator</string>
+    <string name="app_name" translatable="false">Proton Authenticator</string>
 </resources>

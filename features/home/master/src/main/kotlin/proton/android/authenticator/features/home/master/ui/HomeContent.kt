@@ -36,7 +36,9 @@ internal fun HomeContent(
         if (hasEntryModels) {
             HomeEntries(
                 entryModels = entryModels,
-                onEntryClick = onEditEntryClick
+                onEntryClick = onEditEntryClick,
+                onEditEntryClick = onEditEntryClick,
+                onDeleteEntryClick = onDeleteEntryClick
             )
         } else {
             HomeEmpty(

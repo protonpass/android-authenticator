@@ -30,7 +30,12 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun HomeEntries(entryModels: List<HomeMasterEntryModel>, onEntryClick: (HomeMasterEntryModel) -> Unit) {
+internal fun HomeEntries(
+    entryModels: List<HomeMasterEntryModel>,
+    onEntryClick: (HomeMasterEntryModel) -> Unit,
+    onEditEntryClick: (HomeMasterEntryModel) -> Unit,
+    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +48,9 @@ internal fun HomeEntries(entryModels: List<HomeMasterEntryModel>, onEntryClick: 
         ) { entryModel ->
             HomeEntry(
                 entryModel = entryModel,
-                onClick = onEntryClick
+                onClick = { onEntryClick(entryModel) },
+                onEditClick = { onEditEntryClick(entryModel) },
+                onDeleteClick = { onDeleteEntryClick(entryModel) }
             )
         }
     }

@@ -156,7 +156,13 @@ sealed class ThemeColors {
     val blackAlpha12: Color = Color(color = 0x1F000000)
 
     @Stable
+    val orangeAlpha20: Color = Color(color = 0x33FF8C00)
+
+    @Stable
     val purpleAlpha25: Color = Color(color = 0x40995EFF)
+
+    @Stable
+    val redAlpha20: Color = Color(color = 0x33FF0000)
 
     @Stable
     val whiteAlpha12: Color = Color(color = 0x1FFFFFFF)
