@@ -19,8 +19,10 @@
 package proton.android.authenticator.shared.ui.domain.components.textfields
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -31,6 +33,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -45,7 +48,8 @@ fun FormTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     isRequired: Boolean = false,
-    isSingleLine: Boolean = true
+    isSingleLine: Boolean = true,
+    enableQuickClear: Boolean = true
 ) {
     var value by rememberSaveable {
         mutableStateOf(initialValue)
@@ -73,6 +77,19 @@ fun FormTextField(
         },
         placeholder = {
             Text(text = placeholder)
+        },
+        trailingIcon = {
+            if (enableQuickClear && value.isNotEmpty()) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        value = ""
+                        onValueChange("")
+                    },
+                    painter = painterResource(id = R.drawable.ic_cross),
+                    contentDescription = null,
+                    tint = Theme.colorScheme.textWeak
+                )
+            }
         },
         singleLine = isSingleLine,
         shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
