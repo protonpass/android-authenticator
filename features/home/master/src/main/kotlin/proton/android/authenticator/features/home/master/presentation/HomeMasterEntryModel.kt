@@ -18,17 +18,45 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
+import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 
 internal data class HomeMasterEntryModel(
-    internal val id: String,
-    internal val name: UiText,
-    internal val issuer: UiText,
-    internal val currentCode: UiText,
-    internal val nextCode: UiText,
-    internal val remainingSeconds: Int,
-    internal val totalSeconds: Int,
-    internal val animateOnCodeChange: Boolean,
-    internal val showShadowsInTexts: Boolean,
-    internal val showBoxesInCode: Boolean
-)
+    private val entry: Entry,
+    private val entryCode: EntryCode,
+    private val entryCodesRemainingTimes: Map<Int, Int>,
+    private val codeMasks: List<UiTextMask>
+) {
+
+    internal val id: String = entry.id
+
+    internal val name: String = entry.name
+
+    internal val nameText: UiText = UiText.Dynamic(value = name)
+
+    internal val issuer: String = entry.issuer
+
+    internal val issuerText: UiText = UiText.Dynamic(value = issuer)
+
+    internal val currentCode: String = entryCode.currentCode
+
+    internal val currentCodeText: UiText = UiText.Dynamic(
+        value = currentCode,
+        masks = codeMasks
+    )
+
+    internal val nextCodeText: UiText = UiText.Dynamic(
+        value = entryCode.nextCode,
+        masks = codeMasks
+    )
+
+    internal val remainingSeconds: Int = entryCodesRemainingTimes.getOrDefault(
+        key = entry.period,
+        defaultValue = 0
+    )
+
+    internal val totalSeconds: Int = entry.period
+
+}

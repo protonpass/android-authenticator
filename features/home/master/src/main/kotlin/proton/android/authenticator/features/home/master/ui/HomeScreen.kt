@@ -18,11 +18,8 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
@@ -50,12 +47,11 @@ fun HomeScreen(
         }
     ) { paddingValues ->
         HomeContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = paddingValues),
+            paddingValues = paddingValues,
             state = state,
             onNewEntryClick = onNewEntryClick,
-            onEditEntryClick = { onEditEntryClick(it.id.toString()) },
+            onEditEntryClick = { entry -> onEditEntryClick(entry.id) },
+            onCopyEntryCodeClick = ::onCopyEntryCode,
             onDeleteEntryClick = ::onDeleteEntry
         )
     }

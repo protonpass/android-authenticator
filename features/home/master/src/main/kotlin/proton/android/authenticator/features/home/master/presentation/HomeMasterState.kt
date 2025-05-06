@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.master.presentation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -28,19 +29,43 @@ import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
-import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 
-internal class HomeMasterState private constructor(
-    private val entryModelsMap: Map<String, HomeMasterEntryModel>
-) {
+@Immutable
+internal sealed interface HomeMasterState {
 
-    internal val entryModels: List<HomeMasterEntryModel>
-        get() = entryModelsMap.values.toList()
+    val hasEntryModels: Boolean
 
-    internal val hasEntryModels: Boolean = entryModels.isNotEmpty()
+    @Immutable
+    data object Empty : HomeMasterState {
 
-    internal companion object {
+        override val hasEntryModels: Boolean = false
+
+    }
+
+    @Immutable
+    data object Loading : HomeMasterState {
+
+        override val hasEntryModels: Boolean = false
+
+    }
+
+    @Immutable
+    data class Loaded(
+        internal val animateOnCodeChange: Boolean,
+        internal val showShadowsInTexts: Boolean,
+        internal val showBoxesInCode: Boolean,
+        private val entryModelsMap: Map<String, HomeMasterEntryModel>
+    ) : HomeMasterState {
+
+        internal val entryModels: List<HomeMasterEntryModel>
+            get() = entryModelsMap.values.toList()
+
+        override val hasEntryModels: Boolean = entryModels.isNotEmpty()
+
+    }
+
+    companion object {
 
         @Composable
         internal fun create(
@@ -50,11 +75,19 @@ internal class HomeMasterState private constructor(
             entrySearchQueryFlow: Flow<String>,
             settingsFlow: Flow<Settings>
         ): HomeMasterState {
-            val entries by entriesFlow.collectAsState(emptyList())
+            val entries: List<Entry>? by entriesFlow.collectAsState(initial = null)
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
             val entrySearchQuery by entrySearchQueryFlow.collectAsState("")
             val settings by settingsFlow.collectAsState(Settings.Default)
+
+            if (entries == null) {
+                return Loading
+            }
+
+            if (entries!!.isEmpty()) {
+                return Empty
+            }
 
             val hideCodes = remember(key1 = settings.isHideCodesEnabled) {
                 settings.isHideCodesEnabled
@@ -99,34 +132,22 @@ internal class HomeMasterState private constructor(
                     showBoxesInCode
                 )
             ) {
-                entries.zip(entryCodes) { entry, entryCode ->
+                entries!!.zip(entryCodes) { entry, entryCode ->
                     HomeMasterEntryModel(
-                        id = entry.id,
-                        name = UiText.Dynamic(value = entry.name),
-                        issuer = UiText.Dynamic(value = entry.issuer),
-                        currentCode = UiText.Dynamic(
-                            value = entryCode.currentCode,
-                            masks = codeMasks
-                        ),
-                        nextCode = UiText.Dynamic(
-                            value = entryCode.nextCode,
-                            masks = codeMasks
-                        ),
-                        remainingSeconds = entryCodesRemainingTimes.getOrDefault(
-                            key = entry.period,
-                            defaultValue = 0
-                        ),
-                        totalSeconds = entry.period,
-                        animateOnCodeChange = animateOnCodeChange,
-                        showShadowsInTexts = showShadowsInTexts,
-                        showBoxesInCode = showBoxesInCode
+                        entry = entry,
+                        entryCode = entryCode,
+                        entryCodesRemainingTimes = entryCodesRemainingTimes,
+                        codeMasks = codeMasks
                     )
                 }.associateBy { entryModel -> entryModel.id }
             }
 
-            return HomeMasterState(entryModelsMap = entryModelsMap)
+            return Loaded(
+                animateOnCodeChange = animateOnCodeChange,
+                showShadowsInTexts = showShadowsInTexts,
+                showBoxesInCode = showBoxesInCode,
+                entryModelsMap = entryModelsMap
+            )
         }
-
     }
-
 }

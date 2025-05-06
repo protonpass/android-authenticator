@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.shared.common.di
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import dagger.Binds
@@ -35,6 +36,7 @@ import proton.android.authenticator.shared.common.domain.infrastructure.queries.
 import proton.android.authenticator.shared.common.infrastructure.commands.InMemoryCommandBus
 import proton.android.authenticator.shared.common.infrastructure.queries.InMemoryQueryBus
 import javax.inject.Singleton
+import kotlin.jvm.java
 
 @[Module InstallIn(SingletonComponent::class)]
 internal abstract class SharedCommonModule {
@@ -52,6 +54,10 @@ internal abstract class SharedCommonModule {
     internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus
 
     internal companion object {
+
+        @[Provides Singleton]
+        internal fun provideClipboardManager(@ApplicationContext context: Context): ClipboardManager =
+            context.getSystemService(ClipboardManager::class.java) as ClipboardManager
 
         @[Provides Singleton]
         internal fun providePackageManager(@ApplicationContext context: Context): PackageManager =

@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.shared.usecases
+package proton.android.authenticator.features.shared.usecases.settings
 
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.settings.application.find.FindSettingsQuery

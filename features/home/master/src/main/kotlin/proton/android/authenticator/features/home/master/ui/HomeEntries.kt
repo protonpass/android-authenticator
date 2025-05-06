@@ -19,27 +19,29 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun HomeEntries(
+    contentPadding: PaddingValues,
+    animateOnCodeChange: Boolean,
+    showBoxesInCode: Boolean,
+    showShadowsInTexts: Boolean,
     entryModels: List<HomeMasterEntryModel>,
-    onEntryClick: (HomeMasterEntryModel) -> Unit,
+    onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
-    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit
+    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = ThemePadding.Medium),
+        modifier = modifier,
+        contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
     ) {
         items(
@@ -47,8 +49,11 @@ internal fun HomeEntries(
             key = { entryModel -> entryModel.id }
         ) { entryModel ->
             HomeEntry(
+                animateOnCodeChange = animateOnCodeChange,
+                showBoxesInCode = showBoxesInCode,
+                showShadowsInTexts = showShadowsInTexts,
                 entryModel = entryModel,
-                onClick = { onEntryClick(entryModel) },
+                onCopyCodeClick = { onCopyEntryCodeClick(entryModel) },
                 onEditClick = { onEditEntryClick(entryModel) },
                 onDeleteClick = { onDeleteEntryClick(entryModel) }
             )

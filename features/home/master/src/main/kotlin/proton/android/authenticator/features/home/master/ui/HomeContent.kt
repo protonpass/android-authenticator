@@ -18,31 +18,51 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 internal fun HomeContent(
+    paddingValues: PaddingValues,
     state: HomeMasterState,
     onNewEntryClick: () -> Unit,
+    onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
-    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    modifier: Modifier = Modifier
-) = with(state) {
-    Box(modifier = modifier) {
-        if (hasEntryModels) {
+    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit
+) {
+    when (state) {
+        HomeMasterState.Empty -> {
+            HomeEmpty(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = paddingValues),
+                onNewEntryClick = onNewEntryClick
+            )
+        }
+
+        HomeMasterState.Loading -> {
+
+        }
+
+        is HomeMasterState.Loaded -> {
             HomeEntries(
-                entryModels = entryModels,
-                onEntryClick = onEditEntryClick,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = ThemePadding.Medium),
+                contentPadding = paddingValues,
+                animateOnCodeChange = state.animateOnCodeChange,
+                showBoxesInCode = state.showBoxesInCode,
+                showShadowsInTexts = state.showShadowsInTexts,
+                entryModels = state.entryModels,
+                onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
                 onDeleteEntryClick = onDeleteEntryClick
-            )
-        } else {
-            HomeEmpty(
-                onNewEntryClick = onNewEntryClick
             )
         }
     }

@@ -40,12 +40,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
-import proton.android.authenticator.features.shared.usecases.ObserveSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
+import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import javax.inject.Inject
 import kotlin.math.floor
 
@@ -54,6 +56,7 @@ internal class HomeMasterViewModel @Inject constructor(
     observeEntriesUseCase: ObserveEntriesUseCase,
     observeEntryCodesUseCase: ObserveEntryCodesUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
+    private val copyToClipboardUseCase: CopyToClipboardUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase
 ) : ViewModel() {
 
@@ -118,14 +121,18 @@ internal class HomeMasterViewModel @Inject constructor(
         )
     }
 
-    internal fun onDeleteEntry(entryModel: HomeMasterEntryModel) {
+    internal fun onCopyEntryCode(entry: HomeMasterEntryModel) {
+        copyToClipboardUseCase(text = entry.currentCode, isSensitive = false)
+    }
+
+    internal fun onDeleteEntry(entry: HomeMasterEntryModel) {
         viewModelScope.launch {
-            deleteEntryUseCase(id = entryModel.id)
+            deleteEntryUseCase(id = entry.id)
         }
     }
 
     internal fun onUpdateEntrySearchQuery(searchQuery: String) {
-        entrySearchQueryFlow.value = searchQuery
+        entrySearchQueryFlow.update { searchQuery }
     }
 
     private companion object {

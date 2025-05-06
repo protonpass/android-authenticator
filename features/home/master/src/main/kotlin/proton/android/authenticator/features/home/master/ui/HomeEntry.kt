@@ -58,11 +58,14 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 @Composable
 internal fun HomeEntry(
     entryModel: HomeMasterEntryModel,
-    onClick: () -> Unit,
+    animateOnCodeChange: Boolean,
+    showBoxesInCode: Boolean,
+    showShadowsInTexts: Boolean,
+    onCopyCodeClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    val showTextShadows = isSystemInDarkTheme() || entryModel.showShadowsInTexts
+    val showTextShadows = isSystemInDarkTheme() || showShadowsInTexts
 
     SwipeRevealMenu(
         isRevealed = true,
@@ -91,8 +94,11 @@ internal fun HomeEntry(
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(size = ThemeRadius.Medium))
                 .backgroundSection(applyShadow = true)
-                .clickable(onClick = onClick),
+                .clickable(onClick = onCopyCodeClick),
             entryModel = entryModel,
+            animateOnCodeChange = animateOnCodeChange,
+            showBoxesInCode = showBoxesInCode,
+            showShadowsInTexts = showShadowsInTexts,
             showTextShadows = showTextShadows
         )
     }
@@ -100,6 +106,9 @@ internal fun HomeEntry(
 
 @Composable
 private fun HomeEntryCard(
+    animateOnCodeChange: Boolean,
+    showBoxesInCode: Boolean,
+    showShadowsInTexts: Boolean,
     entryModel: HomeMasterEntryModel,
     showTextShadows: Boolean,
     modifier: Modifier = Modifier
@@ -115,7 +124,7 @@ private fun HomeEntryCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             EntryIcon(
-                issuer = entryModel.issuer
+                issuer = entryModel.issuerText
             )
 
             Column(
@@ -124,7 +133,7 @@ private fun HomeEntryCard(
                     .weight(weight = 1f, fill = true)
             ) {
                 Text(
-                    text = entryModel.issuer.asString(),
+                    text = entryModel.issuerText.asString(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = Theme.colorScheme.textNorm,
@@ -136,7 +145,7 @@ private fun HomeEntryCard(
                 )
 
                 Text(
-                    text = entryModel.name.asString(),
+                    text = entryModel.nameText.asString(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = Theme.colorScheme.textWeak,
@@ -151,7 +160,7 @@ private fun HomeEntryCard(
             TotpProgressIndicator(
                 remainingSeconds = entryModel.remainingSeconds,
                 totalSeconds = entryModel.totalSeconds,
-                showShadowInCounter = entryModel.showShadowsInTexts
+                showShadowInCounter = showShadowsInTexts
             )
         }
 
@@ -169,9 +178,9 @@ private fun HomeEntryCard(
         ) {
             TotpCode(
                 modifier = Modifier.weight(weight = 1f, fill = true),
-                codeText = entryModel.currentCode,
-                animateCodeOnChange = entryModel.animateOnCodeChange,
-                showBoxes = entryModel.showBoxesInCode,
+                codeText = entryModel.currentCodeText,
+                animateCodeOnChange = animateOnCodeChange,
+                showBoxes = showBoxesInCode,
                 showShadows = showTextShadows,
                 color = Theme.colorScheme.textNorm,
                 style = Theme.typography.monoMedium1
@@ -192,7 +201,7 @@ private fun HomeEntryCard(
                 )
 
                 Text(
-                    text = entryModel.nextCode.asString(),
+                    text = entryModel.nextCodeText.asString(),
                     color = Theme.colorScheme.textNorm,
                     style = if (showTextShadows) {
                         Theme.typography.monoMedium2.copy(shadow = ThemeShadow.TextDefault)
