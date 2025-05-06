@@ -61,11 +61,13 @@ fun TotpCode(
     modifier: Modifier = Modifier,
     separationWidth: Dp = ThemeSpacing.ExtraSmall
 ) {
-
     val codeChangeAnimationDuration = remember(key1 = animateCodeOnChange) {
         if (animateCodeOnChange) CODE_ANIMATION_ON_MILLIS else CODE_ANIMATION_OFF_MILLIS
     }
-    var previousOtpCodeText by remember { mutableStateOf(codeText) }
+
+    var previousOtpCodeText by remember(key1 = codeText) {
+        mutableStateOf(codeText)
+    }
 
     SideEffect {
         previousOtpCodeText = codeText
