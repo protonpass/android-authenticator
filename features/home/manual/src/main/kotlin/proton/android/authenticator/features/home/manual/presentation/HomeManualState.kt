@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.manual.presentation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
@@ -26,12 +27,32 @@ import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 
-internal class HomeManualState private constructor(
-    internal val event: HomeManualEvent,
-    internal val formModel: HomeManualFormModel
-) {
+@Immutable
+internal sealed interface HomeManualState {
 
-    internal companion object {
+    val event: HomeManualEvent
+
+    @Immutable
+    data object Loading : HomeManualState {
+
+        override val event: HomeManualEvent = HomeManualEvent.Idle
+
+    }
+
+    @Immutable
+    data class Editing(
+        override val event: HomeManualEvent,
+        internal val formModel: HomeManualFormModel
+    ) : HomeManualState
+
+    @Immutable
+    data class Creating(
+        override val event: HomeManualEvent,
+        internal val formModel: HomeManualFormModel
+    ) : HomeManualState
+
+
+    companion object {
 
         private const val DEFAULT_DIGITS = 6
 
@@ -43,50 +64,58 @@ internal class HomeManualState private constructor(
 
         @Composable
         internal fun create(
-            eventFlow: Flow<HomeManualEvent>,
+            entryId: String?,
             entryFlow: Flow<Entry?>,
-            titleFlow: Flow<String?>,
-            secretFlow: Flow<String?>,
-            issuerFlow: Flow<String?>,
+            title: String?,
+            secret: String?,
+            issuer: String?,
             digitsFlow: Flow<Int?>,
             timeIntervalFlow: Flow<Int?>,
             algorithmFlow: Flow<EntryAlgorithm?>,
             typeFlow: Flow<EntryType?>,
-            showAdvanceOptionsFlow: Flow<Boolean?>
+            showAdvanceOptionsFlow: Flow<Boolean?>,
+            eventFlow: Flow<HomeManualEvent>
         ): HomeManualState {
-            val event by eventFlow.collectAsState(initial = HomeManualEvent.Idle)
             val entry by entryFlow.collectAsState(initial = null)
-            val title by titleFlow.collectAsState(initial = null)
-            val secret by secretFlow.collectAsState(initial = null)
-            val issuer by issuerFlow.collectAsState(initial = null)
             val digits by digitsFlow.collectAsState(initial = null)
             val timeInterval by timeIntervalFlow.collectAsState(initial = null)
             val algorithm by algorithmFlow.collectAsState(initial = null)
-            val type by typeFlow.collectAsState(initial = EntryType.TOTP)
+            val type by typeFlow.collectAsState(initial = null)
             val showAdvanceOptions by showAdvanceOptionsFlow.collectAsState(initial = null)
+            val event by eventFlow.collectAsState(initial = HomeManualEvent.Idle)
 
-            val initialTitle = entry?.name.orEmpty()
-            val initialSecret = entry?.secret.orEmpty()
-            val initialIssuer = entry?.issuer.orEmpty()
-
-            return HomeManualState(
-                event = event,
-                formModel = HomeManualFormModel(
-                    initialTitle = initialTitle,
-                    title = title ?: initialTitle,
-                    initialSecret = initialSecret,
-                    secret = secret ?: initialSecret,
-                    initialIssuer = initialIssuer,
-                    issuer = issuer ?: initialIssuer,
-                    digits = digits ?: entry?.digits ?: DEFAULT_DIGITS,
-                    timeInterval = timeInterval ?: entry?.period ?: DEFAULT_TIME_INTERVAL,
-                    algorithm = algorithm ?: entry?.algorithm ?: DEFAULT_ALGORITHM,
-                    type = type ?: entry?.type ?: DEFAULT_TYPE,
-                    showAdvanceOptions = showAdvanceOptions == true
+            if (entryId == null) {
+                return Creating(
+                    formModel = HomeManualFormModel(
+                        title = title.orEmpty(),
+                        secret = secret.orEmpty(),
+                        issuer = issuer.orEmpty(),
+                        digits = digits ?: DEFAULT_DIGITS,
+                        timeInterval = timeInterval ?: DEFAULT_TIME_INTERVAL,
+                        algorithm = algorithm ?: DEFAULT_ALGORITHM,
+                        type = type ?: DEFAULT_TYPE,
+                        showAdvanceOptions = showAdvanceOptions == true
+                    ),
+                    event = event
                 )
-            )
-        }
+            }
 
+            return entry?.let { currentEntry ->
+                Editing(
+                    formModel = HomeManualFormModel(
+                        title = title ?: currentEntry.name,
+                        secret = secret ?: currentEntry.secret,
+                        issuer = issuer ?: currentEntry.issuer,
+                        digits = digits ?: currentEntry.digits,
+                        timeInterval = timeInterval ?: currentEntry.period,
+                        algorithm = algorithm ?: currentEntry.algorithm,
+                        type = type ?: currentEntry.type,
+                        showAdvanceOptions = showAdvanceOptions == true
+                    ),
+                    event = event
+                )
+            } ?: Loading
+        }
     }
 
 }

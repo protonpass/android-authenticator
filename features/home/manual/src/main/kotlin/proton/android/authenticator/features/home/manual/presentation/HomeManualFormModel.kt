@@ -22,11 +22,8 @@ import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 
 internal data class HomeManualFormModel(
-    internal val initialTitle: String,
     internal val title: String,
-    internal val initialSecret: String,
     internal val secret: String,
-    internal val initialIssuer: String,
     internal val issuer: String,
     internal val digits: Int,
     internal val timeInterval: Int,
@@ -35,7 +32,7 @@ internal data class HomeManualFormModel(
     internal val showAdvanceOptions: Boolean
 ) {
 
-    internal val digitsOptions: List<HomeManualOptions.Digits> = setOf(6, 7, 8)
+    internal val digitsOptions: List<HomeManualOptions.Digits> = DEFAULT_DIGITS
         .let { digitsOptions ->
             if (digitsOptions.contains(digits)) digitsOptions.toList()
             else digitsOptions.plus(digits).sorted()
@@ -47,7 +44,7 @@ internal data class HomeManualFormModel(
             )
         }
 
-    internal val timeIntervalOptions: List<HomeManualOptions.TimeInterval> = setOf(30, 60)
+    internal val timeIntervalOptions: List<HomeManualOptions.TimeInterval> = DEFAULT_TIME_INTERVALS
         .let { timeIntervalOptions ->
             if (timeIntervalOptions.contains(timeInterval)) timeIntervalOptions.toList()
             else timeIntervalOptions.plus(timeInterval).sorted()
@@ -70,5 +67,13 @@ internal data class HomeManualFormModel(
     internal val selectedTypeIndex: Int = type.value
 
     internal val isValid: Boolean = secret.isNotBlank()
+
+    private companion object {
+
+        private val DEFAULT_DIGITS = setOf(6, 7, 8)
+
+        private val DEFAULT_TIME_INTERVALS = setOf(30, 60)
+
+    }
 
 }

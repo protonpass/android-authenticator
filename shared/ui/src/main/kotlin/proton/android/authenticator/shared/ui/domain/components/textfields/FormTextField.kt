@@ -27,10 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -42,7 +38,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
 fun FormTextField(
-    initialValue: String,
+    value: String,
     label: String,
     placeholder: String,
     onValueChange: (String) -> Unit,
@@ -51,10 +47,6 @@ fun FormTextField(
     isSingleLine: Boolean = true,
     enableQuickClear: Boolean = true
 ) {
-    var value by rememberSaveable {
-        mutableStateOf(initialValue)
-    }
-
     TextField(
         modifier = modifier
             .border(
@@ -63,11 +55,7 @@ fun FormTextField(
                 color = Theme.colorScheme.inputBorder
             ),
         value = value,
-        onValueChange = { newValue ->
-            value = newValue
-
-            onValueChange(newValue)
-        },
+        onValueChange = onValueChange,
         label = {
             if (isRequired) {
                 Text(text = "$label (${stringResource(id = R.string.action_required)})")
@@ -82,7 +70,6 @@ fun FormTextField(
             if (enableQuickClear && value.isNotEmpty()) {
                 Icon(
                     modifier = Modifier.clickable {
-                        value = ""
                         onValueChange("")
                     },
                     painter = painterResource(id = R.drawable.ic_cross),

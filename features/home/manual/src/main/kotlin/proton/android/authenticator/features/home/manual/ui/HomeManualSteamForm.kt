@@ -48,7 +48,7 @@ internal fun HomeManualSteamForm(
     ) {
         FormTextField(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = formModel.initialTitle,
+            value = formModel.title,
             label = stringResource(id = R.string.home_manual_form_title_label),
             placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
             onValueChange = onTitleChange
@@ -56,7 +56,7 @@ internal fun HomeManualSteamForm(
 
         FormTextField(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = formModel.initialSecret,
+            value = formModel.secret,
             label = stringResource(id = R.string.home_manual_form_secret_label),
             placeholder = stringResource(id = R.string.home_manual_form_secret_label),
             onValueChange = onSecretChange,

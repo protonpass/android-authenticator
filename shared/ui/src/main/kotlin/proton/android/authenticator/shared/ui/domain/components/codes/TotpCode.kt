@@ -65,7 +65,7 @@ fun TotpCode(
         if (animateCodeOnChange) CODE_ANIMATION_ON_MILLIS else CODE_ANIMATION_OFF_MILLIS
     }
 
-    var previousOtpCodeText by remember(key1 = codeText) {
+    var previousOtpCodeText by remember {
         mutableStateOf(codeText)
     }
 
@@ -79,8 +79,9 @@ fun TotpCode(
     ) {
         val codeString = codeText.asString()
         val previousCodeString = previousOtpCodeText.asString()
+        val codeStringLength = minOf(codeString.length, previousCodeString.length)
 
-        for (i in codeString.indices) {
+        for (i in 0 until codeStringLength) {
             val codeDigit = codeString[i]
             val previousCodeDigit = previousCodeString[i]
             val newCodeDigit = if (codeDigit == previousCodeDigit) {

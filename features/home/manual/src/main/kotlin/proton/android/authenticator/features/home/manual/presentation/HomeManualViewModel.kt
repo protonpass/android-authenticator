@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.manual.presentation
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -55,11 +56,11 @@ internal class HomeManualViewModel @Inject constructor(
 
     private val eventFlow = MutableStateFlow<HomeManualEvent>(value = HomeManualEvent.Idle)
 
-    private val titleFlow = MutableStateFlow<String?>(value = null)
+    private val titleState = mutableStateOf<String?>(value = null)
 
-    private val secretFlow = MutableStateFlow<String?>(value = null)
+    private val secretState = mutableStateOf<String?>(value = null)
 
-    private val issuerFlow = MutableStateFlow<String?>(value = null)
+    private val issuerState = mutableStateOf<String?>(value = null)
 
     private val digitsFlow = MutableStateFlow<Int?>(value = null)
 
@@ -75,16 +76,17 @@ internal class HomeManualViewModel @Inject constructor(
         mode = RecompositionMode.Immediate
     ) {
         HomeManualState.create(
-            eventFlow = eventFlow,
+            entryId = entryId,
             entryFlow = entryFlow,
-            titleFlow = titleFlow,
-            secretFlow = secretFlow,
-            issuerFlow = issuerFlow,
+            title = titleState.value,
+            secret = secretState.value,
+            issuer = issuerState.value,
             digitsFlow = digitsFlow,
             timeIntervalFlow = timeIntervalFlow,
             algorithmFlow = algorithmFlow,
             typeFlow = typeFlow,
-            showAdvanceOptionsFlow = showAdvanceOptionsFlow
+            showAdvanceOptionsFlow = showAdvanceOptionsFlow,
+            eventFlow = eventFlow
         )
     }
 
@@ -93,15 +95,15 @@ internal class HomeManualViewModel @Inject constructor(
     }
 
     internal fun onTitleChange(newTitle: String) {
-        titleFlow.update { newTitle.trimStart() }
+        titleState.value = newTitle
     }
 
     internal fun onSecretChange(newSecret: String) {
-        secretFlow.update { newSecret.trim() }
+        secretState.value = newSecret.trim()
     }
 
     internal fun onIssuerChange(newIssuer: String) {
-        issuerFlow.update { newIssuer.trimStart() }
+        issuerState.value = newIssuer.trimStart()
     }
 
     internal fun onDigitsChange(newDigits: Int) {
@@ -125,27 +127,27 @@ internal class HomeManualViewModel @Inject constructor(
         showAdvanceOptionsFlow.update { true }
     }
 
-    internal fun onSubmitForm() {
+    internal fun onSubmitForm(formModel: HomeManualFormModel) {
         if (entryId == null) {
-            createEntry()
+            createEntry(formModel)
         } else {
-            updateEntry()
+            updateEntry(formModel)
         }
     }
 
-    private fun createEntry() {
+    private fun createEntry(formModel: HomeManualFormModel) {
         viewModelScope.launch {
-            createEntryUseCase(formModel = stateFlow.value.formModel)
+            createEntryUseCase(formModel = formModel)
 
             eventFlow.update { HomeManualEvent.OnEntryCreated }
         }
     }
 
-    private fun updateEntry() {
+    private fun updateEntry(formModel: HomeManualFormModel) {
         if (entryId == null) return
 
         viewModelScope.launch {
-            updateEntryUseCase(entryId = entryId, formModel = stateFlow.value.formModel)
+            updateEntryUseCase(entryId = entryId, formModel = formModel)
 
             eventFlow.update { HomeManualEvent.OnEntryUpdated }
         }

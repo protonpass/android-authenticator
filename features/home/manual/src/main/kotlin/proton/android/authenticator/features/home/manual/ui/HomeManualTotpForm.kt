@@ -54,7 +54,7 @@ internal fun HomeManualTotpForm(
     ) {
         FormTextField(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = formModel.initialTitle,
+            value = formModel.title,
             label = stringResource(id = R.string.home_manual_form_title_label),
             placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
             onValueChange = onTitleChange
@@ -62,7 +62,7 @@ internal fun HomeManualTotpForm(
 
         FormTextField(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = formModel.initialSecret,
+            value = formModel.secret,
             label = stringResource(id = R.string.home_manual_form_secret_label),
             placeholder = stringResource(id = R.string.home_manual_form_secret_label),
             onValueChange = onSecretChange,
@@ -71,7 +71,7 @@ internal fun HomeManualTotpForm(
 
         FormTextField(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = formModel.initialIssuer,
+            value = formModel.issuer,
             label = stringResource(id = R.string.home_manual_form_issuer_label),
             placeholder = stringResource(id = R.string.home_manual_form_issuer_label),
             onValueChange = onIssuerChange

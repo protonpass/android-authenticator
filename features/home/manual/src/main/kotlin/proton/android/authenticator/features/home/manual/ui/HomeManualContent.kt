@@ -22,11 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
-import proton.android.authenticator.features.home.manual.presentation.HomeManualState
+import proton.android.authenticator.features.home.manual.presentation.HomeManualFormModel
 
 @Composable
 internal fun HomeManualContent(
-    state: HomeManualState,
+    formModel: HomeManualFormModel,
     onTitleChange: (String) -> Unit,
     onSecretChange: (String) -> Unit,
     onIssuerChange: (String) -> Unit,
@@ -36,7 +36,7 @@ internal fun HomeManualContent(
     onTypeChange: (EntryType) -> Unit,
     onShowAdvanceOptions: () -> Unit,
     modifier: Modifier = Modifier
-) = with(state) {
+) {
     when (formModel.type) {
         EntryType.TOTP -> {
             HomeManualTotpForm(

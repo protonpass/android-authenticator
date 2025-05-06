@@ -17,7 +17,8 @@
   -->
 
 <resources>
-    <string name="home_manual_screen_title">Manual Entry</string>
+    <string name="home_manual_screen_title_create">New entry</string>
+    <string name="home_manual_screen_title_edit">Edit entry</string>
 
     <string name="home_manual_form_title_label">Title</string>
     <string name="home_manual_form_title_placeholder">Title, account or label</string>
