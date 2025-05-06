@@ -9,6 +9,7 @@ import proton.android.authenticator.features.home.scan.ui.HomeScanScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.settings.SettingsNavigationDestination
 
+@Suppress("LongMethod")
 internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<HomeNavigationDestination>(startDestination = HomeMasterNavigationDestination) {
         composable<HomeMasterNavigationDestination> {
@@ -56,8 +57,9 @@ internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand)
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onManualEntryClick = {
-                    NavigationCommand.NavigateTo(
-                        destination = HomeManualNavigationDestination(entryId = null)
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeManualNavigationDestination(entryId = null),
+                        popDestination = HomeMasterNavigationDestination
                     ).also(onNavigate)
                 },
                 onEntryCreated = {
