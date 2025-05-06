@@ -19,10 +19,13 @@
 package proton.android.authenticator.shared.ui.domain.modifiers
 
 import android.graphics.Bitmap
+import android.graphics.BlendMode
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Stable
@@ -97,6 +100,7 @@ fun Modifier.backgroundSecondaryButton() = composed {
 
 @Stable
 fun Modifier.backgroundScreenGradient() = composed {
+    val isDarkMode = isSystemInDarkTheme()
     val image = ImageBitmap.imageResource(R.drawable.bg_texture)
     val paintAlpha = remember { 38 }
 
@@ -112,6 +116,9 @@ fun Modifier.backgroundScreenGradient() = composed {
             .apply {
                 alpha = paintAlpha
                 isAntiAlias = true
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    blendMode = if (isDarkMode) BlendMode.SCREEN else BlendMode.DIFFERENCE
+                }
                 shader = ImageShader(
                     image = image,
                     tileModeX = TileMode.Repeated,
