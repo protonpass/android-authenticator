@@ -24,12 +24,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,10 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.components.menus.OptionSelectorDropdownMenu
 import proton.android.authenticator.shared.ui.domain.models.UiSelectorOption
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -94,55 +88,12 @@ internal fun <T> SettingsSelectorRow(
                         tint = Theme.colorScheme.textWeak
                     )
 
-                    DropdownMenu(
-                        expanded = isExpanded,
-                        onDismissRequest = { isExpanded = false },
-                        containerColor = Color.DarkGray
-                    ) {
-                        options.forEachIndexed { index, option ->
-                            DropdownMenuItem(
-                                text = {
-                                    Row(
-                                        horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            modifier = Modifier.size(size = 16.dp),
-                                            painter = painterResource(id = R.drawable.ic_checkmark),
-                                            contentDescription = null,
-                                            tint = if (option.isSelected) {
-                                                Theme.colorScheme.textNorm
-                                            } else {
-                                                Color.Transparent
-                                            }
-                                        )
-
-                                        Text(
-                                            text = option.text.asString(),
-                                            style = Theme.typography.body2Regular
-                                        )
-
-                                    }
-                                },
-                                onClick = {
-                                    isExpanded = false
-
-                                    onSelectedOptionChange(option.value)
-                                },
-                                colors = MenuDefaults.itemColors()
-                                    .copy(
-                                        textColor = Theme.colorScheme.textNorm,
-                                        leadingIconColor = Theme.colorScheme.textNorm
-                                    )
-                            )
-
-                            if (index < options.lastIndex) {
-                                HorizontalDivider(
-                                    color = Color.White.copy(alpha = 0.12f)
-                                )
-                            }
-                        }
-                    }
+                    OptionSelectorDropdownMenu(
+                        isExpanded = isExpanded,
+                        options = options,
+                        onSelectedOptionChange = onSelectedOptionChange,
+                        onDismissRequest = { isExpanded = false }
+                    )
                 }
             }
         }

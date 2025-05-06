@@ -24,8 +24,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,18 +35,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.models.UiSelectorOption
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundDropdownMenu
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
-fun FormDropdownMenu(
+fun <T> FormDropdownMenu(
     title: String,
-    selectedOption: String,
-    options: List<String>,
-    onOptionSelected: (Int) -> Unit,
+    options: List<UiSelectorOption<T>>,
+    onSelectedOptionChange: (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val selectedOption = remember(key1 = options) {
+        options.first(UiSelectorOption<T>::isSelected)
+    }
+
     var isExpanded by remember { mutableStateOf(false) }
 
     Box(
@@ -76,34 +78,25 @@ fun FormDropdownMenu(
                 horizontalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
             ) {
                 Text(
-                    text = selectedOption,
+                    text = selectedOption.text.asString(),
                     color = Theme.colorScheme.textNorm,
                     style = Theme.typography.body1Regular
                 )
 
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_selector),
-                    contentDescription = null,
-                    tint = Theme.colorScheme.textNorm
-                )
-            }
-        }
+                Box {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_selector),
+                        contentDescription = null,
+                        tint = Theme.colorScheme.textNorm
+                    )
 
-        DropdownMenu(
-            expanded = isExpanded,
-            onDismissRequest = { isExpanded = false }
-        ) {
-            options.forEachIndexed { index, option ->
-                DropdownMenuItem(
-                    text = {
-                        Text(option)
-                    },
-                    onClick = {
-                        isExpanded = false
-
-                        onOptionSelected(index)
-                    }
-                )
+                    OptionSelectorDropdownMenu(
+                        isExpanded = isExpanded,
+                        options = options,
+                        onSelectedOptionChange = onSelectedOptionChange,
+                        onDismissRequest = { isExpanded = false }
+                    )
+                }
             }
         }
     }

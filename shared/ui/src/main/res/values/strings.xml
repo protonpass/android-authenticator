@@ -25,4 +25,10 @@
     <string name="action_save">Save</string>
     <string name="action_search">Search</string>
     <string name="action_skip">Skip</string>
+
+    <plurals name="unit_seconds">
+        <item quantity="one">%1$d second</item>
+        <item quantity="other">%1$d seconds</item>
+    </plurals>
+
 </resources>

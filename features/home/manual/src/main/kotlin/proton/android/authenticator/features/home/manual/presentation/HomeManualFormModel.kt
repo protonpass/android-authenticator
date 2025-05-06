@@ -35,16 +35,28 @@ internal data class HomeManualFormModel(
     internal val showAdvanceOptions: Boolean
 ) {
 
-    internal val digitsOptions: List<Int> = setOf(6, 7, 8)
+    internal val digitsOptions: List<HomeManualOptions.Digits> = setOf(6, 7, 8)
         .let { digitsOptions ->
             if (digitsOptions.contains(digits)) digitsOptions.toList()
             else digitsOptions.plus(digits).sorted()
         }
+        .map { availableDigits ->
+            HomeManualOptions.Digits(
+                selectedType = digits,
+                digits = availableDigits
+            )
+        }
 
-    internal val timeIntervalOptions: List<Int> = setOf(30, 60)
+    internal val timeIntervalOptions: List<HomeManualOptions.TimeInterval> = setOf(30, 60)
         .let { timeIntervalOptions ->
             if (timeIntervalOptions.contains(timeInterval)) timeIntervalOptions.toList()
             else timeIntervalOptions.plus(timeInterval).sorted()
+        }
+        .map { availableTimeInterval ->
+            HomeManualOptions.TimeInterval(
+                selectedType = timeInterval,
+                timeInterval = availableTimeInterval
+            )
         }
 
     internal val algorithmOptions: List<String> = EntryAlgorithm.entries

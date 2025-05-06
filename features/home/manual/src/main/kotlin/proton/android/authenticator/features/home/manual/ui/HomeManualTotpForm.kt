@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
@@ -49,14 +48,6 @@ internal fun HomeManualTotpForm(
     onShowAdvanceOptions: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val digitsOptions = remember(formModel.digitsOptions) {
-        formModel.digitsOptions.map(Int::toString)
-    }
-
-    val timeIntervalOptions = remember(formModel.timeIntervalOptions) {
-        formModel.timeIntervalOptions.map { timeInterval -> "${timeInterval}s" }
-    }
-
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
@@ -98,20 +89,14 @@ internal fun HomeManualTotpForm(
             ) {
                 FormDropdownMenu(
                     title = stringResource(id = R.string.home_manual_form_digits_title),
-                    selectedOption = formModel.digits.toString(),
-                    options = digitsOptions,
-                    onOptionSelected = { index ->
-                        onDigitsChange(formModel.digitsOptions[index])
-                    }
+                    options = formModel.digitsOptions,
+                    onSelectedOptionChange = onDigitsChange
                 )
 
                 FormDropdownMenu(
                     title = stringResource(id = R.string.home_manual_form_time_interval_title),
-                    selectedOption = "${formModel.timeInterval}s",
-                    options = timeIntervalOptions,
-                    onOptionSelected = { index ->
-                        onTimeIntervalChange(formModel.timeIntervalOptions[index])
-                    }
+                    options = formModel.timeIntervalOptions,
+                    onSelectedOptionChange = onTimeIntervalChange
                 )
 
                 FormTab(

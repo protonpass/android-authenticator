@@ -18,11 +18,14 @@
 
 package proton.android.authenticator.shared.ui.domain.models
 
+import androidx.annotation.PluralsRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 
+@Stable
 sealed interface UiText {
 
     @Composable
@@ -36,6 +39,20 @@ sealed interface UiText {
 
         @Composable
         override fun asString(): String = value.applyMasks(masks)
+
+    }
+
+    @Stable
+    class PluralResource(
+        @PluralsRes private val id: Int,
+        private val count: Int,
+        private vararg val args: Any = emptyArray(),
+        private val masks: List<UiTextMask> = emptyList()
+    ) : UiText {
+
+        @Composable
+        override fun asString(): String = pluralStringResource(id = id, count = count, formatArgs = args)
+            .applyMasks(masks)
 
     }
 
