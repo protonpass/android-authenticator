@@ -81,7 +81,8 @@ fun HomeManualScreen(
             onDigitsChange = ::onDigitsChange,
             onTimeIntervalChange = ::onTimeIntervalChange,
             onAlgorithmChange = ::onAlgorithmChange,
-            onTypeChange = ::onTypeChange
+            onTypeChange = ::onTypeChange,
+            onShowAdvanceOptions = ::onShowAdvanceOptions
         )
     }
 }

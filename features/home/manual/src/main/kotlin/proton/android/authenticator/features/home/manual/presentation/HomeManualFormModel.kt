@@ -31,7 +31,8 @@ internal data class HomeManualFormModel(
     internal val digits: Int,
     internal val timeInterval: Int,
     internal val algorithm: EntryAlgorithm,
-    internal val type: EntryType
+    internal val type: EntryType,
+    internal val showAdvanceOptions: Boolean
 ) {
 
     internal val digitsOptions: List<Int> = setOf(6, 7, 8)

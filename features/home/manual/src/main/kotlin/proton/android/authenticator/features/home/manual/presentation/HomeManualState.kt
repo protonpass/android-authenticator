@@ -51,7 +51,8 @@ internal class HomeManualState private constructor(
             digitsFlow: Flow<Int?>,
             timeIntervalFlow: Flow<Int?>,
             algorithmFlow: Flow<EntryAlgorithm?>,
-            typeFlow: Flow<EntryType?>
+            typeFlow: Flow<EntryType?>,
+            showAdvanceOptionsFlow: Flow<Boolean?>
         ): HomeManualState {
             val event by eventFlow.collectAsState(initial = HomeManualEvent.Idle)
             val entry by entryFlow.collectAsState(initial = null)
@@ -62,6 +63,7 @@ internal class HomeManualState private constructor(
             val timeInterval by timeIntervalFlow.collectAsState(initial = null)
             val algorithm by algorithmFlow.collectAsState(initial = null)
             val type by typeFlow.collectAsState(initial = EntryType.TOTP)
+            val showAdvanceOptions by showAdvanceOptionsFlow.collectAsState(initial = null)
 
             val initialTitle = entry?.name.orEmpty()
             val initialSecret = entry?.secret.orEmpty()
@@ -79,7 +81,8 @@ internal class HomeManualState private constructor(
                     digits = digits ?: entry?.digits ?: DEFAULT_DIGITS,
                     timeInterval = timeInterval ?: entry?.period ?: DEFAULT_TIME_INTERVAL,
                     algorithm = algorithm ?: entry?.algorithm ?: DEFAULT_ALGORITHM,
-                    type = type ?: entry?.type ?: DEFAULT_TYPE
+                    type = type ?: entry?.type ?: DEFAULT_TYPE,
+                    showAdvanceOptions = showAdvanceOptions == true
                 )
             )
         }

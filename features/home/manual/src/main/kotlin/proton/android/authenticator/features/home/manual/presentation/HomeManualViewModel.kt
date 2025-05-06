@@ -69,6 +69,8 @@ internal class HomeManualViewModel @Inject constructor(
 
     private val typeFlow = MutableStateFlow<EntryType?>(value = null)
 
+    private val showAdvanceOptionsFlow = MutableStateFlow<Boolean?>(value = null)
+
     internal val stateFlow: StateFlow<HomeManualState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
@@ -81,7 +83,8 @@ internal class HomeManualViewModel @Inject constructor(
             digitsFlow = digitsFlow,
             timeIntervalFlow = timeIntervalFlow,
             algorithmFlow = algorithmFlow,
-            typeFlow = typeFlow
+            typeFlow = typeFlow,
+            showAdvanceOptionsFlow = showAdvanceOptionsFlow
         )
     }
 
@@ -115,6 +118,11 @@ internal class HomeManualViewModel @Inject constructor(
 
     internal fun onTypeChange(newType: EntryType) {
         typeFlow.update { newType }
+        showAdvanceOptionsFlow.update { true }
+    }
+
+    internal fun onShowAdvanceOptions() {
+        showAdvanceOptionsFlow.update { true }
     }
 
     internal fun onSubmitForm() {
