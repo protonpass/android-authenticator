@@ -53,7 +53,7 @@ fun versionCode(versionName: String): Int {
 
 android {
     namespace = "proton.android.authenticator"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "proton.android.authenticator"
@@ -155,17 +155,18 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.material.navigation)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.startup.runtime)
+    implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.timber)
 

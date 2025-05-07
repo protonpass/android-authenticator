@@ -59,4 +59,12 @@ internal data class HomeMasterEntryModel(
 
     internal val totalSeconds: Int = entry.period
 
+    internal fun shouldBeShown(query: String): Boolean {
+        if (query.isBlank()) {
+            return true
+        }
+
+        return issuer.contains(query, ignoreCase = true) || name.contains(query, ignoreCase = true)
+    }
+
 }

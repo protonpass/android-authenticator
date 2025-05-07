@@ -37,36 +37,43 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun SettingsScreen(onNavigationClick: () -> Unit, onDiscoverAppClick: (String) -> Unit) =
-    with(hiltViewModel<SettingsMasterViewModel>()) {
-        val state by stateFlow.collectAsStateWithLifecycle()
+fun SettingsScreen(
+    onNavigationClick: () -> Unit,
+    onImportClick: () -> Unit,
+    onDiscoverAppClick: (String) -> Unit
+) = with(hiltViewModel<SettingsMasterViewModel>()) {
+    val state by stateFlow.collectAsStateWithLifecycle()
 
-        ScaffoldScreen(
-            topBar = {
-                SmallTopBar(
-                    title = UiText.Resource(id = R.string.settings_screen_title),
-                    navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
-                    onNavigationClick = onNavigationClick
-                )
-            }
-        ) { paddingValues ->
-            SettingsContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(state = rememberScrollState())
-                    .padding(paddingValues = paddingValues)
-                    .padding(horizontal = ThemePadding.Medium),
-                state = state,
-                onDismissPassBanner = ::onUpdateIsPassBannerDismissed,
-                onBackupChange = ::onUpdateIsBackupEnabled,
-                onSyncChange = ::onUpdateIsSyncEnabled,
-                onAppLockTypeChange = ::onUpdateAppLockType,
-                onTapToRevealChange = ::onUpdateIsTapToRevealEnabled,
-                onThemeTypeChange = ::onUpdateThemeType,
-                onSearchBarTypeChange = ::onUpdateSearchBarType,
-                onDigitTypeChange = ::onUpdateDigitType,
-                onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
-                onDiscoverAppClick = onDiscoverAppClick
+    ScaffoldScreen(
+        topBar = {
+            SmallTopBar(
+                title = UiText.Resource(id = R.string.settings_screen_title),
+                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
+                onNavigationClick = onNavigationClick
             )
         }
+    ) { paddingValues ->
+        SettingsContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(state = rememberScrollState())
+                .padding(paddingValues = paddingValues)
+                .padding(horizontal = ThemePadding.Medium),
+            state = state,
+            onDismissPassBanner = ::onUpdateIsPassBannerDismissed,
+            onBackupChange = ::onUpdateIsBackupEnabled,
+            onSyncChange = ::onUpdateIsSyncEnabled,
+            onAppLockTypeChange = ::onUpdateAppLockType,
+            onTapToRevealChange = ::onUpdateIsTapToRevealEnabled,
+            onThemeTypeChange = ::onUpdateThemeType,
+            onSearchBarTypeChange = ::onUpdateSearchBarType,
+            onDigitTypeChange = ::onUpdateDigitType,
+            onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
+            onImportClick = onImportClick,
+            onExportClick = {},
+            onHowToClick = {},
+            onFeedbackClick = {},
+            onDiscoverAppClick = onDiscoverAppClick
+        )
     }
+}

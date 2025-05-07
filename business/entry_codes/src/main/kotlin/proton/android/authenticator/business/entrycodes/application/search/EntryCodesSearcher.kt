@@ -25,14 +25,14 @@ import kotlinx.coroutines.flow.flowOn
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.commonrust.AuthenticatorCodeResponse
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
-import proton.android.authenticator.commonrust.MobileTotpGenerator
 import proton.android.authenticator.commonrust.MobileTotpGeneratorCallback
+import proton.android.authenticator.commonrust.MobileTotpGeneratorInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import javax.inject.Inject
 
 internal class EntryCodesSearcher @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val totpGenerator: MobileTotpGenerator,
+    private val totpGenerator: MobileTotpGeneratorInterface,
     private val appDispatchers: AppDispatchers
 ) {
 

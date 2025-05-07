@@ -56,18 +56,21 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
     override suspend fun delete(entry: Entry) {
         encryptionContextProvider.withEncryptionContext {
             entry.toEntity(authenticatorClient, this@withEncryptionContext)
-                .also { entryEntity ->
-                    entriesDao.delete(entryEntity)
-                }
+                .also { entryEntity -> entriesDao.delete(entryEntity) }
         }
     }
 
     override suspend fun insert(entry: Entry) {
         encryptionContextProvider.withEncryptionContext {
             entry.toEntity(authenticatorClient, this@withEncryptionContext)
-                .also { entryEntity ->
-                    entriesDao.upsert(entryEntity)
-                }
+                .also { entryEntity -> entriesDao.upsert(entryEntity) }
+        }
+    }
+
+    override suspend fun insertAll(entries: List<Entry>) {
+        encryptionContextProvider.withEncryptionContext {
+            entries.map { entry -> entry.toEntity(authenticatorClient, this@withEncryptionContext) }
+                .also { entryEntities -> entriesDao.upsertAll(entryEntities) }
         }
     }
 

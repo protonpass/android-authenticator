@@ -19,6 +19,7 @@
 package proton.android.authenticator.shared.common.di
 
 import android.content.ClipboardManager
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
 import dagger.Binds
@@ -33,10 +34,11 @@ import proton.android.authenticator.shared.common.domain.checkers.AppInstalledCh
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.common.infrastructure.commands.InMemoryCommandBus
 import proton.android.authenticator.shared.common.infrastructure.queries.InMemoryQueryBus
+import proton.android.authenticator.shared.common.providers.ClockTimeProvider
 import javax.inject.Singleton
-import kotlin.jvm.java
 
 @[Module InstallIn(SingletonComponent::class)]
 internal abstract class SharedCommonModule {
@@ -51,6 +53,9 @@ internal abstract class SharedCommonModule {
     internal abstract fun bindCommandBus(impl: InMemoryCommandBus): CommandBus
 
     @[Binds Singleton]
+    internal abstract fun bindTimeProvider(impl: ClockTimeProvider): TimeProvider
+
+    @[Binds Singleton]
     internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus
 
     internal companion object {
@@ -58,6 +63,10 @@ internal abstract class SharedCommonModule {
         @[Provides Singleton]
         internal fun provideClipboardManager(@ApplicationContext context: Context): ClipboardManager =
             context.getSystemService(ClipboardManager::class.java) as ClipboardManager
+
+        @[Provides Singleton]
+        internal fun provideContentResolver(@ApplicationContext context: Context): ContentResolver =
+            context.contentResolver
 
         @[Provides Singleton]
         internal fun providePackageManager(@ApplicationContext context: Context): PackageManager =

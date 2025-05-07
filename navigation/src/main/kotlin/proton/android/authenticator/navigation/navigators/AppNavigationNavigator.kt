@@ -1,8 +1,10 @@
 package proton.android.authenticator.navigation.navigators
 
+import androidx.compose.material.navigation.ModalBottomSheetLayout
+import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
@@ -18,22 +20,29 @@ internal class AppNavigationNavigator @Inject constructor(
 ) : NavigationNavigator {
 
     @Composable
-    override fun NavGraphs(navController: NavHostController) {
+    override fun NavGraphs() {
         Theme {
-            NavHost(
-                navController = navController,
-                startDestination = startDestination
+            val bottomSheetNavigator = rememberBottomSheetNavigator()
+            val navController = rememberNavController(bottomSheetNavigator)
+
+            ModalBottomSheetLayout(
+                bottomSheetNavigator = bottomSheetNavigator
             ) {
-                homeNavigationGraph { navCommand ->
-                    navigationCommandHandler.handle(navCommand, navController)
-                }
+                NavHost(
+                    navController = navController,
+                    startDestination = startDestination
+                ) {
+                    homeNavigationGraph { navCommand ->
+                        navigationCommandHandler.handle(navCommand, navController)
+                    }
 
-                onboardingNavigationGraph { navCommand ->
-                    navigationCommandHandler.handle(navCommand, navController)
-                }
+                    onboardingNavigationGraph { navCommand ->
+                        navigationCommandHandler.handle(navCommand, navController)
+                    }
 
-                settingsNavigationGraph { navCommand ->
-                    navigationCommandHandler.handle(navCommand, navController)
+                    settingsNavigationGraph { navCommand ->
+                        navigationCommandHandler.handle(navCommand, navController)
+                    }
                 }
             }
         }

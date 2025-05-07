@@ -39,4 +39,7 @@ interface EntriesDao {
     @Upsert
     suspend fun upsert(entryEntity: EntryEntity)
 
+    @Upsert
+    suspend fun upsertAll(entryEntities: List<EntryEntity>)
+
 }

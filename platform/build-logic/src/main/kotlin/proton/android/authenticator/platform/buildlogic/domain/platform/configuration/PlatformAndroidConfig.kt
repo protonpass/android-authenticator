@@ -7,7 +7,7 @@ internal object PlatformAndroidConfig {
 
     internal const val APPLICATION_ID: String = "proton.android.authenticator"
 
-    internal const val COMPILE_SDK: Int = 34
+    internal const val COMPILE_SDK: Int = 35
 
     internal const val EXCLUDED_PACKAGING_RESOURCES: String = "/META-INF/{AL2.0,LGPL2.1}"
 

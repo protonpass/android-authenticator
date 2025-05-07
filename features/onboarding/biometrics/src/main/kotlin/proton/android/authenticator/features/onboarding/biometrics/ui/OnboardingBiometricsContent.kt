@@ -92,7 +92,7 @@ internal fun OnboardingBiometricsContent(
 
             VerticalActionsButtons(
                 modifier = Modifier.fillMaxWidth(),
-                primaryActionText = stringResource(id = uiR.string.action_import),
+                primaryActionText = stringResource(id = R.string.onboarding_biometrics_action_enable_biometrics),
                 onPrimaryActionClick = onEnableBiometricsClick,
                 secondaryActionText = stringResource(id = uiR.string.action_skip),
                 onSecondaryActionClick = onSkipClick

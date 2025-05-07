@@ -22,7 +22,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import javax.inject.Inject
@@ -39,9 +38,7 @@ internal class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val navController = rememberNavController()
-
-            navigationNavigator.NavGraphs(navController)
+            navigationNavigator.NavGraphs()
         }
     }
 

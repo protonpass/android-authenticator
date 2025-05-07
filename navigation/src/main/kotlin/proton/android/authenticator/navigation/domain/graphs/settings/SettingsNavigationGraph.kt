@@ -18,10 +18,12 @@
 
 package proton.android.authenticator.navigation.domain.graphs.settings
 
+import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.settings.master.ui.SettingsScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 
@@ -34,11 +36,24 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 },
+                onImportClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsImportOptionsNavigationDestination
+                    ).also(onNavigate)
+                },
                 onDiscoverAppClick = { appPackageName ->
                     NavigationCommand.NavigateToPlayStore(
                         appPackageName = appPackageName,
                         context = context
                     ).also(onNavigate)
+                }
+            )
+        }
+
+        bottomSheet<SettingsImportOptionsNavigationDestination> {
+            ImportsOptionsScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

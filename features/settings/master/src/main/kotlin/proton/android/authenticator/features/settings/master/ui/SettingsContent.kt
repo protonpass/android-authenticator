@@ -45,6 +45,10 @@ internal fun SettingsContent(
     onSearchBarTypeChange: (SettingsSearchBarType) -> Unit,
     onDigitTypeChange: (SettingsDigitType) -> Unit,
     onCodeChangeAnimationChange: (Boolean) -> Unit,
+    onImportClick: () -> Unit,
+    onExportClick: () -> Unit,
+    onHowToClick: () -> Unit,
+    onFeedbackClick: () -> Unit,
     onDiscoverAppClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
@@ -135,13 +139,13 @@ internal fun SettingsContent(
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_data_management_title_import),
-                        onClick = {}
+                        onClick = onImportClick
                     )
                 },
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_data_management_title_export),
-                        onClick = {}
+                        onClick = onExportClick
                     )
                 }
             )
@@ -153,13 +157,13 @@ internal fun SettingsContent(
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_support_title_how_to),
-                        onClick = {}
+                        onClick = onHowToClick
                     )
                 },
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_support_title_feedback),
-                        onClick = {}
+                        onClick = onFeedbackClick
                     )
                 }
             )

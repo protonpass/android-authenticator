@@ -28,6 +28,8 @@ internal interface EntriesRepository {
 
     suspend fun save(entry: Entry)
 
+    suspend fun saveAll(entries: List<Entry>)
+
     suspend fun remove(entry: Entry)
 
 }

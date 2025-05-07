@@ -30,4 +30,6 @@ interface PersistenceDataSource<T> {
 
     suspend fun insert(item: T)
 
+    suspend fun insertAll(items: List<T>)
+
 }

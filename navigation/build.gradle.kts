@@ -12,6 +12,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.material.navigation)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
@@ -19,6 +20,7 @@ dependencies {
     implementation(project(":features:home:manual"))
     implementation(project(":features:home:master"))
     implementation(project(":features:home:scan"))
+    implementation(project(":features:imports:options"))
     implementation(project(":features:onboarding:biometrics"))
     implementation(project(":features:onboarding:imports"))
     implementation(project(":features:onboarding:master"))

@@ -48,14 +48,15 @@ import proton.android.authenticator.features.home.master.usecases.ObserveEntries
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
-import kotlin.math.floor
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeMasterViewModel @Inject constructor(
     observeEntriesUseCase: ObserveEntriesUseCase,
     observeEntryCodesUseCase: ObserveEntryCodesUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
+    private val timeProvider: TimeProvider,
     private val copyToClipboardUseCase: CopyToClipboardUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase
 ) : ViewModel() {
@@ -95,12 +96,13 @@ internal class HomeMasterViewModel @Inject constructor(
 
         LaunchedEffect(Unit) {
             while (isActive) {
-                entryCodePeriods.forEach { period ->
-                    val remainingTime =
-                        period - floor(System.currentTimeMillis().toDouble() / 1000) % period
+                val updatedRemainingTimesMap = mutableMapOf<Int, Int>()
 
-                    remainingTimesMap += mapOf(period to remainingTime.toInt())
+                entryCodePeriods.forEach { period ->
+                    updatedRemainingTimesMap[period] = timeProvider.remainingPeriodSeconds(period)
                 }
+
+                remainingTimesMap = updatedRemainingTimesMap
 
                 delay(REMAINING_TIME_INTERVAL_MILLIS)
             }

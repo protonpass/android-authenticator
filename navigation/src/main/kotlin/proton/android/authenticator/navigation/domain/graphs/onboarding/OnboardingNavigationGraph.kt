@@ -18,9 +18,11 @@
 
 package proton.android.authenticator.navigation.domain.graphs.onboarding
 
+import androidx.compose.material.navigation.bottomSheet
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
 import proton.android.authenticator.features.onboarding.imports.ui.OnboardingImportScreen
 import proton.android.authenticator.features.onboarding.master.ui.OnboardingMasterScreen
@@ -42,12 +44,22 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
         composable<OnboardingImportNavigationDestination> {
             OnboardingImportScreen(
                 onImportClick = {
-//                    onNavigate(OnboardingImportNavigationCommand)
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingImportOptionsNavigationDestination
+                    ).also(onNavigate)
                 },
                 onSkipClick = {
                     NavigationCommand.NavigateTo(
                         destination = OnboardingBiometricsNavigationDestination
                     ).also(onNavigate)
+                }
+            )
+        }
+
+        bottomSheet<OnboardingImportOptionsNavigationDestination> {
+            ImportsOptionsScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

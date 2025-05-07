@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="imports_options_title">Import from</string>
+    <string name="imports_options_option_google" translatable="false">Google Authenticator</string>
+    <string name="imports_options_option_2fas" translatable="false">2FAS</string>
+    <string name="imports_options_option_aegis" translatable="false">Aegis Authenticator</string>
+    <string name="imports_options_option_bitwarden" translatable="false">Bitwarden Authenticator</string>
+    <string name="imports_options_option_ente" translatable="false">Ente Auth</string>
+    <string name="imports_options_option_last_pass" translatable="false">LastPass Authenticator</string>
+    <string name="imports_options_option_proton" translatable="false">Proton Authenticator</string>
+</resources>

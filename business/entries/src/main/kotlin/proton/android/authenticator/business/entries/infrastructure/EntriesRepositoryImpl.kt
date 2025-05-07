@@ -36,6 +36,10 @@ internal class EntriesRepositoryImpl @Inject constructor(
         localDataSource.insert(entry)
     }
 
+    override suspend fun saveAll(entries: List<Entry>) {
+        localDataSource.insertAll(entries)
+    }
+
     override suspend fun remove(entry: Entry) {
         localDataSource.delete(entry)
     }

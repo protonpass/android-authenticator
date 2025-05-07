@@ -139,7 +139,9 @@ internal sealed interface HomeMasterState {
                         entryCodesRemainingTimes = entryCodesRemainingTimes,
                         codeMasks = codeMasks
                     )
-                }.associateBy { entryModel -> entryModel.id }
+                }
+                    .filter { entryModel -> entryModel.shouldBeShown(entrySearchQuery) }
+                    .associateBy { entryModel -> entryModel.id }
             }
 
             return Loaded(
