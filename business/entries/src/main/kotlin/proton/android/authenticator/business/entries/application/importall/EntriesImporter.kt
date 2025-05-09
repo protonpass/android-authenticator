@@ -73,6 +73,7 @@ internal class EntriesImporter @Inject constructor(
                         MimeType.Json -> authenticatorImporter.importFromBitwardenJson(content)
                         MimeType.All,
                         MimeType.Binary,
+                        MimeType.Image,
                         MimeType.Text -> {
                             throw IllegalArgumentException("Unsupported Bitwarden file type: $mimeTypeValue")
                         }

@@ -24,7 +24,7 @@ enum class EntryImportType(val mimeTypes: List<MimeType>) {
     Aegis(mimeTypes = listOf(MimeType.Json)),
     Bitwarden(mimeTypes = listOf(MimeType.CommaSeparatedValues, MimeType.Csv, MimeType.Json)),
     Ente(mimeTypes = listOf(MimeType.Text)),
-    Google(mimeTypes = listOf(MimeType.Json)),
+    Google(mimeTypes = listOf(MimeType.Image)),
     LastPass(mimeTypes = listOf(MimeType.Json)),
     Proton(mimeTypes = listOf(MimeType.Json)),
     TwoFas(mimeTypes = listOf(MimeType.Binary))

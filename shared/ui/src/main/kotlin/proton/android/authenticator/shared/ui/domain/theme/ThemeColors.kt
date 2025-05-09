@@ -129,6 +129,9 @@ sealed class ThemeColors {
     abstract val menuListBorder: Color
 
     @Stable
+    abstract val signalError: Color
+
+    @Stable
     abstract val signalDanger: Color
 
     @Stable
@@ -136,6 +139,15 @@ sealed class ThemeColors {
 
     @Stable
     abstract val signalWarning: Color
+
+    @Stable
+    abstract val surface: Color
+
+    @Stable
+    abstract val surfaceContainerHigh: Color
+
+    @Stable
+    abstract val surfaceVariant: Color
 
     @Stable
     abstract val textHint: Color
@@ -247,11 +259,19 @@ sealed class ThemeColors {
 
         override val menuListBorder: Color = Color(color = 0x1FFFFFFF)
 
+        override val signalError: Color = Color(color = 0xFFF08FA4)
+
         override val signalDanger: Color = Color(color = 0xFFFF7979)
 
         override val signalSuccess: Color = Color(color = 0xFF4AB89A)
 
         override val signalWarning: Color = Color(color = 0xFFFFB879)
+
+        override val surface: Color = Color(color = 0xFFE6E0E9)
+
+        override val surfaceContainerHigh: Color = Color(color = 0xFF2B2930)
+
+        override val surfaceVariant: Color = Color(color = 0xFFCAC4D0)
 
         override val textHint: Color = Color(color = 0xFF88859D)
 
@@ -332,11 +352,19 @@ sealed class ThemeColors {
 
         override val menuListBorder: Color = Color(color = 0xFFECECEC)
 
+        override val signalError: Color = Color(color = 0xFFCC2D4F)
+
         override val signalDanger: Color = Color(color = 0xFFFF7979)
 
         override val signalSuccess: Color = Color(color = 0xFF4AB89A)
 
         override val signalWarning: Color = Color(color = 0xFFFFB879)
+
+        override val surface: Color = Color(color = 0xFF1D1B20)
+
+        override val surfaceContainerHigh: Color = Color(color = 0xFFECE6F0)
+
+        override val surfaceVariant: Color = Color(color = 0xFF49454F)
 
         override val textHint: Color = Color(color = 0xFF88859D)
 

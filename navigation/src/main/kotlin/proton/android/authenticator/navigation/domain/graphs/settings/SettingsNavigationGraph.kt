@@ -22,7 +22,9 @@ import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.settings.master.ui.SettingsScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
@@ -50,8 +52,24 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
             )
         }
 
+        dialog<SettingsImportCompletionNavigationDestination> {
+            ImportsCompletionScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
         bottomSheet<SettingsImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
+                onCompleted = { importedEntriesCount ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = SettingsImportCompletionNavigationDestination(
+                            importedEntriesCount = importedEntriesCount
+                        ),
+                        popDestination = SettingsMasterNavigationDestination
+                    ).also(onNavigate)
+                },
                 onDismissed = {
                     onNavigate(NavigationCommand.NavigateUp)
                 }

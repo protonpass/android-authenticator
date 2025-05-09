@@ -16,28 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.models
+package proton.android.authenticator.features.imports.completion.presentation
 
-enum class MimeType(val value: String) {
-    All(value = "*/*"),
-    Binary(value = "application/octet-stream"),
-    CommaSeparatedValues(value = "text/comma-separated-values"),
-    Csv(value = "text/csv"),
-    Image(value = "image/*"),
-    Json(value = "application/json"),
-    Text(value = "text/plain");
+import androidx.compose.runtime.Composable
 
-    companion object {
+internal class ImportsCompletionState private constructor(internal val importedEntriesCount: Int) {
 
-        fun fromValue(value: String): MimeType = when (value) {
-            All.value -> All
-            Binary.value -> Binary
-            CommaSeparatedValues.value -> CommaSeparatedValues
-            Csv.value -> Csv
-            Json.value -> Json
-            Text.value -> Text
-            else -> throw IllegalArgumentException("Unknown MimeType value: $value")
-        }
+    internal companion object {
+
+        @Composable
+        internal fun create(importedEntriesCount: Int): ImportsCompletionState = ImportsCompletionState(
+            importedEntriesCount = importedEntriesCount
+        )
 
     }
 

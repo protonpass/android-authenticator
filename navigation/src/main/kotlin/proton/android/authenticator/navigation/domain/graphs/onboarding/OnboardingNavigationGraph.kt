@@ -21,7 +21,9 @@ package proton.android.authenticator.navigation.domain.graphs.onboarding
 import androidx.compose.material.navigation.bottomSheet
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
 import proton.android.authenticator.features.onboarding.imports.ui.OnboardingImportScreen
@@ -56,8 +58,24 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
             )
         }
 
+        dialog<OnboardingImportCompletionNavigationDestination> {
+            ImportsCompletionScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
         bottomSheet<OnboardingImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
+                onCompleted = { importedEntriesCount ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = OnboardingImportCompletionNavigationDestination(
+                            importedEntriesCount = importedEntriesCount
+                        ),
+                        popDestination = OnboardingImportNavigationDestination
+                    ).also(onNavigate)
+                },
                 onDismissed = {
                     onNavigate(NavigationCommand.NavigateUp)
                 }

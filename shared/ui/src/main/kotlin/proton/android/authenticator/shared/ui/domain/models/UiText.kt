@@ -63,7 +63,6 @@ sealed interface UiText {
         private val masks: List<UiTextMask> = emptyList()
     ) : UiText {
 
-
         @Composable
         override fun asString(): String = stringResource(id = id, formatArgs = args)
             .applyMasks(masks)

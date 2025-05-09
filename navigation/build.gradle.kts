@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":features:home:manual"))
     implementation(project(":features:home:master"))
     implementation(project(":features:home:scan"))
+    implementation(project(":features:imports:completion"))
     implementation(project(":features:imports:options"))
     implementation(project(":features:onboarding:biometrics"))
     implementation(project(":features:onboarding:imports"))

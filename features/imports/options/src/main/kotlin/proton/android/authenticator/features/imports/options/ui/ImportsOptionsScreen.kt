@@ -35,39 +35,40 @@ import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.ui.domain.screens.BottomSheetScreen
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
-fun ImportsOptionsScreen(onDismissed: () -> Unit) = with(hiltViewModel<ImportsOptionsViewModel>()) {
-    val state by stateFlow.collectAsStateWithLifecycle()
+fun ImportsOptionsScreen(onCompleted: (Int) -> Unit, onDismissed: () -> Unit) =
+    with(hiltViewModel<ImportsOptionsViewModel>()) {
+        val state by stateFlow.collectAsStateWithLifecycle()
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        onFilePicked(uri = result.data?.data, importType = state.selectedOptionModel?.type)
-    }
-
-    LaunchedEffect(state.event) {
-        when (val event = state.event) {
-            ImportsOptionsEvent.Idle -> Unit
-            ImportsOptionsEvent.OnFileImported -> onDismissed()
-            is ImportsOptionsEvent.OnChooseFile -> {
-                Intent(Intent.ACTION_GET_CONTENT)
-                    .apply {
-                        type = MimeType.All.value
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-                        putExtra(Intent.EXTRA_MIME_TYPES, event.mimeTypes.toTypedArray())
-                    }
-                    .also(launcher::launch)
-            }
+        val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            onFilePicked(uri = result.data?.data, importType = state.selectedOptionModel?.type)
         }
 
-        onEventConsumed(state.event)
-    }
+        LaunchedEffect(state.event) {
+            when (val event = state.event) {
+                ImportsOptionsEvent.Idle -> Unit
+                ImportsOptionsEvent.OnFileImported -> onCompleted(1)
+                is ImportsOptionsEvent.OnChooseFile -> {
+                    Intent(Intent.ACTION_GET_CONTENT)
+                        .apply {
+                            type = MimeType.All.value
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+                            putExtra(Intent.EXTRA_MIME_TYPES, event.mimeTypes.toTypedArray())
+                        }
+                        .also(launcher::launch)
+                }
+            }
 
-    BottomSheetScreen(
-        onDismissed = onDismissed
-    ) {
-        ImportsOptionsContent(
-            modifier = Modifier.fillMaxWidth(),
-            state = state,
-            onOptionSelected = ::onOptionSelected
-        )
+            onEventConsumed(state.event)
+        }
+
+        BottomSheetScreen(
+            onDismissed = onDismissed
+        ) {
+            ImportsOptionsContent(
+                modifier = Modifier.fillMaxWidth(),
+                state = state,
+                onOptionSelected = ::onOptionSelected
+            )
+        }
     }
-}
