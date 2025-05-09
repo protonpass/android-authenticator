@@ -50,16 +50,20 @@ import javax.inject.Singleton
 internal abstract class BusinessEntriesModule {
 
     @[Binds Singleton IntoMap CommandHandlerKey(CreateEntryCommand.FromSteam::class)]
-    internal abstract fun bindCreateEntryFromSteamCommandHandler(impl: CreateEntryCommandHandler): CommandHandler<*>
+    internal abstract fun bindCreateEntryFromSteamCommandHandler(
+        impl: CreateEntryCommandHandler
+    ): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(CreateEntryCommand.FromTotp::class)]
-    internal abstract fun bindCreateEntryFromTotpCommandHandler(impl: CreateEntryCommandHandler): CommandHandler<*>
+    internal abstract fun bindCreateEntryFromTotpCommandHandler(
+        impl: CreateEntryCommandHandler
+    ): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(CreateEntryCommand.FromUri::class)]
-    internal abstract fun bindCreateEntryFromUriCommandHandler(impl: CreateEntryCommandHandler): CommandHandler<*>
+    internal abstract fun bindCreateEntryFromUriCommandHandler(impl: CreateEntryCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(DeleteEntryCommand::class)]
-    internal abstract fun bindDeleteEntryCommandHandler(impl: DeleteEntryCommandHandler): CommandHandler<*>
+    internal abstract fun bindDeleteEntryCommandHandler(impl: DeleteEntryCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindEntryQuery::class)]
     internal abstract fun bindFindEntryQueryHandler(impl: FindEntryQueryHandler): QueryHandler<*, *>
@@ -68,13 +72,17 @@ internal abstract class BusinessEntriesModule {
     internal abstract fun bindFindAllEntriesQueryHandler(impl: FindAllEntriesQueryHandler): QueryHandler<*, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(ImportEntriesCommand::class)]
-    internal abstract fun bindImportEntriesCommandHandler(impl: ImportEntriesCommandHandler): CommandHandler<*>
+    internal abstract fun bindImportEntriesCommandHandler(impl: ImportEntriesCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateEntryCommand.FromSteam::class)]
-    internal abstract fun bindUpdateEntryFromSteamCommandHandler(impl: UpdateEntryCommandHandler): CommandHandler<*>
+    internal abstract fun bindUpdateEntryFromSteamCommandHandler(
+        impl: UpdateEntryCommandHandler
+    ): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateEntryCommand.FromTotp::class)]
-    internal abstract fun bindUpdateEntryFromTotpCommandHandler(impl: UpdateEntryCommandHandler): CommandHandler<*>
+    internal abstract fun bindUpdateEntryFromTotpCommandHandler(
+        impl: UpdateEntryCommandHandler
+    ): CommandHandler<*, *, *>
 
     @[Binds Singleton]
     internal abstract fun bindEntriesRepository(impl: EntriesRepositoryImpl): EntriesRepository

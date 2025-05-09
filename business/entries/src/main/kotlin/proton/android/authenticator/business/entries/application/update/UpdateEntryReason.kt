@@ -16,13 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.infrastructure.commands
+package proton.android.authenticator.business.entries.application.update
 
-import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
-interface CommandBus {
-
-    suspend fun <T, A : AnswerReason> dispatch(command: Command): Answer<T, A>
-
+enum class UpdateEntryReason : AnswerReason {
+    EntryNotFound,
+    InvalidEntry
 }

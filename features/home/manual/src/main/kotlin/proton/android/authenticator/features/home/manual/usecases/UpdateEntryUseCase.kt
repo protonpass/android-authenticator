@@ -19,33 +19,34 @@
 package proton.android.authenticator.features.home.manual.usecases
 
 import proton.android.authenticator.business.entries.application.update.UpdateEntryCommand
+import proton.android.authenticator.business.entries.application.update.UpdateEntryReason
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.presentation.HomeManualFormModel
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 internal class UpdateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(entryId: String, formModel: HomeManualFormModel) {
-        when (formModel.type) {
-            EntryType.TOTP -> UpdateEntryCommand.FromTotp(
-                id = entryId,
-                name = formModel.title,
-                secret = formModel.secret,
-                issuer = formModel.issuer,
-                period = formModel.timeInterval,
-                digits = formModel.digits,
-                algorithm = formModel.algorithm
-            )
+    internal suspend operator fun invoke(
+        entryId: String,
+        formModel: HomeManualFormModel
+    ): Answer<Unit, UpdateEntryReason> = when (formModel.type) {
+        EntryType.TOTP -> UpdateEntryCommand.FromTotp(
+            id = entryId,
+            name = formModel.title,
+            secret = formModel.secret,
+            issuer = formModel.issuer,
+            period = formModel.timeInterval,
+            digits = formModel.digits,
+            algorithm = formModel.algorithm
+        )
 
-            EntryType.STEAM -> UpdateEntryCommand.FromSteam(
-                id = entryId,
-                name = formModel.title,
-                secret = formModel.secret
-            )
-        }.also { command ->
-            commandBus.dispatch(command)
-        }
-    }
+        EntryType.STEAM -> UpdateEntryCommand.FromSteam(
+            id = entryId,
+            name = formModel.title,
+            secret = formModel.secret
+        )
+    }.let { command -> commandBus.dispatch(command) }
 
 }

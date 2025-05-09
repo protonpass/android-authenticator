@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.features.imports.options.usecases.ImportEntriesUseCase
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,7 +67,14 @@ internal class ImportsOptionsViewModel @Inject constructor(
         if (importType == null) return
 
         viewModelScope.launch {
-            importEntriesUseCase(uri = uri, importType = importType)
+            importEntriesUseCase(uri = uri, importType = importType).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> {}
+                    is Answer.Success -> {
+                        val foo = answer.data
+                    }
+                }
+            }
 
             eventFlow.update { ImportsOptionsEvent.OnFileImported }
         }

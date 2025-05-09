@@ -19,33 +19,32 @@
 package proton.android.authenticator.business.entries.application.importall
 
 import proton.android.authenticator.commonrust.AuthenticatorImportException
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import java.io.FileNotFoundException
 import javax.inject.Inject
 
-@Suppress("SwallowedException")
 internal class ImportEntriesCommandHandler @Inject constructor(
     private val importer: EntriesImporter
-) : CommandHandler<ImportEntriesCommand> {
+) : CommandHandler<ImportEntriesCommand, Int, ImportEntriesReason> {
 
-    override suspend fun handle(command: ImportEntriesCommand) {
-        try {
-            importer.import(contentUri = command.contentUri, importType = command.importType)
-        } catch (error: AuthenticatorImportException.BadContent) {
-            println("JIBIRI: import handler error: BadContent")
-        } catch (error: AuthenticatorImportException.BadPassword) {
-            println("JIBIRI: import handler error: BadPassword")
-        } catch (error: AuthenticatorImportException.DecryptionFailed) {
-            println("JIBIRI: import handler error: DecryptionFailed")
-        } catch (error: AuthenticatorImportException.MissingPassword) {
-            println("JIBIRI: import handler error: MissingPassword")
-        } catch (error: AuthenticatorImportException) {
-            println("JIBIRI: import handler error: Unknown")
-        } catch (error: FileNotFoundException) {
-            println("JIBIRI: import handler error: FileNotFoundException")
-        } catch (error: IllegalArgumentException) {
-            println("JIBIRI: import handler error: IllegalArgumentException")
-        }
+    override suspend fun handle(command: ImportEntriesCommand): Answer<Int, ImportEntriesReason> = try {
+        importer.import(contentUri = command.contentUri, importType = command.importType)
+            .let(Answer<Int, ImportEntriesReason>::Success)
+    } catch (_: AuthenticatorImportException.BadContent) {
+        Answer.Failure(reason = ImportEntriesReason.BadContent)
+    } catch (_: AuthenticatorImportException.BadPassword) {
+        Answer.Failure(reason = ImportEntriesReason.BadPassword)
+    } catch (_: AuthenticatorImportException.DecryptionFailed) {
+        Answer.Failure(reason = ImportEntriesReason.DecryptionFailed)
+    } catch (_: AuthenticatorImportException.MissingPassword) {
+        Answer.Failure(reason = ImportEntriesReason.MissingPassword)
+    } catch (_: AuthenticatorImportException) {
+        Answer.Failure(reason = ImportEntriesReason.BadContent)
+    } catch (_: FileNotFoundException) {
+        Answer.Failure(reason = ImportEntriesReason.BadContent)
+    } catch (_: IllegalArgumentException) {
+        Answer.Failure(reason = ImportEntriesReason.BadContent)
     }
 
 }

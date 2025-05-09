@@ -18,19 +18,21 @@
 
 package proton.android.authenticator.shared.common.infrastructure.commands
 
+import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
 
 internal class InMemoryCommandBus @Inject constructor(
-    private val commandHandlers: Map<Class<out Command>, @JvmSuppressWildcards CommandHandler<*>>
+    private val commandHandlers: Map<Class<out Command>, @JvmSuppressWildcards CommandHandler<*, *, *>>
 ) : CommandBus {
 
     @Suppress("UNCHECKED_CAST")
-    override suspend fun dispatch(command: Command) {
-        commandHandlers[command::class.java]
-            ?.let { commandHandler -> (commandHandler as CommandHandler<Command>).handle(command) }
+    override suspend fun <T, A : AnswerReason> dispatch(command: Command): Answer<T, A> {
+        return commandHandlers[command::class.java]
+            ?.let { commandHandler -> (commandHandler as CommandHandler<Command, T, A>).handle(command) }
             ?: throw IllegalArgumentException("No command handler found for ${command::class.java.name}")
     }
 

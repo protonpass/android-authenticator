@@ -19,25 +19,44 @@
 package proton.android.authenticator.business.entries.application.update
 
 import kotlinx.coroutines.flow.first
-import kotlinx.datetime.Clock
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.AuthenticatorEntryTotpParameters
+import proton.android.authenticator.commonrust.AuthenticatorEntryUpdateContents
+import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 
 internal class EntryUpdater @Inject constructor(
-    private val clock: Clock,
+    private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val timeProvider: TimeProvider,
     private val entriesRepository: EntriesRepository
 ) {
 
-    internal suspend fun update(model: AuthenticatorEntryModel, params: AuthenticatorEntryTotpParameters) {
-        entriesRepository.find(id = model.id)
-            .first()
-            .copy(
-                model = model,
-                params = params,
-                modifiedAt = clock.now().toEpochMilliseconds()
+    internal suspend fun update(model: AuthenticatorEntryModel) {
+        val params = authenticatorClient.getTotpParams(model)
+
+        authenticatorClient.updateEntry(
+            entry = model,
+            update = AuthenticatorEntryUpdateContents(
+                name = model.name,
+                secret = model.secret,
+                issuer = model.issuer,
+                period = model.period,
+                note = model.note,
+                entryType = model.entryType,
+                digits = params.digits,
+                algorithm = params.algorithm
             )
+        )
+            .let { updatedModel ->
+                entriesRepository.find(id = updatedModel.id)
+                    .first()
+                    .copy(
+                        model = updatedModel,
+                        params = params,
+                        modifiedAt = timeProvider.currentMillis()
+                    )
+            }
             .also { updatedEntry ->
                 entriesRepository.save(updatedEntry)
             }

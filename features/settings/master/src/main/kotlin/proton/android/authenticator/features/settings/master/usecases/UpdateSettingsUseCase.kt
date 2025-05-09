@@ -19,26 +19,26 @@
 package proton.android.authenticator.features.settings.master.usecases
 
 import proton.android.authenticator.business.settings.application.update.UpdateSettingsCommand
+import proton.android.authenticator.business.settings.application.update.UpdateSettingsReason
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterSettingsModel
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 internal class UpdateSettingsUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(settingsModel: SettingsMasterSettingsModel) {
-        UpdateSettingsCommand(
-            isBackupEnabled = settingsModel.isBackupEnabled,
-            isSyncEnabled = settingsModel.isSyncEnabled,
-            appLockType = settingsModel.appLockType,
-            isTapToRevealEnabled = settingsModel.isHideCodesEnabled,
-            themeType = settingsModel.themeType,
-            searchBarType = settingsModel.searchBarType,
-            digitType = settingsModel.digitType,
-            isCodeChangeAnimationEnabled = settingsModel.isCodeChangeAnimationEnabled,
-            isPassBannerDismissed = settingsModel.isPassBannerDismissed
-        ).also { command ->
-            commandBus.dispatch(command)
-        }
-    }
+    internal suspend operator fun invoke(
+        settingsModel: SettingsMasterSettingsModel
+    ): Answer<Unit, UpdateSettingsReason> = UpdateSettingsCommand(
+        isBackupEnabled = settingsModel.isBackupEnabled,
+        isSyncEnabled = settingsModel.isSyncEnabled,
+        appLockType = settingsModel.appLockType,
+        isTapToRevealEnabled = settingsModel.isHideCodesEnabled,
+        themeType = settingsModel.themeType,
+        searchBarType = settingsModel.searchBarType,
+        digitType = settingsModel.digitType,
+        isCodeChangeAnimationEnabled = settingsModel.isCodeChangeAnimationEnabled,
+        isPassBannerDismissed = settingsModel.isPassBannerDismissed
+    ).let { command -> commandBus.dispatch(command) }
 
 }

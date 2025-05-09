@@ -20,47 +20,51 @@ package proton.android.authenticator.business.entries.application.create
 
 import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
+import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
 
 internal class CreateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
     private val creator: EntryCreator
-) : CommandHandler<CreateEntryCommand> {
+) : CommandHandler<CreateEntryCommand, Unit, CreateEntryReason> {
 
-    override suspend fun handle(command: CreateEntryCommand) {
+    override suspend fun handle(command: CreateEntryCommand): Answer<Unit, CreateEntryReason> = try {
         when (command) {
-            is CreateEntryCommand.FromSteam -> {
-                authenticatorClient.newSteamEntryFromParams(
-                    params = AuthenticatorEntrySteamCreateParameters(
-                        name = command.name,
-                        secret = command.secret,
-                        note = command.note
-                    )
-                )
-            }
-
-            is CreateEntryCommand.FromTotp -> {
-                authenticatorClient.newTotpEntryFromParams(
-                    params = AuthenticatorEntryTotpCreateParameters(
-                        name = command.name,
-                        secret = command.secret,
-                        issuer = command.issuer,
-                        period = command.period.toUShort(),
-                        digits = command.digits.toUByte(),
-                        algorithm = command.algorithm.asAuthenticatorEntryAlgorithm(),
-                        note = command.note
-                    )
-                )
-            }
-
-            is CreateEntryCommand.FromUri -> {
-                authenticatorClient.entryFromUri(uri = command.uri)
-            }
-        }.also { model ->
-            creator.create(model = model, params = authenticatorClient.getTotpParams(model))
+            is CreateEntryCommand.FromSteam -> command.toModel()
+            is CreateEntryCommand.FromTotp -> command.toModel()
+            is CreateEntryCommand.FromUri -> command.toModel()
         }
+            .let { model ->
+                creator.create(model = model, params = authenticatorClient.getTotpParams(model))
+            }
+            .let(Answer<Unit, CreateEntryReason>::Success)
+    } catch (_: AuthenticatorException) {
+        Answer.Failure(reason = CreateEntryReason.InvalidEntry)
     }
+
+    private fun CreateEntryCommand.FromSteam.toModel() = authenticatorClient.newSteamEntryFromParams(
+        params = AuthenticatorEntrySteamCreateParameters(
+            name = name,
+            secret = secret,
+            note = note
+        )
+    )
+
+    private fun CreateEntryCommand.FromTotp.toModel() = authenticatorClient.newTotpEntryFromParams(
+        params = AuthenticatorEntryTotpCreateParameters(
+            name = name,
+            secret = secret,
+            issuer = issuer,
+            period = period.toUShort(),
+            digits = digits.toUByte(),
+            algorithm = algorithm.asAuthenticatorEntryAlgorithm(),
+            note = note
+        )
+    )
+
+    private fun CreateEntryCommand.FromUri.toModel() = authenticatorClient.entryFromUri(uri = uri)
 
 }

@@ -19,14 +19,16 @@
 package proton.android.authenticator.features.home.manual.usecases
 
 import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
+import proton.android.authenticator.business.entries.application.create.CreateEntryReason
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.presentation.HomeManualFormModel
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 internal class CreateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(formModel: HomeManualFormModel) {
+    internal suspend operator fun invoke(formModel: HomeManualFormModel): Answer<Unit, CreateEntryReason> =
         when (formModel.type) {
             EntryType.TOTP -> CreateEntryCommand.FromTotp(
                 name = formModel.title,
@@ -41,9 +43,6 @@ internal class CreateEntryUseCase @Inject constructor(private val commandBus: Co
                 name = formModel.title,
                 secret = formModel.secret
             )
-        }.also { command ->
-            commandBus.dispatch(command)
-        }
-    }
+        }.let { command -> commandBus.dispatch(command) }
 
 }

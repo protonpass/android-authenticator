@@ -18,15 +18,18 @@
 
 package proton.android.authenticator.business.entries.application.delete
 
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
 
 internal class DeleteEntryCommandHandler @Inject constructor(
     private val deleter: EntryDeleter
-) : CommandHandler<DeleteEntryCommand> {
+) : CommandHandler<DeleteEntryCommand, Unit, DeleteEntryReason> {
 
-    override suspend fun handle(command: DeleteEntryCommand) {
-        deleter.delete(id = command.id)
+    override suspend fun handle(command: DeleteEntryCommand): Answer<Unit, DeleteEntryReason> = try {
+        deleter.delete(id = command.id).let(Answer<Unit, DeleteEntryReason>::Success)
+    } catch (_: NullPointerException) {
+        Answer.Failure(reason = DeleteEntryReason.EntryNotFound)
     }
 
 }

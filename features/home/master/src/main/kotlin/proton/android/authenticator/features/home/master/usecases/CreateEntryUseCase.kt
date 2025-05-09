@@ -19,16 +19,15 @@
 package proton.android.authenticator.features.home.master.usecases
 
 import proton.android.authenticator.business.entries.application.create.CreateEntryCommand
+import proton.android.authenticator.business.entries.application.create.CreateEntryReason
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 internal class CreateEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(uri: String) {
+    internal suspend operator fun invoke(uri: String): Answer<Unit, CreateEntryReason> =
         CreateEntryCommand.FromUri(uri = uri)
-            .also { command ->
-                commandBus.dispatch(command)
-            }
-    }
+            .let { command -> commandBus.dispatch(command) }
 
 }

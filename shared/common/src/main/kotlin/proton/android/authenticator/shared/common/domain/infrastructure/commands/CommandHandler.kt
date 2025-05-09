@@ -18,8 +18,11 @@
 
 package proton.android.authenticator.shared.common.domain.infrastructure.commands
 
-interface CommandHandler<in C : Command> {
+import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
-    suspend fun handle(command: C)
+interface CommandHandler<in C : Command, out T, out A : AnswerReason> {
+
+    suspend fun handle(command: C): Answer<T, A>
 
 }

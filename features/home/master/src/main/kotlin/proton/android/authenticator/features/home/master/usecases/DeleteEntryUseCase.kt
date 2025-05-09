@@ -19,16 +19,14 @@
 package proton.android.authenticator.features.home.master.usecases
 
 import proton.android.authenticator.business.entries.application.delete.DeleteEntryCommand
+import proton.android.authenticator.business.entries.application.delete.DeleteEntryReason
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 internal class DeleteEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(id: String) {
-        DeleteEntryCommand(id = id)
-            .also { command ->
-                commandBus.dispatch(command)
-            }
-    }
+    internal suspend operator fun invoke(id: String): Answer<Unit, DeleteEntryReason> = DeleteEntryCommand(id = id)
+        .let { command -> commandBus.dispatch(command) }
 
 }

@@ -45,7 +45,7 @@ internal abstract class BusinessSettingsModule {
     internal abstract fun bindFindSettingsQueryHandler(impl: FindSettingsQueryHandler): QueryHandler<*, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateSettingsCommand::class)]
-    internal abstract fun bindUpdateSettingsCommandHandler(impl: UpdateSettingsCommandHandler): CommandHandler<*>
+    internal abstract fun bindUpdateSettingsCommandHandler(impl: UpdateSettingsCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton]
     internal abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository

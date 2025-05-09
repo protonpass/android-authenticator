@@ -16,13 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.infrastructure.commands
+package proton.android.authenticator.shared.common.domain.answers
 
-import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+sealed interface Answer<out D, out R : AnswerReason> {
 
-interface CommandBus {
+    data class Success<out D, out R : AnswerReason>(val data: D) : Answer<D, R>
 
-    suspend fun <T, A : AnswerReason> dispatch(command: Command): Answer<T, A>
+    data class Failure<out D, out R : AnswerReason>(val reason: R) : Answer<D, R>
 
 }
