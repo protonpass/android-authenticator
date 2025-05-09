@@ -62,6 +62,9 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
 
         bottomSheet<SettingsImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
+                onPasswordRequired = { uri, importType ->
+
+                },
                 onCompleted = { importedEntriesCount ->
                     NavigationCommand.NavigateToWithPopup(
                         destination = SettingsImportCompletionNavigationDestination(

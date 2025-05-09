@@ -24,6 +24,11 @@ internal sealed interface ImportsOptionsEvent {
 
     data class OnChooseFile(internal val mimeTypes: List<String>) : ImportsOptionsEvent
 
-    data object OnFileImported : ImportsOptionsEvent
+    data class OnFileImported(internal val importedEntriesCount: Int) : ImportsOptionsEvent
+
+    data class OnFilePasswordRequired(
+        internal val uri: String,
+        internal val importType: Int
+    ) : ImportsOptionsEvent
 
 }

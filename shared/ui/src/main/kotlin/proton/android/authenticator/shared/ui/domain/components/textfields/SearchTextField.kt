@@ -49,8 +49,7 @@ import proton.android.authenticator.shared.ui.domain.modifiers.innerShadow
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
+@[Composable OptIn(ExperimentalMaterial3Api::class)]
 fun SearchTextField(
     initialValue: String,
     onValueChange: (String) -> Unit,

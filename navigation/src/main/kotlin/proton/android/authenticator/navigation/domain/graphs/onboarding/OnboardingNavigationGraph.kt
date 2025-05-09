@@ -31,6 +31,7 @@ import proton.android.authenticator.features.onboarding.master.ui.OnboardingMast
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 
+@Suppress("LongMethod")
 internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<OnboardingNavigationDestination>(startDestination = OnboardingMasterNavigationDestination) {
         composable<OnboardingMasterNavigationDestination> {
@@ -61,13 +62,18 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
         dialog<OnboardingImportCompletionNavigationDestination> {
             ImportsCompletionScreen(
                 onDismissed = {
-                    onNavigate(NavigationCommand.NavigateUp)
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingBiometricsNavigationDestination
+                    ).also(onNavigate)
                 }
             )
         }
 
         bottomSheet<OnboardingImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
+                onPasswordRequired = { uri, importType ->
+                    println("JIBIRI: onPasswordRequired() called with: uri = $uri")
+                },
                 onCompleted = { importedEntriesCount ->
                     NavigationCommand.NavigateToWithPopup(
                         destination = OnboardingImportCompletionNavigationDestination(

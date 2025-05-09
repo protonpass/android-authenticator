@@ -28,7 +28,7 @@ internal class DeleteEntryCommandHandler @Inject constructor(
 
     override suspend fun handle(command: DeleteEntryCommand): Answer<Unit, DeleteEntryReason> = try {
         deleter.delete(id = command.id).let(Answer<Unit, DeleteEntryReason>::Success)
-    } catch (_: NullPointerException) {
+    } catch (_: IllegalStateException) {
         Answer.Failure(reason = DeleteEntryReason.EntryNotFound)
     }
 

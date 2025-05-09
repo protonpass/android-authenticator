@@ -40,7 +40,7 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             .let(Answer<Unit, UpdateEntryReason>::Success)
     } catch (_: AuthenticatorException) {
         Answer.Failure(reason = UpdateEntryReason.InvalidEntry)
-    } catch (_: NullPointerException) {
+    } catch (_: IllegalStateException) {
         Answer.Failure(reason = UpdateEntryReason.EntryNotFound)
     }
 
@@ -50,7 +50,7 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             secret = secret,
             note = note
         )
-    )
+    ).copy(id = id)
 
     private fun UpdateEntryCommand.FromTotp.toModel() = authenticatorClient.newTotpEntryFromParams(
         params = AuthenticatorEntryTotpCreateParameters(
@@ -62,6 +62,6 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             algorithm = algorithm.asAuthenticatorEntryAlgorithm(),
             note = note
         )
-    )
+    ).copy(id = id)
 
 }

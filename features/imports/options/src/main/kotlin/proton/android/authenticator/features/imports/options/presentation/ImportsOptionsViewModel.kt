@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.features.imports.options.usecases.ImportEntriesUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
@@ -67,16 +68,38 @@ internal class ImportsOptionsViewModel @Inject constructor(
         if (importType == null) return
 
         viewModelScope.launch {
-            importEntriesUseCase(uri = uri, importType = importType).also { answer ->
+            importEntriesUseCase(uri, importType).also { answer ->
                 when (answer) {
-                    is Answer.Failure -> {}
-                    is Answer.Success -> {
-                        val foo = answer.data
-                    }
+                    is Answer.Failure -> handleImportEntriesFailure(answer, uri, importType)
+                    is Answer.Success -> handleImportEntriesSuccess(answer)
                 }
             }
+        }
+    }
 
-            eventFlow.update { ImportsOptionsEvent.OnFileImported }
+    private fun handleImportEntriesFailure(
+        answer: Answer.Failure<Int, ImportEntriesReason>,
+        uri: Uri,
+        importType: EntryImportType
+    ) {
+        when (answer.reason) {
+            ImportEntriesReason.BadContent,
+            ImportEntriesReason.BadPassword,
+            ImportEntriesReason.DecryptionFailed -> {
+                println("JIBIRI: Import error -> ${answer.reason}")
+            }
+
+            ImportEntriesReason.MissingPassword -> {
+                eventFlow.update {
+                    ImportsOptionsEvent.OnFilePasswordRequired(uri.toString(), importType.ordinal)
+                }
+            }
+        }
+    }
+
+    private fun handleImportEntriesSuccess(answer: Answer.Success<Int, ImportEntriesReason>) {
+        eventFlow.update {
+            ImportsOptionsEvent.OnFileImported(importedEntriesCount = answer.data)
         }
     }
 
