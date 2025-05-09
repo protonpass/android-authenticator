@@ -131,7 +131,7 @@ internal class HomeManualViewModel @Inject constructor(
         if (entryId == null) {
             createEntry(formModel)
         } else {
-            updateEntry(formModel)
+            updateEntry(entryId, formModel)
         }
     }
 
@@ -143,9 +143,7 @@ internal class HomeManualViewModel @Inject constructor(
         }
     }
 
-    private fun updateEntry(formModel: HomeManualFormModel) {
-        if (entryId == null) return
-
+    private fun updateEntry(entryId: String, formModel: HomeManualFormModel) {
         viewModelScope.launch {
             updateEntryUseCase(entryId = entryId, formModel = formModel)
 

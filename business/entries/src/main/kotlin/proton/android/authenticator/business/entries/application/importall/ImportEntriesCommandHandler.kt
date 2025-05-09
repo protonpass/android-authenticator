@@ -29,8 +29,11 @@ internal class ImportEntriesCommandHandler @Inject constructor(
 ) : CommandHandler<ImportEntriesCommand, Int, ImportEntriesReason> {
 
     override suspend fun handle(command: ImportEntriesCommand): Answer<Int, ImportEntriesReason> = try {
-        importer.import(contentUri = command.contentUri, importType = command.importType)
-            .let(Answer<Int, ImportEntriesReason>::Success)
+        importer.import(
+            contentUri = command.contentUri,
+            importType = command.importType,
+            password = command.password
+        ).let(Answer<Int, ImportEntriesReason>::Success)
     } catch (_: AuthenticatorImportException.BadContent) {
         Answer.Failure(reason = ImportEntriesReason.BadContent)
     } catch (_: AuthenticatorImportException.BadPassword) {

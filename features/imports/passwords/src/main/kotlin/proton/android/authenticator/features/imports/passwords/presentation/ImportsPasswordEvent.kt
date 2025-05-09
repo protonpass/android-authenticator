@@ -16,14 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.importall
+package proton.android.authenticator.features.imports.passwords.presentation
 
-import android.net.Uri
-import proton.android.authenticator.business.entries.domain.EntryImportType
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
+internal interface ImportsPasswordEvent {
 
-data class ImportEntriesCommand(
-    internal val contentUri: Uri,
-    internal val importType: EntryImportType,
-    internal val password: String?
-) : Command
+    data object Idle : ImportsPasswordEvent
+
+    data class OnFileImported(internal val importedEntriesCount: Int) : ImportsPasswordEvent
+
+}

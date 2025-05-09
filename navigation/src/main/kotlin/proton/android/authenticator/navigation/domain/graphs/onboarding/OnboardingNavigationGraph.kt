@@ -25,6 +25,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
+import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
 import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
 import proton.android.authenticator.features.onboarding.imports.ui.OnboardingImportScreen
 import proton.android.authenticator.features.onboarding.master.ui.OnboardingMasterScreen
@@ -72,8 +73,30 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
         bottomSheet<OnboardingImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
                 onPasswordRequired = { uri, importType ->
-                    println("JIBIRI: onPasswordRequired() called with: uri = $uri")
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = OnboardingImportPasswordNavigationDestination(
+                            uri = uri,
+                            importType = importType
+                        ),
+                        popDestination = OnboardingImportNavigationDestination
+                    ).also(onNavigate)
                 },
+                onCompleted = { importedEntriesCount ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = OnboardingImportCompletionNavigationDestination(
+                            importedEntriesCount = importedEntriesCount
+                        ),
+                        popDestination = OnboardingImportNavigationDestination
+                    ).also(onNavigate)
+                },
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
+        dialog<OnboardingImportPasswordNavigationDestination> {
+            ImportsPasswordScreen(
                 onCompleted = { importedEntriesCount ->
                     NavigationCommand.NavigateToWithPopup(
                         destination = OnboardingImportCompletionNavigationDestination(

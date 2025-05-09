@@ -43,10 +43,14 @@ internal class EntriesImporter @Inject constructor(
     private val repository: EntriesRepository
 ) {
 
-    internal suspend fun import(contentUri: Uri, importType: EntryImportType): Int = getFileContent(uri = contentUri)
-        ?.let { content -> getEntriesFromContent(importType, contentUri, content) }
+    internal suspend fun import(
+        contentUri: Uri,
+        importType: EntryImportType,
+        password: String?
+    ): Int = getFileContent(contentUri)
+        ?.let { content -> getEntriesFromContent(importType, contentUri, content, password) }
         ?.let { entryModels -> saveEntries(entryModels) }
-        ?: throw AuthenticatorImportException.BadContent(message = "Cannot read file content")
+        ?: throw AuthenticatorImportException.BadContent("Cannot read file content")
 
     private suspend fun getFileContent(uri: Uri) = withContext(appDispatchers.io) {
         contentResolver.openInputStream(uri)
@@ -58,7 +62,7 @@ internal class EntriesImporter @Inject constructor(
         importType: EntryImportType,
         contentUri: Uri,
         content: String,
-        password: String? = null
+        password: String?
     ) = withContext(appDispatchers.default) {
         when (importType) {
             EntryImportType.Aegis -> {
@@ -70,6 +74,7 @@ internal class EntriesImporter @Inject constructor(
                     when (MimeType.fromValue(mimeTypeValue.orEmpty())) {
                         MimeType.CommaSeparatedValues,
                         MimeType.Csv -> authenticatorImporter.importFromBitwardenCsv(content)
+
                         MimeType.Json -> authenticatorImporter.importFromBitwardenJson(content)
                         MimeType.All,
                         MimeType.Binary,

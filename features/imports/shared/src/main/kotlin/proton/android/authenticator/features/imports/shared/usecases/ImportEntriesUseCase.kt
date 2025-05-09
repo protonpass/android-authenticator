@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.options.usecases
+package proton.android.authenticator.features.imports.shared.usecases
 
 import android.net.Uri
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesCommand
@@ -26,10 +26,13 @@ import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
-internal class ImportEntriesUseCase @Inject constructor(private val commandBus: CommandBus) {
+class ImportEntriesUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    suspend operator fun invoke(uri: Uri, importType: EntryImportType): Answer<Int, ImportEntriesReason> =
-        ImportEntriesCommand(uri, importType)
-            .let { command -> commandBus.dispatch(command) }
+    suspend operator fun invoke(
+        uri: Uri,
+        importType: EntryImportType,
+        password: String? = null
+    ): Answer<Int, ImportEntriesReason> = ImportEntriesCommand(uri, importType, password)
+        .let { command -> commandBus.dispatch(command) }
 
 }

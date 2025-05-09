@@ -16,9 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.options.presentation
+package proton.android.authenticator.features.imports.passwords.presentation
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
@@ -35,72 +37,75 @@ import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ImportsOptionsViewModel @Inject constructor(
+internal class ImportsPasswordViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val importEntriesUseCase: ImportEntriesUseCase
 ) : ViewModel() {
 
-    private val eventFlow = MutableStateFlow<ImportsOptionsEvent>(value = ImportsOptionsEvent.Idle)
+    private val uri = requireNotNull<String>(savedStateHandle[ARGS_URI])
+        .let(Uri::parse)
 
-    private val selectedOptionFlow = MutableStateFlow<ImportsOptionsModel?>(value = null)
+    private val importType = requireNotNull<Int>(savedStateHandle[ARGS_IMPORT_TYPE])
+        .let(enumValues<EntryImportType>()::get)
 
-    internal val stateFlow: StateFlow<ImportsOptionsState> = viewModelScope.launchMolecule(
+    private val passwordState = mutableStateOf<String?>(value = null)
+
+    private val eventFlow =
+        MutableStateFlow<ImportsPasswordEvent>(value = ImportsPasswordEvent.Idle)
+
+    internal val stateFlow: StateFlow<ImportsPasswordState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
-        ImportsOptionsState.create(
-            selectedOptionFlow = selectedOptionFlow,
+        ImportsPasswordState.create(
+            password = passwordState.value,
             eventFlow = eventFlow
         )
     }
 
-    internal fun onEventConsumed(event: ImportsOptionsEvent) {
-        eventFlow.compareAndSet(expect = event, update = ImportsOptionsEvent.Idle)
+    internal fun onConsumeEvent(event: ImportsPasswordEvent) {
+        eventFlow.compareAndSet(expect = event, update = ImportsPasswordEvent.Idle)
     }
 
-    internal fun onOptionSelected(selectedOptionModel: ImportsOptionsModel) {
-        selectedOptionFlow.update { selectedOptionModel }
-
-        eventFlow.update { ImportsOptionsEvent.OnChooseFile(selectedOptionModel.mimeTypes) }
+    internal fun onPasswordChange(newPassword: String) {
+        passwordState.value = newPassword
     }
 
-    internal fun onFilePicked(uri: Uri?, importType: EntryImportType?) {
-        if (uri == null) return
-
-        if (importType == null) return
-
+    internal fun onSubmitPassword(password: String) {
         viewModelScope.launch {
-            importEntriesUseCase(uri, importType).also { answer ->
-                when (answer) {
-                    is Answer.Failure -> handleImportEntriesFailure(answer, uri, importType)
-                    is Answer.Success -> handleImportEntriesSuccess(answer)
+            viewModelScope.launch {
+                importEntriesUseCase(uri, importType, password).also { answer ->
+                    when (answer) {
+                        is Answer.Failure -> handleImportEntriesFailure(answer)
+                        is Answer.Success -> handleImportEntriesSuccess(answer)
+                    }
                 }
             }
         }
     }
 
-    private fun handleImportEntriesFailure(
-        answer: Answer.Failure<Int, ImportEntriesReason>,
-        uri: Uri,
-        importType: EntryImportType
-    ) {
+    private fun handleImportEntriesFailure(answer: Answer.Failure<Int, ImportEntriesReason>) {
         when (answer.reason) {
             ImportEntriesReason.BadContent,
             ImportEntriesReason.BadPassword,
-            ImportEntriesReason.DecryptionFailed -> {
-                println("JIBIRI: Import error -> ${answer.reason}")
-            }
-
+            ImportEntriesReason.DecryptionFailed,
             ImportEntriesReason.MissingPassword -> {
-                eventFlow.update {
-                    ImportsOptionsEvent.OnFilePasswordRequired(uri.toString(), importType.ordinal)
-                }
+                println("JIBIRI: Password import failed")
             }
         }
     }
 
     private fun handleImportEntriesSuccess(answer: Answer.Success<Int, ImportEntriesReason>) {
         eventFlow.update {
-            ImportsOptionsEvent.OnFileImported(importedEntriesCount = answer.data)
+            ImportsPasswordEvent.OnFileImported(importedEntriesCount = answer.data)
         }
+    }
+
+    private companion object {
+
+        private const val ARGS_URI = "uri"
+
+        private const val ARGS_IMPORT_TYPE = "importType"
+
     }
 
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "proton.android.authenticator.features.imports.options"
+    namespace = "proton.android.authenticator.features.imports.passwords"
 }
 
 dependencies {

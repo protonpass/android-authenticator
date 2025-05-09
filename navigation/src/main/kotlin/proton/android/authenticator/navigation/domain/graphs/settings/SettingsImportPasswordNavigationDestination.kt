@@ -16,14 +16,13 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.importall
+package proton.android.authenticator.navigation.domain.graphs.settings
 
-import android.net.Uri
-import proton.android.authenticator.business.entries.domain.EntryImportType
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
+import kotlinx.serialization.Serializable
+import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 
-data class ImportEntriesCommand(
-    internal val contentUri: Uri,
-    internal val importType: EntryImportType,
-    internal val password: String?
-) : Command
+@Serializable
+internal data class SettingsImportPasswordNavigationDestination(
+    internal val uri: String,
+    internal val importType: Int
+) : NavigationDestination
