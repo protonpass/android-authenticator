@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.shared.ui.domain.components.menus
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenu
@@ -52,6 +53,7 @@ fun <T> OptionSelectorDropdownMenu(
             DropdownMenuItem(
                 text = {
                     Row(
+                        horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(

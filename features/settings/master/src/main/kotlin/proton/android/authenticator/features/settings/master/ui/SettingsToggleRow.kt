@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +45,11 @@ internal fun SettingsToggleRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = ThemePadding.Medium),
+            .clickable { onCheckedChange(!isChecked) }
+            .padding(
+                horizontal = ThemePadding.Medium,
+                vertical = ThemePadding.MediumSmall
+            ),
         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -69,13 +74,14 @@ internal fun SettingsToggleRow(
 
         Switch(
             checked = isChecked,
-            onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors().copy(
-                checkedThumbColor = Color.White,
-                checkedTrackColor = Theme.colorScheme.signalSuccess,
-                uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = Theme.colorScheme.textHint
-            )
+            onCheckedChange = null,
+            colors = SwitchDefaults.colors()
+                .copy(
+                    checkedThumbColor = Color.White,
+                    checkedTrackColor = Theme.colorScheme.signalSuccess,
+                    uncheckedThumbColor = Color.White,
+                    uncheckedTrackColor = Theme.colorScheme.textHint
+                )
         )
     }
 }

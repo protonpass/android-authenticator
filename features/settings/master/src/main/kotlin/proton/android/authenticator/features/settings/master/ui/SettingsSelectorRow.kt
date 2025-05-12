@@ -47,6 +47,10 @@ internal fun <T> SettingsSelectorRow(
     options: List<UiSelectorOption<T>>,
     onSelectedOptionChange: (T) -> Unit
 ) {
+    val verticalPadding = remember {
+        ThemePadding.Small.plus(ThemePadding.MediumSmall)
+    }
+
     val selectedOption = remember(key1 = options) {
         options.first(UiSelectorOption<T>::isSelected)
     }
@@ -57,11 +61,13 @@ internal fun <T> SettingsSelectorRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded }
+            .padding(
+                horizontal = ThemePadding.Medium,
+                vertical = verticalPadding
+            )
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(all = ThemePadding.Medium),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(

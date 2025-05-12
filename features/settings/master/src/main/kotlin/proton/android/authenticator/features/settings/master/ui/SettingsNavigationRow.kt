@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
@@ -42,11 +43,18 @@ internal fun SettingsNavigationRow(
     description: UiText? = null,
     icon: UiIcon? = null
 ) {
+    val verticalPadding = remember {
+        ThemePadding.Small.plus(ThemePadding.MediumSmall)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(all = ThemePadding.Medium),
+            .padding(
+                horizontal = ThemePadding.Medium,
+                vertical = verticalPadding
+            ),
         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
