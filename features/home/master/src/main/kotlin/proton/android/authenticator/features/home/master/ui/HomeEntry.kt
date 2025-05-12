@@ -85,7 +85,7 @@ internal fun HomeEntry(
                     .background(color = Theme.colorScheme.redAlpha20)
                     .clickable(onClick = onDeleteClick),
                 iconResId = R.drawable.ic_trash,
-                actionResId = R.string.action_Delete
+                actionResId = R.string.action_delete
             )
         }
     ) {

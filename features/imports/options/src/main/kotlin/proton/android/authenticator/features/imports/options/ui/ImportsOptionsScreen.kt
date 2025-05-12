@@ -37,6 +37,7 @@ import proton.android.authenticator.shared.ui.domain.screens.BottomSheetScreen
 fun ImportsOptionsScreen(
     onPasswordRequired: (uri: String, importType: Int) -> Unit,
     onCompleted: (Int) -> Unit,
+    onError: (Int) -> Unit,
     onDismissed: () -> Unit
 ) = with(hiltViewModel<ImportsOptionsViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
@@ -61,6 +62,10 @@ fun ImportsOptionsScreen(
 
             is ImportsOptionsEvent.OnFileImported -> {
                 onCompleted(event.importedEntriesCount)
+            }
+
+            is ImportsOptionsEvent.OnFileImportFailed -> {
+                onError(event.reason)
             }
 
             is ImportsOptionsEvent.OnFilePasswordRequired -> {

@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
+import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
 import proton.android.authenticator.features.settings.master.ui.SettingsScreen
@@ -65,6 +66,17 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
             )
         }
 
+        dialog<SettingsImportErrorNavigationDestination> {
+            ImportsErrorScreen(
+                onDismissed = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
+                }
+            )
+        }
+
         bottomSheet<SettingsImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
                 onPasswordRequired = { uri, importType ->
@@ -80,6 +92,14 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                     NavigationCommand.NavigateToWithPopup(
                         destination = SettingsImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
+                        ),
+                        popDestination = SettingsMasterNavigationDestination
+                    ).also(onNavigate)
+                },
+                onError = { errorReason ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = SettingsImportErrorNavigationDestination(
+                            errorReason = errorReason
                         ),
                         popDestination = SettingsMasterNavigationDestination
                     ).also(onNavigate)

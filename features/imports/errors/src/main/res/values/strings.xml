@@ -17,26 +17,7 @@
   -->
 
 <resources>
-    <string name="action_close">Close</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_edit">Edit</string>
-    <string name="action_import">Import</string>
-    <string name="action_next">Next</string>
-    <string name="action_ok">OK</string>
-    <string name="action_required">Required</string>
-    <string name="action_save">Save</string>
-    <string name="action_search">Search</string>
-    <string name="action_skip">Skip</string>
-    <string name="action_unlock">Unlock</string>
-
-    <plurals name="unit_items">
-        <item quantity="one">%1$d item</item>
-        <item quantity="other">%1$d items</item>
-    </plurals>
-
-    <plurals name="unit_seconds">
-        <item quantity="one">%1$d second</item>
-        <item quantity="other">%1$d seconds</item>
-    </plurals>
-
+    <string name="imports_error_dialog_title">Import failed</string>
+    <string name="imports_error_dialog_message_bad_content">The selected file could not be imported.</string>
+    <string name="imports_error_dialog_message_bad_encryption">The selected file could not be decrypted.</string>
 </resources>

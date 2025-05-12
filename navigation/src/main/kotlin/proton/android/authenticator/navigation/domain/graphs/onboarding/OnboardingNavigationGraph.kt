@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
+import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
 import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
@@ -71,6 +72,14 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
             )
         }
 
+        dialog<OnboardingImportErrorNavigationDestination> {
+            ImportsErrorScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
         bottomSheet<OnboardingImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
                 onPasswordRequired = { uri, importType ->
@@ -86,6 +95,14 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
                     NavigationCommand.NavigateToWithPopup(
                         destination = OnboardingImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
+                        ),
+                        popDestination = OnboardingImportNavigationDestination
+                    ).also(onNavigate)
+                },
+                onError = { errorReason ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = OnboardingImportErrorNavigationDestination(
+                            errorReason = errorReason
                         ),
                         popDestination = OnboardingImportNavigationDestination
                     ).also(onNavigate)

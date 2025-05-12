@@ -26,6 +26,8 @@ internal sealed interface ImportsOptionsEvent {
 
     data class OnFileImported(internal val importedEntriesCount: Int) : ImportsOptionsEvent
 
+    data class OnFileImportFailed(internal val reason: Int) : ImportsOptionsEvent
+
     data class OnFilePasswordRequired(
         internal val uri: String,
         internal val importType: Int

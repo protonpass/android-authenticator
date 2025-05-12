@@ -86,15 +86,13 @@ internal class ImportsOptionsViewModel @Inject constructor(
             ImportEntriesReason.BadContent,
             ImportEntriesReason.BadPassword,
             ImportEntriesReason.DecryptionFailed -> {
-                println("JIBIRI: Import error -> ${answer.reason}")
+                ImportsOptionsEvent.OnFileImportFailed(answer.reason.ordinal)
             }
 
             ImportEntriesReason.MissingPassword -> {
-                eventFlow.update {
-                    ImportsOptionsEvent.OnFilePasswordRequired(uri.toString(), importType.ordinal)
-                }
+                ImportsOptionsEvent.OnFilePasswordRequired(uri.toString(), importType.ordinal)
             }
-        }
+        }.also { event -> eventFlow.update { event } }
     }
 
     private fun handleImportEntriesSuccess(answer: Answer.Success<Int, ImportEntriesReason>) {
