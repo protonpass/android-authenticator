@@ -37,7 +37,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
-fun FormTextField(
+fun FormPlainTextField(
     value: String,
     label: String,
     placeholder: String,

@@ -20,6 +20,7 @@ package proton.android.authenticator.shared.ui.domain.screens
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -28,10 +29,16 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 fun BottomSheetScreen(
     onDismissed: () -> Unit,
     modifier: Modifier = Modifier,
+    skipPartiallyExpanded: Boolean = true,
     content: @Composable () -> Unit
 ) {
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = skipPartiallyExpanded
+    )
+
     ModalBottomSheet(
         modifier = modifier,
+        sheetState = sheetState,
         containerColor = Theme.colorScheme.backgroundGradientBottom,
         contentColor = Theme.colorScheme.textNorm,
         onDismissRequest = onDismissed

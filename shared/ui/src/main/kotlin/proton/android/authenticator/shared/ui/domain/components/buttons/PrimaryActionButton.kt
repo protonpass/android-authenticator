@@ -23,9 +23,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundPrimaryButton
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -34,12 +36,20 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 fun PrimaryActionButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isEnabled: Boolean = true
 ) {
+    val textColor = remember(key1 = isEnabled) {
+        if (isEnabled) Color.White else Color.White.copy(alpha = 0.38f)
+    }
+
     Box(
         modifier = modifier
-            .backgroundPrimaryButton()
-            .clickable(onClick = onClick)
+            .backgroundPrimaryButton(isEnable = isEnabled)
+            .applyIf(
+                condition = isEnabled,
+                ifTrue = { clickable(onClick = onClick) }
+            )
             .padding(
                 horizontal = ThemePadding.Large,
                 vertical = ThemePadding.Medium
@@ -48,7 +58,7 @@ fun PrimaryActionButton(
     ) {
         Text(
             text = text,
-            color = Color.White,
+            color = textColor,
             style = Theme.typography.body1Medium
         )
     }

@@ -26,6 +26,7 @@
     <string name="action_save">Save</string>
     <string name="action_search">Search</string>
     <string name="action_skip">Skip</string>
+    <string name="action_unlock">Unlock</string>
 
     <plurals name="unit_items">
         <item quantity="one">%1$d item</item>

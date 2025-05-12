@@ -50,14 +50,21 @@ internal class ImportsPasswordViewModel @Inject constructor(
 
     private val passwordState = mutableStateOf<String?>(value = null)
 
-    private val eventFlow =
-        MutableStateFlow<ImportsPasswordEvent>(value = ImportsPasswordEvent.Idle)
+    private val isPasswordErrorFlow = MutableStateFlow<Boolean>(value = false)
+
+    private val isPasswordVisibleFlow = MutableStateFlow<Boolean>(value = false)
+
+    private val eventFlow = MutableStateFlow<ImportsPasswordEvent>(
+        value = ImportsPasswordEvent.Idle
+    )
 
     internal val stateFlow: StateFlow<ImportsPasswordState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
         ImportsPasswordState.create(
             password = passwordState.value,
+            isPasswordErrorFlow = isPasswordErrorFlow,
+            isPasswordVisibleFlow = isPasswordVisibleFlow,
             eventFlow = eventFlow
         )
     }
@@ -68,6 +75,12 @@ internal class ImportsPasswordViewModel @Inject constructor(
 
     internal fun onPasswordChange(newPassword: String) {
         passwordState.value = newPassword
+
+        isPasswordErrorFlow.update { false }
+    }
+
+    internal fun onPasswordVisibilityChange(newIsVisible: Boolean) {
+        isPasswordVisibleFlow.update { newIsVisible }
     }
 
     internal fun onSubmitPassword(password: String) {
@@ -85,8 +98,11 @@ internal class ImportsPasswordViewModel @Inject constructor(
 
     private fun handleImportEntriesFailure(answer: Answer.Failure<Int, ImportEntriesReason>) {
         when (answer.reason) {
+            ImportEntriesReason.BadPassword -> {
+                isPasswordErrorFlow.update { true }
+            }
+
             ImportEntriesReason.BadContent,
-            ImportEntriesReason.BadPassword,
             ImportEntriesReason.DecryptionFailed,
             ImportEntriesReason.MissingPassword -> {
                 println("JIBIRI: Password import failed")
@@ -95,6 +111,8 @@ internal class ImportsPasswordViewModel @Inject constructor(
     }
 
     private fun handleImportEntriesSuccess(answer: Answer.Success<Int, ImportEntriesReason>) {
+        passwordState.value = ""
+
         eventFlow.update {
             ImportsPasswordEvent.OnFileImported(importedEntriesCount = answer.data)
         }

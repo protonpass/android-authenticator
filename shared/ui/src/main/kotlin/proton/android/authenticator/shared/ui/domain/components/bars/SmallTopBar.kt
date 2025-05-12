@@ -35,10 +35,10 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
 fun SmallTopBar(
-    title: UiText,
     navigationIcon: UiIcon,
     onNavigationClick: () -> Unit,
     modifier: Modifier = Modifier,
+    title: UiText = UiText.Dynamic(""),
     action: UiText? = null,
     isActionEnabled: Boolean = false,
     onActionClick: () -> Unit = {}

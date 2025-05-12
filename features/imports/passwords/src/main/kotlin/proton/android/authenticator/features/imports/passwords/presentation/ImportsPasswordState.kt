@@ -22,22 +22,41 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.features.imports.passwords.R
+import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal class ImportsPasswordState private constructor(
     internal val password: String,
+    internal val isPasswordError: Boolean,
+    internal val isPasswordVisible: Boolean,
     internal val event: ImportsPasswordEvent
 ) {
 
-    internal val isValidPassword: Boolean = password.isNotBlank()
+    internal val passwordErrorText: UiText? = if (isPasswordError) {
+        UiText.Resource(id = R.string.imports_password_incorrect_password)
+    } else {
+        null
+    }
+
+    internal val isValidPassword: Boolean = password.isNotBlank() && !isPasswordError
 
     internal companion object {
 
         @Composable
-        internal fun create(password: String?, eventFlow: Flow<ImportsPasswordEvent>): ImportsPasswordState {
+        internal fun create(
+            password: String?,
+            isPasswordErrorFlow: Flow<Boolean>,
+            isPasswordVisibleFlow: Flow<Boolean>,
+            eventFlow: Flow<ImportsPasswordEvent>
+        ): ImportsPasswordState {
+            val isPasswordError by isPasswordErrorFlow.collectAsState(initial = false)
+            val isPasswordVisible by isPasswordVisibleFlow.collectAsState(initial = false)
             val event by eventFlow.collectAsState(initial = ImportsPasswordEvent.Idle)
 
             return ImportsPasswordState(
                 password = password.orEmpty(),
+                isPasswordError = isPasswordError,
+                isPasswordVisible = isPasswordVisible,
                 event = event
             )
         }

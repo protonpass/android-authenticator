@@ -17,8 +17,7 @@
   -->
 
 <resources>
-    <string name="imports_password_dialog_title">Password required</string>
-    <string name="imports_password_dialog_message">The selected file is password protected.</string>
-    <string name="imports_password_dialog_label">Password</string>
-    <string name="imports_password_dialog_placeholder">Enter file password</string>
+    <string name="imports_password_title">Protected file</string>
+    <string name="imports_password_subtitle">Your import file is protected by a password. Please enter the password to proceed.</string>
+    <string name="imports_password_incorrect_password">Incorrect password</string>
 </resources>

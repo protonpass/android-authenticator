@@ -18,20 +18,24 @@
 
 package proton.android.authenticator.features.imports.passwords.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import proton.android.authenticator.features.imports.passwords.R
 import proton.android.authenticator.features.imports.passwords.presentation.ImportsPasswordEvent
 import proton.android.authenticator.features.imports.passwords.presentation.ImportsPasswordViewModel
-import proton.android.authenticator.shared.ui.domain.models.UiText
-import proton.android.authenticator.shared.ui.domain.screens.TextInputDialogScreen
+import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun ImportsPasswordScreen(onCompleted: (Int) -> Unit, onDismissed: () -> Unit) =
+fun ImportsPasswordScreen(onNavigationClick: () -> Unit, onCompleted: (Int) -> Unit) {
     with(hiltViewModel<ImportsPasswordViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -44,16 +48,28 @@ fun ImportsPasswordScreen(onCompleted: (Int) -> Unit, onDismissed: () -> Unit) =
             onConsumeEvent(state.event)
         }
 
-        TextInputDialogScreen(
-            title = UiText.Resource(id = R.string.imports_password_dialog_title),
-            message = UiText.Resource(id = R.string.imports_password_dialog_message),
-            value = state.password,
-            label = UiText.Resource(id = R.string.imports_password_dialog_label),
-            placeholder = UiText.Resource(id = R.string.imports_password_dialog_placeholder),
-            onValueChange = ::onPasswordChange,
-            confirmText = UiText.Resource(id = uiR.string.action_import),
-            isConfirmEnabled = state.isValidPassword,
-            onConfirmClick = { onSubmitPassword(state.password) },
-            onDismissed = onDismissed
-        )
+        ScaffoldScreen(
+            topBar = {
+                SmallTopBar(
+                    navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
+                    onNavigationClick = onNavigationClick
+                )
+            }
+        ) { paddingValues ->
+            ImportsPasswordContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = paddingValues)
+                    .padding(
+                        start = ThemePadding.Large,
+                        top = ThemePadding.MediumLarge,
+                        end = ThemePadding.Large
+                    ),
+                state = state,
+                onPasswordChange = ::onPasswordChange,
+                onVisibilityChange = ::onPasswordVisibilityChange,
+                onSubmitPassword = ::onSubmitPassword
+            )
+        }
     }
+}

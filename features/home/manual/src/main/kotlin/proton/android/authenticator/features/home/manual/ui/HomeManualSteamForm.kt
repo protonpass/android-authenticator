@@ -30,7 +30,7 @@ import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.R
 import proton.android.authenticator.features.home.manual.presentation.HomeManualFormModel
 import proton.android.authenticator.shared.ui.domain.components.tabs.FormTab
-import proton.android.authenticator.shared.ui.domain.components.textfields.FormTextField
+import proton.android.authenticator.shared.ui.domain.components.textfields.FormPlainTextField
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -46,7 +46,7 @@ internal fun HomeManualSteamForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
     ) {
-        FormTextField(
+        FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
             value = formModel.title,
             label = stringResource(id = R.string.home_manual_form_title_label),
@@ -54,7 +54,7 @@ internal fun HomeManualSteamForm(
             onValueChange = onTitleChange
         )
 
-        FormTextField(
+        FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
             value = formModel.secret,
             label = stringResource(id = R.string.home_manual_form_secret_label),

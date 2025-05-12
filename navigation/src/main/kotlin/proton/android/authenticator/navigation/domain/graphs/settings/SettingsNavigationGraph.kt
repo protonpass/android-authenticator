@@ -57,7 +57,10 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
         dialog<SettingsImportCompletionNavigationDestination> {
             ImportsCompletionScreen(
                 onDismissed = {
-                    onNavigate(NavigationCommand.NavigateUp)
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
                 }
             )
         }
@@ -87,18 +90,17 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
             )
         }
 
-        dialog<SettingsImportPasswordNavigationDestination> {
+        composable<SettingsImportPasswordNavigationDestination> {
             ImportsPasswordScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
                 onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = SettingsImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = SettingsMasterNavigationDestination
+                        )
                     ).also(onNavigate)
-                },
-                onDismissed = {
-                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

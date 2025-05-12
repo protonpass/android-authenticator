@@ -32,7 +32,7 @@ import proton.android.authenticator.features.home.manual.presentation.HomeManual
 import proton.android.authenticator.shared.ui.domain.components.menus.FormDropdownMenu
 import proton.android.authenticator.shared.ui.domain.components.menus.FormRevealMenu
 import proton.android.authenticator.shared.ui.domain.components.tabs.FormTab
-import proton.android.authenticator.shared.ui.domain.components.textfields.FormTextField
+import proton.android.authenticator.shared.ui.domain.components.textfields.FormPlainTextField
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
@@ -52,7 +52,7 @@ internal fun HomeManualTotpForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
     ) {
-        FormTextField(
+        FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
             value = formModel.title,
             label = stringResource(id = R.string.home_manual_form_title_label),
@@ -60,7 +60,7 @@ internal fun HomeManualTotpForm(
             onValueChange = onTitleChange
         )
 
-        FormTextField(
+        FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
             value = formModel.secret,
             label = stringResource(id = R.string.home_manual_form_secret_label),
@@ -69,7 +69,7 @@ internal fun HomeManualTotpForm(
             isRequired = true
         )
 
-        FormTextField(
+        FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
             value = formModel.issuer,
             label = stringResource(id = R.string.home_manual_form_issuer_label),

@@ -63,8 +63,9 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
         dialog<OnboardingImportCompletionNavigationDestination> {
             ImportsCompletionScreen(
                 onDismissed = {
-                    NavigationCommand.NavigateTo(
-                        destination = OnboardingBiometricsNavigationDestination
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = OnboardingBiometricsNavigationDestination,
+                        popDestination = OnboardingImportNavigationDestination
                     ).also(onNavigate)
                 }
             )
@@ -95,18 +96,17 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
             )
         }
 
-        dialog<OnboardingImportPasswordNavigationDestination> {
+        composable<OnboardingImportPasswordNavigationDestination> {
             ImportsPasswordScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
                 onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = OnboardingImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = OnboardingImportNavigationDestination
+                        )
                     ).also(onNavigate)
-                },
-                onDismissed = {
-                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

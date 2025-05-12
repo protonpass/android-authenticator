@@ -32,24 +32,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import proton.android.authenticator.shared.ui.domain.components.buttons.DialogActionTextButton
-import proton.android.authenticator.shared.ui.domain.components.textfields.FormTextField
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
-fun TextInputDialogScreen(
+fun CustomDialogScreen(
     title: UiText,
     message: UiText,
-    value: String,
-    label: UiText,
-    placeholder: UiText,
     confirmText: UiText,
-    onValueChange: (String) -> Unit,
     onConfirmClick: () -> Unit,
     onDismissed: () -> Unit,
     modifier: Modifier = Modifier,
-    isConfirmEnabled: Boolean = true
+    isConfirmEnabled: Boolean = true,
+    content: @Composable () -> Unit
 ) {
     BasicAlertDialog(
         modifier = modifier,
@@ -78,13 +74,7 @@ fun TextInputDialogScreen(
                 style = Theme.typography.body2Regular
             )
 
-            FormTextField(
-                value = value,
-                label = label.asString(),
-                placeholder = placeholder.asString(),
-                onValueChange = onValueChange,
-                isRequired = true
-            )
+            content()
 
             DialogActionTextButton(
                 modifier = Modifier.align(alignment = Alignment.End),
