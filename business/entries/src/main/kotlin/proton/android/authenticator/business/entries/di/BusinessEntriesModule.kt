@@ -27,6 +27,8 @@ import proton.android.authenticator.business.entries.application.create.CreateEn
 import proton.android.authenticator.business.entries.application.create.CreateEntryCommandHandler
 import proton.android.authenticator.business.entries.application.delete.DeleteEntryCommand
 import proton.android.authenticator.business.entries.application.delete.DeleteEntryCommandHandler
+import proton.android.authenticator.business.entries.application.exportall.ExportEntriesCommand
+import proton.android.authenticator.business.entries.application.exportall.ExportEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.find.FindEntryQuery
 import proton.android.authenticator.business.entries.application.find.FindEntryQueryHandler
 import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQuery
@@ -64,6 +66,9 @@ internal abstract class BusinessEntriesModule {
 
     @[Binds Singleton IntoMap CommandHandlerKey(DeleteEntryCommand::class)]
     internal abstract fun bindDeleteEntryCommandHandler(impl: DeleteEntryCommandHandler): CommandHandler<*, *, *>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(ExportEntriesCommand::class)]
+    internal abstract fun bindExportEntriesCommandHandler(impl: ExportEntriesCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindEntryQuery::class)]
     internal abstract fun bindFindEntryQueryHandler(impl: FindEntryQueryHandler): QueryHandler<*, *>

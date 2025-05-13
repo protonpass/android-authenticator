@@ -24,6 +24,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.exports.completion.ui.ExportsCompletionScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
@@ -41,6 +42,20 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 },
+                onExportCompleted = { exportedEntriesCount ->
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsExportCompletionNavigationDestination(
+                            exportedEntriesCount = exportedEntriesCount
+                        )
+                    ).also(onNavigate)
+                },
+                onExportFailed = { errorReason ->
+//                    NavigationCommand.NavigateTo(
+//                        destination = SettingsExportErrorNavigationDestination(
+//                            errorReason = errorReason
+//                        )
+//                    )
+                },
                 onImportClick = {
                     NavigationCommand.NavigateTo(
                         destination = SettingsImportOptionsNavigationDestination
@@ -50,6 +65,17 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                     NavigationCommand.NavigateToPlayStore(
                         appPackageName = appPackageName,
                         context = context
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<SettingsExportCompletionNavigationDestination> {
+            ExportsCompletionScreen(
+                onDismissed = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
                     ).also(onNavigate)
                 }
             )

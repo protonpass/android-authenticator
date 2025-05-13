@@ -20,6 +20,7 @@ package proton.android.authenticator.shared.ui.domain.modifiers
 
 import android.graphics.Bitmap
 import android.graphics.BlendMode
+import android.graphics.BlurMaskFilter
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.os.Build
@@ -48,13 +49,54 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
+import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 import kotlin.math.roundToInt
+
+@Stable
+fun Modifier.backgroundAppBar(isBlurred: Boolean = false, blurRadius: Dp = 10.dp) = composed {
+    val backgroundColor = if (isBlurred) {
+        Theme.colorScheme.backgroundTopBar
+    } else {
+        Color.Transparent
+    }
+
+    drawBehind {
+        android.graphics.Paint()
+            .apply {
+                isAntiAlias = true
+                this.color = backgroundColor.toArgb()
+
+                maskFilter = BlurMaskFilter(
+                    blurRadius.value,
+                    BlurMaskFilter.Blur.NORMAL
+                )
+            }
+            .also { nativePaint ->
+                drawIntoCanvas { canvas ->
+                    canvas.save()
+
+                    android.graphics.Rect(
+                        -ThemeSpacing.Medium.value.toInt(),
+                        -ThemeSpacing.Medium.value.toInt(),
+                        size.width.toInt(),
+                        size.height.toInt()
+                    ).also { rect ->
+                        canvas.nativeCanvas.drawRect(rect, nativePaint)
+                    }
+
+                    canvas.restore()
+                }
+            }
+    }
+}
 
 @Stable
 fun Modifier.backgroundPrimaryButton(isEnable: Boolean = true) = composed {

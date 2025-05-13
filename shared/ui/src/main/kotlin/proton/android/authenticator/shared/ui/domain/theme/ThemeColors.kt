@@ -54,6 +54,9 @@ sealed class ThemeColors {
     abstract val backgroundGradientBottom: Color
 
     @Stable
+    abstract val backgroundTopBar: Color
+
+    @Stable
     abstract val buttonGradientTop: Color
 
     @Stable
@@ -209,6 +212,8 @@ sealed class ThemeColors {
 
         override val backgroundGradientBottom: Color = Color(color = 0xFF161514)
 
+        override val backgroundTopBar: Color = Color(color = 0xF9252525)
+
         override val buttonGradientTop: Color = Color(color = 0xFF7350FF)
 
         override val buttonGradientBottom: Color = Color(color = 0xFF453099)
@@ -301,6 +306,8 @@ sealed class ThemeColors {
         override val backgroundGradientTop: Color = Color(color = 0xFFF5F5F4)
 
         override val backgroundGradientBottom: Color = Color(color = 0xFFFAFAF9)
+
+        override val backgroundTopBar: Color = Color(color = 0xF9E9E9E6)
 
         override val buttonGradientTop: Color = Color(color = 0xFF7350FF)
 

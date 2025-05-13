@@ -18,16 +18,22 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.settings.master.R
+import proton.android.authenticator.features.settings.master.presentation.SettingsMasterEvent
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
@@ -39,15 +45,44 @@ import proton.android.authenticator.shared.ui.R as uiR
 @Composable
 fun SettingsScreen(
     onNavigationClick: () -> Unit,
+    onExportCompleted: (Int) -> Unit,
+    onExportFailed: (Int) -> Unit,
     onImportClick: () -> Unit,
     onDiscoverAppClick: (String) -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
+    val scrollState = rememberScrollState()
+
+    val isBlurred by remember {
+        derivedStateOf { scrollState.value > 0 }
+    }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument(state.exportFileMimeType),
+        onResult = ::onExportEntries
+    )
+
+    LaunchedEffect(key1 = state.event) {
+        when (val event = state.event) {
+            SettingsMasterEvent.Idle -> Unit
+            is SettingsMasterEvent.OnEntriesExportError -> {
+                onExportFailed(event.errorReason)
+            }
+
+            is SettingsMasterEvent.OnEntriesExportSuccess -> {
+                onExportCompleted(event.exportedEntriesCount)
+            }
+        }
+
+        onConsumeEvent(event = state.event)
+    }
+
     ScaffoldScreen(
         topBar = {
             SmallTopBar(
                 title = UiText.Resource(id = R.string.settings_screen_title),
+                isBlurred = isBlurred,
                 navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
                 onNavigationClick = onNavigationClick
             )
@@ -56,7 +91,7 @@ fun SettingsScreen(
         SettingsContent(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(state = rememberScrollState())
+                .verticalScroll(state = scrollState)
                 .padding(paddingValues = paddingValues)
                 .padding(horizontal = ThemePadding.Medium),
             state = state,
@@ -70,7 +105,7 @@ fun SettingsScreen(
             onDigitTypeChange = ::onUpdateDigitType,
             onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
             onImportClick = onImportClick,
-            onExportClick = {},
+            onExportClick = { launcher.launch(state.exportFileName) },
             onHowToClick = {},
             onFeedbackClick = {},
             onDiscoverAppClick = onDiscoverAppClick

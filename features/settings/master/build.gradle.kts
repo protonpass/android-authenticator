@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":business:entries"))
     implementation(project(":business:proton_apps"))
     implementation(project(":business:settings"))
 }

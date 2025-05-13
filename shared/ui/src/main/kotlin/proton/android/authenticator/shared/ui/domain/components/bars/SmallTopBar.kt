@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.components.buttons.TopBarActionTextButton
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundAppBar
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 
@@ -41,10 +42,11 @@ fun SmallTopBar(
     title: UiText = UiText.Dynamic(""),
     action: UiText? = null,
     isActionEnabled: Boolean = false,
+    isBlurred: Boolean = false,
     onActionClick: () -> Unit = {}
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = modifier.backgroundAppBar(isBlurred = isBlurred),
         title = {
             Text(
                 text = title.asString(),

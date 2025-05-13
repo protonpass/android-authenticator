@@ -25,22 +25,30 @@ import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.protonapps.domain.ProtonApp
+import proton.android.authenticator.shared.common.domain.models.MimeType
 
 internal class SettingsMasterState private constructor(
     internal val settingsModel: SettingsMasterSettingsModel,
     internal val discoverModel: SettingsMasterDiscoverModel,
-    internal val bannerModel: SettingsMasterBannerModel
+    internal val bannerModel: SettingsMasterBannerModel,
+    internal val event: SettingsMasterEvent
 ) {
+
+    internal val exportFileName: String = "proton_authenticator_backup.json"
+
+    internal val exportFileMimeType: String = MimeType.Json.value
 
     internal companion object {
 
         @Composable
         internal fun create(
             settingsFlow: Flow<Settings>,
-            uninstalledProtonAppsFlow: Flow<List<ProtonApp>>
+            uninstalledProtonAppsFlow: Flow<List<ProtonApp>>,
+            eventFlow: Flow<SettingsMasterEvent>
         ): SettingsMasterState {
             val settings by settingsFlow.collectAsState(initial = Settings.Default)
             val uninstalledProtonApps by uninstalledProtonAppsFlow.collectAsState(initial = emptyList())
+            val event by eventFlow.collectAsState(initial = SettingsMasterEvent.Idle)
 
             val settingsModel = remember(key1 = settings) {
                 SettingsMasterSettingsModel(
@@ -75,7 +83,8 @@ internal class SettingsMasterState private constructor(
             return SettingsMasterState(
                 settingsModel = settingsModel,
                 discoverModel = discoverModel,
-                bannerModel = bannerModel
+                bannerModel = bannerModel,
+                event = event
             )
         }
     }

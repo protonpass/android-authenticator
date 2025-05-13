@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.completion.presentation
+package proton.android.authenticator.features.exports.completion.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -28,21 +28,21 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ImportsCompletionViewModel @Inject constructor(
+internal class ExportsCompletionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val importedEntriesCount: Int = requireNotNull(savedStateHandle[ARGS_IMPORTED_COUNT])
+    private val exportedEntriesCount: Int = requireNotNull(savedStateHandle[ARGS_EXPORTED_COUNT])
 
-    internal val stateFlow: StateFlow<ImportsCompletionState> = viewModelScope.launchMolecule(
+    internal val stateFlow: StateFlow<ExportsCompletionState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
-        ImportsCompletionState.create(importedEntriesCount = importedEntriesCount)
+        ExportsCompletionState.create(exportedEntriesCount = exportedEntriesCount)
     }
 
     private companion object {
 
-        private const val ARGS_IMPORTED_COUNT = "importedEntriesCount"
+        private const val ARGS_EXPORTED_COUNT = "exportedEntriesCount"
 
     }
 
