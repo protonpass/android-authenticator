@@ -48,6 +48,8 @@ fun SettingsScreen(
     onExportCompleted: (Int) -> Unit,
     onExportFailed: (Int) -> Unit,
     onImportClick: () -> Unit,
+    onHowToClick: (String) -> Unit,
+    onFeedbackClick: (String) -> Unit,
     onDiscoverAppClick: (String) -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
@@ -105,9 +107,9 @@ fun SettingsScreen(
             onDigitTypeChange = ::onUpdateDigitType,
             onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
             onImportClick = onImportClick,
-            onExportClick = { launcher.launch(state.exportFileName) },
-            onHowToClick = {},
-            onFeedbackClick = {},
+            onExportClick = launcher::launch,
+            onHowToClick = onHowToClick,
+            onFeedbackClick = onFeedbackClick,
             onDiscoverAppClick = onDiscoverAppClick
         )
     }

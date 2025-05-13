@@ -42,9 +42,12 @@ fun ImportsOptionsScreen(
 ) = with(hiltViewModel<ImportsOptionsViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        onFilePicked(uri = result.data?.data, importType = state.selectedOptionModel?.type)
-    }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = { result ->
+            onFilePicked(uri = result.data?.data, importType = state.selectedOptionModel?.type)
+        }
+    )
 
     LaunchedEffect(state.event) {
         when (val event = state.event) {

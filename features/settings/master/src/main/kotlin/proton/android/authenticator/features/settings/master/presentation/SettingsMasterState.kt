@@ -34,11 +34,21 @@ internal class SettingsMasterState private constructor(
     internal val event: SettingsMasterEvent
 ) {
 
-    internal val exportFileName: String = "proton_authenticator_backup.json"
+    internal val exportFileName: String = FILE_NAME
 
     internal val exportFileMimeType: String = MimeType.Json.value
 
+    internal val feedbackUrl: String = URL_FEEDBACK
+
+    internal val howToUrl: String = URL_HOW_TO
+
     internal companion object {
+
+        private const val FILE_NAME = "proton_authenticator_backup.json"
+
+        private const val URL_FEEDBACK = "https://proton.me/support/contact"
+
+        private const val URL_HOW_TO = "https://proton.me/support/contact"
 
         @Composable
         internal fun create(

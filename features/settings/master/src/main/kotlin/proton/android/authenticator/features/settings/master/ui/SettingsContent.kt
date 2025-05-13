@@ -46,9 +46,9 @@ internal fun SettingsContent(
     onDigitTypeChange: (SettingsDigitType) -> Unit,
     onCodeChangeAnimationChange: (Boolean) -> Unit,
     onImportClick: () -> Unit,
-    onExportClick: () -> Unit,
-    onHowToClick: () -> Unit,
-    onFeedbackClick: () -> Unit,
+    onExportClick: (String) -> Unit,
+    onHowToClick: (String) -> Unit,
+    onFeedbackClick: (String) -> Unit,
     onDiscoverAppClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
@@ -145,7 +145,7 @@ internal fun SettingsContent(
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_data_management_title_export),
-                        onClick = onExportClick
+                        onClick = { onExportClick(exportFileName) }
                     )
                 }
             )
@@ -157,13 +157,13 @@ internal fun SettingsContent(
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_support_title_how_to),
-                        onClick = onHowToClick
+                        onClick = { onHowToClick(howToUrl) }
                     )
                 },
                 {
                     SettingsNavigationRow(
                         title = UiText.Resource(id = R.string.settings_support_title_feedback),
-                        onClick = onFeedbackClick
+                        onClick = { onFeedbackClick(feedbackUrl) }
                     )
                 }
             )

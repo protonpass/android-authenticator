@@ -94,9 +94,7 @@ internal fun HomeScanCamera(
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-        onResult = { granted ->
-            hasCameraPermission = granted
-        }
+        onResult = { isGranted -> hasCameraPermission = isGranted }
     )
 
     LaunchedEffect(key1 = true) {

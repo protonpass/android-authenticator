@@ -61,6 +61,18 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                         destination = SettingsImportOptionsNavigationDestination
                     ).also(onNavigate)
                 },
+                onHowToClick = { howToUrl ->
+                    NavigationCommand.NavigateToUrl(
+                        url = howToUrl,
+                        context = context
+                    ).also(onNavigate)
+                },
+                onFeedbackClick = { feedbackUrl ->
+                    NavigationCommand.NavigateToUrl(
+                        url = feedbackUrl,
+                        context = context
+                    ).also(onNavigate)
+                },
                 onDiscoverAppClick = { appPackageName ->
                     NavigationCommand.NavigateToPlayStore(
                         appPackageName = appPackageName,
