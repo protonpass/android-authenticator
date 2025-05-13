@@ -9,7 +9,8 @@ internal sealed interface NavigationCommand {
 
     data class NavigateToPlayStore(
         internal val appPackageName: String,
-        internal val context: Context
+        internal val context: Context,
+        internal val fallbackUrl: String? = null
     ) : NavigationCommand
 
     data class NavigateToUrl(

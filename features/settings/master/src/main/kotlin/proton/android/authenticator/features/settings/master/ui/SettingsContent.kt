@@ -49,7 +49,7 @@ internal fun SettingsContent(
     onExportClick: (String) -> Unit,
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
-    onDiscoverAppClick: (String) -> Unit,
+    onDiscoverAppClick: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     Column(
@@ -60,7 +60,9 @@ internal fun SettingsContent(
         AnimatedVisibility(visible = bannerModel.shouldShowPassBanner) {
             SettingsPassBanner(
                 onDismissClick = onDismissPassBanner,
-                onActionClick = { onDiscoverAppClick(bannerModel.passBannerApp.id) }
+                onActionClick = {
+                    onDiscoverAppClick(bannerModel.passBannerApp.id, bannerModel.passBannerApp.url)
+                }
             )
         }
 
@@ -178,7 +180,7 @@ internal fun SettingsContent(
                             icon = discoverApp.icon,
                             title = discoverApp.title,
                             description = discoverApp.description,
-                            onClick = { onDiscoverAppClick(discoverApp.id) }
+                            onClick = { onDiscoverAppClick(discoverApp.id, discoverApp.url) }
                         )
                     }
                 }

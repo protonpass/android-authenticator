@@ -18,10 +18,34 @@
 
 package proton.android.authenticator.protonapps.domain
 
-enum class ProtonAppType(internal val id: String, internal val position: Int) {
-    Calendar(id = "me.proton.android.calendar", position = 3),
-    Drive(id = "me.proton.android.drive", position = 4),
-    Mail(id = "ch.protonmail.android", position = 2),
-    Pass(id = "proton.android.pass", position = 0),
-    Vpn(id = "ch.protonvpn.android", position = 1)
+enum class ProtonAppType(
+    internal val id: String,
+    internal val url: String,
+    internal val position: Int
+) {
+    Calendar(
+        id = "me.proton.android.calendar",
+        url = "https://proton.me/calendar/download",
+        position = 3
+    ),
+    Drive(
+        id = "me.proton.android.drive",
+        url = "https://proton.me/drive/download",
+        position = 4
+    ),
+    Mail(
+        id = "ch.protonmail.android",
+        url = "https://proton.me/mail/download",
+        position = 2
+    ),
+    Pass(
+        id = "proton.android.pass",
+        url = "https://proton.me/pass/download/android",
+        position = 0
+    ),
+    Vpn(
+        id = "ch.protonvpn.android",
+        url = "https://protonvpn.com/download-android",
+        position = 1
+    )
 }

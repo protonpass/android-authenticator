@@ -23,6 +23,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal data class SettingsMasterDiscoverApp(
     val id: String,
+    val url: String,
     val icon: UiIcon,
     val title: UiText,
     val description: UiText

@@ -73,10 +73,11 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                         context = context
                     ).also(onNavigate)
                 },
-                onDiscoverAppClick = { appPackageName ->
+                onDiscoverAppClick = { appPackageName, appUrl ->
                     NavigationCommand.NavigateToPlayStore(
                         appPackageName = appPackageName,
-                        context = context
+                        context = context,
+                        fallbackUrl = appUrl
                     ).also(onNavigate)
                 }
             )

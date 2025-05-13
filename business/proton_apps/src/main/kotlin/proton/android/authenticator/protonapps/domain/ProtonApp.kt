@@ -25,6 +25,8 @@ data class ProtonApp(
 
     val id: String = type.id
 
+    val url: String = type.url
+
     val position: Int = type.position
 
 }

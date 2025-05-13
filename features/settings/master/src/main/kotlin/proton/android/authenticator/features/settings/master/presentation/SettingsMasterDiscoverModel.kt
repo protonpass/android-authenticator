@@ -62,6 +62,7 @@ internal data class SettingsMasterDiscoverModel(private val uninstalledProtonApp
             discoverProtonAppsMap[protonApp.type]?.let { (icon, title, description) ->
                 SettingsMasterDiscoverApp(
                     id = protonApp.id,
+                    url = protonApp.url,
                     icon = icon,
                     title = title,
                     description = description

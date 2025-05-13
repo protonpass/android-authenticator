@@ -26,16 +26,22 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
                     command.context.startActivity(playStoreIntent)
                 } catch (_: ActivityNotFoundException) {
                     NavigationCommand.NavigateToUrl(
-                        url = "$PLAY_STORE_WEB_URI${command.appPackageName}",
+                        url = command.fallbackUrl ?: "$PLAY_STORE_WEB_URI${command.appPackageName}",
                         context = command.context
                     ).also { urlCommand -> handle(urlCommand, navController) }
                 }
             }
 
             is NavigationCommand.NavigateToUrl -> {
-                val browserUri = command.url.toUri()
-                val browserIntent = Intent(Intent.ACTION_VIEW, browserUri)
-                command.context.startActivity(browserIntent)
+                command.url.toUri()
+                    .let { uri -> Intent(Intent.ACTION_VIEW, uri) }
+                    .also { intent ->
+                        try {
+                            command.context.startActivity(intent)
+                        } catch (_: ActivityNotFoundException) {
+                            return
+                        }
+                    }
             }
 
             is NavigationCommand.NavigateToWithPopup -> {

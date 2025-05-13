@@ -50,7 +50,7 @@ fun SettingsScreen(
     onImportClick: () -> Unit,
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
-    onDiscoverAppClick: (String) -> Unit
+    onDiscoverAppClick: (String, String) -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
