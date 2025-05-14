@@ -18,27 +18,28 @@
 
 package proton.android.authenticator.business.entries.application.importall
 
-import android.content.ContentResolver
 import android.net.Uri
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryImportType
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.models.MimeType
+import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
-import java.io.BufferedReader
 import javax.inject.Inject
 
 internal class EntriesImporter @Inject constructor(
-    private val contentResolver: ContentResolver,
     private val appDispatchers: AppDispatchers,
     private val authenticatorImporter: AuthenticatorImporterInterface,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val fileReader: FileReader,
+    private val mimeTypeProvider: MimeTypeProvider,
     private val timeProvider: TimeProvider,
     private val repository: EntriesRepository
 ) {
@@ -47,16 +48,9 @@ internal class EntriesImporter @Inject constructor(
         contentUri: Uri,
         importType: EntryImportType,
         password: String?
-    ): Int = getFileContent(contentUri)
-        ?.let { content -> getEntriesFromContent(importType, contentUri, content, password) }
-        ?.let { entryModels -> saveEntries(entryModels) }
-        ?: throw AuthenticatorImportException.BadContent("Cannot read file content")
-
-    private suspend fun getFileContent(uri: Uri) = withContext(appDispatchers.io) {
-        contentResolver.openInputStream(uri)
-            ?.bufferedReader()
-            ?.use(BufferedReader::readText)
-    }
+    ): Int = fileReader.read(contentUri.toString())
+        .let { content -> getEntriesFromContent(importType, contentUri, content, password) }
+        .let { entryModels -> saveEntries(entryModels) }
 
     private suspend fun getEntriesFromContent(
         importType: EntryImportType,
@@ -70,8 +64,8 @@ internal class EntriesImporter @Inject constructor(
             }
 
             EntryImportType.Bitwarden -> {
-                contentResolver.getType(contentUri).let { mimeTypeValue ->
-                    when (MimeType.fromValue(mimeTypeValue.orEmpty())) {
+                mimeTypeProvider.getFileMimeType(contentUri.toString()).let { mimeType ->
+                    when (mimeType) {
                         MimeType.CommaSeparatedValues,
                         MimeType.Csv -> authenticatorImporter.importFromBitwardenCsv(content)
 
@@ -80,7 +74,7 @@ internal class EntriesImporter @Inject constructor(
                         MimeType.Binary,
                         MimeType.Image,
                         MimeType.Text -> {
-                            throw IllegalArgumentException("Unsupported Bitwarden file type: $mimeTypeValue")
+                            throw IllegalArgumentException("Unsupported Bitwarden file type: $mimeType")
                         }
                     }
                 }

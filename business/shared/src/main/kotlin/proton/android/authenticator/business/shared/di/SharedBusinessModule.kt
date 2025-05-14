@@ -23,11 +23,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
 import androidx.room.Room
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
+import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileReader
+import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileWriter
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.settings.SettingsProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.AuthenticatorDatabase
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
@@ -35,27 +40,37 @@ import proton.android.authenticator.proto.preferences.settings.SettingsPreferenc
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
-internal object SharedBusinessModule {
+internal abstract class SharedBusinessModule {
 
-    @[Provides Singleton]
-    internal fun provideUsersDao(database: AuthenticatorDatabase): EntriesDao = database.entriesDao()
+    @[Binds Singleton]
+    internal abstract fun bindFileReader(impl: ContentResolverFileReader): FileReader
 
-    @[Provides Singleton]
-    internal fun provideAuthenticatorDatabase(@ApplicationContext context: Context): AuthenticatorDatabase =
-        Room.databaseBuilder(
-            context = context,
-            klass = AuthenticatorDatabase::class.java,
-            name = AuthenticatorDatabase.NAME
+    @[Binds Singleton]
+    internal abstract fun bindFileWriter(impl: ContentResolverFileWriter): FileWriter
+
+    internal companion object {
+
+        @[Provides Singleton]
+        internal fun provideUsersDao(database: AuthenticatorDatabase): EntriesDao = database.entriesDao()
+
+        @[Provides Singleton]
+        internal fun provideAuthenticatorDatabase(@ApplicationContext context: Context): AuthenticatorDatabase =
+            Room.databaseBuilder(
+                context = context,
+                klass = AuthenticatorDatabase::class.java,
+                name = AuthenticatorDatabase.NAME
+            )
+                .fallbackToDestructiveMigration(dropAllTables = false)
+                .build()
+
+        @[Provides Singleton]
+        internal fun provideSettingsPreferencesDataStore(
+            @ApplicationContext context: Context
+        ): DataStore<SettingsPreferences> = DataStoreFactory.create(
+            serializer = SettingsProtoPreferencesSerializer,
+            produceFile = { context.dataStoreFile("settings_preferences.pb") }
         )
-            .fallbackToDestructiveMigration()
-            .build()
 
-    @[Provides Singleton]
-    internal fun provideSettingsPreferencesDataStore(
-        @ApplicationContext context: Context
-    ): DataStore<SettingsPreferences> = DataStoreFactory.create(
-        serializer = SettingsProtoPreferencesSerializer,
-        produceFile = { context.dataStoreFile("settings_preferences.pb") }
-    )
+    }
 
 }

@@ -34,10 +34,12 @@ import proton.android.authenticator.shared.common.domain.checkers.AppInstalledCh
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.common.infrastructure.commands.InMemoryCommandBus
 import proton.android.authenticator.shared.common.infrastructure.queries.InMemoryQueryBus
 import proton.android.authenticator.shared.common.providers.ClockTimeProvider
+import proton.android.authenticator.shared.common.providers.ContentResolverMimeTypeProvider
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -51,6 +53,9 @@ internal abstract class SharedCommonModule {
 
     @[Binds Singleton]
     internal abstract fun bindCommandBus(impl: InMemoryCommandBus): CommandBus
+
+    @[Binds Singleton]
+    internal abstract fun bindMimeTypeProvider(impl: ContentResolverMimeTypeProvider): MimeTypeProvider
 
     @[Binds Singleton]
     internal abstract fun bindTimeProvider(impl: ClockTimeProvider): TimeProvider

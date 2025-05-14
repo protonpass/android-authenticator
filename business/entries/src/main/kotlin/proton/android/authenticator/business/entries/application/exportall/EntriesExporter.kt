@@ -18,23 +18,22 @@
 
 package proton.android.authenticator.business.entries.application.exportall
 
-import android.content.ContentResolver
 import android.net.Uri
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
-import java.io.IOException
 import javax.inject.Inject
 
 internal class EntriesExporter @Inject constructor(
-    private val repository: EntriesRepository,
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val contentResolver: ContentResolver
+    private val repository: EntriesRepository,
+    private val fileWriter: FileWriter
 ) {
 
     suspend fun export(destinationUri: Uri): Int = getEntryModels()
@@ -42,7 +41,7 @@ internal class EntriesExporter @Inject constructor(
             models.size to createFileContent(models)
         }
         .let { (modelsCount, content) ->
-            saveFileContent(destinationUri, content)
+            fileWriter.write(destinationUri.toString(), content)
 
             modelsCount
         }
@@ -53,12 +52,6 @@ internal class EntriesExporter @Inject constructor(
 
     private suspend fun createFileContent(models: List<AuthenticatorEntryModel>) = withContext(appDispatchers.default) {
         authenticatorClient.exportEntries(models)
-    }
-
-    private suspend fun saveFileContent(destinationUri: Uri, content: String) = withContext(appDispatchers.io) {
-        contentResolver.openOutputStream(destinationUri)
-            ?.use { outputStream -> outputStream.write(content.toByteArray()) }
-            ?: throw IOException("Cannot write exported entries to $destinationUri")
     }
 
 }
