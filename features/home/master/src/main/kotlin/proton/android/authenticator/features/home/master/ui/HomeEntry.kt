@@ -22,7 +22,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,18 +53,20 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
+import proton.android.authenticator.shared.ui.domain.theme.ThemeType
+import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 
 @Composable
 internal fun HomeEntry(
     entryModel: HomeMasterEntryModel,
     animateOnCodeChange: Boolean,
     showBoxesInCode: Boolean,
-    showShadowsInTexts: Boolean,
+    themeType: ThemeType,
     onCopyCodeClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    val showTextShadows = isSystemInDarkTheme() || showShadowsInTexts
+    val showTextShadows = isDarkTheme(themeType = themeType)
 
     SwipeRevealMenu(
         isRevealed = true,
@@ -98,7 +99,7 @@ internal fun HomeEntry(
             entryModel = entryModel,
             animateOnCodeChange = animateOnCodeChange,
             showBoxesInCode = showBoxesInCode,
-            showShadowsInTexts = showShadowsInTexts,
+            showShadowsInTexts = showTextShadows,
             showTextShadows = showTextShadows
         )
     }

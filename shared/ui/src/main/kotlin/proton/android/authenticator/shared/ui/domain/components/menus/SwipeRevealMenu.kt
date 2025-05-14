@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -51,8 +52,6 @@ import kotlin.math.roundToInt
 enum class SwipeDirection {
     LeftToRight, RightToLeft
 }
-
-private const val MENU_WIDTH_COEFFICIENT = 3
 
 @Composable
 fun SwipeRevealMenu(
@@ -65,6 +64,8 @@ fun SwipeRevealMenu(
     trailingMenuContent: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
+    val density = LocalDensity.current.density
+
     var contentWidth by remember {
         mutableFloatStateOf(0f)
     }
@@ -77,7 +78,7 @@ fun SwipeRevealMenu(
         if (contentWidth == 0f) {
             0f
         } else {
-            contentWidth.div(MENU_WIDTH_COEFFICIENT)
+            contentWidth.div(density)
         }
     }
 
@@ -158,9 +159,9 @@ fun SwipeRevealMenu(
                                     Triple(
                                         first = (contentOffset.value + dragAmount)
                                             .coerceIn(0f, contentWidth),
-                                        second = (leadingMenuOffset.value + dragAmount.div(MENU_WIDTH_COEFFICIENT))
+                                        second = (leadingMenuOffset.value + dragAmount.div(density))
                                             .coerceIn(-menuWith, 0f),
-                                        third = (trailingMenuOffset.value + dragAmount.div(MENU_WIDTH_COEFFICIENT))
+                                        third = (trailingMenuOffset.value + dragAmount.div(density))
                                             .coerceIn(menuWith, menuWith.times(2))
                                     )
                                 }
@@ -169,9 +170,9 @@ fun SwipeRevealMenu(
                                     Triple(
                                         first = (contentOffset.value + dragAmount)
                                             .coerceIn(-contentWidth, 0f),
-                                        second = (leadingMenuOffset.value + dragAmount.div(MENU_WIDTH_COEFFICIENT))
+                                        second = (leadingMenuOffset.value + dragAmount.div(density))
                                             .coerceIn(-menuWith.times(2), -menuWith),
-                                        third = (trailingMenuOffset.value + dragAmount.div(MENU_WIDTH_COEFFICIENT))
+                                        third = (trailingMenuOffset.value + dragAmount.div(density))
                                             .coerceIn(0f, menuWith)
                                     )
                                 }

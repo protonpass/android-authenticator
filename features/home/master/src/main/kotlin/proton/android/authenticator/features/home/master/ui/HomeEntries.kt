@@ -26,13 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
+import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
 @Composable
 internal fun HomeEntries(
     contentPadding: PaddingValues,
     animateOnCodeChange: Boolean,
     showBoxesInCode: Boolean,
-    showShadowsInTexts: Boolean,
+    themeType: ThemeType,
     entryModels: List<HomeMasterEntryModel>,
     onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
@@ -51,7 +52,7 @@ internal fun HomeEntries(
             HomeEntry(
                 animateOnCodeChange = animateOnCodeChange,
                 showBoxesInCode = showBoxesInCode,
-                showShadowsInTexts = showShadowsInTexts,
+                themeType = themeType,
                 entryModel = entryModel,
                 onCopyCodeClick = { onCopyEntryCodeClick(entryModel) },
                 onEditClick = { onEditEntryClick(entryModel) },

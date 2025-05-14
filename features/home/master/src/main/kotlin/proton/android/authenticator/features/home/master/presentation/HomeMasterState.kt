@@ -30,6 +30,7 @@ import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.shared.ui.domain.models.UiTextMask
+import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
 @Immutable
 internal sealed interface HomeMasterState {
@@ -53,7 +54,7 @@ internal sealed interface HomeMasterState {
     @Immutable
     data class Loaded(
         internal val animateOnCodeChange: Boolean,
-        internal val showShadowsInTexts: Boolean,
+        internal val themeType: ThemeType,
         internal val showBoxesInCode: Boolean,
         private val entryModelsMap: Map<String, HomeMasterEntryModel>
     ) : HomeMasterState {
@@ -97,11 +98,11 @@ internal sealed interface HomeMasterState {
                 settings.isCodeChangeAnimationEnabled
             }
 
-            val showShadowsInTexts = remember(key1 = settings.themeType) {
+            val themeType = remember(key1 = settings.themeType) {
                 when (settings.themeType) {
-                    SettingsThemeType.System -> false
-                    SettingsThemeType.Light -> false
-                    SettingsThemeType.Dark -> true
+                    SettingsThemeType.Dark -> ThemeType.Dark
+                    SettingsThemeType.Light -> ThemeType.Light
+                    SettingsThemeType.System -> ThemeType.System
                 }
             }
 
@@ -128,7 +129,7 @@ internal sealed interface HomeMasterState {
                     entryCodes,
                     entryCodesRemainingTimes,
                     animateOnCodeChange,
-                    showShadowsInTexts,
+                    themeType,
                     showBoxesInCode
                 )
             ) {
@@ -146,7 +147,7 @@ internal sealed interface HomeMasterState {
 
             return Loaded(
                 animateOnCodeChange = animateOnCodeChange,
-                showShadowsInTexts = showShadowsInTexts,
+                themeType = themeType,
                 showBoxesInCode = showBoxesInCode,
                 entryModelsMap = entryModelsMap
             )

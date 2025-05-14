@@ -58,7 +58,7 @@ internal fun HomeContent(
                 contentPadding = paddingValues,
                 animateOnCodeChange = state.animateOnCodeChange,
                 showBoxesInCode = state.showBoxesInCode,
-                showShadowsInTexts = state.showShadowsInTexts,
+                themeType = state.themeType,
                 entryModels = state.entryModels,
                 onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
