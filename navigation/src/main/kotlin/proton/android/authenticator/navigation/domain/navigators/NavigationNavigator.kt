@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 interface NavigationNavigator {
 
     @Composable
-    fun NavGraphs()
+    fun NavGraphs(isDarkTheme: Boolean)
 
 }

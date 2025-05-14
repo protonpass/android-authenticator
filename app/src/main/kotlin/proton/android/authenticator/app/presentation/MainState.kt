@@ -16,10 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator
+package proton.android.authenticator.app.presentation
 
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import androidx.compose.runtime.Immutable
+import proton.android.authenticator.business.settings.domain.SettingsThemeType
 
-@HiltAndroidApp
-internal class App : Application()
+@Immutable
+internal data class MainState(internal val themeType: SettingsThemeType)

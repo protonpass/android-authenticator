@@ -198,6 +198,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(project(":business:settings"))
+    implementation(project(":features:shared"))
     implementation(project(":navigation"))
 }
 

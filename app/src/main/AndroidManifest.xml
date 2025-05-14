@@ -35,7 +35,7 @@
     </queries>
 
     <application
-        android:name=".App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -47,7 +47,7 @@
         android:windowSoftInputMode="adjustResize"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".app.ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ProtonAuthenticator">
             <intent-filter>

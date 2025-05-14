@@ -20,8 +20,8 @@ internal class AppNavigationNavigator @Inject constructor(
 ) : NavigationNavigator {
 
     @Composable
-    override fun NavGraphs() {
-        Theme {
+    override fun NavGraphs(isDarkTheme: Boolean) {
+        Theme(isDarkTheme = isDarkTheme) {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             val navController = rememberNavController(bottomSheetNavigator)
 
