@@ -67,13 +67,10 @@ internal class SettingsMasterViewModel @Inject constructor(
     }
 
     internal fun onExportEntries(uri: Uri?) {
-        if (uri == null) return
-
         viewModelScope.launch {
-            exportEntriesUseCase(destinationUri = uri).also { answer ->
+            exportEntriesUseCase(uri = uri).also { answer ->
                 when (answer) {
                     is Answer.Failure -> {
-                        println("JIBIRI: ExportEntriesUseCase.Failure")
                         SettingsMasterEvent.OnEntriesExportError(errorReason = answer.reason.ordinal)
                     }
 

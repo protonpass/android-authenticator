@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.exports.completion.ui.ExportsCompletionScreen
+import proton.android.authenticator.features.exports.errors.ui.ExportsErrorsScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
@@ -50,11 +51,11 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                     ).also(onNavigate)
                 },
                 onExportFailed = { errorReason ->
-//                    NavigationCommand.NavigateTo(
-//                        destination = SettingsExportErrorNavigationDestination(
-//                            errorReason = errorReason
-//                        )
-//                    )
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsExportErrorNavigationDestination(
+                            errorReason = errorReason
+                        )
+                    ).also(onNavigate)
                 },
                 onImportClick = {
                     NavigationCommand.NavigateTo(
@@ -85,6 +86,17 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
 
         dialog<SettingsExportCompletionNavigationDestination> {
             ExportsCompletionScreen(
+                onDismissed = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<SettingsExportErrorNavigationDestination> {
+            ExportsErrorsScreen(
                 onDismissed = {
                     NavigationCommand.PopupTo(
                         destination = SettingsMasterNavigationDestination,

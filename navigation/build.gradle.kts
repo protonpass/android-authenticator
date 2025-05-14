@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(":features:exports:completion"))
+    implementation(project(":features:exports:errors"))
     implementation(project(":features:home:manual"))
     implementation(project(":features:home:master"))
     implementation(project(":features:home:scan"))
