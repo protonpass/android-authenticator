@@ -27,7 +27,14 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 
 @Composable
-fun Theme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun isDarkTheme(themeType: ThemeType): Boolean = when (themeType) {
+    ThemeType.Dark -> true
+    ThemeType.Light -> false
+    ThemeType.System -> isSystemInDarkTheme()
+}
+
+@Composable
+fun Theme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     val colorScheme = remember(isDarkTheme) {
         if (isDarkTheme) ThemeColors.Dark
         else ThemeColors.Light

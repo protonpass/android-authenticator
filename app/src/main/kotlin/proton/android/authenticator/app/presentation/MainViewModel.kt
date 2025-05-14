@@ -36,11 +36,11 @@ internal class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     internal val stateFlow: StateFlow<MainState> = observeSettingsUseCase()
-        .mapLatest { settings -> MainState(themeType = settings.themeType) }
+        .mapLatest { settings -> MainState(settingsThemeType = settings.themeType) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MainState(themeType = SettingsThemeType.System)
+            initialValue = MainState(settingsThemeType = SettingsThemeType.System)
         )
 
 }

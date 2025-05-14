@@ -16,19 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.app.presentation
+package proton.android.authenticator.shared.ui.domain.theme
 
-import androidx.compose.runtime.Immutable
-import proton.android.authenticator.business.settings.domain.SettingsThemeType
-import proton.android.authenticator.shared.ui.domain.theme.ThemeType
-
-@Immutable
-internal data class MainState(private val settingsThemeType: SettingsThemeType) {
-
-    internal val themeType: ThemeType = when (settingsThemeType) {
-        SettingsThemeType.Dark -> ThemeType.Dark
-        SettingsThemeType.Light -> ThemeType.Light
-        SettingsThemeType.System -> ThemeType.System
-    }
-
+enum class ThemeType {
+    Dark,
+    Light,
+    System
 }

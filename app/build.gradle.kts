@@ -201,6 +201,7 @@ dependencies {
     implementation(project(":business:settings"))
     implementation(project(":features:shared"))
     implementation(project(":navigation"))
+    implementation(project(":shared:ui"))
 }
 
 dependencyGuard {
