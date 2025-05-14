@@ -19,5 +19,4 @@
 <resources>
     <string name="exports_error_dialog_title">Export failed</string>
     <string name="exports_error_dialog_message_error">The was an error during the export.</string>
-    <string name="exports_error_dialog_message_error_invalid_path">Cannot export to the given path.</string>
 </resources>

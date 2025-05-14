@@ -27,11 +27,8 @@ import javax.inject.Inject
 
 internal class ExportEntriesUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(uri: Uri?): Answer<Int, ExportEntriesReason> = uri
-        ?.let { destinationUri ->
-            ExportEntriesCommand(destinationUri = destinationUri)
-                .let { command -> commandBus.dispatch(command) }
-        }
-        ?: Answer.Failure(reason = ExportEntriesReason.InvalidPath)
+    internal suspend operator fun invoke(uri: Uri): Answer<Int, ExportEntriesReason> =
+        ExportEntriesCommand(destinationUri = uri)
+            .let { command -> commandBus.dispatch(command) }
 
 }

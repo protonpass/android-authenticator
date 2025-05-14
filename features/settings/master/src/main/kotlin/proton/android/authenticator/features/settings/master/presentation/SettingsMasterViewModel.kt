@@ -67,6 +67,8 @@ internal class SettingsMasterViewModel @Inject constructor(
     }
 
     internal fun onExportEntries(uri: Uri?) {
+        if (uri == null) return
+
         viewModelScope.launch {
             exportEntriesUseCase(uri = uri).also { answer ->
                 when (answer) {

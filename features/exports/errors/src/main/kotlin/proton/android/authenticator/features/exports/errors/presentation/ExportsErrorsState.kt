@@ -29,7 +29,6 @@ internal class ExportsErrorsState private constructor(private val errorReason: E
 
     internal val errorText: UiText = when (errorReason) {
         ExportEntriesReason.InvalidEntries -> R.string.exports_error_dialog_message_error
-        ExportEntriesReason.InvalidPath -> R.string.exports_error_dialog_message_error_invalid_path
     }.let(UiText::Resource)
 
     internal companion object {
