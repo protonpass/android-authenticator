@@ -47,14 +47,14 @@ internal fun HomeManualTotpForm(
     onTypeChange: (EntryType) -> Unit,
     onShowAdvanceOptions: () -> Unit,
     modifier: Modifier = Modifier
-) {
+) = with(formModel) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
     ) {
         FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = formModel.title,
+            value = title,
             label = stringResource(id = R.string.home_manual_form_title_label),
             placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
             onValueChange = onTitleChange
@@ -62,16 +62,17 @@ internal fun HomeManualTotpForm(
 
         FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = formModel.secret,
+            value = secret,
             label = stringResource(id = R.string.home_manual_form_secret_label),
             placeholder = stringResource(id = R.string.home_manual_form_secret_label),
             onValueChange = onSecretChange,
+            isError = isSecretError,
             isRequired = true
         )
 
         FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = formModel.issuer,
+            value = issuer,
             label = stringResource(id = R.string.home_manual_form_issuer_label),
             placeholder = stringResource(id = R.string.home_manual_form_issuer_label),
             onValueChange = onIssuerChange
@@ -80,7 +81,7 @@ internal fun HomeManualTotpForm(
         FormRevealMenu(
             modifier = Modifier.padding(top = ThemePadding.Medium),
             title = stringResource(id = R.string.home_manual_form_advanced_options_title),
-            isRevealed = formModel.showAdvanceOptions,
+            isRevealed = showAdvanceOptions,
             onClick = onShowAdvanceOptions
         ) {
             Column(
@@ -89,20 +90,20 @@ internal fun HomeManualTotpForm(
             ) {
                 FormDropdownMenu(
                     title = stringResource(id = R.string.home_manual_form_digits_title),
-                    options = formModel.digitsOptions,
+                    options = digitsOptions,
                     onSelectedOptionChange = onDigitsChange
                 )
 
                 FormDropdownMenu(
                     title = stringResource(id = R.string.home_manual_form_time_interval_title),
-                    options = formModel.timeIntervalOptions,
+                    options = timeIntervalOptions,
                     onSelectedOptionChange = onTimeIntervalChange
                 )
 
                 FormTab(
                     title = stringResource(id = R.string.home_manual_form_time_algorithm_title),
-                    selectedTabIndex = formModel.selectedAlgorithmIndex,
-                    tabs = formModel.algorithmOptions,
+                    selectedTabIndex = selectedAlgorithmIndex,
+                    tabs = algorithmOptions,
                     onTabSelected = { index ->
                         onAlgorithmChange(EntryAlgorithm.from(value = index))
                     }
@@ -110,8 +111,8 @@ internal fun HomeManualTotpForm(
 
                 FormTab(
                     title = stringResource(id = R.string.home_manual_form_time_type_title),
-                    selectedTabIndex = formModel.selectedTypeIndex,
-                    tabs = formModel.typeOptions,
+                    selectedTabIndex = selectedTypeIndex,
+                    tabs = typeOptions,
                     onTabSelected = { index ->
                         onTypeChange(EntryType.from(value = index))
                     }

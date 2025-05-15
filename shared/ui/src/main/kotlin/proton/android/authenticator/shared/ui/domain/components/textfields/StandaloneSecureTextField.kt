@@ -70,7 +70,6 @@ fun StandaloneSecureTextField(
             errorText?.let { text ->
                 Text(
                     text = text.asString(),
-                    color = Theme.colorScheme.signalError,
                     style = Theme.typography.captionRegular
                 )
             }
@@ -87,10 +86,11 @@ fun StandaloneSecureTextField(
                 unfocusedIndicatorColor = Theme.colorScheme.inputBorder,
                 disabledIndicatorColor = Theme.colorScheme.inputBorder,
                 cursorColor = Theme.colorScheme.accent,
-                errorTextColor = Theme.colorScheme.textNorm,
                 errorContainerColor = Color.Transparent,
                 errorCursorColor = Theme.colorScheme.accent,
-                errorIndicatorColor = Theme.colorScheme.signalError
+                errorIndicatorColor = Theme.colorScheme.signalError,
+                errorTextColor = Theme.colorScheme.signalError,
+                errorSupportingTextColor = Theme.colorScheme.signalError
             )
     )
 }

@@ -39,7 +39,7 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             .let { model -> updater.update(model) }
             .let(Answer<Unit, UpdateEntryReason>::Success)
     } catch (_: AuthenticatorException) {
-        Answer.Failure(reason = UpdateEntryReason.InvalidEntry)
+        Answer.Failure(reason = UpdateEntryReason.InvalidEntrySecret)
     } catch (_: IllegalStateException) {
         Answer.Failure(reason = UpdateEntryReason.EntryNotFound)
     }

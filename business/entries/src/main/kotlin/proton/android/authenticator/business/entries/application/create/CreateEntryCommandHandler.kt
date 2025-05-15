@@ -42,7 +42,7 @@ internal class CreateEntryCommandHandler @Inject constructor(
             }
             .let(Answer<Unit, CreateEntryReason>::Success)
     } catch (_: AuthenticatorException) {
-        Answer.Failure(reason = CreateEntryReason.InvalidEntry)
+        Answer.Failure(reason = CreateEntryReason.InvalidEntrySecret)
     }
 
     private fun CreateEntryCommand.FromSteam.toModel() = authenticatorClient.newSteamEntryFromParams(

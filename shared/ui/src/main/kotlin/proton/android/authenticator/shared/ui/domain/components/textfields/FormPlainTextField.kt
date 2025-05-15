@@ -43,6 +43,7 @@ fun FormPlainTextField(
     placeholder: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isError: Boolean = false,
     isRequired: Boolean = false,
     isSingleLine: Boolean = true,
     enableQuickClear: Boolean = true
@@ -69,19 +70,23 @@ fun FormPlainTextField(
         trailingIcon = {
             if (enableQuickClear && value.isNotEmpty()) {
                 Icon(
-                    modifier = Modifier.clickable {
-                        onValueChange("")
-                    },
+                    modifier = Modifier
+                        .clickable { onValueChange("") },
                     painter = painterResource(id = R.drawable.ic_cross),
                     contentDescription = null,
                     tint = Theme.colorScheme.textWeak
                 )
             }
         },
+        isError = isError,
         singleLine = isSingleLine,
         shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
         textStyle = Theme.typography.body1Regular,
         colors = TextFieldDefaults.colors(
+            errorTextColor = Theme.colorScheme.signalError,
+            errorLabelColor = Theme.colorScheme.signalError,
+            errorContainerColor = Theme.colorScheme.inputBackground,
+            errorIndicatorColor = Color.Transparent,
             focusedTextColor = Theme.colorScheme.textNorm,
             unfocusedTextColor = Theme.colorScheme.textNorm,
             focusedLabelColor = Theme.colorScheme.textNorm,

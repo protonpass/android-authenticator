@@ -29,8 +29,11 @@ internal data class HomeManualFormModel(
     internal val timeInterval: Int,
     internal val algorithm: EntryAlgorithm,
     internal val type: EntryType,
-    internal val showAdvanceOptions: Boolean
+    internal val showAdvanceOptions: Boolean,
+    private val isValidSecret: Boolean
 ) {
+
+    internal val isSecretError: Boolean = !isValidSecret
 
     internal val digitsOptions: List<HomeManualOptions.Digits> = DEFAULT_DIGITS
         .let { digitsOptions ->
@@ -66,7 +69,7 @@ internal data class HomeManualFormModel(
 
     internal val selectedTypeIndex: Int = type.value
 
-    internal val isValid: Boolean = secret.isNotBlank()
+    internal val isValid: Boolean = secret.isNotBlank() && isValidSecret
 
     private companion object {
 

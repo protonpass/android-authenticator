@@ -22,5 +22,5 @@ import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
 enum class UpdateEntryReason : AnswerReason {
     EntryNotFound,
-    InvalidEntry
+    InvalidEntrySecret
 }

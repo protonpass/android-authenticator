@@ -41,14 +41,14 @@ internal fun HomeManualSteamForm(
     onSecretChange: (String) -> Unit,
     onTypeChange: (EntryType) -> Unit,
     modifier: Modifier = Modifier
-) {
+) = with(formModel) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
     ) {
         FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = formModel.title,
+            value = title,
             label = stringResource(id = R.string.home_manual_form_title_label),
             placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
             onValueChange = onTitleChange
@@ -56,10 +56,11 @@ internal fun HomeManualSteamForm(
 
         FormPlainTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = formModel.secret,
+            value = secret,
             label = stringResource(id = R.string.home_manual_form_secret_label),
             placeholder = stringResource(id = R.string.home_manual_form_secret_label),
             onValueChange = onSecretChange,
+            isError = isSecretError,
             isRequired = true
         )
 
@@ -67,8 +68,8 @@ internal fun HomeManualSteamForm(
 
         FormTab(
             title = stringResource(id = R.string.home_manual_form_time_type_title),
-            selectedTabIndex = formModel.selectedTypeIndex,
-            tabs = formModel.typeOptions,
+            selectedTabIndex = selectedTypeIndex,
+            tabs = typeOptions,
             onTabSelected = { index ->
                 onTypeChange(EntryType.from(value = index))
             }

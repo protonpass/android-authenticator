@@ -31,11 +31,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.entries.application.create.CreateEntryReason
+import proton.android.authenticator.business.entries.application.update.UpdateEntryReason
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.manual.usecases.GetEntryUseCase
 import proton.android.authenticator.features.home.manual.usecases.UpdateEntryUseCase
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
@@ -60,6 +63,8 @@ internal class HomeManualViewModel @Inject constructor(
 
     private val secretState = mutableStateOf<String?>(value = null)
 
+    private val isValidSecretFlow = MutableStateFlow<Boolean>(value = true)
+
     private val issuerState = mutableStateOf<String?>(value = null)
 
     private val digitsFlow = MutableStateFlow<Int?>(value = null)
@@ -80,6 +85,7 @@ internal class HomeManualViewModel @Inject constructor(
             entryFlow = entryFlow,
             title = titleState.value,
             secret = secretState.value,
+            isValidSecretFlow = isValidSecretFlow,
             issuer = issuerState.value,
             digitsFlow = digitsFlow,
             timeIntervalFlow = timeIntervalFlow,
@@ -100,6 +106,8 @@ internal class HomeManualViewModel @Inject constructor(
 
     internal fun onSecretChange(newSecret: String) {
         secretState.value = newSecret.trim()
+
+        isValidSecretFlow.update { true }
     }
 
     internal fun onIssuerChange(newIssuer: String) {
@@ -120,6 +128,7 @@ internal class HomeManualViewModel @Inject constructor(
 
     internal fun onTypeChange(newType: EntryType) {
         typeFlow.update { newType }
+
         showAdvanceOptionsFlow.update { true }
     }
 
@@ -137,17 +146,45 @@ internal class HomeManualViewModel @Inject constructor(
 
     private fun createEntry(formModel: HomeManualFormModel) {
         viewModelScope.launch {
-            createEntryUseCase(formModel = formModel)
+            createEntryUseCase(formModel = formModel).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> {
+                        when (answer.reason) {
+                            CreateEntryReason.InvalidEntrySecret -> {
+                                isValidSecretFlow.update { false }
+                            }
+                        }
+                    }
 
-            eventFlow.update { HomeManualEvent.OnEntryCreated }
+                    is Answer.Success -> {
+                        eventFlow.update { HomeManualEvent.OnEntryCreated }
+                    }
+                }
+            }
         }
     }
 
     private fun updateEntry(entryId: String, formModel: HomeManualFormModel) {
         viewModelScope.launch {
-            updateEntryUseCase(entryId = entryId, formModel = formModel)
+            updateEntryUseCase(entryId = entryId, formModel = formModel).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> {
+                        when (answer.reason) {
+                            UpdateEntryReason.EntryNotFound -> {
 
-            eventFlow.update { HomeManualEvent.OnEntryUpdated }
+                            }
+
+                            UpdateEntryReason.InvalidEntrySecret -> {
+                                isValidSecretFlow.update { false }
+                            }
+                        }
+                    }
+
+                    is Answer.Success -> {
+                        eventFlow.update { HomeManualEvent.OnEntryUpdated }
+                    }
+                }
+            }
         }
     }
 

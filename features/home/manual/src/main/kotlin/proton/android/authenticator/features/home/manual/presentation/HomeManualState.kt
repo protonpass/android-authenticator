@@ -68,6 +68,7 @@ internal sealed interface HomeManualState {
             entryFlow: Flow<Entry?>,
             title: String?,
             secret: String?,
+            isValidSecretFlow: Flow<Boolean>,
             issuer: String?,
             digitsFlow: Flow<Int?>,
             timeIntervalFlow: Flow<Int?>,
@@ -83,6 +84,7 @@ internal sealed interface HomeManualState {
             val type by typeFlow.collectAsState(initial = null)
             val showAdvanceOptions by showAdvanceOptionsFlow.collectAsState(initial = null)
             val event by eventFlow.collectAsState(initial = HomeManualEvent.Idle)
+            val isValidSecret by isValidSecretFlow.collectAsState(initial = false)
 
             if (entryId == null) {
                 return Creating(
@@ -94,7 +96,8 @@ internal sealed interface HomeManualState {
                         timeInterval = timeInterval ?: DEFAULT_TIME_INTERVAL,
                         algorithm = algorithm ?: DEFAULT_ALGORITHM,
                         type = type ?: DEFAULT_TYPE,
-                        showAdvanceOptions = showAdvanceOptions == true
+                        showAdvanceOptions = showAdvanceOptions == true,
+                        isValidSecret = isValidSecret
                     ),
                     event = event
                 )
@@ -110,7 +113,8 @@ internal sealed interface HomeManualState {
                         timeInterval = timeInterval ?: currentEntry.period,
                         algorithm = algorithm ?: currentEntry.algorithm,
                         type = type ?: currentEntry.type,
-                        showAdvanceOptions = showAdvanceOptions == true
+                        showAdvanceOptions = showAdvanceOptions == true,
+                        isValidSecret = isValidSecret
                     ),
                     event = event
                 )
