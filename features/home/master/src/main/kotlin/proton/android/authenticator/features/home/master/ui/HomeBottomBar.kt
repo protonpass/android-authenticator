@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,9 +39,11 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
-internal fun HomeBottomBar(onEntryQueryChange: (String) -> Unit, onNewEntryClick: () -> Unit) {
-    var searchQuery = remember { mutableStateOf("") }
-
+internal fun HomeBottomBar(
+    searchQuery: String,
+    onEntryQueryChange: (String) -> Unit,
+    onNewEntryClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -62,12 +62,8 @@ internal fun HomeBottomBar(onEntryQueryChange: (String) -> Unit, onNewEntryClick
         ) {
             SearchTextField(
                 modifier = Modifier.weight(weight = 1f, fill = true),
-                initialValue = searchQuery.value,
-                onValueChange = { newValue ->
-                    searchQuery.value = newValue
-
-                    onEntryQueryChange(newValue)
-                }
+                value = searchQuery,
+                onValueChange = onEntryQueryChange
             )
 
             Icon(

@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
@@ -32,7 +33,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -40,7 +40,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
@@ -63,10 +62,10 @@ internal class HomeMasterViewModel @Inject constructor(
 
     private val entryCodePeriods = mutableSetOf<Int>()
 
-    private val entrySearchQueryFlow = MutableStateFlow(SEARCH_QUERY_DEFAULT_VALUE)
+    private val entrySearchQueryState = mutableStateOf<String>(value = SEARCH_QUERY_DEFAULT_VALUE)
 
     @OptIn(FlowPreview::class)
-    private val entrySearchQueryDebouncedFlow = entrySearchQueryFlow
+    private val entrySearchQueryDebouncedFlow = snapshotFlow { entrySearchQueryState.value }
         .debounce { entrySearchQuery ->
             if (entrySearchQuery.isEmpty()) SEARCH_QUERY_EMPTY_DEBOUNCE_MILLIS
             else SEARCH_QUERY_DEBOUNCE_MILLIS
@@ -115,7 +114,8 @@ internal class HomeMasterViewModel @Inject constructor(
         mode = RecompositionMode.Immediate
     ) {
         HomeMasterState.create(
-            entrySearchQueryFlow = entrySearchQueryDebouncedFlow,
+            entrySearchQuery = entrySearchQueryState.value,
+            entrySearchQueryDebouncedFlow = entrySearchQueryDebouncedFlow,
             entriesFlow = entriesFlow,
             entryCodesFlow = entryCodesFlow,
             entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow,
@@ -133,8 +133,8 @@ internal class HomeMasterViewModel @Inject constructor(
         }
     }
 
-    internal fun onUpdateEntrySearchQuery(searchQuery: String) {
-        entrySearchQueryFlow.update { searchQuery }
+    internal fun onUpdateEntrySearchQuery(newSearchQuery: String) {
+        entrySearchQueryState.value = newSearchQuery.trimStart()
     }
 
     private companion object {
@@ -145,7 +145,7 @@ internal class HomeMasterViewModel @Inject constructor(
 
         private const val SEARCH_QUERY_EMPTY_DEBOUNCE_MILLIS = 0L
 
-        private const val SEARCH_QUERY_DEBOUNCE_MILLIS = 500L
+        private const val SEARCH_QUERY_DEBOUNCE_MILLIS = 200L
 
     }
 

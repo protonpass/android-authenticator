@@ -32,10 +32,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -51,16 +48,12 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
 fun SearchTextField(
-    initialValue: String,
+    value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     isSingleLine: Boolean = true
 ) {
     val shape = remember { CircleShape }
-
-    var value by remember(key1 = initialValue) {
-        mutableStateOf(initialValue)
-    }
 
     BasicTextField(
         modifier = modifier
@@ -101,11 +94,7 @@ fun SearchTextField(
                 blendMode = PorterDuff.Mode.OVERLAY
             ),
         value = value,
-        onValueChange = { newValue ->
-            value = newValue
-
-            onValueChange(newValue)
-        },
+        onValueChange = onValueChange,
         cursorBrush = SolidColor(value = Theme.colorScheme.accent),
         textStyle = Theme.typography.body1Regular.copy(color = Theme.colorScheme.textNorm),
         decorationBox = @Composable { innerTextField ->

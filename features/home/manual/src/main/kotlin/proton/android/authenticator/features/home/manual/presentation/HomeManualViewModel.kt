@@ -46,7 +46,7 @@ internal class HomeManualViewModel @Inject constructor(
     private val updateEntryUseCase: UpdateEntryUseCase
 ) : ViewModel() {
 
-    private val entryId: String? = savedStateHandle["entryId"]
+    private val entryId: String? = savedStateHandle[ARGS_ENTRY_ID]
 
     private val entryFlow = flow {
         entryId
@@ -149,6 +149,12 @@ internal class HomeManualViewModel @Inject constructor(
 
             eventFlow.update { HomeManualEvent.OnEntryUpdated }
         }
+    }
+
+    private companion object {
+
+        private const val ARGS_ENTRY_ID = "entryId"
+
     }
 
 }

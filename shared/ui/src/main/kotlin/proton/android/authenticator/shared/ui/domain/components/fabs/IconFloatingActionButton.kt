@@ -16,31 +16,32 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.screens
+package proton.android.authenticator.shared.ui.domain.components.fabs
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundPrimaryButton
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
-fun ScaffoldScreen(
-    topBar: @Composable () -> Unit = {},
-    bottomBar: @Composable () -> Unit = {},
-    fab: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit
+fun IconFloatingActionButton(
+    icon: UiIcon,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    tint: Color = Color.White
 ) {
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        containerColor = Color.Transparent,
-        topBar = topBar,
-        bottomBar = bottomBar,
-        floatingActionButton = fab,
-        content = content
+    Icon(
+        modifier = modifier
+            .backgroundPrimaryButton()
+            .clickable(onClick = onClick)
+            .padding(all = ThemePadding.MediumSmall),
+        painter = icon.asPainter(),
+        contentDescription = null,
+        tint = tint
     )
 }

@@ -21,6 +21,7 @@ package proton.android.authenticator.features.home.master.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
 @Composable
 internal fun HomeEntries(
+    listState: LazyListState,
     contentPadding: PaddingValues,
     animateOnCodeChange: Boolean,
     showBoxesInCode: Boolean,
@@ -42,6 +44,7 @@ internal fun HomeEntries(
 ) {
     LazyColumn(
         modifier = modifier,
+        state = listState,
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
     ) {

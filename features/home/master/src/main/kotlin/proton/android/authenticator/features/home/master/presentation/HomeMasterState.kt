@@ -28,6 +28,7 @@ import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
+import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
@@ -35,34 +36,66 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 @Immutable
 internal sealed interface HomeMasterState {
 
-    val hasEntryModels: Boolean
+    val entriesCount: Int
+
+    val searchQuery: String
+
+    val showBottomBar: Boolean
+
+    val showFabButton: Boolean
+
+    val showTopSearchBar: Boolean
 
     @Immutable
     data object Empty : HomeMasterState {
 
-        override val hasEntryModels: Boolean = false
+        override val entriesCount: Int = 0
+
+        override val searchQuery: String = ""
+
+        override val showBottomBar: Boolean = false
+
+        override val showFabButton: Boolean = false
+
+        override val showTopSearchBar: Boolean = false
 
     }
 
     @Immutable
     data object Loading : HomeMasterState {
 
-        override val hasEntryModels: Boolean = false
+        override val entriesCount: Int = 0
+
+        override val searchQuery: String = ""
+
+        override val showBottomBar: Boolean = false
+
+        override val showFabButton: Boolean = false
+
+        override val showTopSearchBar: Boolean = false
 
     }
 
     @Immutable
     data class Loaded(
+        override val searchQuery: String,
         internal val animateOnCodeChange: Boolean,
-        internal val themeType: ThemeType,
         internal val showBoxesInCode: Boolean,
-        private val entryModelsMap: Map<String, HomeMasterEntryModel>
+        internal val themeType: ThemeType,
+        private val entryModelsMap: Map<String, HomeMasterEntryModel>,
+        private val searchBarType: SettingsSearchBarType
     ) : HomeMasterState {
+
+        override val entriesCount: Int = entryModelsMap.size
+
+        override val showBottomBar: Boolean = searchBarType == SettingsSearchBarType.Bottom
+
+        override val showTopSearchBar: Boolean = searchBarType == SettingsSearchBarType.Top
+
+        override val showFabButton: Boolean = showTopSearchBar && searchQuery.isEmpty()
 
         internal val entryModels: List<HomeMasterEntryModel>
             get() = entryModelsMap.values.toList()
-
-        override val hasEntryModels: Boolean = entryModels.isNotEmpty()
 
     }
 
@@ -70,16 +103,17 @@ internal sealed interface HomeMasterState {
 
         @Composable
         internal fun create(
+            entrySearchQuery: String,
             entriesFlow: Flow<List<Entry>>,
             entryCodesFlow: Flow<List<EntryCode>>,
             entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>,
-            entrySearchQueryFlow: Flow<String>,
+            entrySearchQueryDebouncedFlow: Flow<String>,
             settingsFlow: Flow<Settings>
         ): HomeMasterState {
             val entries: List<Entry>? by entriesFlow.collectAsState(initial = null)
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
-            val entrySearchQuery by entrySearchQueryFlow.collectAsState("")
+            val entrySearchQueryDebounced by entrySearchQueryDebouncedFlow.collectAsState(entrySearchQuery)
             val settings by settingsFlow.collectAsState(Settings.Default)
 
             if (entries == null) {
@@ -124,7 +158,7 @@ internal sealed interface HomeMasterState {
 
             val entryModelsMap = remember(
                 keys = arrayOf(
-                    entrySearchQuery,
+                    entrySearchQueryDebounced,
                     entries,
                     entryCodes,
                     entryCodesRemainingTimes,
@@ -141,15 +175,17 @@ internal sealed interface HomeMasterState {
                         codeMasks = codeMasks
                     )
                 }
-                    .filter { entryModel -> entryModel.shouldBeShown(entrySearchQuery) }
+                    .filter { entryModel -> entryModel.shouldBeShown(entrySearchQueryDebounced) }
                     .associateBy { entryModel -> entryModel.id }
             }
 
             return Loaded(
                 animateOnCodeChange = animateOnCodeChange,
-                themeType = themeType,
+                searchQuery = entrySearchQuery,
                 showBoxesInCode = showBoxesInCode,
-                entryModelsMap = entryModelsMap
+                themeType = themeType,
+                entryModelsMap = entryModelsMap,
+                searchBarType = settings.searchBarType
             )
         }
     }

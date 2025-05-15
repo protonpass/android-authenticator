@@ -18,12 +18,26 @@
 
 package proton.android.authenticator.features.home.master.ui
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
+import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.components.fabs.IconFloatingActionButton
+import proton.android.authenticator.shared.ui.domain.components.textfields.SearchTextField
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundAppBar
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 fun HomeScreen(
@@ -33,22 +47,62 @@ fun HomeScreen(
 ) = with(hiltViewModel<HomeMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
+    val lazyListState = rememberLazyListState()
+
+    val isBlurred by remember {
+        derivedStateOf { lazyListState.firstVisibleItemScrollOffset > 0 }
+    }
+
+    LaunchedEffect(key1 = state.searchQuery) {
+        lazyListState.scrollToItem(index = 0)
+    }
+
     ScaffoldScreen(
         topBar = {
-            HomeTopBar(onSettingsClick = onSettingsClick)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .backgroundAppBar(isBlurred = isBlurred)
+            ) {
+                HomeTopBar(onSettingsClick = onSettingsClick)
+
+                if (state.showTopSearchBar) {
+                    SearchTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = ThemePadding.Medium,
+                                end = ThemePadding.Medium,
+                                bottom = ThemePadding.Small
+                            ),
+                        value = state.searchQuery,
+                        onValueChange = ::onUpdateEntrySearchQuery
+                    )
+                }
+            }
         },
         bottomBar = {
-            if (state.hasEntryModels) {
+            if (state.showBottomBar) {
                 HomeBottomBar(
+                    searchQuery = state.searchQuery,
                     onEntryQueryChange = ::onUpdateEntrySearchQuery,
                     onNewEntryClick = onNewEntryClick
+                )
+            }
+        },
+        fab = {
+            if (state.showFabButton) {
+                IconFloatingActionButton(
+                    icon = UiIcon.Resource(id = R.drawable.ic_plus),
+                    onClick = onNewEntryClick
                 )
             }
         }
     ) { paddingValues ->
         HomeContent(
-            paddingValues = paddingValues,
             state = state,
+            listState = lazyListState,
+            paddingValues = paddingValues,
             onNewEntryClick = onNewEntryClick,
             onEditEntryClick = { entry -> onEditEntryClick(entry.id) },
             onCopyEntryCodeClick = ::onCopyEntryCode,

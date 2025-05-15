@@ -21,6 +21,7 @@ package proton.android.authenticator.features.home.master.ui
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
@@ -29,8 +30,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 internal fun HomeContent(
-    paddingValues: PaddingValues,
     state: HomeMasterState,
+    listState: LazyListState,
+    paddingValues: PaddingValues,
     onNewEntryClick: () -> Unit,
     onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
@@ -55,6 +57,7 @@ internal fun HomeContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = ThemePadding.Medium),
+                listState = listState,
                 contentPadding = paddingValues,
                 animateOnCodeChange = state.animateOnCodeChange,
                 showBoxesInCode = state.showBoxesInCode,
