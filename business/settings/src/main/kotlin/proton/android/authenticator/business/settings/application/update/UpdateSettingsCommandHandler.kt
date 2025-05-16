@@ -19,7 +19,6 @@
 package proton.android.authenticator.business.settings.application.update
 
 import androidx.datastore.core.IOException
-import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
@@ -28,22 +27,12 @@ internal class UpdateSettingsCommandHandler @Inject constructor(
     private val updater: SettingsUpdater
 ) : CommandHandler<UpdateSettingsCommand, Unit, UpdateSettingsReason> {
 
-    override suspend fun handle(command: UpdateSettingsCommand): Answer<Unit, UpdateSettingsReason> = try {
-        Settings(
-            isBackupEnabled = command.isBackupEnabled,
-            isSyncEnabled = command.isSyncEnabled,
-            appLockType = command.appLockType,
-            isHideCodesEnabled = command.isTapToRevealEnabled,
-            themeType = command.themeType,
-            searchBarType = command.searchBarType,
-            digitType = command.digitType,
-            isCodeChangeAnimationEnabled = command.isCodeChangeAnimationEnabled,
-            isPassBannerDismissed = command.isPassBannerDismissed
-        )
-            .let { settings -> updater.update(settings) }
-            .let(Answer<Unit, UpdateSettingsReason>::Success)
-    } catch (_: IOException) {
-        Answer.Failure(reason = UpdateSettingsReason.CannotSaveSettings)
-    }
+    override suspend fun handle(command: UpdateSettingsCommand): Answer<Unit, UpdateSettingsReason> =
+        try {
+            updater.update(settings = command.settings)
+                .let(Answer<Unit, UpdateSettingsReason>::Success)
+        } catch (_: IOException) {
+            Answer.Failure(reason = UpdateSettingsReason.CannotSaveSettings)
+        }
 
 }

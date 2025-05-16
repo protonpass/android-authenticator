@@ -20,6 +20,5 @@ package proton.android.authenticator.business.settings.domain
 
 enum class SettingsAppLockType {
     None,
-    Biometric,
-    PinCode
+    Biometric
 }

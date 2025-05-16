@@ -26,7 +26,6 @@
     <string name="settings_security_title_lock">App lock</string>
     <string name="settings_security_title_lock_option_biometric">Biometric</string>
     <string name="settings_security_title_lock_option_none">None</string>
-    <string name="settings_security_title_lock_option_pin_code">Pin Code</string>
     <string name="settings_security_title_hide_codes">Hide codes</string>
 
     <string name="settings_appearance_section">Appearance</string>

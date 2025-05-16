@@ -9,5 +9,6 @@ android {
 dependencies {
     implementation(libs.androidx.biometric)
 
+    implementation(project(":business:settings"))
     implementation(project(":features:biometrics:shared"))
 }

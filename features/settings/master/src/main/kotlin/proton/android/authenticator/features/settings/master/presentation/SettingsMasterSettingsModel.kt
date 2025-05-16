@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.settings.master.presentation
 
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
@@ -37,8 +38,7 @@ internal data class SettingsMasterSettingsModel(
 
     internal val appLockOptions: List<SettingsMasterAppLockOption> = listOf(
         SettingsMasterAppLockOption.None(selectedType = appLockType),
-        SettingsMasterAppLockOption.Biometric(selectedType = appLockType),
-        SettingsMasterAppLockOption.PinCode(selectedType = appLockType)
+        SettingsMasterAppLockOption.Biometric(selectedType = appLockType)
     )
 
     internal val themeOptions: List<SettingsMasterThemeOption> = listOf(
@@ -55,6 +55,18 @@ internal data class SettingsMasterSettingsModel(
     internal val digitOptions: List<SettingsMasterDigitOption> = listOf(
         SettingsMasterDigitOption.Plain(selectedType = digitType),
         SettingsMasterDigitOption.Boxes(selectedType = digitType)
+    )
+
+    internal fun asSettings(): Settings = Settings(
+        isBackupEnabled = isBackupEnabled,
+        isSyncEnabled = isSyncEnabled,
+        appLockType = appLockType,
+        isHideCodesEnabled = isHideCodesEnabled,
+        themeType = themeType,
+        searchBarType = searchBarType,
+        digitType = digitType,
+        isCodeChangeAnimationEnabled = isCodeChangeAnimationEnabled,
+        isPassBannerDismissed = isPassBannerDismissed
     )
 
 }

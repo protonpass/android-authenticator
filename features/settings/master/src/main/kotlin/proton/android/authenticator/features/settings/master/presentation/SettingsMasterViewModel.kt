@@ -34,7 +34,7 @@ import proton.android.authenticator.business.settings.domain.SettingsSearchBarTy
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.usecases.ExportEntriesUseCase
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
-import proton.android.authenticator.features.settings.master.usecases.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
@@ -131,7 +131,7 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     private fun updateSettings(newSettingsModel: SettingsMasterSettingsModel) {
         viewModelScope.launch {
-            updateSettingsUseCase(newSettingsModel)
+            updateSettingsUseCase(newSettingsModel.asSettings())
         }
     }
 

@@ -18,20 +18,7 @@
 
 package proton.android.authenticator.business.settings.application.update
 
-import proton.android.authenticator.business.settings.domain.SettingsAppLockType
-import proton.android.authenticator.business.settings.domain.SettingsDigitType
-import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
-import proton.android.authenticator.business.settings.domain.SettingsThemeType
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-data class UpdateSettingsCommand(
-    internal val isBackupEnabled: Boolean,
-    internal val isSyncEnabled: Boolean,
-    internal val appLockType: SettingsAppLockType,
-    internal val isTapToRevealEnabled: Boolean,
-    internal val themeType: SettingsThemeType,
-    internal val searchBarType: SettingsSearchBarType,
-    internal val digitType: SettingsDigitType,
-    internal val isCodeChangeAnimationEnabled: Boolean,
-    internal val isPassBannerDismissed: Boolean
-) : Command
+data class UpdateSettingsCommand(internal val settings: Settings) : Command

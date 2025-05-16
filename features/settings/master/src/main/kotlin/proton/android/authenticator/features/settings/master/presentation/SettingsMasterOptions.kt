@@ -52,18 +52,6 @@ internal sealed interface SettingsMasterAppLockOption : UiSelectorOption<Setting
 
     }
 
-    data class PinCode(override val selectedType: SettingsAppLockType) : SettingsMasterAppLockOption {
-
-        override val isSelected: Boolean = selectedType == SettingsAppLockType.PinCode
-
-        override val text: UiText = UiText.Resource(
-            id = R.string.settings_security_title_lock_option_pin_code
-        )
-
-        override val value: SettingsAppLockType = SettingsAppLockType.PinCode
-
-    }
-
 }
 
 internal sealed interface SettingsMasterThemeOption : UiSelectorOption<SettingsThemeType> {

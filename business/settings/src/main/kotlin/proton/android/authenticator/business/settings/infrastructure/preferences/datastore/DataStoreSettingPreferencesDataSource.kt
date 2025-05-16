@@ -72,7 +72,6 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     private fun SettingsPreferencesAppLockType.toDomain() = when (this) {
         SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_NONE -> SettingsAppLockType.None
         SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_BIOMETRIC -> SettingsAppLockType.Biometric
-        SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_PIN_CODE -> SettingsAppLockType.PinCode
         SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_UNSPECIFIED -> SettingsAppLockType.None
         else -> SettingsAppLockType.None
     }
@@ -80,7 +79,6 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     private fun SettingsAppLockType.toPreferences() = when (this) {
         SettingsAppLockType.None -> SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_NONE
         SettingsAppLockType.Biometric -> SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_BIOMETRIC
-        SettingsAppLockType.PinCode -> SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_PIN_CODE
     }
 
     private fun SettingsPreferencesThemeType.toDomain() = when (this) {
