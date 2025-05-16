@@ -23,6 +23,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.biometrics.activation.ui.BiometricsActivationScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
@@ -130,7 +131,31 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
 
         composable<OnboardingBiometricsNavigationDestination> {
             OnboardingBiometricsScreen(
-                onSkipClick = {
+                onActivationRequired = { allowedAuthenticators ->
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingBiometricsActivationNavigationDestination(
+                            allowedAuthenticators = allowedAuthenticators
+                        )
+                    ).also(onNavigate)
+                },
+                onSkipped = {
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeNavigationDestination,
+                        popDestination = OnboardingNavigationDestination
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        bottomSheet<OnboardingBiometricsActivationNavigationDestination> {
+            BiometricsActivationScreen(
+                onCancelled = {
+                    NavigationCommand.PopupTo(
+                        destination = OnboardingBiometricsNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
+                },
+                onActivated = {
                     NavigationCommand.NavigateToWithPopup(
                         destination = HomeNavigationDestination,
                         popDestination = OnboardingNavigationDestination

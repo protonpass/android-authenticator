@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.features.onboarding.biometrics.R
+import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsState
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -42,10 +43,11 @@ import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun OnboardingBiometricsContent(
-    onEnableBiometricsClick: () -> Unit,
+    state: OnboardingBiometricsState.Ready,
+    onEnableBiometricsClick: (Int) -> Unit,
     onSkipClick: () -> Unit,
     modifier: Modifier = Modifier
-) {
+) = with(state) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
@@ -93,7 +95,7 @@ internal fun OnboardingBiometricsContent(
             VerticalActionsButtons(
                 modifier = Modifier.fillMaxWidth(),
                 primaryActionText = stringResource(id = R.string.onboarding_biometrics_action_enable_biometrics),
-                onPrimaryActionClick = onEnableBiometricsClick,
+                onPrimaryActionClick = { onEnableBiometricsClick(allowedAuthenticators) },
                 secondaryActionText = stringResource(id = uiR.string.action_skip),
                 onSecondaryActionClick = onSkipClick
             )

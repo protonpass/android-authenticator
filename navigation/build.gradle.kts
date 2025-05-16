@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(project(":features:biometrics:activation"))
+    implementation(project(":features:biometrics:authentication"))
     implementation(project(":features:exports:completion"))
     implementation(project(":features:exports:errors"))
     implementation(project(":features:home:manual"))

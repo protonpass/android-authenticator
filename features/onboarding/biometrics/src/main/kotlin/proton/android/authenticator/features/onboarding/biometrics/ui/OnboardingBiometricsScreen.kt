@@ -21,18 +21,32 @@ package proton.android.authenticator.features.onboarding.biometrics.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsState
+import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsViewModel
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
-fun OnboardingBiometricsScreen(onSkipClick: () -> Unit) {
-    ScaffoldScreen { innerPaddingValues ->
-        OnboardingBiometricsContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = innerPaddingValues),
-            onEnableBiometricsClick = {},
-            onSkipClick = onSkipClick
-        )
+fun OnboardingBiometricsScreen(onActivationRequired: (Int) -> Unit, onSkipped: () -> Unit) =
+    with(hiltViewModel<OnboardingBiometricsViewModel>()) {
+        val state by stateFlow.collectAsStateWithLifecycle()
+
+        ScaffoldScreen { innerPaddingValues ->
+            when (val currentState = state) {
+                OnboardingBiometricsState.Loading -> Unit
+                is OnboardingBiometricsState.Ready -> {
+                    OnboardingBiometricsContent(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues = innerPaddingValues),
+                        state = currentState,
+                        onEnableBiometricsClick = onActivationRequired,
+                        onSkipClick = onSkipped
+                    )
+                }
+            }
+        }
     }
-}

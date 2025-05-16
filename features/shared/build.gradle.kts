@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
 
+    implementation(project(":business:biometrics"))
     implementation(project(":business:settings"))
     implementation(project(":shared:common"))
 

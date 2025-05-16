@@ -1,7 +1,8 @@
 [versions]
-activityCompose = "1.10.1"
+activityComposeVersion = "1.10.1"
 agpVersion = "8.7.3"
 authenticatorCommonVersion = "0.19.3"
+biometricVersion = "1.4.0-alpha03"
 cameraVersion = "1.4.2"
 coilVersion = "2.7.0"
 composeBomVersion = "2025.05.00"
@@ -34,7 +35,8 @@ timberVersion = "5.0.1"
 zxingVersion = "3.5.3"
 
 [libraries]
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityComposeVersion" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometricVersion" }
 androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraVersion" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraVersion" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraVersion" }

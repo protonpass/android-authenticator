@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "proton.android.authenticator.features.onboarding.biometrics"
 }
+
+dependencies {
+    implementation(project(":business:biometrics"))
+}

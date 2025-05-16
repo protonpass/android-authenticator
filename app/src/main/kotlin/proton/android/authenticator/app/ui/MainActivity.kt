@@ -19,11 +19,11 @@
 package proton.android.authenticator.app.ui
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -36,7 +36,7 @@ import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
-internal class MainActivity : ComponentActivity() {
+internal class MainActivity : FragmentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
