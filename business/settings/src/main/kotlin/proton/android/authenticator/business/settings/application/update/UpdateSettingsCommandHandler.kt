@@ -27,12 +27,11 @@ internal class UpdateSettingsCommandHandler @Inject constructor(
     private val updater: SettingsUpdater
 ) : CommandHandler<UpdateSettingsCommand, Unit, UpdateSettingsReason> {
 
-    override suspend fun handle(command: UpdateSettingsCommand): Answer<Unit, UpdateSettingsReason> =
-        try {
-            updater.update(settings = command.settings)
-                .let(Answer<Unit, UpdateSettingsReason>::Success)
-        } catch (_: IOException) {
-            Answer.Failure(reason = UpdateSettingsReason.CannotSaveSettings)
-        }
+    override suspend fun handle(command: UpdateSettingsCommand): Answer<Unit, UpdateSettingsReason> = try {
+        updater.update(settings = command.settings)
+            .let(Answer<Unit, UpdateSettingsReason>::Success)
+    } catch (_: IOException) {
+        Answer.Failure(reason = UpdateSettingsReason.CannotSaveSettings)
+    }
 
 }

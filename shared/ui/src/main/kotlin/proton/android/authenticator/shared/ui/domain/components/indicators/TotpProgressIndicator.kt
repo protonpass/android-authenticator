@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
@@ -41,8 +42,8 @@ private const val PROGRESS_COLOR_ANIMATION_LABEL = "TOTP Progress Color Animatio
 private const val PROGRESS_COLOR_ANIMATION_DURATION_MILLIS = 500
 
 private const val PROGRESS_LIMIT_1 = 0f
-private const val PROGRESS_LIMIT_2 = 0.2f
-private const val PROGRESS_LIMIT_3 = 0.4f
+private const val PROGRESS_LIMIT_2 = 0.16f
+private const val PROGRESS_LIMIT_3 = 0.33f
 
 @Composable
 fun TotpProgressIndicator(
@@ -80,9 +81,11 @@ fun TotpProgressIndicator(
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(size = 36.dp),
+            modifier = Modifier
+                .size(size = 36.dp)
+                .scale(scaleX = -1f, scaleY = 1f),
             color = animatedProgressColor,
-            trackColor = Theme.colorScheme.inputBorderFocused.copy(alpha = 0.2f),
+            trackColor = animatedProgressColor.copy(alpha = 0.2f),
             progress = { animatedProgress },
             gapSize = 0.dp
         )
