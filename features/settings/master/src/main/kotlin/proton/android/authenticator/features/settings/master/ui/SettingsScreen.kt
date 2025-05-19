@@ -68,6 +68,7 @@ fun SettingsScreen(
     LaunchedEffect(key1 = state.event) {
         when (val event = state.event) {
             SettingsMasterEvent.Idle -> Unit
+
             is SettingsMasterEvent.OnEntriesExportError -> {
                 onExportFailed(event.errorReason)
             }

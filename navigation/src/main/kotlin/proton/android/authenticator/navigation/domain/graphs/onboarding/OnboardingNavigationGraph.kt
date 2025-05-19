@@ -137,9 +137,10 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
                         popDestination = OnboardingNavigationDestination
                     ).also(onNavigate)
                 },
-                onActivationRequired = { allowedAuthenticators ->
-                    NavigationCommand.NavigateTo(
-                        destination = OnboardingBiometricsActivationNavigationDestination
+                onBiometricsEnabled = {
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeNavigationDestination,
+                        popDestination = OnboardingNavigationDestination
                     ).also(onNavigate)
                 },
                 onSkipped = {

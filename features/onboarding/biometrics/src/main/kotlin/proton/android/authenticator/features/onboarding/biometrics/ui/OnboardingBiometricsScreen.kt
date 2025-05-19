@@ -21,10 +21,12 @@ package proton.android.authenticator.features.onboarding.biometrics.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsEvent
 import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsState
 import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsViewModel
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
@@ -32,11 +34,21 @@ import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 @Composable
 fun OnboardingBiometricsScreen(
     onNotAvailable: () -> Unit,
-    onActivationRequired: (Int) -> Unit,
+    onBiometricsEnabled: () -> Unit,
     onSkipped: () -> Unit
 ) {
     with(hiltViewModel<OnboardingBiometricsViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
+
+        LaunchedEffect(key1 = state.event) {
+            when (state.event) {
+                OnboardingBiometricsEvent.Idle -> Unit
+                OnboardingBiometricsEvent.OnEnableFailed -> Unit
+                OnboardingBiometricsEvent.OnEnableSucceeded -> onBiometricsEnabled()
+            }
+
+            onConsumeEvent(event = state.event)
+        }
 
         ScaffoldScreen { innerPaddingValues ->
             when (val currentState = state) {
@@ -48,7 +60,7 @@ fun OnboardingBiometricsScreen(
                             .padding(paddingValues = innerPaddingValues),
                         state = currentState,
                         onBiometricsNotAvailable = onNotAvailable,
-                        onEnableBiometricsClick = onActivationRequired,
+                        onEnableBiometricsClick = ::onEnableBiometric,
                         onSkipClick = onSkipped
                     )
                 }

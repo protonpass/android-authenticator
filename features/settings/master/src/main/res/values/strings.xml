@@ -27,6 +27,10 @@
     <string name="settings_security_title_lock_option_biometric">Biometric</string>
     <string name="settings_security_title_lock_option_none">None</string>
     <string name="settings_security_title_hide_codes">Hide codes</string>
+    <string name="settings_security_lock_enable_title">Enable Unlock</string>
+    <string name="settings_security_lock_enable_subtitle">App access security will be enabled</string>
+    <string name="settings_security_lock_disable_title">Disable Unlock</string>
+    <string name="settings_security_lock_disable_subtitle">App access security will be disabled</string>
 
     <string name="settings_appearance_section">Appearance</string>
     <string name="settings_appearance_title_theme">Theme</string>

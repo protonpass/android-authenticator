@@ -27,16 +27,25 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
+import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricCommand
+import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricCommandHandler
 import proton.android.authenticator.business.biometrics.application.find.FindBiometricQuery
 import proton.android.authenticator.business.biometrics.application.find.FindBiometricQueryHandler
 import proton.android.authenticator.business.biometrics.domain.BiometricRepository
 import proton.android.authenticator.business.biometrics.infrastructure.BiometricManagerBiometricRepository
+import proton.android.authenticator.shared.common.di.CommandHandlerKey
 import proton.android.authenticator.shared.common.di.QueryHandlerKey
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 internal abstract class BusinessBiometricsModule {
+
+    @[Binds Singleton IntoMap CommandHandlerKey(AuthenticateBiometricCommand::class)]
+    internal abstract fun bindAuthenticateBiometricCommandHandler(
+        impl: AuthenticateBiometricCommandHandler
+    ): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindBiometricQuery::class)]
     internal abstract fun bindFindBiometricQueryHandler(impl: FindBiometricQueryHandler): QueryHandler<*, *>

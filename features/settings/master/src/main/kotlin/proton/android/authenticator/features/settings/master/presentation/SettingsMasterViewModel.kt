@@ -18,7 +18,9 @@
 
 package proton.android.authenticator.features.settings.master.presentation
 
+import android.content.Context
 import android.net.Uri
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
@@ -32,15 +34,18 @@ import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
+import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.usecases.ExportEntriesUseCase
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
-import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SettingsMasterViewModel @Inject constructor(
+    private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
@@ -99,9 +104,53 @@ internal class SettingsMasterViewModel @Inject constructor(
             .also(::updateSettings)
     }
 
-    internal fun onUpdateAppLockType(newAppLockType: SettingsAppLockType) {
-        settingsModel.copy(appLockType = newAppLockType)
-            .also(::updateSettings)
+    internal fun onUpdateAppLockType(newAppLockType: SettingsAppLockType, context: Context) {
+        if (settingsModel.appLockType == newAppLockType) return
+
+        when (newAppLockType) {
+            SettingsAppLockType.None -> Pair(
+                first = R.string.settings_security_lock_disable_title,
+                second = R.string.settings_security_lock_disable_subtitle
+            )
+
+            SettingsAppLockType.Biometric -> Pair(
+                first = R.string.settings_security_lock_enable_title,
+                second = R.string.settings_security_lock_enable_subtitle
+            )
+        }.also { (titleResId, subtitleResId) ->
+            updateAppLockType(
+                titleResId = titleResId,
+                subtitleResId = subtitleResId,
+                context = context,
+                appLockType = newAppLockType
+            )
+        }
+    }
+
+    private fun updateAppLockType(
+        @StringRes titleResId: Int,
+        @StringRes subtitleResId: Int,
+        context: Context,
+        appLockType: SettingsAppLockType
+    ) {
+        viewModelScope.launch {
+            authenticateBiometricUseCase(
+                title = context.getString(titleResId),
+                subtitle = context.getString(subtitleResId),
+                context = context
+            ).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> {
+                        println("JIBIRI: failure -> ${answer.reason}")
+                    }
+
+                    is Answer.Success -> {
+                        settingsModel.copy(appLockType = appLockType)
+                            .also(::updateSettings)
+                    }
+                }
+            }
+        }
     }
 
     internal fun onUpdateIsTapToRevealEnabled(newIsTapToRevealEnabled: Boolean) {
@@ -110,16 +159,22 @@ internal class SettingsMasterViewModel @Inject constructor(
     }
 
     internal fun onUpdateThemeType(newThemeType: SettingsThemeType) {
+        if (settingsModel.themeType == newThemeType) return
+
         settingsModel.copy(themeType = newThemeType)
             .also(::updateSettings)
     }
 
     internal fun onUpdateSearchBarType(newSearchBarType: SettingsSearchBarType) {
+        if (settingsModel.searchBarType == newSearchBarType) return
+
         settingsModel.copy(searchBarType = newSearchBarType)
             .also(::updateSettings)
     }
 
     internal fun onUpdateDigitType(newDigitType: SettingsDigitType) {
+        if (settingsModel.digitType == newDigitType) return
+
         settingsModel.copy(digitType = newDigitType)
             .also(::updateSettings)
     }

@@ -45,7 +45,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProtonAuthenticator"
         android:windowSoftInputMode="adjustResize"
-        tools:targetApi="31">
+        android:enableOnBackInvokedCallback="true"
+        tools:targetApi="33">
         <activity
             android:name=".app.ui.MainActivity"
             android:exported="true"

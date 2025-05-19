@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":business:biometrics"))
+    implementation(project(":business:settings"))
 }

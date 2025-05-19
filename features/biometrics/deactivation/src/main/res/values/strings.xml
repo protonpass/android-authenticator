@@ -17,6 +17,6 @@
   -->
 
 <resources>
-    <string name="biometrics_activation_title">Enable Unlock</string>
-    <string name="biometrics_activation_subtitle">Enabling biometric unlock secures app access</string>
+    <string name="biometrics_deactivation_title">Disable Unlock</string>
+    <string name="biometrics_deactivation_subtitle">Disabling biometric unlock removes app access security</string>
 </resources>

@@ -18,6 +18,7 @@
   -->
 
 <resources>
-
-    <style name="Theme.ProtonAuthenticator" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.ProtonAuthenticator" parent="android:Theme.Material.Light.NoActionBar" >
+        <item name="colorPrimary">@color/white</item>
+    </style>
 </resources>

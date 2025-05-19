@@ -18,11 +18,13 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
@@ -39,7 +41,7 @@ internal fun SettingsContent(
     onDismissPassBanner: () -> Unit,
     onBackupChange: (Boolean) -> Unit,
     onSyncChange: (Boolean) -> Unit,
-    onAppLockTypeChange: (SettingsAppLockType) -> Unit,
+    onAppLockTypeChange: (SettingsAppLockType, Context) -> Unit,
     onTapToRevealChange: (Boolean) -> Unit,
     onThemeTypeChange: (SettingsThemeType) -> Unit,
     onSearchBarTypeChange: (SettingsSearchBarType) -> Unit,
@@ -52,6 +54,8 @@ internal fun SettingsContent(
     onDiscoverAppClick: (String, String) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
@@ -88,7 +92,9 @@ internal fun SettingsContent(
                     SettingsSelectorRow<SettingsAppLockType>(
                         title = stringResource(id = R.string.settings_security_title_lock),
                         options = settingsModel.appLockOptions,
-                        onSelectedOptionChange = onAppLockTypeChange
+                        onSelectedOptionChange = { newAppLockType ->
+                            onAppLockTypeChange(newAppLockType, context)
+                        }
                     )
                 },
                 {

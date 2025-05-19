@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.onboarding.biometrics.ui
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -45,11 +47,13 @@ import proton.android.authenticator.shared.ui.R as uiR
 internal fun OnboardingBiometricsContent(
     state: OnboardingBiometricsState.Ready,
     onBiometricsNotAvailable: () -> Unit,
-    onEnableBiometricsClick: (Int) -> Unit,
+    onEnableBiometricsClick: (Context) -> Unit,
     onSkipClick: () -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     if (isBiometricAvailable) {
+        val context = LocalContext.current
+
         Box(
             modifier = modifier,
             contentAlignment = Alignment.Center
@@ -97,7 +101,9 @@ internal fun OnboardingBiometricsContent(
                 VerticalActionsButtons(
                     modifier = Modifier.fillMaxWidth(),
                     primaryActionText = stringResource(id = R.string.onboarding_biometrics_action_enable_biometrics),
-                    onPrimaryActionClick = { onEnableBiometricsClick(allowedAuthenticators) },
+                    onPrimaryActionClick = {
+                        onEnableBiometricsClick(context)
+                    },
                     secondaryActionText = stringResource(id = uiR.string.action_skip),
                     onSecondaryActionClick = onSkipClick
                 )

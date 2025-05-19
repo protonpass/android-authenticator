@@ -2,7 +2,7 @@
 activityComposeVersion = "1.10.1"
 agpVersion = "8.7.3"
 authenticatorCommonVersion = "0.19.3"
-biometricVersion = "1.4.0-alpha03"
+biometricVersion = "1.4.0-alpha04"
 cameraVersion = "1.4.2"
 coilVersion = "2.7.0"
 composeBomVersion = "2025.05.00"

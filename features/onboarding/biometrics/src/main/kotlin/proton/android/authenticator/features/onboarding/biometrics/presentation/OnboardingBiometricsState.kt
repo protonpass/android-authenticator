@@ -29,11 +29,20 @@ import proton.android.authenticator.business.biometrics.domain.BiometricStatus
 @Immutable
 internal sealed interface OnboardingBiometricsState {
 
-    @Immutable
-    data object Loading : OnboardingBiometricsState
+    val event: OnboardingBiometricsEvent
 
     @Immutable
-    data class Ready(private val biometric: Biometric) : OnboardingBiometricsState {
+    data object Loading : OnboardingBiometricsState {
+
+        override val event: OnboardingBiometricsEvent = OnboardingBiometricsEvent.Idle
+
+    }
+
+    @Immutable
+    data class Ready(
+        override val event: OnboardingBiometricsEvent,
+        private val biometric: Biometric
+    ) : OnboardingBiometricsState {
 
         internal val isBiometricAvailable: Boolean = when (biometric.status) {
             BiometricStatus.Available -> true
@@ -42,17 +51,26 @@ internal sealed interface OnboardingBiometricsState {
             BiometricStatus.Unsupported -> false
         }
 
-        internal val allowedAuthenticators: Int = biometric.allowedAuthenticators
-
     }
 
     companion object {
 
         @Composable
-        internal fun create(biometricFlow: Flow<Biometric?>): OnboardingBiometricsState {
-            val biometric by biometricFlow.collectAsState(initial = null)
+        internal fun create(
+            biometricFlow: Flow<Biometric?>,
+            eventFlow: Flow<OnboardingBiometricsEvent>
+        ): OnboardingBiometricsState {
+            val nullableBiometric by biometricFlow.collectAsState(initial = null)
+            val event by eventFlow.collectAsState(initial = OnboardingBiometricsEvent.Idle)
 
-            return biometric?.let(::Ready) ?: Loading
+            return nullableBiometric
+                ?.let { biometric ->
+                    Ready(
+                        biometric = biometric,
+                        event = event
+                    )
+                }
+                ?: Loading
         }
 
     }
