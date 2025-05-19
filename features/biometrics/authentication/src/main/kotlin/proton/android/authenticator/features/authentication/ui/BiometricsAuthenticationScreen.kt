@@ -20,15 +20,14 @@ package proton.android.authenticator.features.authentication.ui
 
 import androidx.compose.runtime.Composable
 import proton.android.authenticator.features.biometrics.authentication.R
-import proton.android.authenticator.features.biometrics.shared.ui.BiometricsPrompt
+import proton.android.authenticator.features.biometrics.shared.ui.BiometricsPromptScreen
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 @Composable
 fun BiometricsAuthenticationScreen(onCancelled: () -> Unit) {
-    BiometricsPrompt(
+    BiometricsPromptScreen(
         titleText = UiText.Resource(id = R.string.biometrics_authentication_title),
         subtitleText = UiText.Resource(id = R.string.biometrics_authentication_subtitle),
-        allowedAuthenticators = 0,
         onError = {
             println("JIBIRI: auth onError")
         },

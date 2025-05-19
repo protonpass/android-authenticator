@@ -30,7 +30,11 @@ import proton.android.authenticator.features.onboarding.biometrics.presentation.
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
-fun OnboardingBiometricsScreen(onActivationRequired: (Int) -> Unit, onSkipped: () -> Unit) =
+fun OnboardingBiometricsScreen(
+    onNotAvailable: () -> Unit,
+    onActivationRequired: (Int) -> Unit,
+    onSkipped: () -> Unit
+) {
     with(hiltViewModel<OnboardingBiometricsViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -43,6 +47,7 @@ fun OnboardingBiometricsScreen(onActivationRequired: (Int) -> Unit, onSkipped: (
                             .fillMaxSize()
                             .padding(paddingValues = innerPaddingValues),
                         state = currentState,
+                        onBiometricsNotAvailable = onNotAvailable,
                         onEnableBiometricsClick = onActivationRequired,
                         onSkipClick = onSkipped
                     )
@@ -50,3 +55,4 @@ fun OnboardingBiometricsScreen(onActivationRequired: (Int) -> Unit, onSkipped: (
             }
         }
     }
+}

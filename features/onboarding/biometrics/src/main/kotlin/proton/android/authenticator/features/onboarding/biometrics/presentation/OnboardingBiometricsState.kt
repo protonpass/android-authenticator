@@ -24,6 +24,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.biometrics.domain.Biometric
+import proton.android.authenticator.business.biometrics.domain.BiometricStatus
 
 @Immutable
 internal sealed interface OnboardingBiometricsState {
@@ -33,6 +34,13 @@ internal sealed interface OnboardingBiometricsState {
 
     @Immutable
     data class Ready(private val biometric: Biometric) : OnboardingBiometricsState {
+
+        internal val isBiometricAvailable: Boolean = when (biometric.status) {
+            BiometricStatus.Available -> true
+            BiometricStatus.NotEnrolled,
+            BiometricStatus.Unavailable,
+            BiometricStatus.Unsupported -> false
+        }
 
         internal val allowedAuthenticators: Int = biometric.allowedAuthenticators
 

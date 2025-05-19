@@ -44,61 +44,66 @@ import proton.android.authenticator.shared.ui.R as uiR
 @Composable
 internal fun OnboardingBiometricsContent(
     state: OnboardingBiometricsState.Ready,
+    onBiometricsNotAvailable: () -> Unit,
     onEnableBiometricsClick: (Int) -> Unit,
     onSkipClick: () -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = ThemePadding.Large),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
+    if (isBiometricAvailable) {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = uiR.drawable.ic_placeholder_biometric),
-                contentDescription = null
-            )
+            Column(
+                modifier = Modifier.padding(horizontal = ThemePadding.Large),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
+            ) {
+                Image(
+                    painter = painterResource(id = uiR.drawable.ic_placeholder_biometric),
+                    contentDescription = null
+                )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = ThemeSpacing.Large)
-            )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = ThemeSpacing.Large)
+                )
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.onboarding_biometrics_title),
-                textAlign = TextAlign.Center,
-                color = Theme.colorScheme.textNorm,
-                style = Theme.typography.subtitle
-            )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.onboarding_biometrics_title),
+                    textAlign = TextAlign.Center,
+                    color = Theme.colorScheme.textNorm,
+                    style = Theme.typography.subtitle
+                )
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = ThemePadding.Medium),
-                text = stringResource(id = R.string.onboarding_biometrics_subtitle),
-                textAlign = TextAlign.Center,
-                color = Theme.colorScheme.textWeak,
-                style = Theme.typography.bodyRegular
-            )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = ThemePadding.Medium),
+                    text = stringResource(id = R.string.onboarding_biometrics_subtitle),
+                    textAlign = TextAlign.Center,
+                    color = Theme.colorScheme.textWeak,
+                    style = Theme.typography.bodyRegular
+                )
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(height = ThemeSpacing.Large)
-            )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height = ThemeSpacing.Large)
+                )
 
-            VerticalActionsButtons(
-                modifier = Modifier.fillMaxWidth(),
-                primaryActionText = stringResource(id = R.string.onboarding_biometrics_action_enable_biometrics),
-                onPrimaryActionClick = { onEnableBiometricsClick(allowedAuthenticators) },
-                secondaryActionText = stringResource(id = uiR.string.action_skip),
-                onSecondaryActionClick = onSkipClick
-            )
+                VerticalActionsButtons(
+                    modifier = Modifier.fillMaxWidth(),
+                    primaryActionText = stringResource(id = R.string.onboarding_biometrics_action_enable_biometrics),
+                    onPrimaryActionClick = { onEnableBiometricsClick(allowedAuthenticators) },
+                    secondaryActionText = stringResource(id = uiR.string.action_skip),
+                    onSecondaryActionClick = onSkipClick
+                )
+            }
         }
+    } else {
+        onBiometricsNotAvailable()
     }
 }

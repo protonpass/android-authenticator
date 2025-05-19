@@ -16,24 +16,35 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.biometrics.activation.presentation
+package proton.android.authenticator.features.biometrics.shared.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.biometrics.domain.Biometric
 
 @Immutable
-internal class BiometricsActivationState private constructor(internal val event: BiometricsActivationEvent) {
+internal sealed interface BiometricsSharedState {
 
-    internal companion object {
+    @Immutable
+    data object Loading : BiometricsSharedState
+
+    @Immutable
+    data class Ready(private val biometric: Biometric) : BiometricsSharedState {
+
+        internal val allowedAuthenticators: Int = biometric.allowedAuthenticators
+
+    }
+
+    companion object {
 
         @Composable
-        internal fun create(eventFlow: MutableStateFlow<BiometricsActivationEvent>): BiometricsActivationState {
-            val event by eventFlow.collectAsState(initial = BiometricsActivationEvent.Idle)
+        internal fun create(biometricFlow: Flow<Biometric?>): BiometricsSharedState {
+            val biometric by biometricFlow.collectAsState(initial = null)
 
-            return BiometricsActivationState(event = event)
+            return biometric?.let(::Ready) ?: Loading
         }
 
     }

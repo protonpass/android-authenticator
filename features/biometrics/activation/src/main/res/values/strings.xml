@@ -17,6 +17,6 @@
   -->
 
 <resources>
-    <string name="biometrics_activation_title">Activation Title</string>
-    <string name="biometrics_activation_subtitle">Activation Subtitle</string>
+    <string name="biometrics_activation_title">Biometric Unlock</string>
+    <string name="biometrics_activation_subtitle">Activate biometric unlock for enhanced security</string>
 </resources>

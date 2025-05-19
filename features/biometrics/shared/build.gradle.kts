@@ -8,4 +8,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.biometric)
+
+    implementation(project(":business:biometrics"))
 }

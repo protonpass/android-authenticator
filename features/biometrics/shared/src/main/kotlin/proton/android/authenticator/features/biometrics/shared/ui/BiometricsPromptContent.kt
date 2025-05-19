@@ -28,13 +28,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import proton.android.authenticator.features.biometrics.shared.presentation.BiometricsErrorType
+import proton.android.authenticator.features.biometrics.shared.presentation.BiometricsSharedState
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 @Composable
-fun BiometricsPrompt(
+internal fun BiometricsPromptContent(
+    state: BiometricsSharedState.Ready,
     titleText: UiText,
     subtitleText: UiText,
-    allowedAuthenticators: Int,
     onError: (BiometricsErrorType) -> Unit,
     onSuccess: () -> Unit
 ) {
@@ -80,7 +81,7 @@ fun BiometricsPrompt(
     BiometricPrompt.PromptInfo.Builder()
         .setTitle(titleText.asString())
         .setSubtitle(subtitleText.asString())
-        .setAllowedAuthenticators(allowedAuthenticators)
+        .setAllowedAuthenticators(state.allowedAuthenticators)
         .build()
         .also(biometricPrompt::authenticate)
         .also { hasBeenShown = true }

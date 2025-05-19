@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.biometrics.activation.presentation
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
@@ -38,14 +37,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class BiometricsActivationViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
-
-    private val allowedAuthenticators = requireNotNull<Int>(
-        value = savedStateHandle[ARGS_ALLOWED_AUTHENTICATORS]
-    )
 
     private val eventFlow = MutableStateFlow<BiometricsActivationEvent>(
         value = BiometricsActivationEvent.Idle
@@ -54,10 +48,7 @@ internal class BiometricsActivationViewModel @Inject constructor(
     internal val stateFlow: StateFlow<BiometricsActivationState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
-        BiometricsActivationState.create(
-            allowedAuthenticators = allowedAuthenticators,
-            eventFlow = eventFlow
-        )
+        BiometricsActivationState.create(eventFlow = eventFlow)
     }
 
     internal fun onConsumeEvent(event: BiometricsActivationEvent) {
@@ -100,12 +91,6 @@ internal class BiometricsActivationViewModel @Inject constructor(
                 }
                 .also { event -> eventFlow.update { event } }
         }
-    }
-
-    private companion object {
-
-        private const val ARGS_ALLOWED_AUTHENTICATORS = "allowedAuthenticators"
-
     }
 
 }

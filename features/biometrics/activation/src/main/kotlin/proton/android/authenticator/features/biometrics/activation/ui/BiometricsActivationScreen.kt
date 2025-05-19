@@ -26,11 +26,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.biometrics.activation.R
 import proton.android.authenticator.features.biometrics.activation.presentation.BiometricsActivationEvent
 import proton.android.authenticator.features.biometrics.activation.presentation.BiometricsActivationViewModel
-import proton.android.authenticator.features.biometrics.shared.ui.BiometricsPrompt
+import proton.android.authenticator.features.biometrics.shared.ui.BiometricsPromptScreen
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 @Composable
-fun BiometricsActivationScreen(onCancelled: () -> Unit, onActivated: () -> Unit) =
+fun BiometricsActivationScreen(onCancelled: () -> Unit, onActivated: () -> Unit) {
     with(hiltViewModel<BiometricsActivationViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -47,11 +47,11 @@ fun BiometricsActivationScreen(onCancelled: () -> Unit, onActivated: () -> Unit)
             onConsumeEvent(event = state.event)
         }
 
-        BiometricsPrompt(
+        BiometricsPromptScreen(
             titleText = UiText.Resource(id = R.string.biometrics_activation_title),
             subtitleText = UiText.Resource(id = R.string.biometrics_activation_subtitle),
-            allowedAuthenticators = state.allowedAuthenticators,
             onError = ::onActivationError,
             onSuccess = ::onActivationSuccess
         )
     }
+}
