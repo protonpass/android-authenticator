@@ -24,8 +24,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
-import proton.android.authenticator.features.biometrics.activation.ui.BiometricsActivationScreen
-import proton.android.authenticator.features.biometrics.deactivation.ui.BiometricsDeactivationScreen
 import proton.android.authenticator.features.exports.completion.ui.ExportsCompletionScreen
 import proton.android.authenticator.features.exports.errors.ui.ExportsErrorsScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
@@ -81,40 +79,6 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
                         appPackageName = appPackageName,
                         context = context,
                         fallbackUrl = appUrl
-                    ).also(onNavigate)
-                }
-            )
-        }
-
-        bottomSheet<SettingsDisableAppLockNavigationDestination> {
-            BiometricsDeactivationScreen(
-                onCancelled = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
-                    ).also(onNavigate)
-                },
-                onActivated = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
-                    ).also(onNavigate)
-                }
-            )
-        }
-
-        bottomSheet<SettingsEnableAppLockNavigationDestination> {
-            BiometricsActivationScreen(
-                onCancelled = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
-                    ).also(onNavigate)
-                },
-                onActivated = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
                     ).also(onNavigate)
                 }
             )
