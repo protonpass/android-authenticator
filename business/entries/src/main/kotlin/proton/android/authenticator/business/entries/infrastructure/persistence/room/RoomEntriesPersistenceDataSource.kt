@@ -18,6 +18,9 @@
 
 package proton.android.authenticator.business.entries.infrastructure.persistence.room
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import proton.android.authenticator.business.entries.domain.Entry
@@ -39,10 +42,14 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
 
     override fun observeAll(): Flow<List<Entry>> = entriesDao.observeAll()
         .map { entryEntities ->
-            encryptionContextProvider.withEncryptionContext {
-                entryEntities.map { entryEntity ->
-                    entryEntity.toDomain(this@withEncryptionContext, authenticatorClient)
-                }
+            coroutineScope {
+                encryptionContextProvider.withEncryptionContext {
+                    entryEntities.map { entryEntity ->
+                        async {
+                            entryEntity.toDomain(this@withEncryptionContext, authenticatorClient)
+                        }
+                    }
+                }.awaitAll()
             }
         }
 

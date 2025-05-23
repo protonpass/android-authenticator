@@ -18,27 +18,23 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
-import app.cash.molecule.moleculeFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -49,6 +45,8 @@ import proton.android.authenticator.features.shared.usecases.clipboards.CopyToCl
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
+import kotlin.time.Duration.Companion.seconds
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeMasterViewModel @Inject constructor(
@@ -60,8 +58,6 @@ internal class HomeMasterViewModel @Inject constructor(
     private val deleteEntryUseCase: DeleteEntryUseCase
 ) : ViewModel() {
 
-    private val entryCodePeriods = mutableSetOf<Int>()
-
     private val entrySearchQueryState = mutableStateOf<String>(value = SEARCH_QUERY_DEFAULT_VALUE)
 
     @OptIn(FlowPreview::class)
@@ -72,11 +68,6 @@ internal class HomeMasterViewModel @Inject constructor(
         }
 
     private val entriesFlow = observeEntriesUseCase()
-        .onEach { entries ->
-            entries.forEach { entry ->
-                entryCodePeriods.add(entry.period)
-            }
-        }
         .shareIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
@@ -89,25 +80,27 @@ internal class HomeMasterViewModel @Inject constructor(
         .flatMapLatest { entryUris ->
             observeEntryCodesUseCase(entryUris)
         }
+        .shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
+        )
 
-    private val entryCodeRemainingTimesFlow = moleculeFlow(mode = RecompositionMode.Immediate) {
-        var remainingTimesMap by remember { mutableStateOf(emptyMap<Int, Int>()) }
+    private val entryCodesRemainingTimeTickerFlow = flow {
+        while (coroutineContext.isActive) {
+            emit(Unit)
 
-        LaunchedEffect(Unit) {
-            while (isActive) {
-                val updatedRemainingTimesMap = mutableMapOf<Int, Int>()
-
-                entryCodePeriods.forEach { period ->
-                    updatedRemainingTimesMap[period] = timeProvider.remainingPeriodSeconds(period)
-                }
-
-                remainingTimesMap = updatedRemainingTimesMap
-
-                delay(REMAINING_TIME_INTERVAL_MILLIS)
-            }
+            delay(1.seconds)
         }
+    }
 
-        remainingTimesMap
+    private val entryCodesRemainingTimesFlow = combine(
+        entriesFlow,
+        entryCodesFlow,
+        entryCodesRemainingTimeTickerFlow
+    ) { entries, entryCodes, _ ->
+        entries.associate { entry ->
+            entry.period to timeProvider.remainingPeriodSeconds(entry.period)
+        }
     }
 
     internal val stateFlow: StateFlow<HomeMasterState> = viewModelScope.launchMolecule(
@@ -118,7 +111,7 @@ internal class HomeMasterViewModel @Inject constructor(
             entrySearchQueryDebouncedFlow = entrySearchQueryDebouncedFlow,
             entriesFlow = entriesFlow,
             entryCodesFlow = entryCodesFlow,
-            entryCodesRemainingTimesFlow = entryCodeRemainingTimesFlow,
+            entryCodesRemainingTimesFlow = entryCodesRemainingTimesFlow,
             settingsFlow = observeSettingsUseCase()
         )
     }
@@ -138,8 +131,6 @@ internal class HomeMasterViewModel @Inject constructor(
     }
 
     private companion object {
-
-        private const val REMAINING_TIME_INTERVAL_MILLIS = 1_000L
 
         private const val SEARCH_QUERY_DEFAULT_VALUE = ""
 

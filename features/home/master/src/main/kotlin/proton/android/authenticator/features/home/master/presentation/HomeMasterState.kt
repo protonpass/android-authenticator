@@ -36,8 +36,6 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 @Immutable
 internal sealed interface HomeMasterState {
 
-    val entriesCount: Int
-
     val searchQuery: String
 
     val showBottomBar: Boolean
@@ -48,8 +46,6 @@ internal sealed interface HomeMasterState {
 
     @Immutable
     data object Empty : HomeMasterState {
-
-        override val entriesCount: Int = 0
 
         override val searchQuery: String = ""
 
@@ -64,8 +60,6 @@ internal sealed interface HomeMasterState {
     @Immutable
     data object Loading : HomeMasterState {
 
-        override val entriesCount: Int = 0
-
         override val searchQuery: String = ""
 
         override val showBottomBar: Boolean = false
@@ -77,16 +71,15 @@ internal sealed interface HomeMasterState {
     }
 
     @Immutable
-    data class Loaded(
+    data class Ready(
         override val searchQuery: String,
         internal val animateOnCodeChange: Boolean,
         internal val showBoxesInCode: Boolean,
         internal val themeType: ThemeType,
         private val entryModelsMap: Map<String, HomeMasterEntryModel>,
+        private val entryCodesRemainingTimes: Map<Int, Int>,
         private val searchBarType: SettingsSearchBarType
     ) : HomeMasterState {
-
-        override val entriesCount: Int = entryModelsMap.size
 
         override val showBottomBar: Boolean = searchBarType == SettingsSearchBarType.Bottom
 
@@ -96,6 +89,11 @@ internal sealed interface HomeMasterState {
 
         internal val entryModels: List<HomeMasterEntryModel>
             get() = entryModelsMap.values.toList()
+
+        internal fun getRemainingSeconds(totalSeconds: Int): Int = entryCodesRemainingTimes.getOrDefault(
+            key = totalSeconds,
+            defaultValue = 0
+        )
 
     }
 
@@ -110,83 +108,83 @@ internal sealed interface HomeMasterState {
             entrySearchQueryDebouncedFlow: Flow<String>,
             settingsFlow: Flow<Settings>
         ): HomeMasterState {
-            val entries: List<Entry>? by entriesFlow.collectAsState(initial = null)
+            val entriesList: List<Entry>? by entriesFlow.collectAsState(initial = null)
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
-            val entrySearchQueryDebounced by entrySearchQueryDebouncedFlow.collectAsState(entrySearchQuery)
+            val entrySearchQueryDebounced by entrySearchQueryDebouncedFlow.collectAsState(
+                entrySearchQuery
+            )
             val settings by settingsFlow.collectAsState(Settings.Default)
 
-            if (entries == null) {
-                return Loading
-            }
-
-            if (entries!!.isEmpty()) {
-                return Empty
-            }
-
-            val hideCodes = remember(key1 = settings.isHideCodesEnabled) {
-                settings.isHideCodesEnabled
-            }
-
-            val animateOnCodeChange = remember(key1 = settings.isCodeChangeAnimationEnabled) {
-                settings.isCodeChangeAnimationEnabled
-            }
-
-            val themeType = remember(key1 = settings.themeType) {
-                when (settings.themeType) {
-                    SettingsThemeType.Dark -> ThemeType.Dark
-                    SettingsThemeType.Light -> ThemeType.Light
-                    SettingsThemeType.System -> ThemeType.System
-                }
-            }
-
-            val showBoxesInCode = remember(key1 = settings.digitType) {
-                when (settings.digitType) {
-                    SettingsDigitType.Boxes -> true
-                    SettingsDigitType.Plain -> false
-                }
-            }
-
-            val codeMasks = remember(key1 = hideCodes) {
-                buildList {
-                    if (hideCodes) {
-                        add(UiTextMask.Hidden)
+            return entriesList?.let { entries ->
+                if (entries.isEmpty()) {
+                    Empty
+                } else {
+                    val hideCodes = remember(key1 = settings.isHideCodesEnabled) {
+                        settings.isHideCodesEnabled
                     }
-                    add(UiTextMask.Totp)
-                }
-            }
 
-            val entryModelsMap = remember(
-                keys = arrayOf(
-                    entrySearchQueryDebounced,
-                    entries,
-                    entryCodes,
-                    entryCodesRemainingTimes,
-                    animateOnCodeChange,
-                    themeType,
-                    showBoxesInCode
-                )
-            ) {
-                entries!!.zip(entryCodes) { entry, entryCode ->
-                    HomeMasterEntryModel(
-                        entry = entry,
-                        entryCode = entryCode,
+                    val animateOnCodeChange = remember(key1 = settings.isCodeChangeAnimationEnabled) {
+                        settings.isCodeChangeAnimationEnabled
+                    }
+
+                    val themeType = remember(key1 = settings.themeType) {
+                        when (settings.themeType) {
+                            SettingsThemeType.Dark -> ThemeType.Dark
+                            SettingsThemeType.Light -> ThemeType.Light
+                            SettingsThemeType.System -> ThemeType.System
+                        }
+                    }
+
+                    val showBoxesInCode = remember(key1 = settings.digitType) {
+                        when (settings.digitType) {
+                            SettingsDigitType.Boxes -> true
+                            SettingsDigitType.Plain -> false
+                        }
+                    }
+
+                    val codeMasks = remember(key1 = hideCodes) {
+                        buildList {
+                            if (hideCodes) {
+                                add(UiTextMask.Hidden)
+                            }
+                            add(UiTextMask.Totp)
+                        }
+                    }
+
+                    val entryModelsMap = remember(
+                        keys = arrayOf(
+                            entrySearchQueryDebounced,
+                            entries,
+                            entryCodes
+                        )
+                    ) {
+                        entries.zip(entryCodes) { entry, entryCode ->
+                            HomeMasterEntryModel(
+                                entry = entry,
+                                entryCode = entryCode,
+                                codeMasks = codeMasks
+                            )
+                        }
+                            .filter { entryModel ->
+                                entryModel.shouldBeShown(
+                                    entrySearchQueryDebounced
+                                )
+                            }
+                            .associateBy { entryModel -> entryModel.id }
+                    }
+
+                    Ready(
+                        animateOnCodeChange = animateOnCodeChange,
+                        searchQuery = entrySearchQuery,
+                        showBoxesInCode = showBoxesInCode,
+                        themeType = themeType,
+                        entryModelsMap = entryModelsMap,
                         entryCodesRemainingTimes = entryCodesRemainingTimes,
-                        codeMasks = codeMasks
+                        searchBarType = settings.searchBarType
                     )
                 }
-                    .filter { entryModel -> entryModel.shouldBeShown(entrySearchQueryDebounced) }
-                    .associateBy { entryModel -> entryModel.id }
-            }
-
-            return Loaded(
-                animateOnCodeChange = animateOnCodeChange,
-                searchQuery = entrySearchQuery,
-                showBoxesInCode = showBoxesInCode,
-                themeType = themeType,
-                entryModelsMap = entryModelsMap,
-                searchBarType = settings.searchBarType
-            )
+            } ?: Loading
         }
     }
 }

@@ -52,17 +52,14 @@ internal fun HomeContent(
 
         }
 
-        is HomeMasterState.Loaded -> {
+        is HomeMasterState.Ready -> {
             HomeEntries(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = ThemePadding.Medium),
+                state = state,
                 listState = listState,
                 contentPadding = paddingValues,
-                animateOnCodeChange = state.animateOnCodeChange,
-                showBoxesInCode = state.showBoxesInCode,
-                themeType = state.themeType,
-                entryModels = state.entryModels,
                 onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
                 onDeleteEntryClick = onDeleteEntryClick

@@ -59,16 +59,19 @@ import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 @Composable
 internal fun HomeEntry(
     entryModel: HomeMasterEntryModel,
+    remainingSeconds: Int,
     animateOnCodeChange: Boolean,
     showBoxesInCode: Boolean,
     themeType: ThemeType,
     onCopyCodeClick: () -> Unit,
     onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val showTextShadows = isDarkTheme(themeType = themeType)
 
     SwipeRevealMenu(
+        modifier = modifier,
         isRevealed = true,
         gap = ThemeSpacing.Medium,
         leadingMenuContent = {
@@ -97,6 +100,7 @@ internal fun HomeEntry(
                 .backgroundSection(applyShadow = true)
                 .clickable(onClick = onCopyCodeClick),
             entryModel = entryModel,
+            remainingSeconds = remainingSeconds,
             animateOnCodeChange = animateOnCodeChange,
             showBoxesInCode = showBoxesInCode,
             showShadowsInTexts = showTextShadows,
@@ -111,6 +115,7 @@ private fun HomeEntryCard(
     showBoxesInCode: Boolean,
     showShadowsInTexts: Boolean,
     entryModel: HomeMasterEntryModel,
+    remainingSeconds: Int,
     showTextShadows: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -159,7 +164,7 @@ private fun HomeEntryCard(
             }
 
             TotpProgressIndicator(
-                remainingSeconds = entryModel.remainingSeconds,
+                remainingSeconds = remainingSeconds,
                 totalSeconds = entryModel.totalSeconds,
                 showShadowInCounter = showShadowsInTexts
             )

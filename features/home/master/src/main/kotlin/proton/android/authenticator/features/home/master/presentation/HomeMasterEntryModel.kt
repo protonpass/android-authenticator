@@ -26,7 +26,6 @@ import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 internal data class HomeMasterEntryModel(
     private val entry: Entry,
     private val entryCode: EntryCode,
-    private val entryCodesRemainingTimes: Map<Int, Int>,
     private val codeMasks: List<UiTextMask>
 ) {
 
@@ -50,11 +49,6 @@ internal data class HomeMasterEntryModel(
     internal val nextCodeText: UiText = UiText.Dynamic(
         value = entryCode.nextCode,
         masks = codeMasks
-    )
-
-    internal val remainingSeconds: Int = entryCodesRemainingTimes.getOrDefault(
-        key = entry.period,
-        defaultValue = 0
     )
 
     internal val totalSeconds: Int = entry.period

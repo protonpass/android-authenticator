@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.reorderable)
+
     implementation(project(":business:entries"))
     implementation(project(":business:entry_codes"))
     implementation(project(":business:settings"))
