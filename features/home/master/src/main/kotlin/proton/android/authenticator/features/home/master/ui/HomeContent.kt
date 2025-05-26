@@ -36,7 +36,8 @@ internal fun HomeContent(
     onNewEntryClick: () -> Unit,
     onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
-    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit
+    onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
+    onRearrangeEntry: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit
 ) {
     when (state) {
         HomeMasterState.Empty -> {
@@ -62,7 +63,8 @@ internal fun HomeContent(
                 contentPadding = paddingValues,
                 onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
-                onDeleteEntryClick = onDeleteEntryClick
+                onDeleteEntryClick = onDeleteEntryClick,
+                onEntryRearranged = onRearrangeEntry
             )
         }
     }

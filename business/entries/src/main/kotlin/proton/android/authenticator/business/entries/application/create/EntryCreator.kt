@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.create
 
+import proton.android.authenticator.business.entries.application.shared.constants.EntryConstants
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
@@ -27,21 +28,25 @@ import javax.inject.Inject
 
 internal class EntryCreator @Inject constructor(
     private val timeProvider: TimeProvider,
-    private val entriesRepository: EntriesRepository
+    private val repository: EntriesRepository
 ) {
 
     internal suspend fun create(model: AuthenticatorEntryModel, params: AuthenticatorEntryTotpParameters) {
-        timeProvider.currentMillis()
-            .let { currentTimestamp ->
-                Entry(
+        repository.searchMaxPosition()
+            .plus(EntryConstants.POSITION_INCREMENT)
+            .let { position -> position to timeProvider.currentMillis() }
+            .let { (position, currentTimestamp) ->
+                Entry.create(
                     model = model,
                     params = params,
                     createdAt = currentTimestamp,
-                    modifiedAt = currentTimestamp
+                    modifiedAt = currentTimestamp,
+                    isSynced = false,
+                    position = position
                 )
             }
             .also { entry ->
-                entriesRepository.save(entry)
+                repository.save(entry)
             }
     }
 

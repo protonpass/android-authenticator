@@ -18,7 +18,10 @@
 
 package proton.android.authenticator.business.entrycodes.application.search
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
@@ -37,27 +40,34 @@ internal class EntryCodesSearcher @Inject constructor(
 ) {
 
     internal fun search(uris: List<String>): Flow<List<EntryCode>> = callbackFlow {
-        uris.map { uri ->
-            authenticatorClient.entryFromUri(uri)
-        }.let { entryModels ->
-            totpGenerator.start(
-                entries = entryModels,
-                callback = object : MobileTotpGeneratorCallback {
-                    override fun onCodes(codes: List<AuthenticatorCodeResponse>) {
-                        codes.map { entryCodeResponse ->
-                            EntryCode(
-                                currentCode = entryCodeResponse.currentCode,
-                                nextCode = entryCodeResponse.nextCode
-                            )
-                        }.also(::trySend)
-                    }
-                }
-            ).also { handle ->
-                awaitClose {
-                    handle.cancel()
+        coroutineScope {
+            uris.map { uri ->
+                async(appDispatchers.default) {
+                    authenticatorClient.entryFromUri(uri)
                 }
             }
+
         }
-    }.flowOn(appDispatchers.default)
+            .awaitAll()
+            .let { entryModels ->
+                totpGenerator.start(
+                    entries = entryModels,
+                    callback = object : MobileTotpGeneratorCallback {
+                        override fun onCodes(codes: List<AuthenticatorCodeResponse>) {
+                            codes.map { entryCodeResponse ->
+                                EntryCode(
+                                    currentCode = entryCodeResponse.currentCode,
+                                    nextCode = entryCodeResponse.nextCode
+                                )
+                            }.also(::trySend)
+                        }
+                    }
+                ).also { handle ->
+                    awaitClose {
+                        handle.cancel()
+                    }
+                }
+            }
+    }.flowOn(appDispatchers.io)
 
 }

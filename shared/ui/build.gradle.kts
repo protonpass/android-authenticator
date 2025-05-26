@@ -17,5 +17,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.reorderable)
     implementation(libs.zxing.core)
 }

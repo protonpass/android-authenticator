@@ -76,7 +76,8 @@ internal sealed interface HomeMasterState {
         internal val animateOnCodeChange: Boolean,
         internal val showBoxesInCode: Boolean,
         internal val themeType: ThemeType,
-        private val entryModelsMap: Map<String, HomeMasterEntryModel>,
+        internal val entryCodeMasks: List<UiTextMask>,
+        internal val entryModelsMap: Map<String, HomeMasterEntryModel>,
         private val entryCodesRemainingTimes: Map<Int, Int>,
         private val searchBarType: SettingsSearchBarType
     ) : HomeMasterState {
@@ -143,7 +144,7 @@ internal sealed interface HomeMasterState {
                         }
                     }
 
-                    val codeMasks = remember(key1 = hideCodes) {
+                    val entryCodeMasks = remember(key1 = hideCodes) {
                         buildList {
                             if (hideCodes) {
                                 add(UiTextMask.Hidden)
@@ -162,8 +163,7 @@ internal sealed interface HomeMasterState {
                         entries.zip(entryCodes) { entry, entryCode ->
                             HomeMasterEntryModel(
                                 entry = entry,
-                                entryCode = entryCode,
-                                codeMasks = codeMasks
+                                entryCode = entryCode
                             )
                         }
                             .filter { entryModel ->
@@ -179,6 +179,7 @@ internal sealed interface HomeMasterState {
                         searchQuery = entrySearchQuery,
                         showBoxesInCode = showBoxesInCode,
                         themeType = themeType,
+                        entryCodeMasks = entryCodeMasks,
                         entryModelsMap = entryModelsMap,
                         entryCodesRemainingTimes = entryCodesRemainingTimes,
                         searchBarType = settings.searchBarType

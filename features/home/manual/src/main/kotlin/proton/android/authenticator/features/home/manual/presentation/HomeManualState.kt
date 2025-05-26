@@ -96,6 +96,7 @@ internal sealed interface HomeManualState {
                         timeInterval = timeInterval ?: DEFAULT_TIME_INTERVAL,
                         algorithm = algorithm ?: DEFAULT_ALGORITHM,
                         type = type ?: DEFAULT_TYPE,
+                        position = 0.0,
                         showAdvanceOptions = showAdvanceOptions == true,
                         isValidSecret = isValidSecret
                     ),
@@ -113,6 +114,7 @@ internal sealed interface HomeManualState {
                         timeInterval = timeInterval ?: currentEntry.period,
                         algorithm = algorithm ?: currentEntry.algorithm,
                         type = type ?: currentEntry.type,
+                        position = currentEntry.position,
                         showAdvanceOptions = showAdvanceOptions == true,
                         isValidSecret = isValidSecret
                     ),

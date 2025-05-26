@@ -19,14 +19,14 @@
 package proton.android.authenticator.features.home.master.presentation
 
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.entries.domain.EntryAlgorithm
+import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.shared.ui.domain.models.UiText
-import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 
 internal data class HomeMasterEntryModel(
     private val entry: Entry,
-    private val entryCode: EntryCode,
-    private val codeMasks: List<UiTextMask>
+    private val entryCode: EntryCode
 ) {
 
     internal val id: String = entry.id
@@ -35,23 +35,27 @@ internal data class HomeMasterEntryModel(
 
     internal val nameText: UiText = UiText.Dynamic(value = name)
 
+    internal val secret: String = entry.secret
+
+    internal val digits: Int = entry.digits
+
+    internal val algorithm: EntryAlgorithm = entry.algorithm
+
+    internal val timeInterval: Int = entry.period
+
     internal val issuer: String = entry.issuer
 
     internal val issuerText: UiText = UiText.Dynamic(value = issuer)
 
     internal val currentCode: String = entryCode.currentCode
 
-    internal val currentCodeText: UiText = UiText.Dynamic(
-        value = currentCode,
-        masks = codeMasks
-    )
-
-    internal val nextCodeText: UiText = UiText.Dynamic(
-        value = entryCode.nextCode,
-        masks = codeMasks
-    )
+    internal val nextCode: String = entryCode.nextCode
 
     internal val totalSeconds: Int = entry.period
+
+    internal val type: EntryType = entry.type
+
+    internal val position: Double = entry.position
 
     internal fun shouldBeShown(query: String): Boolean {
         if (query.isBlank()) {

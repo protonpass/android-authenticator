@@ -39,13 +39,15 @@ internal class UpdateEntryUseCase @Inject constructor(private val commandBus: Co
             issuer = formModel.issuer,
             period = formModel.timeInterval,
             digits = formModel.digits,
-            algorithm = formModel.algorithm
+            algorithm = formModel.algorithm,
+            position = formModel.position
         )
 
         EntryType.STEAM -> UpdateEntryCommand.FromSteam(
             id = entryId,
             name = formModel.title,
-            secret = formModel.secret
+            secret = formModel.secret,
+            position = formModel.position
         )
     }.let { command -> commandBus.dispatch(command) }
 

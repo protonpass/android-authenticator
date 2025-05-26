@@ -16,20 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.usecases
+package proton.android.authenticator.shared.ui.domain.models
 
-import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.entries.domain.Entry
-import proton.android.authenticator.business.entrycodes.application.search.SearchEntryCodesQuery
-import proton.android.authenticator.business.entrycodes.domain.EntryCode
-import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
-import javax.inject.Inject
+import androidx.compose.runtime.Composable
 
-internal class ObserveEntryCodesUseCase @Inject constructor(private val queryBus: QueryBus) {
-
-    internal operator fun invoke(entries: List<Entry>): Flow<List<EntryCode>> = entries
-        .map(Entry::uri)
-        .let(::SearchEntryCodesQuery)
-        .let { query -> queryBus.ask(query) }
-
-}
+data class UiDraggableItem(
+    internal val id: String,
+    internal val content: @Composable () -> Unit
+)

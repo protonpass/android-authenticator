@@ -25,22 +25,32 @@ sealed interface UpdateEntryCommand : Command {
 
     val id: String
 
+    val name: String
+
+    val secret: String
+
+    val note: String?
+
+    val position: Double
+
     data class FromSteam(
         override val id: String,
-        internal val name: String,
-        internal val secret: String,
-        internal val note: String? = null
+        override val name: String,
+        override val secret: String,
+        override val note: String? = null,
+        override val position: Double
     ) : UpdateEntryCommand
 
     data class FromTotp(
         override val id: String,
-        internal val name: String,
-        internal val secret: String,
+        override val name: String,
+        override val secret: String,
+        override val note: String? = null,
+        override val position: Double,
         internal val issuer: String,
         internal val period: Int,
         internal val digits: Int,
-        internal val algorithm: EntryAlgorithm,
-        internal val note: String? = null
+        internal val algorithm: EntryAlgorithm
     ) : UpdateEntryCommand
 
 }

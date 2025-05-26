@@ -20,20 +20,14 @@ package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
+import proton.android.authenticator.shared.ui.domain.components.lists.DraggableVerticalList
+import proton.android.authenticator.shared.ui.domain.models.UiDraggableItem
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
-import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 internal fun HomeEntries(
@@ -43,45 +37,38 @@ internal fun HomeEntries(
     onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
+    onEntryRearranged: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
     modifier: Modifier = Modifier
-) = with(state) {
-    var list by remember(key1 = entryModels) { mutableStateOf(entryModels) }
-
-    val reorderableLazyListState = rememberReorderableLazyListState(
-        lazyListState = listState
-    ) { from, to ->
-        println("JIBIRI: from ${from.key} to ${to.index}")
-        list = list.toMutableList().apply {
-            add(to.index, removeAt(from.index))
-        }
-    }
-
-    LazyColumn(
-        modifier = modifier,
-        state = listState,
-        contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
-    ) {
-        items(
-            items = list,
-            key = { entryModel -> entryModel.id }
-        ) { entryModel ->
-            ReorderableItem(
-                state = reorderableLazyListState,
-                key = entryModel.id
-            ) { isDragging ->
-                HomeEntry(
-                    modifier = Modifier.longPressDraggableHandle(),
-                    animateOnCodeChange = animateOnCodeChange,
-                    showBoxesInCode = showBoxesInCode,
-                    themeType = themeType,
-                    entryModel = entryModel,
-                    remainingSeconds = state.getRemainingSeconds(entryModel.totalSeconds),
-                    onCopyCodeClick = { onCopyEntryCodeClick(entryModel) },
-                    onEditClick = { onEditEntryClick(entryModel) },
-                    onDeleteClick = { onDeleteEntryClick(entryModel) }
-                )
-            }
+) {
+    with(state) {
+        entryModels.map { entryModel ->
+            UiDraggableItem(
+                id = entryModel.id,
+                content = {
+                    HomeEntry(
+                        animateOnCodeChange = animateOnCodeChange,
+                        showBoxesInCode = showBoxesInCode,
+                        themeType = themeType,
+                        entryModel = entryModel,
+                        entryCodeMasks = entryCodeMasks,
+                        remainingSeconds = getRemainingSeconds(entryModel.totalSeconds),
+                        onCopyCodeClick = { onCopyEntryCodeClick(entryModel) },
+                        onEditClick = { onEditEntryClick(entryModel) },
+                        onDeleteClick = { onDeleteEntryClick(entryModel) }
+                    )
+                }
+            )
+        }.also { items ->
+            DraggableVerticalList(
+                modifier = modifier,
+                draggableItems = items,
+                listState = listState,
+                contentPadding = contentPadding,
+                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
+                onMoved = { fromIndex, fromId, toIndex, toId ->
+                    onEntryRearranged(fromId, fromIndex, toId, toIndex, entryModelsMap)
+                }
+            )
         }
     }
 }

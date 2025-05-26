@@ -34,15 +34,16 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
+import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
@@ -55,7 +56,8 @@ internal class HomeMasterViewModel @Inject constructor(
     observeSettingsUseCase: ObserveSettingsUseCase,
     private val timeProvider: TimeProvider,
     private val copyToClipboardUseCase: CopyToClipboardUseCase,
-    private val deleteEntryUseCase: DeleteEntryUseCase
+    private val deleteEntryUseCase: DeleteEntryUseCase,
+    private val rearrangeEntryUseCase: RearrangeEntryUseCase
 ) : ViewModel() {
 
     private val entrySearchQueryState = mutableStateOf<String>(value = SEARCH_QUERY_DEFAULT_VALUE)
@@ -74,12 +76,7 @@ internal class HomeMasterViewModel @Inject constructor(
         )
 
     private val entryCodesFlow = entriesFlow
-        .mapLatest { entries ->
-            entries.map { entry -> entry.uri }
-        }
-        .flatMapLatest { entryUris ->
-            observeEntryCodesUseCase(entryUris)
-        }
+        .flatMapLatest(observeEntryCodesUseCase::invoke)
         .shareIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
@@ -122,7 +119,35 @@ internal class HomeMasterViewModel @Inject constructor(
 
     internal fun onDeleteEntry(entry: HomeMasterEntryModel) {
         viewModelScope.launch {
-            deleteEntryUseCase(id = entry.id)
+            deleteEntryUseCase(id = entry.id).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> println("JIBIRI: Delete entry failed -> ${answer.reason}")
+                    is Answer.Success -> Unit
+                }
+            }
+        }
+    }
+
+    internal fun onRearrangeEntry(
+        fromEntryId: String,
+        fromEntryIndex: Int,
+        toEntryId: String,
+        toEntryIndex: Int,
+        entryModelsMap: Map<String, HomeMasterEntryModel>
+    ) {
+        viewModelScope.launch {
+            rearrangeEntryUseCase(
+                fromEntryId = fromEntryId,
+                fromEntryIndex = fromEntryIndex,
+                toEntryId = toEntryId,
+                toEntryIndex = toEntryIndex,
+                entryModelsMap = entryModelsMap
+            ).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> println("JIBIRI: Rearrange entry failed -> ${answer.reason}")
+                    is Answer.Success -> println("JIBIRI: Rearrange success")
+                }
+            }
         }
     }
 

@@ -21,31 +21,50 @@ package proton.android.authenticator.business.entries.domain
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryTotpParameters
 
-data class Entry(
+class Entry private constructor(
+    val id: String,
+    val name: String,
+    val issuer: String,
+    val note: String?,
+    val period: Int,
+    val secret: String,
+    val type: EntryType,
+    val uri: String,
+    val algorithm: EntryAlgorithm,
+    val digits: Int,
     val createdAt: Long,
     val modifiedAt: Long,
-    internal val model: AuthenticatorEntryModel,
-    internal val params: AuthenticatorEntryTotpParameters
+    val isSynced: Boolean,
+    val position: Double
 ) {
 
-    val id: String = model.id
+    internal companion object {
 
-    val issuer: String = model.issuer
+        @Suppress("LongParameterList")
+        internal fun create(
+            model: AuthenticatorEntryModel,
+            params: AuthenticatorEntryTotpParameters,
+            createdAt: Long,
+            modifiedAt: Long,
+            isSynced: Boolean,
+            position: Double
+        ): Entry = Entry(
+            id = model.id,
+            name = model.name,
+            issuer = model.issuer,
+            note = model.note,
+            period = model.period.toInt(),
+            secret = model.secret,
+            type = EntryType.from(value = model.entryType.ordinal),
+            uri = model.uri,
+            algorithm = EntryAlgorithm.from(value = params.algorithm.ordinal),
+            digits = params.digits.toInt(),
+            createdAt = createdAt,
+            modifiedAt = modifiedAt,
+            isSynced = isSynced,
+            position = position
+        )
 
-    val name: String = model.name
-
-    val note: String? = model.note
-
-    val period: Int = model.period.toInt()
-
-    val secret: String = model.secret
-
-    val type: EntryType = EntryType.from(value = model.entryType.ordinal)
-
-    val uri: String = model.uri
-
-    val algorithm: EntryAlgorithm = EntryAlgorithm.from(value = params.algorithm.ordinal)
-
-    val digits: Int = params.digits.toInt()
+    }
 
 }

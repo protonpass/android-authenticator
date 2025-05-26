@@ -36,7 +36,7 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             is UpdateEntryCommand.FromSteam -> command.toModel()
             is UpdateEntryCommand.FromTotp -> command.toModel()
         }
-            .let { model -> updater.update(model) }
+            .let { model -> updater.update(command.id, command.position, model) }
             .let(Answer<Unit, UpdateEntryReason>::Success)
     } catch (_: AuthenticatorException) {
         Answer.Failure(reason = UpdateEntryReason.InvalidEntrySecret)
@@ -50,7 +50,7 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             secret = secret,
             note = note
         )
-    ).copy(id = id)
+    )
 
     private fun UpdateEntryCommand.FromTotp.toModel() = authenticatorClient.newTotpEntryFromParams(
         params = AuthenticatorEntryTotpCreateParameters(
@@ -62,6 +62,6 @@ internal class UpdateEntryCommandHandler @Inject constructor(
             algorithm = algorithm.asAuthenticatorEntryAlgorithm(),
             note = note
         )
-    ).copy(id = id)
+    )
 
 }

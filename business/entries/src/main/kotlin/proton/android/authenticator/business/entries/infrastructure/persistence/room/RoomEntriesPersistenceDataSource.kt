@@ -81,6 +81,7 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
         }
     }
 
+    override suspend fun searchMaxPosition(): Double? = entriesDao.searchMaxPosition()
 }
 
 private fun Entry.toEntity(
@@ -106,9 +107,10 @@ private fun Entry.toEntity(
         EntryEntity(
             id = id,
             content = encryptedEntityContent,
-            type = type.value,
             createdAt = createdAt,
-            modifiedAt = modifiedAt
+            modifiedAt = modifiedAt,
+            isSynced = isSynced,
+            position = position
         )
     }
 
@@ -120,10 +122,15 @@ private fun EntryEntity.toDomain(
         authenticatorClient.deserializeEntry(decryptedEntityContent)
     }
     .let { entryModel ->
-        Entry(
+        entryModel to authenticatorClient.getTotpParams(entryModel)
+    }
+    .let { (entryModel, entryParams) ->
+        Entry.create(
             model = entryModel,
-            params = authenticatorClient.getTotpParams(entryModel),
+            params = entryParams,
             createdAt = createdAt,
-            modifiedAt = modifiedAt
+            modifiedAt = modifiedAt,
+            isSynced = isSynced,
+            position = position
         )
     }

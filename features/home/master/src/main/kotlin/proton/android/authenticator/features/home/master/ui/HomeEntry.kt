@@ -18,40 +18,20 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
-import proton.android.authenticator.shared.ui.domain.components.codes.TotpCode
-import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
-import proton.android.authenticator.shared.ui.domain.components.icons.EntryIcon
-import proton.android.authenticator.shared.ui.domain.components.indicators.TotpProgressIndicator
 import proton.android.authenticator.shared.ui.domain.components.menus.SwipeRevealMenu
+import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
-import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
@@ -59,6 +39,7 @@ import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 @Composable
 internal fun HomeEntry(
     entryModel: HomeMasterEntryModel,
+    entryCodeMasks: List<UiTextMask>,
     remainingSeconds: Int,
     animateOnCodeChange: Boolean,
     showBoxesInCode: Boolean,
@@ -100,154 +81,12 @@ internal fun HomeEntry(
                 .backgroundSection(applyShadow = true)
                 .clickable(onClick = onCopyCodeClick),
             entryModel = entryModel,
+            entryCodeMasks = entryCodeMasks,
             remainingSeconds = remainingSeconds,
             animateOnCodeChange = animateOnCodeChange,
             showBoxesInCode = showBoxesInCode,
             showShadowsInTexts = showTextShadows,
             showTextShadows = showTextShadows
         )
-    }
-}
-
-@Composable
-private fun HomeEntryCard(
-    animateOnCodeChange: Boolean,
-    showBoxesInCode: Boolean,
-    showShadowsInTexts: Boolean,
-    entryModel: HomeMasterEntryModel,
-    remainingSeconds: Int,
-    showTextShadows: Boolean,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Row(
-            modifier = Modifier.padding(
-                start = ThemePadding.Medium,
-                top = ThemePadding.Medium,
-                end = ThemePadding.Medium
-            ),
-            horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            EntryIcon(
-                issuer = entryModel.issuerText
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(weight = 1f, fill = true)
-            ) {
-                Text(
-                    text = entryModel.issuerText.asString(),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Theme.colorScheme.textNorm,
-                    style = if (showTextShadows) {
-                        Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
-                    } else {
-                        Theme.typography.body1Regular
-                    }
-                )
-
-                Text(
-                    text = entryModel.nameText.asString(),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Theme.colorScheme.textWeak,
-                    style = if (showTextShadows) {
-                        Theme.typography.body2Regular.copy(shadow = ThemeShadow.TextDefault)
-                    } else {
-                        Theme.typography.body2Regular
-                    }
-                )
-            }
-
-            TotpProgressIndicator(
-                remainingSeconds = remainingSeconds,
-                totalSeconds = entryModel.totalSeconds,
-                showShadowInCounter = showShadowsInTexts
-            )
-        }
-
-        DoubleHorizontalDivider(
-            modifier = Modifier.padding(horizontal = ThemePadding.Small)
-        )
-
-        Row(
-            modifier = Modifier.padding(
-                start = ThemePadding.Medium,
-                end = ThemePadding.Medium,
-                bottom = ThemePadding.Medium
-            ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TotpCode(
-                modifier = Modifier.weight(weight = 1f, fill = true),
-                codeText = entryModel.currentCodeText,
-                animateCodeOnChange = animateOnCodeChange,
-                showBoxes = showBoxesInCode,
-                showShadows = showTextShadows,
-                color = Theme.colorScheme.textNorm,
-                style = Theme.typography.monoMedium1
-            )
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall),
-                horizontalAlignment = Alignment.End
-            ) {
-                Text(
-                    text = stringResource(id = R.string.action_next),
-                    color = Theme.colorScheme.textWeak,
-                    style = if (showTextShadows) {
-                        Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
-                    } else {
-                        Theme.typography.body1Regular
-                    }
-                )
-
-                Text(
-                    text = entryModel.nextCodeText.asString(),
-                    color = Theme.colorScheme.textNorm,
-                    style = if (showTextShadows) {
-                        Theme.typography.monoMedium2.copy(shadow = ThemeShadow.TextDefault)
-                    } else {
-                        Theme.typography.monoMedium2
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun HomeEntryAction(
-    @DrawableRes iconResId: Int,
-    @StringRes actionResId: Int,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier.defaultMinSize(
-            minWidth = 130.dp,
-            minHeight = 122.dp
-        ),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
-        ) {
-            Icon(
-                painter = painterResource(id = iconResId),
-                contentDescription = null,
-                tint = Theme.colorScheme.textNorm
-            )
-
-            Text(
-                text = stringResource(id = actionResId),
-                color = Theme.colorScheme.textNorm,
-                style = Theme.typography.captionRegular
-            )
-        }
     }
 }

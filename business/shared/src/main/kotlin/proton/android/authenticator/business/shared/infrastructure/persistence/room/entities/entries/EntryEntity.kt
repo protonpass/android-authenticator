@@ -20,25 +20,21 @@ package proton.android.authenticator.business.shared.infrastructure.persistence.
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 
 @Entity(
     tableName = EntryEntity.TABLE,
-    indices = [
-        Index(value = [EntryEntity.Columns.TYPE]),
-        Index(value = [EntryEntity.Columns.CREATED_AT]),
-        Index(value = [EntryEntity.Columns.MODIFIED_AT]),
-        Index(value = [EntryEntity.Columns.TYPE, EntryEntity.Columns.CREATED_AT])
-    ]
+    primaryKeys = [EntryEntity.Columns.ID]
 )
 data class EntryEntity(
-    @[ColumnInfo(name = Columns.ID) PrimaryKey] val id: String,
+    @ColumnInfo(name = Columns.ID)
+    val id: String,
     @ColumnInfo(name = Columns.ENCRYPTED_CONTENT)
     val content: EncryptedByteArray,
-    @ColumnInfo(name = Columns.TYPE)
-    val type: Int,
+    @ColumnInfo(name = Columns.IS_SYNCED)
+    val isSynced: Boolean,
+    @ColumnInfo(name = Columns.POSITION)
+    val position: Double,
     @ColumnInfo(name = Columns.CREATED_AT)
     val createdAt: Long,
     @ColumnInfo(name = Columns.MODIFIED_AT)
@@ -51,7 +47,9 @@ data class EntryEntity(
 
         internal const val ENCRYPTED_CONTENT = "encrypted_content"
 
-        internal const val TYPE = "type"
+        internal const val IS_SYNCED = "is_synced"
+
+        internal const val POSITION = "position"
 
         internal const val CREATED_AT = "created_at"
 

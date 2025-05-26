@@ -20,6 +20,7 @@ package proton.android.authenticator.business.entries.application.importall
 
 import android.net.Uri
 import kotlinx.coroutines.withContext
+import proton.android.authenticator.business.entries.application.shared.constants.EntryConstants
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryImportType
@@ -48,7 +49,8 @@ internal class EntriesImporter @Inject constructor(
         contentUri: Uri,
         importType: EntryImportType,
         password: String?
-    ): Int = fileReader.read(contentUri.toString())
+    ): Int = contentUri.toString()
+        .let { path -> fileReader.read(path) }
         .let { content -> getEntriesFromContent(importType, contentUri, content, password) }
         .let { entryModels -> saveEntries(entryModels) }
 
@@ -109,12 +111,18 @@ internal class EntriesImporter @Inject constructor(
 
     private suspend fun saveEntries(entryModels: List<AuthenticatorEntryModel>): Int = timeProvider.currentMillis()
         .let { currentMillis ->
+            var position = repository.searchMaxPosition()
+
             entryModels.map { entryModel ->
-                Entry(
+                position += EntryConstants.POSITION_INCREMENT
+
+                Entry.create(
                     model = entryModel,
                     params = authenticatorClient.getTotpParams(entryModel),
                     createdAt = currentMillis,
-                    modifiedAt = currentMillis
+                    modifiedAt = currentMillis,
+                    isSynced = false,
+                    position = position
                 )
             }
         }

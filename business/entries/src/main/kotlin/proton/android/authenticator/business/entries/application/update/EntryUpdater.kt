@@ -20,6 +20,7 @@ package proton.android.authenticator.business.entries.application.update
 
 import kotlinx.coroutines.flow.first
 import proton.android.authenticator.business.entries.domain.EntriesRepository
+import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
@@ -31,14 +32,23 @@ internal class EntryUpdater @Inject constructor(
     private val timeProvider: TimeProvider
 ) {
 
-    internal suspend fun update(model: AuthenticatorEntryModel) {
-        entriesRepository.find(id = model.id)
+    internal suspend fun update(
+        id: String,
+        position: Double,
+        model: AuthenticatorEntryModel
+    ) {
+        entriesRepository.find(id = id)
             .first()
-            .copy(
-                model = model,
-                params = authenticatorClient.getTotpParams(model),
-                modifiedAt = timeProvider.currentMillis()
-            )
+            .let { currentEntry ->
+                Entry.create(
+                    model = model.copy(id = id),
+                    params = authenticatorClient.getTotpParams(model),
+                    createdAt = currentEntry.createdAt,
+                    modifiedAt = timeProvider.currentMillis(),
+                    isSynced = false,
+                    position = position
+                )
+            }
             .also { updatedEntry ->
                 entriesRepository.save(updatedEntry)
             }
