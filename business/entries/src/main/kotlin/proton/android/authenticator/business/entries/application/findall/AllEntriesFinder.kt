@@ -23,10 +23,8 @@ import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import javax.inject.Inject
 
-internal class AllEntriesFinder @Inject constructor(
-    private val entriesRepository: EntriesRepository
-) {
+internal class AllEntriesFinder @Inject constructor(private val repository: EntriesRepository) {
 
-    internal fun findAll(): Flow<List<Entry>> = entriesRepository.findAll()
+    internal fun findAll(): Flow<List<Entry>> = repository.findAll()
 
 }

@@ -131,16 +131,6 @@ object ThemeTypography {
         )
 
     @Stable
-    val emphasized: TextStyle
-        @[Composable ReadOnlyComposable]
-        get() = TextStyle(
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-            lineHeight = 20.sp
-        )
-
-    @Stable
     val header: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
@@ -221,7 +211,7 @@ object ThemeTypography {
 
 }
 
-val ThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> =
+internal val LocalThemeTypographyScheme: ProvidableCompositionLocal<ThemeTypography> =
     staticCompositionLocalOf {
         ThemeTypography
     }

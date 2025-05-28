@@ -22,7 +22,6 @@ import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
-import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal data class HomeMasterEntryModel(
     private val entry: Entry,
@@ -32,8 +31,6 @@ internal data class HomeMasterEntryModel(
     internal val id: String = entry.id
 
     internal val name: String = entry.name
-
-    internal val nameText: UiText = UiText.Dynamic(value = name)
 
     internal val secret: String = entry.secret
 
@@ -45,8 +42,6 @@ internal data class HomeMasterEntryModel(
 
     internal val issuer: String = entry.issuer
 
-    internal val issuerText: UiText = UiText.Dynamic(value = issuer)
-
     internal val currentCode: String = entryCode.currentCode
 
     internal val nextCode: String = entryCode.nextCode
@@ -56,6 +51,8 @@ internal data class HomeMasterEntryModel(
     internal val type: EntryType = entry.type
 
     internal val position: Double = entry.position
+
+    internal val iconUrl: String = entry.iconUrl.orEmpty()
 
     internal fun shouldBeShown(query: String): Boolean {
         if (query.isBlank()) {

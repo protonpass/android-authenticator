@@ -21,6 +21,8 @@ package proton.android.authenticator.shared.ui.domain.components.icons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -29,42 +31,85 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import proton.android.authenticator.shared.ui.domain.models.UiText
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.SubcomposeAsyncImageContent
+import coil.request.ImageRequest
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
-fun EntryIcon(issuer: UiText) {
+fun EntryIcon(
+    url: String,
+    issuer: String,
+    showIconBorder: Boolean,
+    size: Dp = 36.dp
+) {
     Box(
         modifier = Modifier
-            .size(size = 36.dp)
+            .size(size = size)
             .clip(shape = RoundedCornerShape(size = ThemeRadius.Small))
-            .background(color = Theme.colorScheme.iconBackground)
-            .border(
-                width = ThemeThickness.Small,
-                color = Theme.colorScheme.iconBorder,
-                shape = RoundedCornerShape(size = ThemeRadius.Small)
-            ),
-        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = issuer.asString()
-                .firstOrNull()
-                ?.toString()
-                ?.uppercase()
-                .orEmpty(),
-            style = Theme.typography.headline.copy(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Theme.colorScheme.gradientBannerColor10,
-                        Theme.colorScheme.gradientBannerColor8,
-                        Theme.colorScheme.gradientBannerColor4,
-                        Theme.colorScheme.gradientBannerColor2
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(url)
+                .size(size.value.toInt())
+                .build(),
+            contentDescription = null,
+            error = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Theme.colorScheme.iconBackground)
+                        .border(
+                            width = ThemeThickness.Small,
+                            color = Theme.colorScheme.iconBorder,
+                            shape = RoundedCornerShape(size = ThemeRadius.Small)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = issuer
+                            .firstOrNull()
+                            ?.toString()
+                            ?.uppercase()
+                            .orEmpty(),
+                        style = Theme.typography.subtitle.copy(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    Theme.colorScheme.gradientBannerColor10,
+                                    Theme.colorScheme.gradientBannerColor8,
+                                    Theme.colorScheme.gradientBannerColor4,
+                                    Theme.colorScheme.gradientBannerColor2
+                                )
+                            )
+                        )
                     )
+                }
+            },
+            success = {
+                SubcomposeAsyncImageContent(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Theme.colorScheme.white)
+                        .then(
+                            if (showIconBorder) {
+                                Modifier.border(
+                                    width = ThemeThickness.Small,
+                                    color = Theme.colorScheme.iconBorder,
+                                    shape = RoundedCornerShape(size = ThemeRadius.Small)
+                                )
+                            } else {
+                                Modifier
+                            }
+                        )
+                        .padding(all = ThemePadding.ExtraSmall)
                 )
-            )
+            }
         )
     }
 }

@@ -42,7 +42,7 @@ fun Theme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
 
     CompositionLocalProvider(
         LocalThemeColorScheme provides colorScheme,
-        ThemeTypographyScheme provides ThemeTypography,
+        LocalThemeTypographyScheme provides ThemeTypography,
         LocalOverscrollFactory provides null
     ) {
         MaterialTheme(
@@ -62,6 +62,6 @@ object Theme {
 
     val typography: ThemeTypography
         @[Composable ReadOnlyComposable]
-        get() = ThemeTypographyScheme.current
+        get() = LocalThemeTypographyScheme.current
 
 }

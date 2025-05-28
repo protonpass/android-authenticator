@@ -49,7 +49,7 @@ internal fun HomeEntry(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val showTextShadows = isDarkTheme(themeType = themeType)
+    val isDarkTheme = isDarkTheme(themeType = themeType)
 
     SwipeRevealMenu(
         modifier = modifier,
@@ -85,8 +85,9 @@ internal fun HomeEntry(
             remainingSeconds = remainingSeconds,
             animateOnCodeChange = animateOnCodeChange,
             showBoxesInCode = showBoxesInCode,
-            showShadowsInTexts = showTextShadows,
-            showTextShadows = showTextShadows
+            showShadowsInTexts = isDarkTheme,
+            showTextShadows = isDarkTheme,
+            showIconBorder = !isDarkTheme
         )
     }
 }

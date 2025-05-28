@@ -25,6 +25,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.datetime.Clock
 import proton.android.authenticator.commonrust.AuthenticatorImporter
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
+import proton.android.authenticator.commonrust.AuthenticatorIssuerMapper
+import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClient
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.commonrust.MobileCurrentTimeProvider
@@ -32,12 +34,14 @@ import proton.android.authenticator.commonrust.MobileTotpGenerator
 import proton.android.authenticator.commonrust.MobileTotpGeneratorInterface
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
+@[Module InstallIn(SingletonComponent::class)]
 object RustModule {
 
     @[Provides Singleton]
     fun provideAuthenticatorImporter(): AuthenticatorImporterInterface = AuthenticatorImporter()
+
+    @[Provides Singleton]
+    fun provideAuthenticatorIssuerMapper(): AuthenticatorIssuerMapperInterface = AuthenticatorIssuerMapper()
 
     @[Provides Singleton]
     fun provideAuthenticatorMobileClient(): AuthenticatorMobileClientInterface = AuthenticatorMobileClient()

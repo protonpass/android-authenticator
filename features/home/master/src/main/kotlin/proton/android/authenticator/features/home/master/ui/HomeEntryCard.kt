@@ -47,6 +47,7 @@ internal fun HomeEntryCard(
     animateOnCodeChange: Boolean,
     showBoxesInCode: Boolean,
     showShadowsInTexts: Boolean,
+    showIconBorder: Boolean,
     entryModel: HomeMasterEntryModel,
     entryCodeMasks: List<UiTextMask>,
     remainingSeconds: Int,
@@ -64,7 +65,9 @@ internal fun HomeEntryCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             EntryIcon(
-                issuer = entryModel.issuerText
+                url = entryModel.iconUrl,
+                issuer = entryModel.issuer,
+                showIconBorder = showIconBorder
             )
 
             Column(
@@ -73,7 +76,7 @@ internal fun HomeEntryCard(
                     .weight(weight = 1f, fill = true)
             ) {
                 Text(
-                    text = entryModel.issuerText.asString(),
+                    text = entryModel.issuer,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = Theme.colorScheme.textNorm,
@@ -85,7 +88,7 @@ internal fun HomeEntryCard(
                 )
 
                 Text(
-                    text = entryModel.nameText.asString(),
+                    text = entryModel.name,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     color = Theme.colorScheme.textWeak,

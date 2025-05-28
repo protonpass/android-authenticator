@@ -20,6 +20,7 @@ package proton.android.authenticator.business.entries.domain
 
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryTotpParameters
+import proton.android.authenticator.commonrust.IssuerInfo
 
 class Entry private constructor(
     val id: String,
@@ -35,7 +36,8 @@ class Entry private constructor(
     val createdAt: Long,
     val modifiedAt: Long,
     val isSynced: Boolean,
-    val position: Double
+    val position: Double,
+    val iconUrl: String?
 ) {
 
     internal companion object {
@@ -47,7 +49,8 @@ class Entry private constructor(
             createdAt: Long,
             modifiedAt: Long,
             isSynced: Boolean,
-            position: Double
+            position: Double,
+            issuerInfo: IssuerInfo? = null
         ): Entry = Entry(
             id = model.id,
             name = model.name,
@@ -62,7 +65,8 @@ class Entry private constructor(
             createdAt = createdAt,
             modifiedAt = modifiedAt,
             isSynced = isSynced,
-            position = position
+            position = position,
+            iconUrl = issuerInfo?.iconUrl
         )
 
     }
