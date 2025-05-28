@@ -29,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.textfields.SearchTextField
@@ -73,7 +72,7 @@ internal fun HomeBottomBar(
                     .padding(all = ThemePadding.MediumSmall),
                 painter = painterResource(id = R.drawable.ic_plus),
                 contentDescription = null,
-                tint = Color.White
+                tint = Theme.colorScheme.white
             )
         }
     }

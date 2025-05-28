@@ -31,7 +31,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
@@ -72,10 +71,10 @@ fun Modifier.containerBanner() = composed {
                     x = 0f,
                     y = y
                 ),
-                radius = 1_200f
+                radius = 1_600f
             )
         )
-        .background(color = Color.Black.copy(alpha = 0.5f))
+        .background(color = Theme.colorScheme.black.copy(alpha = 0.5f))
 }
 
 @Stable
@@ -86,10 +85,10 @@ internal fun Modifier.containerShadow() = composed {
         .clip(shape = shape)
         .border(
             width = ThemeThickness.None,
-            color = Color.Black.copy(alpha = 0.75f),
+            color = Theme.colorScheme.black.copy(alpha = 0.75f),
             shape = shape
         )
-        .background(color = Color.Black.copy(alpha = 0.2f))
+        .background(color = Theme.colorScheme.black.copy(alpha = 0.2f))
         .innerShadowDouble(
             shape = shape,
             offsetX = 2.dp,

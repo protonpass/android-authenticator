@@ -162,6 +162,9 @@ sealed class ThemeColors {
     abstract val textWeak: Color
 
     @Stable
+    val black: Color = Color(color = 0x00000000)
+
+    @Stable
     val blackAlpha8: Color = Color(color = 0x14000000)
 
     @Stable
@@ -171,13 +174,34 @@ sealed class ThemeColors {
     val blackAlpha12: Color = Color(color = 0x1F000000)
 
     @Stable
+    val blackAlpha20: Color = Color(color = 0x33000000)
+
+    @Stable
     val orangeAlpha20: Color = Color(color = 0x33FF8C00)
+
+    @Stable
+    val passItemAlias: Color = Color(color = 0xFF6ABDB3)
+
+    @Stable
+    val passItemCard: Color = Color(color = 0xFF91DC9C)
+
+    @Stable
+    val passItemLogin: Color = Color(color = 0xFFA779FF)
+
+    @Stable
+    val passItemNote: Color = Color(color = 0xFFFFCA8A)
+
+    @Stable
+    val passItemPassword: Color = Color(color = 0xFFFC9C9F)
 
     @Stable
     val purpleAlpha25: Color = Color(color = 0x40995EFF)
 
     @Stable
     val redAlpha20: Color = Color(color = 0x33FF0000)
+
+    @Stable
+    val white: Color = Color(color = 0xFFFFFFFF)
 
     @Stable
     val whiteAlpha12: Color = Color(color = 0x1FFFFFFF)
@@ -190,6 +214,9 @@ sealed class ThemeColors {
 
     @Stable
     val whiteAlpha30: Color = Color(color = 0x4CFFFFFF)
+
+    @Stable
+    val whiteAlpha70: Color = Color(color = 0xB2FFFFFF)
 
     @Immutable
     data object Dark : ThemeColors() {

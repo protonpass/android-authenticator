@@ -25,15 +25,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
 fun DoubleHorizontalDivider(
     modifier: Modifier = Modifier,
-    topColor: Color = Color.Black.copy(alpha = 0.2f),
+    topColor: Color = Theme.colorScheme.blackAlpha20,
     topThickness: Dp = ThemeThickness.Small,
-    bottomColor: Color = Color.White.copy(alpha = 0.12f),
+    bottomColor: Color = Theme.colorScheme.whiteAlpha12,
     bottomThickness: Dp = ThemeThickness.Small
 ) {
     Column(

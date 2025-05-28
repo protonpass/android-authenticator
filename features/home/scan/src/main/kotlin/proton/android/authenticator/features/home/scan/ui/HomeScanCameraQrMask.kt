@@ -144,7 +144,7 @@ internal fun HomeScanCameraQrMask(cutoutRect: Rect, modifier: Modifier = Modifie
             Text(
                 modifier = Modifier.width(width = 160.dp),
                 text = stringResource(id = R.string.home_scan_qr_code_hint),
-                color = Color.White,
+                color = Theme.colorScheme.white,
                 style = Theme.typography.bodyRegular,
                 textAlign = TextAlign.Center
             )

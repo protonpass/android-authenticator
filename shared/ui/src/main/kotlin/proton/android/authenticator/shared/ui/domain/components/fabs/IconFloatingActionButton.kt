@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundPrimaryButton
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
@@ -33,7 +34,7 @@ fun IconFloatingActionButton(
     icon: UiIcon,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    tint: Color = Color.White
+    tint: Color = Theme.colorScheme.white
 ) {
     Icon(
         modifier = modifier

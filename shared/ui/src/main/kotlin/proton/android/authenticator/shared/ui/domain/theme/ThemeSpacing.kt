@@ -41,4 +41,7 @@ object ThemeSpacing {
     @Stable
     val Large = 32.dp
 
+    @Stable
+    val ExtraLarge = 64.dp
+
 }

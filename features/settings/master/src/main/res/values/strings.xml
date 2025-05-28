@@ -19,6 +19,8 @@
 <resources>
     <string name="settings_screen_title">Settings</string>
 
+    <string name="settings_pass_banner_description">Store strong, unique passwords to avoid identity theft and breaches.</string>
+
     <string name="settings_security_section">Security</string>
     <string name="settings_security_title_backup">Backup</string>
     <string name="settings_security_description_backup">Proton Authenticator will periodically save all the data to Google Cloud.</string>

@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 
 object ThemeShadow {
@@ -31,7 +30,7 @@ object ThemeShadow {
     val TextDefault: Shadow
         @[Composable ReadOnlyComposable]
         get() = Shadow(
-            color = Color.Black,
+            color = Theme.colorScheme.black,
             offset = Offset(x = 2f, y = 2f),
             blurRadius = 2f
         )

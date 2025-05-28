@@ -51,6 +51,16 @@ object ThemeTypography {
         )
 
     @Stable
+    val body3Bold: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 15.sp,
+            lineHeight = 20.sp
+        )
+
+    @Stable
     val body1Regular: TextStyle
         @[Composable ReadOnlyComposable]
         get() = TextStyle(
@@ -68,6 +78,16 @@ object ThemeTypography {
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
             lineHeight = 18.sp
+        )
+
+    @Stable
+    val body3Regular: TextStyle
+        @[Composable ReadOnlyComposable]
+        get() = TextStyle(
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            lineHeight = 16.sp
         )
 
     @Stable

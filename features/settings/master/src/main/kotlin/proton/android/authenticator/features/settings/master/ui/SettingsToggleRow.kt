@@ -30,7 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
@@ -77,9 +76,9 @@ internal fun SettingsToggleRow(
             onCheckedChange = null,
             colors = SwitchDefaults.colors()
                 .copy(
-                    checkedThumbColor = Color.White,
+                    checkedThumbColor = Theme.colorScheme.white,
                     checkedTrackColor = Theme.colorScheme.signalSuccess,
-                    uncheckedThumbColor = Color.White,
+                    uncheckedThumbColor = Theme.colorScheme.white,
                     uncheckedTrackColor = Theme.colorScheme.textHint
                 )
         )

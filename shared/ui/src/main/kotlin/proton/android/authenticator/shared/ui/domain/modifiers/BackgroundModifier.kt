@@ -61,41 +61,48 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 import kotlin.math.roundToInt
 
 @Stable
-fun Modifier.backgroundAppBar(isBlurred: Boolean = false, blurRadius: Dp = 10.dp) = composed {
-    val backgroundColor = if (isBlurred) {
-        Theme.colorScheme.backgroundTopBar
-    } else {
-        Color.Transparent
-    }
+fun Modifier.backgroundBlur(backgroundColor: Color, blurRadius: Dp) = drawBehind {
+    android.graphics.Paint()
+        .apply {
+            isAntiAlias = true
+            color = backgroundColor.toArgb()
 
-    drawBehind {
-        android.graphics.Paint()
-            .apply {
-                isAntiAlias = true
-                this.color = backgroundColor.toArgb()
+            maskFilter = BlurMaskFilter(
+                blurRadius.value,
+                BlurMaskFilter.Blur.INNER
+            )
+        }
+        .also { nativePaint ->
+            drawIntoCanvas { canvas ->
+                canvas.save()
 
-                maskFilter = BlurMaskFilter(
-                    blurRadius.value,
-                    BlurMaskFilter.Blur.NORMAL
-                )
-            }
-            .also { nativePaint ->
-                drawIntoCanvas { canvas ->
-                    canvas.save()
-
-                    android.graphics.Rect(
-                        -ThemeSpacing.Medium.value.toInt(),
-                        -ThemeSpacing.Medium.value.toInt(),
-                        size.width.toInt(),
-                        size.height.toInt()
-                    ).also { rect ->
-                        canvas.nativeCanvas.drawRect(rect, nativePaint)
-                    }
-
-                    canvas.restore()
+                android.graphics.Rect(
+                    -ThemeSpacing.Medium.value.toInt(),
+                    -ThemeSpacing.Medium.value.toInt(),
+                    size.width.toInt(),
+                    size.height.toInt()
+                ).also { rect ->
+                    canvas.nativeCanvas.drawRect(rect, nativePaint)
                 }
+
+                canvas.restore()
             }
-    }
+        }
+}
+
+@Stable
+fun Modifier.backgroundAppBar(isBlurred: Boolean = false) = composed {
+    val backgroundColor = Theme.colorScheme.backgroundTopBar
+
+    applyIf(
+        condition = isBlurred,
+        ifTrue = {
+            backgroundBlur(
+                backgroundColor = backgroundColor,
+                blurRadius = 10.dp
+            )
+        }
+    )
 }
 
 @Stable
