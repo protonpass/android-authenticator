@@ -34,7 +34,7 @@ internal fun HomeContent(
     listState: LazyListState,
     paddingValues: PaddingValues,
     onNewEntryClick: () -> Unit,
-    onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
+    onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
     onRearrangeEntry: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit

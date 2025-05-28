@@ -34,7 +34,7 @@ internal fun HomeEntries(
     state: HomeMasterState.Ready,
     listState: LazyListState,
     contentPadding: PaddingValues,
-    onCopyEntryCodeClick: (HomeMasterEntryModel) -> Unit,
+    onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
     onEntryRearranged: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
@@ -52,7 +52,7 @@ internal fun HomeEntries(
                         entryModel = entryModel,
                         entryCodeMasks = entryCodeMasks,
                         remainingSeconds = getRemainingSeconds(entryModel.totalSeconds),
-                        onCopyCodeClick = { onCopyEntryCodeClick(entryModel) },
+                        onCopyCodeClick = { onCopyEntryCodeClick(entryModel, areCodesHidden) },
                         onEditClick = { onEditEntryClick(entryModel) },
                         onDeleteClick = { onDeleteEntryClick(entryModel) }
                     )

@@ -113,8 +113,8 @@ internal class HomeMasterViewModel @Inject constructor(
         )
     }
 
-    internal fun onCopyEntryCode(entry: HomeMasterEntryModel) {
-        copyToClipboardUseCase(text = entry.currentCode, isSensitive = false)
+    internal fun onCopyEntryCode(entry: HomeMasterEntryModel, areCodesHidden: Boolean) {
+        copyToClipboardUseCase(text = entry.currentCode, isSensitive = areCodesHidden)
     }
 
     internal fun onDeleteEntry(entry: HomeMasterEntryModel) {
