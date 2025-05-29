@@ -6,9 +6,11 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
@@ -37,6 +39,18 @@ internal class AppNavigationNavigator @Inject constructor(
             val scope = rememberCoroutineScope()
             val snackbarHostState = remember { SnackbarHostState() }
             val context = LocalContext.current
+
+            DisposableEffect(key1 = navController) {
+                val observer = NavController.OnDestinationChangedListener { _, _, _ ->
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                }
+
+                navController.addOnDestinationChangedListener(observer)
+
+                onDispose {
+                    navController.removeOnDestinationChangedListener(observer)
+                }
+            }
 
             ObserveAsUiEvents(flow = snackbarDispatcher.observe()) { snackbarEvent ->
                 scope.launch {
