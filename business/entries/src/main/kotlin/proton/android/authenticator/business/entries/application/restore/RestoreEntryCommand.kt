@@ -16,21 +16,9 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.delete
+package proton.android.authenticator.business.entries.application.restore
 
 import proton.android.authenticator.business.entries.domain.Entry
-import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
-import javax.inject.Inject
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-internal class DeleteEntryCommandHandler @Inject constructor(
-    private val deleter: EntryDeleter
-) : CommandHandler<DeleteEntryCommand, Entry, DeleteEntryReason> {
-
-    override suspend fun handle(command: DeleteEntryCommand): Answer<Entry, DeleteEntryReason> = try {
-        deleter.delete(id = command.id).let(Answer<Unit, DeleteEntryReason>::Success)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = DeleteEntryReason.EntryNotFound)
-    }
-
-}
+data class RestoreEntryCommand(internal val entry: Entry) : Command

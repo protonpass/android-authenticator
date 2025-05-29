@@ -16,17 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.delete
+package proton.android.authenticator.shared.common.domain.models
 
-import kotlinx.coroutines.flow.first
-import proton.android.authenticator.business.entries.domain.EntriesRepository
-import proton.android.authenticator.business.entries.domain.Entry
-import javax.inject.Inject
+import androidx.annotation.StringRes
 
-internal class EntryDeleter @Inject constructor(private val entriesRepository: EntriesRepository) {
+data class SnackbarEvent(
+    @StringRes val messageResId: Int,
+    val action: Action? = null
+) {
 
-    internal suspend fun delete(id: String): Entry = entriesRepository.find(id)
-        .first()
-        .also { entry -> entriesRepository.remove(entry) }
+    data class Action(
+        @StringRes val nameResId: Int,
+        val onAction: suspend () -> Unit
+    )
 
 }

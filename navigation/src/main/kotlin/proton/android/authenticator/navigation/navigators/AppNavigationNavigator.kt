@@ -2,21 +2,31 @@ package proton.android.authenticator.navigation.navigators
 
 import androidx.compose.material.navigation.ModalBottomSheetLayout
 import androidx.compose.material.navigation.rememberBottomSheetNavigator
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.onboarding.onboardingNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.settings.settingsNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
+import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
+import proton.android.authenticator.shared.ui.domain.events.ObserveAsUiEvents
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import javax.inject.Inject
 
 internal class AppNavigationNavigator @Inject constructor(
     private val startDestination: NavigationDestination,
-    private val navigationCommandHandler: NavigationCommandHandler
+    private val navigationCommandHandler: NavigationCommandHandler,
+    private val snackbarDispatcher: SnackbarDispatcher
 ) : NavigationNavigator {
 
     @Composable
@@ -24,6 +34,28 @@ internal class AppNavigationNavigator @Inject constructor(
         Theme(isDarkTheme = isDarkTheme) {
             val bottomSheetNavigator = rememberBottomSheetNavigator()
             val navController = rememberNavController(bottomSheetNavigator)
+            val scope = rememberCoroutineScope()
+            val snackbarHostState = remember { SnackbarHostState() }
+            val context = LocalContext.current
+
+            ObserveAsUiEvents(flow = snackbarDispatcher.observe()) { snackbarEvent ->
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+
+                    snackbarHostState.showSnackbar(
+                        message = context.getString(snackbarEvent.messageResId),
+                        actionLabel = snackbarEvent.action?.let { action ->
+                            context.getString(action.nameResId)
+                        },
+                        duration = SnackbarDuration.Short
+                    ).also { snackbarResult ->
+                        when (snackbarResult) {
+                            SnackbarResult.Dismissed -> Unit
+                            SnackbarResult.ActionPerformed -> snackbarEvent.action?.onAction?.invoke()
+                        }
+                    }
+                }
+            }
 
             ModalBottomSheetLayout(
                 bottomSheetNavigator = bottomSheetNavigator
@@ -32,7 +64,7 @@ internal class AppNavigationNavigator @Inject constructor(
                     navController = navController,
                     startDestination = startDestination
                 ) {
-                    homeNavigationGraph { navCommand ->
+                    homeNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
                         navigationCommandHandler.handle(navCommand, navController)
                     }
 
@@ -47,5 +79,4 @@ internal class AppNavigationNavigator @Inject constructor(
             }
         }
     }
-
 }

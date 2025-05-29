@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -41,6 +42,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 fun HomeScreen(
+    snackbarHostState: SnackbarHostState,
     onEditEntryClick: (String) -> Unit,
     onSettingsClick: () -> Unit,
     onNewEntryClick: () -> Unit
@@ -58,6 +60,7 @@ fun HomeScreen(
     }
 
     ScaffoldScreen(
+        snackbarHostState = snackbarHostState,
         topBar = {
             Column(
                 modifier = Modifier

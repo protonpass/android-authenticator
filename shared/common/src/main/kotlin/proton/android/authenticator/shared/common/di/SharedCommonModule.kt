@@ -30,8 +30,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import proton.android.authenticator.shared.common.checkers.AndroidAppInstalledChecker
 import proton.android.authenticator.shared.common.dispatchers.AppDispatchersImpl
+import proton.android.authenticator.shared.common.dispatchers.SnackbarDispatcherImpl
 import proton.android.authenticator.shared.common.domain.checkers.AppInstalledChecker
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
+import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
@@ -58,10 +60,13 @@ internal abstract class SharedCommonModule {
     internal abstract fun bindMimeTypeProvider(impl: ContentResolverMimeTypeProvider): MimeTypeProvider
 
     @[Binds Singleton]
-    internal abstract fun bindTimeProvider(impl: ClockTimeProvider): TimeProvider
+    internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus
 
     @[Binds Singleton]
-    internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus
+    internal abstract fun bindSnackbarDispatcher(impl: SnackbarDispatcherImpl): SnackbarDispatcher
+
+    @[Binds Singleton]
+    internal abstract fun bindTimeProvider(impl: ClockTimeProvider): TimeProvider
 
     internal companion object {
 

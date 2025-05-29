@@ -16,21 +16,14 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.delete
+package proton.android.authenticator.features.shared.usecases.snackbars
 
-import proton.android.authenticator.business.entries.domain.Entry
-import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
+import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
 
-internal class DeleteEntryCommandHandler @Inject constructor(
-    private val deleter: EntryDeleter
-) : CommandHandler<DeleteEntryCommand, Entry, DeleteEntryReason> {
+class DispatchSnackbarEventUseCase @Inject constructor(private val snackbarDispatcher: SnackbarDispatcher) {
 
-    override suspend fun handle(command: DeleteEntryCommand): Answer<Entry, DeleteEntryReason> = try {
-        deleter.delete(id = command.id).let(Answer<Unit, DeleteEntryReason>::Success)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = DeleteEntryReason.EntryNotFound)
-    }
+    suspend operator fun invoke(snackbarEvent: SnackbarEvent) = snackbarDispatcher.dispatch(snackbarEvent)
 
 }

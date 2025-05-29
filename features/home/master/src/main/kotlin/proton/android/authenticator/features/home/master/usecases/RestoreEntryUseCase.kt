@@ -16,21 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.delete
+package proton.android.authenticator.features.home.master.usecases
 
+import proton.android.authenticator.business.entries.application.restore.RestoreEntryCommand
+import proton.android.authenticator.business.entries.application.restore.RestoreEntryReason
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
-internal class DeleteEntryCommandHandler @Inject constructor(
-    private val deleter: EntryDeleter
-) : CommandHandler<DeleteEntryCommand, Entry, DeleteEntryReason> {
+internal class RestoreEntryUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    override suspend fun handle(command: DeleteEntryCommand): Answer<Entry, DeleteEntryReason> = try {
-        deleter.delete(id = command.id).let(Answer<Unit, DeleteEntryReason>::Success)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = DeleteEntryReason.EntryNotFound)
-    }
+    internal suspend operator fun invoke(entry: Entry): Answer<Unit, RestoreEntryReason> =
+        RestoreEntryCommand(entry = entry)
+            .let { command -> commandBus.dispatch(command) }
 
 }

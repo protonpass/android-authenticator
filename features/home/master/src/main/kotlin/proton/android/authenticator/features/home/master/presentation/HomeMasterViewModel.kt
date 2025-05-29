@@ -37,27 +37,35 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
 import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
+import proton.android.authenticator.features.home.master.usecases.RestoreEntryUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration.Companion.seconds
+import proton.android.authenticator.shared.ui.R as uiR
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeMasterViewModel @Inject constructor(
     observeEntriesUseCase: ObserveEntriesUseCase,
     observeEntryCodesUseCase: ObserveEntryCodesUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
-    private val timeProvider: TimeProvider,
     private val copyToClipboardUseCase: CopyToClipboardUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase,
-    private val rearrangeEntryUseCase: RearrangeEntryUseCase
+    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
+    private val rearrangeEntryUseCase: RearrangeEntryUseCase,
+    private val restoreEntryUseCase: RestoreEntryUseCase,
+    private val timeProvider: TimeProvider
 ) : ViewModel() {
 
     private val entrySearchQueryState = mutableStateOf<String>(value = SEARCH_QUERY_DEFAULT_VALUE)
@@ -122,6 +130,27 @@ internal class HomeMasterViewModel @Inject constructor(
             deleteEntryUseCase(id = entry.id).also { answer ->
                 when (answer) {
                     is Answer.Failure -> println("JIBIRI: Delete entry failed -> ${answer.reason}")
+                    is Answer.Success -> {
+                        SnackbarEvent(
+                            messageResId = R.string.home_snackbar_message_entry_deleted,
+                            action = SnackbarEvent.Action(
+                                nameResId = uiR.string.action_undo,
+                                onAction = { restoreEntry(entry = answer.data) }
+                            )
+                        ).also { snackbarEvent ->
+                            dispatchSnackbarEventUseCase(snackbarEvent)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun restoreEntry(entry: Entry) {
+        viewModelScope.launch {
+            restoreEntryUseCase(entry).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> println("JIBIRI: Restore entry failed -> ${answer.reason}")
                     is Answer.Success -> Unit
                 }
             }
@@ -145,7 +174,7 @@ internal class HomeMasterViewModel @Inject constructor(
             ).also { answer ->
                 when (answer) {
                     is Answer.Failure -> println("JIBIRI: Rearrange entry failed -> ${answer.reason}")
-                    is Answer.Success -> println("JIBIRI: Rearrange success")
+                    is Answer.Success -> Unit
                 }
             }
         }

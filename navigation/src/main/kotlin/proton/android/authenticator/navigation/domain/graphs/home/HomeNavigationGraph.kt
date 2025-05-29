@@ -1,5 +1,6 @@
 package proton.android.authenticator.navigation.domain.graphs.home
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -10,10 +11,14 @@ import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.settings.SettingsNavigationDestination
 
 @Suppress("LongMethod")
-internal fun NavGraphBuilder.homeNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
+internal fun NavGraphBuilder.homeNavigationGraph(
+    snackbarHostState: SnackbarHostState,
+    onNavigate: (NavigationCommand) -> Unit
+) {
     navigation<HomeNavigationDestination>(startDestination = HomeMasterNavigationDestination) {
         composable<HomeMasterNavigationDestination> {
             HomeScreen(
+                snackbarHostState = snackbarHostState,
                 onEditEntryClick = { entryId ->
                     NavigationCommand.NavigateTo(
                         destination = HomeManualNavigationDestination(

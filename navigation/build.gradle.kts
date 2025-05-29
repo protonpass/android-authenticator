@@ -13,6 +13,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.material.navigation)
+    implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
@@ -30,6 +31,7 @@ dependencies {
     implementation(project(":features:onboarding:imports"))
     implementation(project(":features:onboarding:master"))
     implementation(project(":features:settings:master"))
+    implementation(project(":shared:common"))
     implementation(project(":shared:ui"))
 
     ksp(libs.hilt.compiler)

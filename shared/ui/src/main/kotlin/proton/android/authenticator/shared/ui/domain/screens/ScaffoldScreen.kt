@@ -20,14 +20,21 @@ package proton.android.authenticator.shared.ui.domain.screens
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 
 @Composable
 fun ScaffoldScreen(
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     fab: @Composable () -> Unit = {},
@@ -37,6 +44,17 @@ fun ScaffoldScreen(
         modifier = Modifier
             .fillMaxSize()
             .backgroundScreenGradient(),
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { snackbarData ->
+                Snackbar(
+                    snackbarData = snackbarData,
+                    containerColor = Theme.colorScheme.backgroundTopBar,
+                    contentColor = Theme.colorScheme.textNorm,
+                    shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+                    actionColor = Theme.colorScheme.accent
+                )
+            }
+        },
         containerColor = Color.Transparent,
         topBar = topBar,
         bottomBar = bottomBar,

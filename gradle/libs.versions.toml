@@ -1,7 +1,7 @@
 [versions]
 activityComposeVersion = "1.10.1"
 agpVersion = "8.7.3"
-authenticatorCommonVersion = "0.19.3"
+authenticatorCommonVersion = "0.20.0"
 biometricVersion = "1.4.0-alpha04"
 cameraVersion = "1.4.2"
 coilVersion = "2.7.0"
@@ -22,7 +22,7 @@ kotlinVersion = "2.0.21"
 kotlinxSerializationVersion = "1.8.0"
 kspVersion = "2.0.21-1.0.27"
 lifecycleRuntimeVersion = "2.9.0"
-materialNavigationVersion = "1.8.2"
+materialVersion = "1.8.2"
 moleculeVersion = "2.0.0"
 protobufPluginVersion = "0.9.4"
 protobufVersion = "4.30.2"
@@ -49,7 +49,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeVersion" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeVersion" }
-androidx-material-navigation = { group = "androidx.compose.material", name = "material-navigation", version.ref = "materialNavigationVersion" }
+androidx-material-navigation = { group = "androidx.compose.material", name = "material-navigation", version.ref = "materialVersion" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigationVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
