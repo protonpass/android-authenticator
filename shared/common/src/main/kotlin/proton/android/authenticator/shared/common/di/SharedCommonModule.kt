@@ -38,10 +38,12 @@ import proton.android.authenticator.shared.common.domain.infrastructure.commands
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
+import proton.android.authenticator.shared.common.domain.scanners.QrScanner
 import proton.android.authenticator.shared.common.infrastructure.commands.InMemoryCommandBus
 import proton.android.authenticator.shared.common.infrastructure.queries.InMemoryQueryBus
 import proton.android.authenticator.shared.common.providers.ClockTimeProvider
 import proton.android.authenticator.shared.common.providers.ContentResolverMimeTypeProvider
+import proton.android.authenticator.shared.common.scanners.ZxingQrScanner
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -58,6 +60,9 @@ internal abstract class SharedCommonModule {
 
     @[Binds Singleton]
     internal abstract fun bindMimeTypeProvider(impl: ContentResolverMimeTypeProvider): MimeTypeProvider
+
+    @[Binds Singleton]
+    internal abstract fun bindQrScanner(impl: ZxingQrScanner): QrScanner
 
     @[Binds Singleton]
     internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus

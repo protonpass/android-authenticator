@@ -33,6 +33,7 @@ import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatch
 import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
+import proton.android.authenticator.shared.common.domain.scanners.QrScanner
 import javax.inject.Inject
 
 internal class EntriesImporter @Inject constructor(
@@ -41,16 +42,20 @@ internal class EntriesImporter @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
     private val fileReader: FileReader,
     private val mimeTypeProvider: MimeTypeProvider,
-    private val timeProvider: TimeProvider,
-    private val repository: EntriesRepository
+    private val qrScanner: QrScanner,
+    private val repository: EntriesRepository,
+    private val timeProvider: TimeProvider
 ) {
 
     internal suspend fun import(
         contentUri: Uri,
         importType: EntryImportType,
         password: String?
-    ): Int = contentUri.toString()
-        .let { path -> fileReader.read(path) }
+    ): Int = if (importType == EntryImportType.Google) {
+        qrScanner.scan(contentUri).orEmpty()
+    } else {
+        fileReader.read(contentUri.toString())
+    }
         .let { content -> getEntriesFromContent(importType, contentUri, content, password) }
         .let { entryModels -> saveEntries(entryModels) }
 

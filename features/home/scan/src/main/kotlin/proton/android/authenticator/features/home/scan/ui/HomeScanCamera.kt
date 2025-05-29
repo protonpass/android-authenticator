@@ -152,7 +152,7 @@ internal fun HomeScanCamera(
     LaunchedEffect(previewViewSize) {
         if (previewViewSize == Size.Zero) return@LaunchedEffect
 
-        val cutoutSize = previewViewSize.minDimension * 0.7f // 70% of the smallest dimension
+        val cutoutSize = previewViewSize.minDimension * 0.7f
         val left = previewViewSize.width.minus(cutoutSize).div(2)
         val top = previewViewSize.height.minus(cutoutSize).div(2)
         cutoutRect = Rect(

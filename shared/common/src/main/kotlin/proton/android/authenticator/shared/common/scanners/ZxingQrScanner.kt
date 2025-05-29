@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.analyzers
+package proton.android.authenticator.shared.common.scanners
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -31,12 +31,18 @@ import com.google.zxing.MultiFormatReader
 import com.google.zxing.NotFoundException
 import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
+import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
+import proton.android.authenticator.shared.common.domain.scanners.QrScanner
 import java.io.FileNotFoundException
 import java.io.IOException
+import javax.inject.Inject
 
-object QrImageDecoder {
+internal class ZxingQrScanner @Inject constructor(
+    private val appDispatchers: AppDispatchers,
+    @ApplicationContext private val context: Context
+) : QrScanner {
 
     private val reader = mapOf(
         DecodeHintType.POSSIBLE_FORMATS to arrayListOf(BarcodeFormat.QR_CODE)
@@ -46,7 +52,7 @@ object QrImageDecoder {
         }
     }
 
-    suspend fun decode(context: Context, uri: Uri): String? = withContext(Dispatchers.Default) {
+    override suspend fun scan(uri: Uri): String? = withContext(appDispatchers.default) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ImageDecoder.decodeBitmap(

@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.zxing.core)
 
     ksp(libs.hilt.compiler)
 }
