@@ -47,6 +47,7 @@ fun HomeScanScreen(
         state = state,
         onCloseClick = onCloseClick,
         onEnterManuallyClick = onManualEntryClick,
+        onQrCodePicked = ::onScanEntryQr,
         onQrCodeScanned = ::onCreateEntry
     )
 }

@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.scan.presentation
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
@@ -28,11 +29,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.features.home.scan.usecases.CreateEntryUseCase
+import proton.android.authenticator.features.home.scan.usecases.ScanEntryQrUseCase
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeScanViewModel @Inject constructor(
-    private val createEntryUseCase: CreateEntryUseCase
+    private val createEntryUseCase: CreateEntryUseCase,
+    private val scanEntryQrUseCase: ScanEntryQrUseCase
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<HomeScanEvent>(value = HomeScanEvent.Idle)
@@ -49,9 +53,26 @@ internal class HomeScanViewModel @Inject constructor(
 
     internal fun onCreateEntry(uri: String) {
         viewModelScope.launch {
-            createEntryUseCase(uri = uri)
+            createEntryUseCase(uri = uri).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> println("JIBIRI: Error creating entry -> $answer")
+                    is Answer.Success -> {
+                        eventFlow.update { HomeScanEvent.OnEntryCreated }
+                    }
+                }
+            }
+        }
+    }
 
-            eventFlow.update { HomeScanEvent.OnEntryCreated }
+    internal fun onScanEntryQr(uri: Uri) {
+        viewModelScope.launch {
+            scanEntryQrUseCase(uri = uri).also { qrCode ->
+                if (qrCode == null) {
+                    println("JIBIRI: Error scanning entry QR")
+                } else {
+                    onCreateEntry(uri = qrCode)
+                }
+            }
         }
     }
 
