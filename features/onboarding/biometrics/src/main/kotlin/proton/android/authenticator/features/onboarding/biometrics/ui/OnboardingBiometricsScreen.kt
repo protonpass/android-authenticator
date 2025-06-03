@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsEvent
 import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsState
 import proton.android.authenticator.features.onboarding.biometrics.presentation.OnboardingBiometricsViewModel
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
@@ -50,7 +51,11 @@ fun OnboardingBiometricsScreen(
             onConsumeEvent(event = state.event)
         }
 
-        ScaffoldScreen { innerPaddingValues ->
+        ScaffoldScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .backgroundScreenGradient()
+        ) { innerPaddingValues ->
             when (val currentState = state) {
                 OnboardingBiometricsState.Loading -> Unit
                 is OnboardingBiometricsState.Ready -> {

@@ -64,8 +64,8 @@ internal class AppNavigationNavigator @Inject constructor(
                         duration = SnackbarDuration.Short
                     ).also { snackbarResult ->
                         when (snackbarResult) {
-                            SnackbarResult.Dismissed -> Unit
                             SnackbarResult.ActionPerformed -> snackbarEvent.action?.onAction?.invoke()
+                            SnackbarResult.Dismissed -> Unit
                         }
                     }
                 }

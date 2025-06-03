@@ -18,51 +18,20 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.features.home.scan.presentation.HomeScanState
 
 @Composable
 internal fun HomeScanContent(
     state: HomeScanState,
     onCloseClick: () -> Unit,
-    onEnterManuallyClick: () -> Unit,
-    onQrCodePicked: (Uri) -> Unit,
-    onQrCodeScanned: (String) -> Unit
+    onQrCodeScanned: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) = with(state) {
-    val launcher = rememberLauncherForActivityResult(PickVisualMedia()) { uri ->
-        if (uri == null) return@rememberLauncherForActivityResult
-
-        onQrCodePicked(uri)
-    }
-
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        containerColor = Color.Transparent,
-        bottomBar = {
-            HomeScanBottomBar(
-                onCloseClick = onCloseClick,
-                onEnterManuallyClick = onEnterManuallyClick,
-                onOpenGalleryClick = {
-                    launcher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-                }
-            )
-        }
-    ) { paddingValues ->
-        HomeScanCamera(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = paddingValues),
-            onQrCodeScanned = onQrCodeScanned,
-            onCameraError = onCloseClick
-        )
-    }
+    HomeScanCamera(
+        modifier = modifier,
+        onQrCodeScanned = onQrCodeScanned,
+        onCameraError = onCloseClick
+    )
 }

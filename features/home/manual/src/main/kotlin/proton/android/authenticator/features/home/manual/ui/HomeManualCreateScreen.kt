@@ -32,6 +32,7 @@ import proton.android.authenticator.features.home.manual.presentation.HomeManual
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
@@ -51,6 +52,9 @@ internal fun HomeManualCreateScreen(
     onShowAdvanceOptions: () -> Unit
 ) = with(state) {
     ScaffoldScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .backgroundScreenGradient(),
         topBar = {
             SmallTopBar(
                 title = UiText.Resource(id = R.string.home_manual_screen_title_create),

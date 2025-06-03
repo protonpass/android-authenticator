@@ -19,21 +19,23 @@
 package proton.android.authenticator.shared.ui.domain.screens
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 
 @Composable
 fun ScaffoldScreen(
+    modifier: Modifier = Modifier,
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
@@ -41,9 +43,7 @@ fun ScaffoldScreen(
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
+        modifier = modifier,
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) { snackbarData ->
                 Snackbar(
@@ -56,6 +56,8 @@ fun ScaffoldScreen(
             }
         },
         containerColor = Color.Transparent,
+        contentColor = Color.Transparent,
+        contentWindowInsets = contentWindowInsets,
         topBar = topBar,
         bottomBar = bottomBar,
         floatingActionButton = fab,

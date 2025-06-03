@@ -18,12 +18,10 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -34,58 +32,56 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.features.home.scan.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun HomeScanBottomBar(
     onCloseClick: () -> Unit,
     onEnterManuallyClick: () -> Unit,
-    onOpenGalleryClick: () -> Unit
+    onOpenGalleryClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Theme.colorScheme.black)
-            .padding(
-                start = ThemePadding.Medium,
-                end = ThemePadding.Medium,
-                bottom = ThemePadding.Large
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = onCloseClick
+    Box(modifier = modifier) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(id = uiR.drawable.ic_cross_big),
-                contentDescription = null,
-                tint = Theme.colorScheme.white
-            )
-        }
-
-        Box(
-            modifier = Modifier.weight(weight = 1f, fill = true),
-            contentAlignment = Alignment.Center
-        ) {
-            Button(
-                onClick = onEnterManuallyClick
+            IconButton(
+                onClick = onCloseClick
             ) {
-                Text(
-                    text = stringResource(id = R.string.home_scan_enter_manually),
-                    color = Theme.colorScheme.white
+                Icon(
+                    painter = painterResource(id = uiR.drawable.ic_cross_big),
+                    contentDescription = null,
+                    tint = Theme.colorScheme.white
                 )
             }
-        }
 
-        IconButton(
-            onClick = onOpenGalleryClick
-        ) {
-            Icon(
-                painter = painterResource(id = uiR.drawable.ic_image),
-                contentDescription = null,
-                tint = Theme.colorScheme.white
-            )
+            Box(
+                modifier = Modifier.weight(weight = 1f, fill = true),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    onClick = onEnterManuallyClick,
+                    colors = ButtonDefaults.buttonColors().copy(
+                        containerColor = Theme.colorScheme.aux,
+                        contentColor = Theme.colorScheme.white
+                    )
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.home_scan_enter_manually),
+                        style = Theme.typography.body1Regular
+                    )
+                }
+            }
+
+            IconButton(
+                onClick = onOpenGalleryClick
+            ) {
+                Icon(
+                    painter = painterResource(id = uiR.drawable.ic_image),
+                    contentDescription = null,
+                    tint = Theme.colorScheme.white
+                )
+            }
         }
     }
 }

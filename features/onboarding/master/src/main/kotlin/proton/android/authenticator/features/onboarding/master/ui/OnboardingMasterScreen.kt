@@ -23,11 +23,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.components.bars.ProtonBrandBottomBar
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
 fun OnboardingMasterScreen(onGetStartedClick: () -> Unit) {
     ScaffoldScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .backgroundScreenGradient(),
         bottomBar = {
             ProtonBrandBottomBar()
         }

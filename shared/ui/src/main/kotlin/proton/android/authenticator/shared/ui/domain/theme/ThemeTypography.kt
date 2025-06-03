@@ -56,8 +56,8 @@ object ThemeTypography {
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
-            fontSize = 15.sp,
-            lineHeight = 20.sp
+            fontSize = 13.sp,
+            lineHeight = 16.sp
         )
 
     @Stable
@@ -86,7 +86,7 @@ object ThemeTypography {
         get() = TextStyle(
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Normal,
-            fontSize = 14.sp,
+            fontSize = 13.sp,
             lineHeight = 16.sp
         )
 

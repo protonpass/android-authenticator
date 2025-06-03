@@ -92,11 +92,10 @@ internal sealed interface HomeMasterState {
         internal val entryModels: List<HomeMasterEntryModel>
             get() = entryModelsMap.values.toList()
 
-        internal fun getRemainingSeconds(totalSeconds: Int): Int =
-            entryCodesRemainingTimes.getOrDefault(
-                key = totalSeconds,
-                defaultValue = 0
-            )
+        internal fun getRemainingSeconds(totalSeconds: Int): Int = entryCodesRemainingTimes.getOrDefault(
+            key = totalSeconds,
+            defaultValue = 0
+        )
 
     }
 

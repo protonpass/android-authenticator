@@ -35,7 +35,6 @@ import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
-import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun SettingsPassBannerPassItemIcons(modifier: Modifier = Modifier) {

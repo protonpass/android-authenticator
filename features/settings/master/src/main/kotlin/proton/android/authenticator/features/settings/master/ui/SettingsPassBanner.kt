@@ -124,7 +124,7 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
                     bottom = ThemePadding.Small
                 )
                 .align(alignment = Alignment.BottomCenter),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
                 modifier = Modifier.weight(weight = 1f, fill = true),

@@ -162,6 +162,9 @@ sealed class ThemeColors {
     abstract val textWeak: Color
 
     @Stable
+    val aux: Color = Color(color = 0xB2191927)
+
+    @Stable
     val black: Color = Color(color = 0x00000000)
 
     @Stable

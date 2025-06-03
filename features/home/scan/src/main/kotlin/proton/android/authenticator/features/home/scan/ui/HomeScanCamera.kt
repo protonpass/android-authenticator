@@ -154,7 +154,7 @@ internal fun HomeScanCamera(
 
         val cutoutSize = previewViewSize.minDimension * 0.7f
         val left = previewViewSize.width.minus(cutoutSize).div(2)
-        val top = previewViewSize.height.minus(cutoutSize).div(2)
+        val top = previewViewSize.height.minus(cutoutSize).div(3)
         cutoutRect = Rect(
             left = left,
             top = top,

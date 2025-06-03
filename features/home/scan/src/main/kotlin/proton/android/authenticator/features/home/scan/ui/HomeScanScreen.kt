@@ -18,16 +18,27 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.home.scan.presentation.HomeScanEvent
 import proton.android.authenticator.features.home.scan.presentation.HomeScanViewModel
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 fun HomeScanScreen(
+    snackbarHostState: SnackbarHostState,
     onCloseClick: () -> Unit,
     onManualEntryClick: () -> Unit,
     onEntryCreated: () -> Unit
@@ -43,11 +54,35 @@ fun HomeScanScreen(
         onConsumeEvent(event = state.event)
     }
 
-    HomeScanContent(
-        state = state,
-        onCloseClick = onCloseClick,
-        onEnterManuallyClick = onManualEntryClick,
-        onQrCodePicked = ::onScanEntryQr,
-        onQrCodeScanned = ::onCreateEntry
+    val launcher = rememberLauncherForActivityResult(
+        contract = PickVisualMedia(),
+        onResult = ::onScanEntryQr
     )
+
+    ScaffoldScreen(
+        snackbarHostState = snackbarHostState,
+        bottomBar = {
+            HomeScanBottomBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = ThemePadding.Medium,
+                        end = ThemePadding.Medium,
+                        bottom = ThemePadding.Large
+                    ),
+                onCloseClick = onCloseClick,
+                onEnterManuallyClick = onManualEntryClick,
+                onOpenGalleryClick = {
+                    launcher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                }
+            )
+        }
+    ) {
+        HomeScanContent(
+            modifier = Modifier.fillMaxSize(),
+            state = state,
+            onCloseClick = onCloseClick,
+            onQrCodeScanned = ::onCreateEntry
+        )
+    }
 }

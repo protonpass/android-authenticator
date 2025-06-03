@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -38,6 +39,7 @@ import proton.android.authenticator.shared.ui.domain.components.fabs.IconFloatin
 import proton.android.authenticator.shared.ui.domain.components.textfields.SearchTextField
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundAppBar
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
@@ -62,6 +64,9 @@ fun HomeScreen(
     }
 
     ScaffoldScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .backgroundScreenGradient(),
         snackbarHostState = snackbarHostState,
         topBar = {
             Column(

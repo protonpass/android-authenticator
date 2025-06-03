@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.scan.presentation
 
 import android.net.Uri
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.molecule.RecompositionMode
@@ -28,14 +29,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.entries.application.create.CreateEntryReason
+import proton.android.authenticator.features.home.scan.R
 import proton.android.authenticator.features.home.scan.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.scan.usecases.ScanEntryQrUseCase
+import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeScanViewModel @Inject constructor(
     private val createEntryUseCase: CreateEntryUseCase,
+    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
     private val scanEntryQrUseCase: ScanEntryQrUseCase
 ) : ViewModel() {
 
@@ -55,7 +61,14 @@ internal class HomeScanViewModel @Inject constructor(
         viewModelScope.launch {
             createEntryUseCase(uri = uri).also { answer ->
                 when (answer) {
-                    is Answer.Failure -> println("JIBIRI: Error creating entry -> $answer")
+                    is Answer.Failure -> {
+                        when (answer.reason) {
+                            CreateEntryReason.InvalidEntrySecret -> {
+                                R.string.home_scan_snackbar_message_invalid_entry_code
+                            }
+                        }.also { messageResId -> dispatchSnackbarEvent(messageResId) }
+                    }
+
                     is Answer.Success -> {
                         eventFlow.update { HomeScanEvent.OnEntryCreated }
                     }
@@ -64,16 +77,23 @@ internal class HomeScanViewModel @Inject constructor(
         }
     }
 
-    internal fun onScanEntryQr(uri: Uri) {
+    internal fun onScanEntryQr(uri: Uri?) {
+        if (uri == null) return
+
         viewModelScope.launch {
-            scanEntryQrUseCase(uri = uri).also { qrCode ->
-                if (qrCode == null) {
-                    println("JIBIRI: Error scanning entry QR")
-                } else {
-                    onCreateEntry(uri = qrCode)
-                }
+            scanEntryQrUseCase(uri = uri).also { entryUriCandidate ->
+                entryUriCandidate
+                    ?.also(::onCreateEntry)
+                    ?: run {
+                        dispatchSnackbarEvent(R.string.home_scan_snackbar_message_invalid_qr_code)
+                    }
             }
         }
+    }
+
+    private suspend fun dispatchSnackbarEvent(@StringRes messageResId: Int) {
+        SnackbarEvent(messageResId = messageResId)
+            .also { snackbarEvent -> dispatchSnackbarEventUseCase(snackbarEvent) }
     }
 
 }

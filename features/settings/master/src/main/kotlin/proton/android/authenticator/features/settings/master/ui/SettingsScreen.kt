@@ -38,6 +38,7 @@ import proton.android.authenticator.features.settings.master.presentation.Settin
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
@@ -82,6 +83,9 @@ fun SettingsScreen(
     }
 
     ScaffoldScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .backgroundScreenGradient(),
         topBar = {
             SmallTopBar(
                 title = UiText.Resource(id = R.string.settings_screen_title),
