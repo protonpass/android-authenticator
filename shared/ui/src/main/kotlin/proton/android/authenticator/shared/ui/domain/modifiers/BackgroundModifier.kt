@@ -318,7 +318,7 @@ fun Modifier.backgroundOnboarding() = composed {
         }
     }
 
-    val image = ImageBitmap.imageResource(id = R.drawable.preview_authenticator_dark)
+    val image = ImageBitmap.imageResource(id = R.drawable.preview_authenticator)
 
     val skewX = remember { 0f }
     val skewY = remember { 0.4f }
