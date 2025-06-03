@@ -92,10 +92,11 @@ internal sealed interface HomeMasterState {
         internal val entryModels: List<HomeMasterEntryModel>
             get() = entryModelsMap.values.toList()
 
-        internal fun getRemainingSeconds(totalSeconds: Int): Int = entryCodesRemainingTimes.getOrDefault(
-            key = totalSeconds,
-            defaultValue = 0
-        )
+        internal fun getRemainingSeconds(totalSeconds: Int): Int =
+            entryCodesRemainingTimes.getOrDefault(
+                key = totalSeconds,
+                defaultValue = 0
+            )
 
     }
 
@@ -107,15 +108,11 @@ internal sealed interface HomeMasterState {
             entriesFlow: Flow<List<Entry>>,
             entryCodesFlow: Flow<List<EntryCode>>,
             entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>,
-            entrySearchQueryDebouncedFlow: Flow<String>,
             settingsFlow: Flow<Settings>
         ): HomeMasterState {
             val entriesList: List<Entry>? by entriesFlow.collectAsState(initial = null)
             val entryCodes by entryCodesFlow.collectAsState(emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
-            val entrySearchQueryDebounced by entrySearchQueryDebouncedFlow.collectAsState(
-                entrySearchQuery
-            )
             val settings by settingsFlow.collectAsState(Settings.Default)
 
             return entriesList?.let { entries ->
@@ -126,9 +123,10 @@ internal sealed interface HomeMasterState {
                         settings.isHideCodesEnabled
                     }
 
-                    val animateOnCodeChange = remember(key1 = settings.isCodeChangeAnimationEnabled) {
-                        settings.isCodeChangeAnimationEnabled
-                    }
+                    val animateOnCodeChange =
+                        remember(key1 = settings.isCodeChangeAnimationEnabled) {
+                            settings.isCodeChangeAnimationEnabled
+                        }
 
                     val themeType = remember(key1 = settings.themeType) {
                         when (settings.themeType) {
@@ -154,25 +152,13 @@ internal sealed interface HomeMasterState {
                         }
                     }
 
-                    val entryModelsMap = remember(
-                        keys = arrayOf(
-                            entrySearchQueryDebounced,
-                            entries,
-                            entryCodes
-                        )
-                    ) {
+                    val entryModelsMap = remember(key1 = entries, key2 = entryCodes) {
                         entries.zip(entryCodes) { entry, entryCode ->
                             HomeMasterEntryModel(
                                 entry = entry,
                                 entryCode = entryCode
                             )
-                        }
-                            .filter { entryModel ->
-                                entryModel.shouldBeShown(
-                                    entrySearchQueryDebounced
-                                )
-                            }
-                            .associateBy { entryModel -> entryModel.id }
+                        }.associateBy { entryModel -> entryModel.id }
                     }
 
                     Ready(

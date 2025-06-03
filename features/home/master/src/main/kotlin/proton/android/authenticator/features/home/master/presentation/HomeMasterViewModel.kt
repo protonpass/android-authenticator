@@ -77,11 +77,21 @@ internal class HomeMasterViewModel @Inject constructor(
             else SEARCH_QUERY_DEBOUNCE_MILLIS
         }
 
-    private val entriesFlow = observeEntriesUseCase()
-        .shareIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
-        )
+    private val entriesFlow = combine(
+        observeEntriesUseCase(),
+        entrySearchQueryDebouncedFlow
+    ) { entries, searchQuery ->
+        entries.filter { entry ->
+            if (searchQuery.isEmpty()) {
+                true
+            } else {
+                entry.issuer.contains(searchQuery, true) || entry.name.contains(searchQuery, true)
+            }
+        }
+    }.shareIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
+    )
 
     private val entryCodesFlow = entriesFlow
         .flatMapLatest(observeEntryCodesUseCase::invoke)
@@ -113,7 +123,6 @@ internal class HomeMasterViewModel @Inject constructor(
     ) {
         HomeMasterState.create(
             entrySearchQuery = entrySearchQueryState.value,
-            entrySearchQueryDebouncedFlow = entrySearchQueryDebouncedFlow,
             entriesFlow = entriesFlow,
             entryCodesFlow = entryCodesFlow,
             entryCodesRemainingTimesFlow = entryCodesRemainingTimesFlow,
