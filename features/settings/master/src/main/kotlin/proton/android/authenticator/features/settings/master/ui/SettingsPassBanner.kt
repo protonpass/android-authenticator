@@ -58,14 +58,14 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(height = 230.dp)
+            .height(height = 222.dp)
             .containerBanner()
     ) {
         Image(
             modifier = Modifier
                 .align(alignment = Alignment.CenterEnd)
-                .size(size = 230.dp)
-                .offset(x = ThemeSpacing.Large.plus(ThemeSpacing.Small)),
+                .size(size = 222.dp)
+                .offset(x = ThemeSpacing.Large.plus(ThemeSpacing.Medium)),
             painter = painterResource(id = uiR.drawable.preview_pass),
             contentDescription = null
         )
@@ -100,7 +100,7 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
                 modifier = Modifier.width(width = 240.dp),
                 text = stringResource(id = R.string.settings_pass_banner_description),
                 color = Theme.colorScheme.white,
-                style = Theme.typography.body1Regular
+                style = Theme.typography.body2Regular
             )
 
             SettingsPassBannerPassItemIcons(
@@ -118,10 +118,13 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
                     blurRadius = 44.dp
                 )
                 .padding(
-                    horizontal = ThemePadding.Medium,
-                    vertical = ThemePadding.MediumSmall
+                    start = ThemePadding.Medium,
+                    top = ThemePadding.ExtraSmall,
+                    end = ThemePadding.Medium,
+                    bottom = ThemePadding.Small
                 )
-                .align(alignment = Alignment.BottomCenter)
+                .align(alignment = Alignment.BottomCenter),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier.weight(weight = 1f, fill = true),
@@ -136,7 +139,7 @@ internal fun SettingsPassBanner(onDismissClick: () -> Unit, onActionClick: () ->
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        modifier = Modifier.size(size = 28.dp),
+                        modifier = Modifier.size(size = 24.dp),
                         painter = painterResource(id = uiR.drawable.ic_logo_pass_36),
                         contentDescription = null
                     )

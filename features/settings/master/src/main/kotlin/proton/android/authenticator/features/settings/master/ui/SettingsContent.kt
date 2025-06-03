@@ -61,7 +61,7 @@ internal fun SettingsContent(
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
     ) {
 
-        AnimatedVisibility(visible = bannerModel.shouldShowPassBanner) {
+        AnimatedVisibility(visible = true) {
             SettingsPassBanner(
                 onDismissClick = onDismissPassBanner,
                 onActionClick = {

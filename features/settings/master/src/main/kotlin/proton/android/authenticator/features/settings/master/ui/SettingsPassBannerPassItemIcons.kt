@@ -64,7 +64,7 @@ internal fun SettingsPassBannerPassItemIcons(modifier: Modifier = Modifier) {
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
+        horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
     ) {
         passItems.forEach { (icon, tintColor) ->
             Box(
@@ -74,7 +74,7 @@ internal fun SettingsPassBannerPassItemIcons(modifier: Modifier = Modifier) {
                     .padding(all = ThemePadding.Small)
             ) {
                 Icon(
-                    modifier = Modifier.size(size = 20.dp),
+                    modifier = Modifier.size(size = 18.dp),
                     painter = icon.asPainter(),
                     contentDescription = null,
                     tint = tintColor
