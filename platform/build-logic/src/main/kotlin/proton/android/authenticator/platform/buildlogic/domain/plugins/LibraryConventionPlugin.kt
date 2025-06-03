@@ -10,6 +10,7 @@ internal abstract class LibraryConventionPlugin : ConventionPlugin() {
     protected fun Project.configureAndroidEnvironment() {
         extensions.configure<LibraryExtension> {
             compileSdk = PlatformAndroidConfig.COMPILE_SDK
+            ndkVersion = PlatformAndroidConfig.NDK_VERSION
 
             defaultConfig {
                 minSdk = PlatformAndroidConfig.MIN_SDK

@@ -15,6 +15,8 @@ internal object PlatformAndroidConfig {
 
     internal const val NAMESPACE: String = "proton.android.authenticator"
 
+    internal const val NDK_VERSION: String = "28.1.13356709"
+
     internal const val TARGET_SDK: Int = 34
 
     internal const val USES_COMPOSE: Boolean = true

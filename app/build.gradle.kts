@@ -54,6 +54,7 @@ fun versionCode(versionName: String): Int {
 android {
     namespace = "proton.android.authenticator"
     compileSdk = 35
+    ndkVersion = "28.1.13356709"
 
     defaultConfig {
         applicationId = "proton.android.authenticator"
