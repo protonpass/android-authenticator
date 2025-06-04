@@ -22,10 +22,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.components.containers.RowsContainer
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
@@ -43,20 +43,11 @@ internal fun SettingsSection(title: String, contents: List<@Composable () -> Uni
             style = Theme.typography.body2Medium
         )
 
-        Column(
+        RowsContainer(
             modifier = Modifier
                 .fillMaxWidth()
-                .backgroundSection()
-        ) {
-            contents.forEachIndexed { index, content ->
-                content()
-
-                if (index < contents.lastIndex) {
-                    HorizontalDivider(
-                        color = Theme.colorScheme.menuListBorder
-                    )
-                }
-            }
-        }
+                .backgroundSection(),
+            contents = contents
+        )
     }
 }

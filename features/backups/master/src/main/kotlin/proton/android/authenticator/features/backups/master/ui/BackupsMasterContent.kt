@@ -30,7 +30,7 @@ import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.backups.master.R
 import proton.android.authenticator.features.backups.master.presentation.BackupsMasterState
 import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
-import proton.android.authenticator.shared.ui.domain.components.containers.SettingsContainer
+import proton.android.authenticator.shared.ui.domain.components.containers.RowsContainer
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
@@ -50,7 +50,7 @@ internal fun BackupsMasterContent(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
     ) {
-        SettingsContainer(
+        RowsContainer(
             modifier = Modifier
                 .fillMaxWidth()
                 .backgroundSection(),

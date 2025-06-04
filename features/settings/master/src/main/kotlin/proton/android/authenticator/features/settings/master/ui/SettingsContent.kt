@@ -32,6 +32,9 @@ import proton.android.authenticator.business.settings.domain.SettingsSearchBarTy
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
+import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
+import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
+import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -73,22 +76,22 @@ internal fun SettingsContent(
             title = stringResource(id = R.string.settings_security_section),
             contents = listOf(
                 {
-                    SettingsNavigationRow(
-                        title = UiText.Resource(id = R.string.settings_security_title_backups),
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_security_title_backups),
                         showNavigationIcon = true,
                         onClick = onBackupsClick
                     )
                 },
                 {
-                    SettingsToggleRow(
-                        title = stringResource(id = R.string.settings_security_title_sync),
+                    ToggleRow(
+                        titleText = UiText.Resource(id = R.string.settings_security_title_sync),
                         isChecked = settingsModel.isSyncEnabled,
                         onCheckedChange = onSyncChange
                     )
                 },
                 {
-                    SettingsSelectorRow<SettingsAppLockType>(
-                        title = stringResource(id = R.string.settings_security_title_lock),
+                    SelectorRow<SettingsAppLockType>(
+                        titleText = UiText.Resource(id = R.string.settings_security_title_lock),
                         options = settingsModel.appLockOptions,
                         onSelectedOptionChange = { newAppLockType ->
                             onAppLockTypeChange(newAppLockType, context)
@@ -96,8 +99,8 @@ internal fun SettingsContent(
                     )
                 },
                 {
-                    SettingsToggleRow(
-                        title = stringResource(id = R.string.settings_security_title_hide_codes),
+                    ToggleRow(
+                        titleText = UiText.Resource(id = R.string.settings_security_title_hide_codes),
                         isChecked = settingsModel.isHideCodesEnabled,
                         onCheckedChange = onTapToRevealChange
                     )
@@ -109,29 +112,29 @@ internal fun SettingsContent(
             title = stringResource(id = R.string.settings_appearance_section),
             contents = listOf(
                 {
-                    SettingsSelectorRow<SettingsThemeType>(
-                        title = stringResource(id = R.string.settings_appearance_title_theme),
+                    SelectorRow<SettingsThemeType>(
+                        titleText = UiText.Resource(id = R.string.settings_appearance_title_theme),
                         options = settingsModel.themeOptions,
                         onSelectedOptionChange = onThemeTypeChange
                     )
                 },
                 {
-                    SettingsSelectorRow<SettingsSearchBarType>(
-                        title = stringResource(id = R.string.settings_appearance_title_search_bar_position),
+                    SelectorRow<SettingsSearchBarType>(
+                        titleText = UiText.Resource(id = R.string.settings_appearance_title_search_bar_position),
                         options = settingsModel.searchBarOptions,
                         onSelectedOptionChange = onSearchBarTypeChange
                     )
                 },
                 {
-                    SettingsSelectorRow<SettingsDigitType>(
-                        title = stringResource(id = R.string.settings_appearance_title_digit_style),
+                    SelectorRow<SettingsDigitType>(
+                        titleText = UiText.Resource(id = R.string.settings_appearance_title_digit_style),
                         options = settingsModel.digitOptions,
                         onSelectedOptionChange = onDigitTypeChange
                     )
                 },
                 {
-                    SettingsToggleRow(
-                        title = stringResource(id = R.string.settings_appearance_title_animate_code_change),
+                    ToggleRow(
+                        titleText = UiText.Resource(id = R.string.settings_appearance_title_animate_code_change),
                         isChecked = settingsModel.isCodeChangeAnimationEnabled,
                         onCheckedChange = onCodeChangeAnimationChange
                     )
@@ -143,14 +146,14 @@ internal fun SettingsContent(
             title = stringResource(id = R.string.settings_data_management_section),
             contents = listOf(
                 {
-                    SettingsNavigationRow(
-                        title = UiText.Resource(id = R.string.settings_data_management_title_import),
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_data_management_title_import),
                         onClick = onImportClick
                     )
                 },
                 {
-                    SettingsNavigationRow(
-                        title = UiText.Resource(id = R.string.settings_data_management_title_export),
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_data_management_title_export),
                         onClick = { onExportClick(exportFileName) }
                     )
                 }
@@ -161,14 +164,14 @@ internal fun SettingsContent(
             title = stringResource(id = R.string.settings_support_section),
             contents = listOf(
                 {
-                    SettingsNavigationRow(
-                        title = UiText.Resource(id = R.string.settings_support_title_how_to),
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_support_title_how_to),
                         onClick = { onHowToClick(howToUrl) }
                     )
                 },
                 {
-                    SettingsNavigationRow(
-                        title = UiText.Resource(id = R.string.settings_support_title_feedback),
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_support_title_feedback),
                         onClick = { onFeedbackClick(feedbackUrl) }
                     )
                 }
@@ -180,9 +183,9 @@ internal fun SettingsContent(
                 title = stringResource(id = R.string.settings_discover_section),
                 contents = discoverModel.discoverProtonApps.map { discoverApp ->
                     {
-                        SettingsNavigationRow(
+                        NavigationRow(
+                            titleText = discoverApp.title,
                             leadingIcon = discoverApp.icon,
-                            title = discoverApp.title,
                             description = discoverApp.description,
                             onClick = { onDiscoverAppClick(discoverApp.id, discoverApp.url) }
                         )

@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 
 @Composable
-fun SettingsContainer(contents: List<@Composable () -> Unit>, modifier: Modifier = Modifier) {
+fun RowsContainer(contents: List<@Composable () -> Unit>, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         contents.forEachIndexed { index, content ->
             content()
