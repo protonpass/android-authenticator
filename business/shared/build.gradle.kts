@@ -58,7 +58,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.protobuf.lite)
 
-    implementation(project(":shared:common"))
+    implementation(projects.shared.common)
 
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.compiler)

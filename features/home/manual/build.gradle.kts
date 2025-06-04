@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":business:entries"))
+    implementation(projects.business.entries)
 }

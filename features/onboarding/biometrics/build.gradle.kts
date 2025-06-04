@@ -7,7 +7,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":business:biometrics"))
-    implementation(project(":business:settings"))
-    implementation(project(":business:steps"))
+    implementation(projects.business.biometrics)
+    implementation(projects.business.settings)
+    implementation(projects.business.steps)
 }

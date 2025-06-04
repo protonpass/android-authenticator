@@ -12,5 +12,5 @@ dependencies {
     implementation(libs.androidx.camera.view)
     implementation(libs.zxing.core)
 
-    implementation(project(":business:entries"))
+    implementation(projects.business.entries)
 }

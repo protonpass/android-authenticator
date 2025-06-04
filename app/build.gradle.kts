@@ -199,10 +199,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(project(":business:settings"))
-    implementation(project(":features:shared"))
-    implementation(project(":navigation"))
-    implementation(project(":shared:ui"))
+    implementation(projects.business.settings)
+    implementation(projects.features.shared)
+    implementation(projects.navigation)
+    implementation(projects.shared.ui)
 }
 
 dependencyGuard {

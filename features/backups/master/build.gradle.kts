@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":business:backups"))
+    implementation(projects.business.backups)
 }

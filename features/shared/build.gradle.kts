@@ -13,10 +13,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
 
-    implementation(project(":business:biometrics"))
-    implementation(project(":business:settings"))
-    implementation(project(":business:steps"))
-    implementation(project(":shared:common"))
+    implementation(projects.business.biometrics)
+    implementation(projects.business.settings)
+    implementation(projects.business.steps)
+    implementation(projects.shared.common)
 
     ksp(libs.hilt.compiler)
 }

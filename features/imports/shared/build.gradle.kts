@@ -13,8 +13,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.hilt.android)
 
-    implementation(project(":business:entries"))
-    implementation(project(":shared:common"))
+    implementation(projects.business.entries)
+    implementation(projects.shared.common)
 
     ksp(libs.hilt.compiler)
 }

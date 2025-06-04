@@ -7,8 +7,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":business:biometrics"))
-    implementation(project(":business:entries"))
-    implementation(project(":business:proton_apps"))
-    implementation(project(":business:settings"))
+    implementation(projects.business.biometrics)
+    implementation(projects.business.entries)
+    implementation(projects.business.protonApps)
+    implementation(projects.business.settings)
 }

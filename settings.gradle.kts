@@ -44,6 +44,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "ProtonAuthenticator"
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include(":app")
 include(":business:backups")
 include(":business:biometrics")

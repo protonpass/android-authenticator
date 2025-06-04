@@ -7,6 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":business:entries"))
-    implementation(project(":features:imports:shared"))
+    implementation(projects.business.entries)
+    implementation(projects.features.imports.shared)
 }

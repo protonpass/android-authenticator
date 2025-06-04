@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.core.crypto)
     implementation(libs.hilt.android)
 
-    implementation(project(":shared:common"))
+    implementation(projects.shared.common)
 
     ksp(libs.hilt.compiler)
 }
