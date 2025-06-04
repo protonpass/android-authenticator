@@ -70,10 +70,9 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     }
 
     private fun SettingsPreferencesAppLockType.toDomain() = when (this) {
-        SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_NONE -> SettingsAppLockType.None
         SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_BIOMETRIC -> SettingsAppLockType.Biometric
-        SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_UNSPECIFIED -> SettingsAppLockType.None
-        else -> SettingsAppLockType.None
+        SettingsPreferencesAppLockType.SETTINGS_APP_LOCK_TYPE_NONE,
+        SettingsPreferencesAppLockType.UNRECOGNIZED -> SettingsAppLockType.None
     }
 
     private fun SettingsAppLockType.toPreferences() = when (this) {
@@ -82,11 +81,10 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     }
 
     private fun SettingsPreferencesThemeType.toDomain() = when (this) {
-        SettingsPreferencesThemeType.SETTING_THEME_TYPE_SYSTEM -> SettingsThemeType.System
         SettingsPreferencesThemeType.SETTING_THEME_TYPE_LIGHT -> SettingsThemeType.Light
         SettingsPreferencesThemeType.SETTING_THEME_TYPE_DARK -> SettingsThemeType.Dark
-        SettingsPreferencesThemeType.SETTING_THEME_TYPE_UNSPECIFIED -> SettingsThemeType.System
-        else -> SettingsThemeType.System
+        SettingsPreferencesThemeType.SETTING_THEME_TYPE_SYSTEM,
+        SettingsPreferencesThemeType.UNRECOGNIZED -> SettingsThemeType.System
     }
 
     private fun SettingsThemeType.toPreferences() = when (this) {
@@ -96,10 +94,9 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     }
 
     private fun SettingsPreferencesSearchBarType.toDomain() = when (this) {
-        SettingsPreferencesSearchBarType.SETTINGS_SEARCH_BAR_TYPE_BOTTOM -> SettingsSearchBarType.Bottom
         SettingsPreferencesSearchBarType.SETTINGS_SEARCH_BAR_TYPE_TOP -> SettingsSearchBarType.Top
-        SettingsPreferencesSearchBarType.SETTINGS_SEARCH_BAR_TYPE_UNSPECIFIED -> SettingsSearchBarType.Bottom
-        else -> SettingsSearchBarType.Bottom
+        SettingsPreferencesSearchBarType.SETTINGS_SEARCH_BAR_TYPE_BOTTOM,
+        SettingsPreferencesSearchBarType.UNRECOGNIZED -> SettingsSearchBarType.Bottom
     }
 
     private fun SettingsSearchBarType.toPreferences() = when (this) {
@@ -109,9 +106,8 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
 
     private fun SettingsPreferencesDigitType.toDomain() = when (this) {
         SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_BOXES -> SettingsDigitType.Boxes
-        SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_PLAIN -> SettingsDigitType.Plain
-        SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_UNSPECIFIED -> SettingsDigitType.Plain
-        else -> SettingsDigitType.Plain
+        SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_PLAIN,
+        SettingsPreferencesDigitType.UNRECOGNIZED -> SettingsDigitType.Plain
     }
 
     private fun SettingsDigitType.toPreferences() = when (this) {
