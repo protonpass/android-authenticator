@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "proton/android/authenticator/proto/preferences/backups/backup_preferences_frequency.proto";
+
+option java_package = "proton.android.authenticator.proto.preferences.backups";
+option java_multiple_files = true;
+
+message BackupPreferences {
+  bool is_backup_enabled = 1;
+  BackupPreferencesFrequency frequency = 2;
+}

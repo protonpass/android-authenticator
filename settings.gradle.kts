@@ -45,6 +45,7 @@ dependencyResolutionManagement {
 rootProject.name = "ProtonAuthenticator"
 
 include(":app")
+include(":business:backups")
 include(":business:biometrics")
 include(":business:entries")
 include(":business:entry_codes")
@@ -52,6 +53,7 @@ include(":business:proton_apps")
 include(":business:settings")
 include(":business:shared")
 include(":business:steps")
+include(":features:backups:master")
 include(":features:exports:completion")
 include(":features:exports:errors")
 include(":features:home:manual")

@@ -19,7 +19,6 @@
 package proton.android.authenticator.business.settings.domain
 
 data class Settings(
-    val isBackupEnabled: Boolean,
     val isSyncEnabled: Boolean,
     val appLockType: SettingsAppLockType,
     val isHideCodesEnabled: Boolean,
@@ -33,7 +32,6 @@ data class Settings(
     companion object {
 
         val Default = Settings(
-            isBackupEnabled = false,
             isSyncEnabled = false,
             appLockType = SettingsAppLockType.None,
             isHideCodesEnabled = false,

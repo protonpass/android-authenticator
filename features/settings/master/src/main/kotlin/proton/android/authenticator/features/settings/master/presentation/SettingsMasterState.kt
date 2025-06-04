@@ -62,7 +62,6 @@ internal class SettingsMasterState private constructor(
 
             val settingsModel = remember(key1 = settings) {
                 SettingsMasterSettingsModel(
-                    isBackupEnabled = settings.isBackupEnabled,
                     isSyncEnabled = settings.isSyncEnabled,
                     isHideCodesEnabled = settings.isHideCodesEnabled,
                     appLockType = settings.appLockType,

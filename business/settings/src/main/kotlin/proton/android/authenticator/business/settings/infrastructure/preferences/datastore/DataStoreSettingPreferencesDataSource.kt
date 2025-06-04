@@ -41,7 +41,6 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     override fun observe(): Flow<Settings> = settingsPreferencesDataStore.data
         .map { settingsPreferences ->
             Settings(
-                isBackupEnabled = settingsPreferences.isBackupEnabled,
                 isSyncEnabled = settingsPreferences.isSyncEnabled,
                 appLockType = settingsPreferences.appLockType.toDomain(),
                 isHideCodesEnabled = settingsPreferences.isHideCodesEnabled,
@@ -56,7 +55,6 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
     override suspend fun update(settings: Settings) {
         settingsPreferencesDataStore.updateData { settingsPreferences ->
             settingsPreferences.toBuilder()
-                .setIsBackupEnabled(settings.isBackupEnabled)
                 .setIsSyncEnabled(settings.isSyncEnabled)
                 .setAppLockType(settings.appLockType.toPreferences())
                 .setIsHideCodesEnabled(settings.isHideCodesEnabled)

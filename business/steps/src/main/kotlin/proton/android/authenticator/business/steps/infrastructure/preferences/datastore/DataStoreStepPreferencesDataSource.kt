@@ -24,8 +24,8 @@ import kotlinx.coroutines.flow.map
 import proton.android.authenticator.business.shared.domain.infrastructure.preferences.PreferencesDataSource
 import proton.android.authenticator.business.steps.domain.Step
 import proton.android.authenticator.business.steps.domain.StepDestination
-import proton.android.authenticator.proto.preferences.settings.StepPreferencesDestination
 import proton.android.authenticator.proto.preferences.steps.StepPreferences
+import proton.android.authenticator.proto.preferences.steps.StepPreferencesDestination
 import javax.inject.Inject
 
 internal class DataStoreStepPreferencesDataSource @Inject constructor(

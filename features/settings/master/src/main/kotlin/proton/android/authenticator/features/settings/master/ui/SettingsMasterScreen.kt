@@ -44,8 +44,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun SettingsScreen(
+fun SettingsMasterScreen(
     onNavigationClick: () -> Unit,
+    onBackupsClick: () -> Unit,
     onExportCompleted: (Int) -> Unit,
     onExportFailed: (Int) -> Unit,
     onImportClick: () -> Unit,
@@ -103,7 +104,7 @@ fun SettingsScreen(
                 .padding(horizontal = ThemePadding.Medium),
             state = state,
             onDismissPassBanner = ::onUpdateIsPassBannerDismissed,
-            onBackupChange = ::onUpdateIsBackupEnabled,
+            onBackupsClick = onBackupsClick,
             onSyncChange = ::onUpdateIsSyncEnabled,
             onAppLockTypeChange = ::onUpdateAppLockType,
             onTapToRevealChange = ::onUpdateIsTapToRevealEnabled,

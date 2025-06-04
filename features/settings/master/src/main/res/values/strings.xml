@@ -22,8 +22,7 @@
     <string name="settings_pass_banner_description">Store strong, unique passwords to avoid identity theft and breaches.</string>
 
     <string name="settings_security_section">Security</string>
-    <string name="settings_security_title_backup">Backup</string>
-    <string name="settings_security_description_backup">Proton Authenticator will periodically save all the data to Google Cloud.</string>
+    <string name="settings_security_title_backups">Backups</string>
     <string name="settings_security_title_sync">Sync between devices</string>
     <string name="settings_security_title_lock">App lock</string>
     <string name="settings_security_title_lock_option_biometric">Biometric</string>

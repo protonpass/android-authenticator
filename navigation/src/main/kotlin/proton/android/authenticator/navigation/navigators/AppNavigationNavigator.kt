@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.business.steps.domain.StepDestination
 import proton.android.authenticator.features.shared.usecases.steps.ObserveStepUseCase
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
+import proton.android.authenticator.navigation.domain.graphs.backups.backupsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.onboarding.OnboardingNavigationDestination
@@ -91,6 +92,10 @@ internal class AppNavigationNavigator @Inject constructor(
                         navController = navController,
                         startDestination = startDestination
                     ) {
+                        backupsNavigationGraph { navCommand ->
+                            navigationCommandHandler.handle(navCommand, navController)
+                        }
+
                         homeNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }

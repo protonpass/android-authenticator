@@ -30,8 +30,9 @@ import proton.android.authenticator.features.imports.completion.ui.ImportsComple
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
-import proton.android.authenticator.features.settings.master.ui.SettingsScreen
+import proton.android.authenticator.features.settings.master.ui.SettingsMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.graphs.backups.BackupsNavigationDestination
 
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
@@ -39,9 +40,14 @@ internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationComm
         composable<SettingsMasterNavigationDestination> {
             val context = LocalContext.current
 
-            SettingsScreen(
+            SettingsMasterScreen(
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
+                },
+                onBackupsClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = BackupsNavigationDestination
+                    ).also(onNavigate)
                 },
                 onExportCompleted = { exportedEntriesCount ->
                     NavigationCommand.NavigateTo(

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "proton.android.authenticator.proto.preferences.backups";
+option java_multiple_files = true;
+
+enum BackupPreferencesFrequency {
+  BACKUP_FREQUENCY_DAILY = 0;
+  BACKUP_FREQUENCY_WEEKLY = 1;
+  BACKUP_FREQUENCY_MONTHLY = 2;
+}

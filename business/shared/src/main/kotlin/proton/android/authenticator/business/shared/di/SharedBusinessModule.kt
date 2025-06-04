@@ -33,10 +33,12 @@ import proton.android.authenticator.business.shared.domain.infrastructure.files.
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
 import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileReader
 import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileWriter
+import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.backups.BackupProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.settings.SettingsProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.steps.StepProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.AuthenticatorDatabase
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
+import proton.android.authenticator.proto.preferences.backups.BackupPreferences
 import proton.android.authenticator.proto.preferences.settings.SettingsPreferences
 import proton.android.authenticator.proto.preferences.steps.StepPreferences
 import javax.inject.Singleton
@@ -64,6 +66,14 @@ internal abstract class SharedBusinessModule {
             )
                 .fallbackToDestructiveMigration(dropAllTables = false)
                 .build()
+
+        @[Provides Singleton]
+        internal fun provideBackupPreferencesDataStore(
+            @ApplicationContext context: Context
+        ): DataStore<BackupPreferences> = DataStoreFactory.create(
+            serializer = BackupProtoPreferencesSerializer,
+            produceFile = { context.dataStoreFile("backup_preferences.pb") }
+        )
 
         @[Provides Singleton]
         internal fun provideSettingsPreferencesDataStore(

@@ -94,11 +94,6 @@ internal class SettingsMasterViewModel @Inject constructor(
             .also(::updateSettings)
     }
 
-    internal fun onUpdateIsBackupEnabled(newIsBackupEnabled: Boolean) {
-        settingsModel.copy(isBackupEnabled = newIsBackupEnabled)
-            .also(::updateSettings)
-    }
-
     internal fun onUpdateIsSyncEnabled(newIsSyncEnabled: Boolean) {
         settingsModel.copy(isSyncEnabled = newIsSyncEnabled)
             .also(::updateSettings)

@@ -9,13 +9,12 @@ option java_package = "proton.android.authenticator.proto.preferences.settings";
 option java_multiple_files = true;
 
 message SettingsPreferences {
-  bool is_backup_enabled = 1;
-  bool is_sync_enabled = 2;
-  SettingsPreferencesAppLockType app_lock_type = 3;
-  bool is_hide_codes_enabled = 4;
-  SettingsPreferencesThemeType theme_type = 5;
-  SettingsPreferencesSearchBarType search_bar_type = 6;
-  SettingsPreferencesDigitType digit_type = 7;
-  bool is_code_change_animation_enabled = 8;
-  bool is_pass_banner_dismissed = 9;
+  bool is_sync_enabled = 1;
+  SettingsPreferencesAppLockType app_lock_type = 2;
+  bool is_hide_codes_enabled = 3;
+  SettingsPreferencesThemeType theme_type = 4;
+  SettingsPreferencesSearchBarType search_bar_type = 5;
+  SettingsPreferencesDigitType digit_type = 6;
+  bool is_code_change_animation_enabled = 7;
+  bool is_pass_banner_dismissed = 8;
 }

@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(":business:steps"))
+    implementation(project(":features:backups:master"))
     implementation(project(":features:exports:completion"))
     implementation(project(":features:exports:errors"))
     implementation(project(":features:home:manual"))

@@ -24,12 +24,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -41,7 +45,8 @@ internal fun SettingsNavigationRow(
     title: UiText,
     onClick: () -> Unit,
     description: UiText? = null,
-    icon: UiIcon? = null
+    leadingIcon: UiIcon? = null,
+    showNavigationIcon: Boolean = false
 ) {
     val verticalPadding = remember {
         ThemePadding.Small.plus(ThemePadding.MediumSmall)
@@ -58,7 +63,7 @@ internal fun SettingsNavigationRow(
         horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        icon?.let { icon ->
+        leadingIcon?.let { icon ->
             Image(
                 painter = icon.asPainter(),
                 contentDescription = null
@@ -66,6 +71,7 @@ internal fun SettingsNavigationRow(
         }
 
         Column(
+            modifier = Modifier.weight(weight = 1f, fill = true),
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall)
         ) {
             Text(
@@ -81,6 +87,15 @@ internal fun SettingsNavigationRow(
                     style = Theme.typography.body2Regular
                 )
             }
+        }
+
+        if (showNavigationIcon) {
+            Icon(
+                modifier = Modifier.offset(x = ThemeSpacing.Small),
+                painter = painterResource(id = R.drawable.ic_chevron_tiny_right),
+                contentDescription = null,
+                tint = Theme.colorScheme.textWeak
+            )
         }
     }
 }

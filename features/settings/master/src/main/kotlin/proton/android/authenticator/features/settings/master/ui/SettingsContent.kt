@@ -39,7 +39,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 internal fun SettingsContent(
     state: SettingsMasterState,
     onDismissPassBanner: () -> Unit,
-    onBackupChange: (Boolean) -> Unit,
+    onBackupsClick: () -> Unit,
     onSyncChange: (Boolean) -> Unit,
     onAppLockTypeChange: (SettingsAppLockType, Context) -> Unit,
     onTapToRevealChange: (Boolean) -> Unit,
@@ -73,11 +73,10 @@ internal fun SettingsContent(
             title = stringResource(id = R.string.settings_security_section),
             contents = listOf(
                 {
-                    SettingsToggleRow(
-                        title = stringResource(id = R.string.settings_security_title_backup),
-                        description = stringResource(id = R.string.settings_security_description_backup),
-                        isChecked = settingsModel.isBackupEnabled,
-                        onCheckedChange = onBackupChange
+                    SettingsNavigationRow(
+                        title = UiText.Resource(id = R.string.settings_security_title_backups),
+                        showNavigationIcon = true,
+                        onClick = onBackupsClick
                     )
                 },
                 {
@@ -182,7 +181,7 @@ internal fun SettingsContent(
                 contents = discoverModel.discoverProtonApps.map { discoverApp ->
                     {
                         SettingsNavigationRow(
-                            icon = discoverApp.icon,
+                            leadingIcon = discoverApp.icon,
                             title = discoverApp.title,
                             description = discoverApp.description,
                             onClick = { onDiscoverAppClick(discoverApp.id, discoverApp.url) }

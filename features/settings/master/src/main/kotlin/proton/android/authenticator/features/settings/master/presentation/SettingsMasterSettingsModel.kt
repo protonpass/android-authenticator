@@ -25,7 +25,6 @@ import proton.android.authenticator.business.settings.domain.SettingsSearchBarTy
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 
 internal data class SettingsMasterSettingsModel(
-    internal val isBackupEnabled: Boolean,
     internal val isSyncEnabled: Boolean,
     internal val appLockType: SettingsAppLockType,
     internal val isHideCodesEnabled: Boolean,
@@ -58,7 +57,6 @@ internal data class SettingsMasterSettingsModel(
     )
 
     internal fun asSettings(): Settings = Settings(
-        isBackupEnabled = isBackupEnabled,
         isSyncEnabled = isSyncEnabled,
         appLockType = appLockType,
         isHideCodesEnabled = isHideCodesEnabled,
