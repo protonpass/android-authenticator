@@ -130,12 +130,6 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
 
         composable<OnboardingBiometricsNavigationDestination> {
             OnboardingBiometricsScreen(
-                onNotAvailable = {
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = HomeNavigationDestination,
-                        popDestination = OnboardingNavigationDestination
-                    ).also(onNavigate)
-                },
                 onBiometricsEnabled = {
                     NavigationCommand.NavigateToWithPopup(
                         destination = HomeNavigationDestination,

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "proton/android/authenticator/proto/preferences/steps/step_preferences_destination.proto";
+
+option java_package = "proton.android.authenticator.proto.preferences.steps";
+option java_multiple_files = true;
+
+message StepPreferences {
+  StepPreferencesDestination destination = 1;
+}

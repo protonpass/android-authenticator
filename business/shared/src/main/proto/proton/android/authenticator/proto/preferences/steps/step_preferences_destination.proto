@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "proton.android.authenticator.proto.preferences.settings";
+option java_multiple_files = true;
+
+enum StepPreferencesDestination {
+  STEP_DESTINATION_ONBOARDING = 0;
+  STEP_DESTINATION_HOME = 1;
+}

@@ -15,6 +15,7 @@ dependencies {
 
     implementation(project(":business:biometrics"))
     implementation(project(":business:settings"))
+    implementation(project(":business:steps"))
     implementation(project(":shared:common"))
 
     ksp(libs.hilt.compiler)

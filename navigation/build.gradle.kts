@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(project(":business:steps"))
     implementation(project(":features:exports:completion"))
     implementation(project(":features:exports:errors"))
     implementation(project(":features:home:manual"))
@@ -31,6 +32,7 @@ dependencies {
     implementation(project(":features:onboarding:imports"))
     implementation(project(":features:onboarding:master"))
     implementation(project(":features:settings:master"))
+    implementation(project(":features:shared"))
     implementation(project(":shared:common"))
     implementation(project(":shared:ui"))
 

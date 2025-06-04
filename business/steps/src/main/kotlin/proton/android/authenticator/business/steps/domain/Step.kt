@@ -16,18 +16,6 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.onboarding.biometrics.presentation
+package proton.android.authenticator.business.steps.domain
 
-internal sealed interface OnboardingBiometricsEvent {
-
-    data object Idle : OnboardingBiometricsEvent
-
-    data object OnEnableFailed : OnboardingBiometricsEvent
-
-    data object OnEnableSucceeded : OnboardingBiometricsEvent
-
-    data object OnSkipFailed : OnboardingBiometricsEvent
-
-    data object OnSkipSucceeded : OnboardingBiometricsEvent
-
-}
+data class Step(val destination: StepDestination)

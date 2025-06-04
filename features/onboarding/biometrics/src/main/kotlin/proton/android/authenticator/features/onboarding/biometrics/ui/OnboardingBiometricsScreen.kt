@@ -33,19 +33,18 @@ import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenG
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
-fun OnboardingBiometricsScreen(
-    onNotAvailable: () -> Unit,
-    onBiometricsEnabled: () -> Unit,
-    onSkipped: () -> Unit
-) {
+fun OnboardingBiometricsScreen(onBiometricsEnabled: () -> Unit, onSkipped: () -> Unit) {
     with(hiltViewModel<OnboardingBiometricsViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
         LaunchedEffect(key1 = state.event) {
             when (state.event) {
-                OnboardingBiometricsEvent.Idle -> Unit
-                OnboardingBiometricsEvent.OnEnableFailed -> Unit
+                OnboardingBiometricsEvent.Idle,
+                OnboardingBiometricsEvent.OnEnableFailed,
+                OnboardingBiometricsEvent.OnSkipFailed -> Unit
+
                 OnboardingBiometricsEvent.OnEnableSucceeded -> onBiometricsEnabled()
+                OnboardingBiometricsEvent.OnSkipSucceeded -> onSkipped()
             }
 
             onConsumeEvent(event = state.event)
@@ -64,9 +63,9 @@ fun OnboardingBiometricsScreen(
                             .fillMaxSize()
                             .padding(paddingValues = innerPaddingValues),
                         state = currentState,
-                        onBiometricsNotAvailable = onNotAvailable,
+                        onBiometricsNotAvailable = ::onSkipBiometric,
                         onEnableBiometricsClick = ::onEnableBiometric,
-                        onSkipClick = onSkipped
+                        onSkipClick = ::onSkipBiometric
                     )
                 }
             }

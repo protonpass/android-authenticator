@@ -89,8 +89,7 @@ internal sealed interface HomeMasterState {
 
         override val showFabButton: Boolean = showTopSearchBar && searchQuery.isEmpty()
 
-        internal val entryModels: List<HomeMasterEntryModel>
-            get() = entryModelsMap.values.toList()
+        internal val entryModels: List<HomeMasterEntryModel> = entryModelsMap.values.toList()
 
         internal fun getRemainingSeconds(totalSeconds: Int): Int = entryCodesRemainingTimes.getOrDefault(
             key = totalSeconds,
@@ -110,9 +109,9 @@ internal sealed interface HomeMasterState {
             settingsFlow: Flow<Settings>
         ): HomeMasterState {
             val entriesList: List<Entry>? by entriesFlow.collectAsState(initial = null)
-            val entryCodes by entryCodesFlow.collectAsState(emptyList())
-            val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(emptyMap())
-            val settings by settingsFlow.collectAsState(Settings.Default)
+            val entryCodes by entryCodesFlow.collectAsState(initial = emptyList())
+            val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(initial = emptyMap())
+            val settings by settingsFlow.collectAsState(initial = Settings.Default)
 
             return entriesList?.let { entries ->
                 if (entries.isEmpty()) {
@@ -122,10 +121,9 @@ internal sealed interface HomeMasterState {
                         settings.isHideCodesEnabled
                     }
 
-                    val animateOnCodeChange =
-                        remember(key1 = settings.isCodeChangeAnimationEnabled) {
-                            settings.isCodeChangeAnimationEnabled
-                        }
+                    val animateOnCodeChange = remember(key1 = settings.isCodeChangeAnimationEnabled) {
+                        settings.isCodeChangeAnimationEnabled
+                    }
 
                     val themeType = remember(key1 = settings.themeType) {
                         when (settings.themeType) {

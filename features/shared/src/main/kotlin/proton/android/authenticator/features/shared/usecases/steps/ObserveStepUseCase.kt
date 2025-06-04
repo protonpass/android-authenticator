@@ -16,21 +16,17 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.settings.application.update
+package proton.android.authenticator.features.shared.usecases.steps
 
-import androidx.datastore.core.IOException
-import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.steps.application.find.FindStepQuery
+import proton.android.authenticator.business.steps.domain.Step
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
 
-internal class UpdateSettingsCommandHandler @Inject constructor(
-    private val updater: SettingsUpdater
-) : CommandHandler<UpdateSettingsCommand, Unit, UpdateSettingsReason> {
+class ObserveStepUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    override suspend fun handle(command: UpdateSettingsCommand): Answer<Unit, UpdateSettingsReason> = try {
-        updater.update(settings = command.settings).let(Answer<Unit, UpdateSettingsReason>::Success)
-    } catch (_: IOException) {
-        Answer.Failure(reason = UpdateSettingsReason.CannotSaveSettings)
-    }
+    operator fun invoke(): Flow<Step> = FindStepQuery
+        .let { query -> queryBus.ask<Step>(query) }
 
 }

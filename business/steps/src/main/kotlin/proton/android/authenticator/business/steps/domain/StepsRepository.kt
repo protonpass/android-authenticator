@@ -16,18 +16,14 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.onboarding.biometrics.presentation
+package proton.android.authenticator.business.steps.domain
 
-internal sealed interface OnboardingBiometricsEvent {
+import kotlinx.coroutines.flow.Flow
 
-    data object Idle : OnboardingBiometricsEvent
+internal interface StepsRepository {
 
-    data object OnEnableFailed : OnboardingBiometricsEvent
+    fun find(): Flow<Step>
 
-    data object OnEnableSucceeded : OnboardingBiometricsEvent
-
-    data object OnSkipFailed : OnboardingBiometricsEvent
-
-    data object OnSkipSucceeded : OnboardingBiometricsEvent
+    suspend fun save(step: Step)
 
 }

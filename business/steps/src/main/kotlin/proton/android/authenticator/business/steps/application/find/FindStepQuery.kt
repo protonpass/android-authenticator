@@ -16,18 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.onboarding.biometrics.presentation
+package proton.android.authenticator.business.steps.application.find
 
-internal sealed interface OnboardingBiometricsEvent {
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
 
-    data object Idle : OnboardingBiometricsEvent
-
-    data object OnEnableFailed : OnboardingBiometricsEvent
-
-    data object OnEnableSucceeded : OnboardingBiometricsEvent
-
-    data object OnSkipFailed : OnboardingBiometricsEvent
-
-    data object OnSkipSucceeded : OnboardingBiometricsEvent
-
-}
+data object FindStepQuery : Query

@@ -30,11 +30,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
+import proton.android.authenticator.business.steps.domain.Step
+import proton.android.authenticator.business.steps.domain.StepDestination
 import proton.android.authenticator.features.onboarding.biometrics.R
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.ObserveBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.steps.UpdateStepUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
@@ -43,7 +46,8 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
     observeBiometricUseCase: ObserveBiometricUseCase,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase
+    private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val updateStepUseCase: UpdateStepUseCase
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<OnboardingBiometricsEvent>(
@@ -72,29 +76,59 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
             ).also { answer ->
                 when (answer) {
                     is Answer.Failure -> {
-                        println("JIBIRI: failure -> ${answer.reason}")
+                        eventFlow.update { OnboardingBiometricsEvent.OnEnableFailed }
                     }
 
                     is Answer.Success -> {
-                        handleEnableBiometricSuccess()
+                        observeSettingsUseCase()
+                            .first()
+                            .copy(appLockType = SettingsAppLockType.Biometric)
+                            .let { newSettings -> updateSettingsUseCase(settings = newSettings) }
+                            .let { answer ->
+                                when (answer) {
+                                    is Answer.Failure -> {
+                                        OnboardingBiometricsEvent.OnEnableFailed
+                                    }
+
+                                    is Answer.Success -> {
+                                        updateStepUseCase(step = Step(destination = StepDestination.Home))
+                                            .let { answer ->
+                                                when (answer) {
+                                                    is Answer.Failure -> {
+                                                        OnboardingBiometricsEvent.OnEnableFailed
+                                                    }
+
+                                                    is Answer.Success -> {
+                                                        OnboardingBiometricsEvent.OnEnableSucceeded
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                            .also { event -> eventFlow.update { event } }
                     }
                 }
             }
         }
     }
 
-    private suspend fun handleEnableBiometricSuccess() {
-        observeSettingsUseCase()
-            .first()
-            .copy(appLockType = SettingsAppLockType.Biometric)
-            .let { newSettings -> updateSettingsUseCase(settings = newSettings) }
-            .let { answer ->
-                when (answer) {
-                    is Answer.Failure -> OnboardingBiometricsEvent.OnEnableFailed
-                    is Answer.Success -> OnboardingBiometricsEvent.OnEnableSucceeded
+    internal fun onSkipBiometric() {
+        viewModelScope.launch {
+            updateStepUseCase(step = Step(destination = StepDestination.Home))
+                .let { answer ->
+                    when (answer) {
+                        is Answer.Failure -> {
+                            OnboardingBiometricsEvent.OnSkipFailed
+                        }
+
+                        is Answer.Success -> {
+                            OnboardingBiometricsEvent.OnSkipSucceeded
+                        }
+                    }
                 }
-            }
-            .also { event -> eventFlow.update { event } }
+                .also { event -> eventFlow.update { event } }
+        }
     }
 
 }

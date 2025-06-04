@@ -34,9 +34,11 @@ import proton.android.authenticator.business.shared.domain.infrastructure.files.
 import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileReader
 import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileWriter
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.settings.SettingsProtoPreferencesSerializer
+import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.steps.StepProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.AuthenticatorDatabase
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
 import proton.android.authenticator.proto.preferences.settings.SettingsPreferences
+import proton.android.authenticator.proto.preferences.steps.StepPreferences
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -69,6 +71,14 @@ internal abstract class SharedBusinessModule {
         ): DataStore<SettingsPreferences> = DataStoreFactory.create(
             serializer = SettingsProtoPreferencesSerializer,
             produceFile = { context.dataStoreFile("settings_preferences.pb") }
+        )
+
+        @[Provides Singleton]
+        internal fun provideStepsPreferencesDataStore(
+            @ApplicationContext context: Context
+        ): DataStore<StepPreferences> = DataStoreFactory.create(
+            serializer = StepProtoPreferencesSerializer,
+            produceFile = { context.dataStoreFile("step_preferences.pb") }
         )
 
     }
