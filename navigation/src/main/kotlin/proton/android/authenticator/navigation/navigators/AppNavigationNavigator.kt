@@ -92,7 +92,7 @@ internal class AppNavigationNavigator @Inject constructor(
                         navController = navController,
                         startDestination = startDestination
                     ) {
-                        backupsNavigationGraph { navCommand ->
+                        backupsNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }
 
@@ -104,7 +104,7 @@ internal class AppNavigationNavigator @Inject constructor(
                             navigationCommandHandler.handle(navCommand, navController)
                         }
 
-                        settingsNavigationGraph { navCommand ->
+                        settingsNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }
                     }

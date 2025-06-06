@@ -21,6 +21,7 @@ package proton.android.authenticator.features.backups.master.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -37,29 +38,32 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun BackupsMasterScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<BackupsMasterViewModel>()) {
-    val state by stateFlow.collectAsStateWithLifecycle()
+fun BackupsMasterScreen(snackbarHostState: SnackbarHostState, onNavigationClick: () -> Unit) =
+    with(hiltViewModel<BackupsMasterViewModel>()) {
+        val state by stateFlow.collectAsStateWithLifecycle()
 
-    ScaffoldScreen(
-        modifier = Modifier
-            .fillMaxSize()
-            .backgroundScreenGradient(),
-        topBar = {
-            SmallTopBar(
-                title = UiText.Resource(id = R.string.backups_screen_title),
-                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
-                onNavigationClick = onNavigationClick
+        ScaffoldScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .backgroundScreenGradient(),
+            snackbarHostState = snackbarHostState,
+            topBar = {
+                SmallTopBar(
+                    title = UiText.Resource(id = R.string.backups_screen_title),
+                    navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
+                    onNavigationClick = onNavigationClick
+                )
+            }
+        ) { innerPaddingValues ->
+            BackupsMasterContent(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues = innerPaddingValues)
+                    .padding(horizontal = ThemePadding.Medium),
+                state = state,
+                onIsEnableChange = ::onUpdateIsEnabled,
+                onFrequencyChange = ::onUpdateFrequencyType,
+                onBackupNowClick = ::onCreateBackup
             )
         }
-    ) { innerPaddingValues ->
-        BackupsMasterContent(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(paddingValues = innerPaddingValues)
-                .padding(horizontal = ThemePadding.Medium),
-            state = state,
-            onIsEnableChange = ::onUpdateIsEnabled,
-            onFrequencyChange = ::onUpdateFrequencyType
-        )
     }
-}

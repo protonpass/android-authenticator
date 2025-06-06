@@ -18,36 +18,13 @@
 
 package proton.android.authenticator.business.backups.domain
 
-data class Backup(
-    val isEnabled: Boolean,
-    val frequencyType: BackupFrequencyType,
-    val count: Int,
-    val lastBackupMillis: Long?
-) {
-
-    val isBackupLimitReached: Boolean = count >= MAX_BACKUP_COUNT
-
-    val maxBackupCount: Int = MAX_BACKUP_COUNT
-
-    internal val directoryName: String = DIRECTORY_NAME
-
-    internal val fileName: String = "proton_authenticator_automatic_backup_$lastBackupMillis.json"
-
-    internal val path: String = "$directoryName/$fileName"
-
-    companion object {
-
-        private const val DIRECTORY_NAME = "backups"
-
-        internal const val MAX_BACKUP_COUNT = 5
-
-        val Default = Backup(
-            isEnabled = false,
-            frequencyType = BackupFrequencyType.Daily,
-            count = 0,
-            lastBackupMillis = null
-        )
-
-    }
-
-}
+data class BackupEntry(
+    internal val id: String,
+    internal val name: String,
+    internal val uri: String,
+    internal val period: UShort,
+    internal val issuer: String,
+    internal val secret: String,
+    internal val note: String?,
+    internal val entryTypeOrdinal: Int
+)

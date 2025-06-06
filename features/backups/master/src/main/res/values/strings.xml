@@ -25,4 +25,12 @@
     <string name="backups_frequency_option_weekly">Every week</string>
     <string name="backups_frequency_option_monthly">Every month</string>
     <string name="backups_backup_now_button">Backup now</string>
+    <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Last backup: %1$s</string>
+    <plurals name="backups_backup_count_description">
+        <item quantity="one">Only the last backup is kept.</item>
+        <item quantity="other">Only the last %1$d backups are kept.</item>
+    </plurals>
+    <string name="backups_snackbar_message_backup_success">Backup successfully created</string>
+    <string name="backups_snackbar_message_backup_error">There was an error creating the backup</string>
+    <string name="backups_snackbar_message_update_error">There was an error updating backup config</string>
 </resources>

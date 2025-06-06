@@ -29,10 +29,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryCreator
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
+import proton.android.authenticator.business.shared.infrastructure.directories.InternalDirectoryCreator
 import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileReader
 import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileWriter
+import proton.android.authenticator.business.shared.infrastructure.files.InternalFileWriter
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.backups.BackupProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.settings.SettingsProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.steps.StepProtoPreferencesSerializer
@@ -44,15 +47,26 @@ import proton.android.authenticator.proto.preferences.steps.StepPreferences
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
-internal abstract class SharedBusinessModule {
+internal abstract class BusinessSharedModule {
+
+    @[Binds Singleton]
+    internal abstract fun bindDirectoryCreator(impl: InternalDirectoryCreator): DirectoryCreator
 
     @[Binds Singleton]
     internal abstract fun bindFileReader(impl: ContentResolverFileReader): FileReader
 
-    @[Binds Singleton]
-    internal abstract fun bindFileWriter(impl: ContentResolverFileWriter): FileWriter
+    @[Binds Singleton FileWriterContentResolver]
+    internal abstract fun bindContentResolverFileWriter(impl: ContentResolverFileWriter): FileWriter
+
+    @[Binds Singleton FileWriterInternal]
+    internal abstract fun bindInternalFileWriter(impl: InternalFileWriter): FileWriter
 
     internal companion object {
+
+        @[Provides Singleton DirectoryPathInternal]
+        internal fun provideInternalDirectoryPath(@ApplicationContext context: Context): String = context
+            .filesDir
+            .absolutePath
 
         @[Provides Singleton]
         internal fun provideUsersDao(database: AuthenticatorDatabase): EntriesDao = database.entriesDao()

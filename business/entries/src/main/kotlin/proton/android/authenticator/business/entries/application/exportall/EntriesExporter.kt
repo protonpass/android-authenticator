@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.shared.di.FileWriterContentResolver
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
@@ -32,27 +33,23 @@ import javax.inject.Inject
 internal class EntriesExporter @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val repository: EntriesRepository,
-    private val fileWriter: FileWriter
+    @FileWriterContentResolver private val fileWriter: FileWriter,
+    private val repository: EntriesRepository
 ) {
 
-    suspend fun export(destinationUri: Uri): Int = getEntryModels()
+    suspend fun export(destinationUri: Uri): Int = repository.findAll()
+        .first()
+        .map(Entry::toModel)
         .let { models ->
-            models.size to createFileContent(models)
+            models.size to withContext(appDispatchers.default) {
+                authenticatorClient.exportEntries(models)
+            }
         }
         .let { (modelsCount, content) ->
             fileWriter.write(destinationUri.toString(), content)
 
             modelsCount
         }
-
-    private suspend fun getEntryModels() = repository.findAll()
-        .first()
-        .map(Entry::toModel)
-
-    private suspend fun createFileContent(models: List<AuthenticatorEntryModel>) = withContext(appDispatchers.default) {
-        authenticatorClient.exportEntries(models)
-    }
 
 }
 

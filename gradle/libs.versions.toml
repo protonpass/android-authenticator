@@ -5,12 +5,11 @@ authenticatorCommonVersion = "0.21.0"
 biometricVersion = "1.4.0-alpha04"
 cameraVersion = "1.4.2"
 coilVersion = "2.7.0"
-composeBomVersion = "2025.05.01"
+composeBomVersion = "2025.06.00"
 composeNavigationVersion = "2.9.0"
 coreKtxVersion = "1.16.0"
-coreVersion = "32.0.1"
+coreVersion = "32.2.0"
 datastoreVersion = "1.1.7"
-datetimeVersion = "0.4.0"
 dependencyGuardVersion = "0.5.0"
 espressoCoreVersion = "3.6.1"
 hiltNavigationComposeVersion = "1.2.0"
@@ -19,9 +18,11 @@ jnaVersion = "5.17.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 kotlinVersion = "2.0.21"
+kotlinxCollectionsVersion = "0.4.0"
+kotlixDatetimeVersion = "0.6.2"
 kotlinxSerializationVersion = "1.8.0"
 kspVersion = "2.0.21-1.0.27"
-lifecycleRuntimeVersion = "2.9.0"
+lifecycleRuntimeVersion = "2.9.1"
 materialVersion = "1.8.2"
 moleculeVersion = "2.0.0"
 protobufPluginVersion = "0.9.4"
@@ -74,7 +75,8 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltV
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jnaVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
+kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsVersion" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlixDatetimeVersion" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
 molecule = { module = "app.cash.molecule:molecule-runtime", version.ref = "moleculeVersion" }
 protobuf-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobufVersion" }
@@ -108,6 +110,7 @@ feature-library-implementation = [
     "androidx-material3",
     "androidx-ui",
     "hilt-android",
+    "kotlinx-collections",
     "molecule",
 ]
 feature-library-ksp = [

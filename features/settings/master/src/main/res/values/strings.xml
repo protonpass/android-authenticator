@@ -67,4 +67,7 @@
     <string name="settings_discover_drive_description">Give your precious photos and files the safe home they deserve.</string>
 
     <string name="settings_app_version">Version 0.1.0</string>
+
+    <string name="settings_snackbar_message_biometric_error">There was an error authenticating biometric</string>
+    <string name="settings_snackbar_message_update_error">There was an error updating settings</string>
 </resources>

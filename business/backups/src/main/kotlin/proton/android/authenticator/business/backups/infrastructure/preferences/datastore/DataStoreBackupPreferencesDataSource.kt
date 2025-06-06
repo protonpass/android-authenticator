@@ -19,6 +19,7 @@
 package proton.android.authenticator.business.backups.infrastructure.preferences.datastore
 
 import androidx.datastore.core.DataStore
+import com.google.protobuf.Timestamp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import proton.android.authenticator.business.backups.domain.Backup
@@ -26,6 +27,7 @@ import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.business.shared.domain.infrastructure.preferences.PreferencesDataSource
 import proton.android.authenticator.proto.preferences.backups.BackupPreferences
 import proton.android.authenticator.proto.preferences.backups.BackupPreferencesFrequency
+import proton.android.authenticator.shared.common.domain.constants.DateConstants
 import javax.inject.Inject
 
 internal class DataStoreBackupPreferencesDataSource @Inject constructor(
@@ -36,7 +38,12 @@ internal class DataStoreBackupPreferencesDataSource @Inject constructor(
         .map { backupPreferences ->
             Backup(
                 isEnabled = backupPreferences.isBackupEnabled,
-                frequencyType = backupPreferences.frequency.toDomain()
+                frequencyType = backupPreferences.frequency.toDomain(),
+                count = backupPreferences.backupCount,
+                lastBackupMillis = backupPreferences.lastBackupDate
+                    .seconds
+                    .takeIf { lastBackupSeconds -> lastBackupSeconds > 0 }
+                    ?.times(DateConstants.ONE_SECOND_IN_MILLIS)
             )
         }
 
@@ -45,6 +52,14 @@ internal class DataStoreBackupPreferencesDataSource @Inject constructor(
             backupPreferences.toBuilder()
                 .setIsBackupEnabled(preferences.isEnabled)
                 .setFrequency(preferences.frequencyType.toPreferences())
+                .setBackupCount(preferences.count.coerceAtMost(Backup.MAX_BACKUP_COUNT))
+                .setLastBackupDate(
+                    Timestamp.newBuilder()
+                        .setSeconds(
+                            preferences.lastBackupMillis?.div(DateConstants.ONE_SECOND_IN_MILLIS) ?: 0
+                        )
+                        .build()
+                )
                 .build()
         }
     }

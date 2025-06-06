@@ -40,7 +40,9 @@ import proton.android.authenticator.features.settings.master.usecases.ObserveUni
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,7 +51,8 @@ internal class SettingsMasterViewModel @Inject constructor(
     private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
-    private val exportEntriesUseCase: ExportEntriesUseCase
+    private val exportEntriesUseCase: ExportEntriesUseCase,
+    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<SettingsMasterEvent>(value = SettingsMasterEvent.Idle)
@@ -136,7 +139,7 @@ internal class SettingsMasterViewModel @Inject constructor(
             ).also { answer ->
                 when (answer) {
                     is Answer.Failure -> {
-                        println("JIBIRI: failure -> ${answer.reason}")
+                        dispatchSnackbarMessage(messageResId = R.string.settings_snackbar_message_biometric_error)
                     }
 
                     is Answer.Success -> {
@@ -181,7 +184,21 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     private fun updateSettings(newSettingsModel: SettingsMasterSettingsModel) {
         viewModelScope.launch {
-            updateSettingsUseCase(newSettingsModel.asSettings())
+            updateSettingsUseCase(newSettingsModel.asSettings()).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> dispatchSnackbarMessage(
+                        messageResId = R.string.settings_snackbar_message_update_error
+                    )
+
+                    is Answer.Success -> Unit
+                }
+            }
+        }
+    }
+
+    private suspend fun dispatchSnackbarMessage(@StringRes messageResId: Int) {
+        SnackbarEvent(messageResId = messageResId).also { snackbarEvent ->
+            dispatchSnackbarEventUseCase(snackbarEvent)
         }
     }
 

@@ -18,16 +18,21 @@
 
 package proton.android.authenticator.navigation.domain.graphs.backups
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.backups.master.ui.BackupsMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 
-internal fun NavGraphBuilder.backupsNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
+internal fun NavGraphBuilder.backupsNavigationGraph(
+    snackbarHostState: SnackbarHostState,
+    onNavigate: (NavigationCommand) -> Unit
+) {
     navigation<BackupsNavigationDestination>(startDestination = BackupsMasterNavigationDestination) {
         composable<BackupsMasterNavigationDestination> {
             BackupsMasterScreen(
+                snackbarHostState = snackbarHostState,
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 }

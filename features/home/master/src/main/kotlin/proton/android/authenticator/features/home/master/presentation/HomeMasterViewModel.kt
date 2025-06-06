@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
-import proton.android.authenticator.features.home.master.usecases.ObserveEntriesUseCase
+import proton.android.authenticator.features.shared.usecases.entries.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
 import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.RestoreEntryUseCase

@@ -19,6 +19,7 @@
 package proton.android.authenticator.navigation.domain.graphs.settings
 
 import androidx.compose.material.navigation.bottomSheet
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -35,12 +36,16 @@ import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.backups.BackupsNavigationDestination
 
 @Suppress("LongMethod")
-internal fun NavGraphBuilder.settingsNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
+internal fun NavGraphBuilder.settingsNavigationGraph(
+    snackbarHostState: SnackbarHostState,
+    onNavigate: (NavigationCommand) -> Unit
+) {
     navigation<SettingsNavigationDestination>(startDestination = SettingsMasterNavigationDestination) {
         composable<SettingsMasterNavigationDestination> {
             val context = LocalContext.current
 
             SettingsMasterScreen(
+                snackbarHostState = snackbarHostState,
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 },

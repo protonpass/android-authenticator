@@ -25,8 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
+import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.backups.master.R
 import proton.android.authenticator.features.backups.master.presentation.BackupsMasterState
 import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
@@ -44,6 +46,7 @@ internal fun BackupsMasterContent(
     state: BackupsMasterState,
     onIsEnableChange: (Boolean) -> Unit,
     onFrequencyChange: (BackupFrequencyType) -> Unit,
+    onBackupNowClick: (List<Entry>) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     Column(
@@ -89,11 +92,13 @@ internal fun BackupsMasterContent(
         )
 
         if (backupModel.isEnabled) {
-            SecondaryActionButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.backups_backup_now_button),
-                onClick = {}
-            )
+            if (backupModel.canCreateBackup) {
+                SecondaryActionButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.backups_backup_now_button),
+                    onClick = { onBackupNowClick(entries) }
+                )
+            }
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -101,16 +106,26 @@ internal fun BackupsMasterContent(
                 verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraSmall)
             ) {
                 Text(
-                    text = "Only the last 5 backups are kept.",
+                    text = pluralStringResource(
+                        id = R.plurals.backups_backup_count_description,
+                        count = backupModel.maxBackupCount,
+                        backupModel.maxBackupCount
+                    ),
                     style = Theme.typography.captionRegular,
                     color = Theme.colorScheme.textWeak
                 )
 
-                Text(
-                    text = "Last backup: Today, 11:42",
-                    style = Theme.typography.captionRegular,
-                    color = Theme.colorScheme.textWeak
-                )
+                backupModel.lastBackupMillis
+                    ?.let { lastBackupMillis ->
+                        Text(
+                            text = stringResource(
+                                id = R.string.backups_last_backup_description,
+                                lastBackupMillis
+                            ),
+                            style = Theme.typography.captionRegular,
+                            color = Theme.colorScheme.textWeak
+                        )
+                    }
             }
         }
     }

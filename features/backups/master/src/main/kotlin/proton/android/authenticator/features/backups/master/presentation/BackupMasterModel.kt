@@ -23,7 +23,11 @@ import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 
 internal data class BackupMasterModel(
     internal val isEnabled: Boolean,
-    internal val frequencyType: BackupFrequencyType
+    internal val frequencyType: BackupFrequencyType,
+    internal val maxBackupCount: Int,
+    internal val lastBackupMillis: Long?,
+    internal val canCreateBackup: Boolean,
+    private val count: Int
 ) {
 
     internal val frequencyOptions: List<BackupsMasterFrequencyOption> = listOf(
@@ -34,7 +38,9 @@ internal data class BackupMasterModel(
 
     internal fun asBackup(): Backup = Backup(
         isEnabled = isEnabled,
-        frequencyType = frequencyType
+        frequencyType = frequencyType,
+        lastBackupMillis = lastBackupMillis,
+        count = count
     )
 
 }

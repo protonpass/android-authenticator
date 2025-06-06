@@ -16,22 +16,25 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.usecases
+package proton.android.authenticator.features.shared.usecases.entries
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.mapLatest
 import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQuery
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
+import kotlin.collections.sortedWith
 
-internal class ObserveEntriesUseCase @Inject constructor(private val queryBus: QueryBus) {
+class ObserveEntriesUseCase @Inject constructor(private val queryBus: QueryBus) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    internal operator fun invoke(): Flow<List<Entry>> = queryBus.ask<List<Entry>>(FindAllEntriesQuery)
+    operator fun invoke(): Flow<List<Entry>> = queryBus.ask<List<Entry>>(FindAllEntriesQuery)
         .mapLatest { entries ->
             entries.sortedWith(compareBy(Entry::position).thenByDescending(Entry::modifiedAt))
         }
+        .distinctUntilChanged()
 
 }

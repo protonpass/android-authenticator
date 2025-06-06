@@ -23,26 +23,44 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.backups.domain.Backup
+import proton.android.authenticator.business.entries.domain.Entry
 
 @Immutable
-internal class BackupsMasterState private constructor(internal val backupModel: BackupMasterModel) {
+internal class BackupsMasterState private constructor(
+    internal val backupModel: BackupMasterModel,
+    internal val entries: ImmutableList<Entry>
+) {
 
     internal companion object {
 
         @Composable
-        internal fun create(backupFlow: Flow<Backup>): BackupsMasterState {
+        internal fun create(backupFlow: Flow<Backup>, entriesFlow: Flow<ImmutableList<Entry>>): BackupsMasterState {
             val backup by backupFlow.collectAsState(initial = Backup.Default)
+            val entries by entriesFlow.collectAsState(initial = persistentListOf())
 
-            val backupModel = remember(key1 = backup) {
+            val canCreateBackup = remember(key1 = entries) {
+                entries.isNotEmpty()
+            }
+
+            val backupModel = remember(key1 = backup, key2 = canCreateBackup) {
                 BackupMasterModel(
                     isEnabled = backup.isEnabled,
-                    frequencyType = backup.frequencyType
+                    frequencyType = backup.frequencyType,
+                    maxBackupCount = backup.maxBackupCount,
+                    lastBackupMillis = backup.lastBackupMillis,
+                    count = backup.count,
+                    canCreateBackup = canCreateBackup
                 )
             }
 
-            return BackupsMasterState(backupModel = backupModel)
+            return BackupsMasterState(
+                backupModel = backupModel,
+                entries = entries
+            )
         }
 
     }

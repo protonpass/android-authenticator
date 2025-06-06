@@ -25,6 +25,8 @@ import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
 import proton.android.authenticator.business.backups.application.find.FindBackupQuery
 import proton.android.authenticator.business.backups.application.find.FindBackupQueryHandler
+import proton.android.authenticator.business.backups.application.generate.GenerateBackupCommand
+import proton.android.authenticator.business.backups.application.generate.GenerateBackupCommandHandler
 import proton.android.authenticator.business.backups.application.update.UpdateBackupCommand
 import proton.android.authenticator.business.backups.application.update.UpdateBackupCommandHandler
 import proton.android.authenticator.business.backups.domain.Backup
@@ -43,6 +45,9 @@ internal abstract class BusinessBackupModule {
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindBackupQuery::class)]
     internal abstract fun bindFindBackupQueryHandler(impl: FindBackupQueryHandler): QueryHandler<*, *>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(GenerateBackupCommand::class)]
+    internal abstract fun bindGenerateBackupCommandHandler(impl: GenerateBackupCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateBackupCommand::class)]
     internal abstract fun bindUpdateBackupCommandHandler(impl: UpdateBackupCommandHandler): CommandHandler<*, *, *>
