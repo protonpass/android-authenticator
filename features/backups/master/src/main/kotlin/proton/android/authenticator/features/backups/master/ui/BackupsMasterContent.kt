@@ -28,9 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.backups.master.R
 import proton.android.authenticator.features.backups.master.presentation.BackupsMasterState
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
 import proton.android.authenticator.shared.ui.domain.components.containers.RowsContainer
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
@@ -46,7 +46,7 @@ internal fun BackupsMasterContent(
     state: BackupsMasterState,
     onIsEnableChange: (Boolean) -> Unit,
     onFrequencyChange: (BackupFrequencyType) -> Unit,
-    onBackupNowClick: (List<Entry>) -> Unit,
+    onBackupNowClick: (List<EntryModel>) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     Column(
@@ -96,7 +96,7 @@ internal fun BackupsMasterContent(
                 SecondaryActionButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.backups_backup_now_button),
-                    onClick = { onBackupNowClick(entries) }
+                    onClick = { onBackupNowClick(entryModels) }
                 )
             }
 
@@ -115,12 +115,12 @@ internal fun BackupsMasterContent(
                     color = Theme.colorScheme.textWeak
                 )
 
-                backupModel.lastBackupMillis
-                    ?.let { lastBackupMillis ->
+                backupModel.lastBackupDate
+                    ?.let { date ->
                         Text(
                             text = stringResource(
                                 id = R.string.backups_last_backup_description,
-                                lastBackupMillis
+                                date.asString()
                             ),
                             style = Theme.typography.captionRegular,
                             color = Theme.colorScheme.textWeak

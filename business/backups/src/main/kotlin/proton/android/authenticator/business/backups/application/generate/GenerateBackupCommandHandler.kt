@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.backups.application.generate
 
+import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -30,6 +31,8 @@ internal class GenerateBackupCommandHandler @Inject constructor(
 
     override suspend fun handle(command: GenerateBackupCommand): Answer<Unit, GenerateBackupReason> = try {
         generator.generate(backupEntries = command.backupEntries).let(Answer<Unit, GenerateBackupReason>::Success)
+    } catch (_: BackupNoEntriesError) {
+        Answer.Failure(reason = GenerateBackupReason.NoEntries)
     } catch (_: BackupNotEnabledError) {
         Answer.Failure(reason = GenerateBackupReason.NotEnabled)
     } catch (_: IOException) {

@@ -18,40 +18,40 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 
 internal data class HomeMasterEntryModel(
-    private val entry: Entry,
+    private val entryModel: EntryModel,
     private val entryCode: EntryCode
 ) {
 
-    internal val id: String = entry.id
+    internal val id: String = entryModel.id
 
-    internal val name: String = entry.name
+    internal val name: String = entryModel.name
 
-    internal val secret: String = entry.secret
+    internal val secret: String = entryModel.secret
 
-    internal val digits: Int = entry.digits
+    internal val digits: Int = entryModel.digits
 
-    internal val algorithm: EntryAlgorithm = entry.algorithm
+    internal val algorithm: EntryAlgorithm = entryModel.algorithm
 
-    internal val timeInterval: Int = entry.period
+    internal val timeInterval: Int = entryModel.period
 
-    internal val issuer: String = entry.issuer
+    internal val issuer: String = entryModel.issuer
 
     internal val currentCode: String = entryCode.currentCode
 
     internal val nextCode: String = entryCode.nextCode
 
-    internal val totalSeconds: Int = entry.period
+    internal val totalSeconds: Int = entryModel.period
 
-    internal val type: EntryType = entry.type
+    internal val type: EntryType = entryModel.type
 
-    internal val position: Double = entry.position
+    internal val position: Double = entryModel.position
 
-    internal val iconUrl: String = entry.iconUrl.orEmpty()
+    internal val iconUrl: String = entryModel.iconUrl.orEmpty()
 
 }

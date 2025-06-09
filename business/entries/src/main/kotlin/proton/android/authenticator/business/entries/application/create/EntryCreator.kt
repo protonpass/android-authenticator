@@ -22,27 +22,40 @@ import proton.android.authenticator.business.entries.application.shared.constant
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.AuthenticatorEntryTotpParameters
+import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.commonrust.IssuerInfo
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
+import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
+import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
 
 internal class EntryCreator @Inject constructor(
+    private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val encryptionContextProvider: EncryptionContextProvider,
     private val timeProvider: TimeProvider,
     private val repository: EntriesRepository
 ) {
 
-    internal suspend fun create(model: AuthenticatorEntryModel, params: AuthenticatorEntryTotpParameters) {
-        repository.searchMaxPosition()
-            .plus(EntryConstants.POSITION_INCREMENT)
-            .let { position -> position to timeProvider.currentMillis() }
-            .let { (position, currentTimestamp) ->
-                Entry.create(
-                    model = model,
-                    params = params,
+    internal suspend fun create(model: AuthenticatorEntryModel, issuerInfo: IssuerInfo?) {
+        authenticatorClient.serializeEntry(model)
+            .let { decryptedModelContent ->
+                encryptionContextProvider.withEncryptionContext {
+                    encrypt(decryptedModelContent, EncryptionTag.EntryContent)
+                }
+            }
+            .let { encryptedContent ->
+                encryptedContent to timeProvider.currentMillis()
+            }
+            .let { (encryptedContent, currentTimestamp) ->
+                Entry(
+                    id = model.id,
+                    content = encryptedContent,
                     createdAt = currentTimestamp,
                     modifiedAt = currentTimestamp,
                     isSynced = false,
-                    position = position
+                    position = repository.searchMaxPosition()
+                        .plus(EntryConstants.POSITION_INCREMENT),
+                    iconUrl = issuerInfo?.iconUrl
                 )
             }
             .also { entry ->

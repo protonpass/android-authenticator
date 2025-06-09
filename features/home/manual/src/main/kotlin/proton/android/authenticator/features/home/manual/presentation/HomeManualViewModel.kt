@@ -36,24 +36,23 @@ import proton.android.authenticator.business.entries.application.update.UpdateEn
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.features.home.manual.usecases.CreateEntryUseCase
-import proton.android.authenticator.features.home.manual.usecases.GetEntryUseCase
 import proton.android.authenticator.features.home.manual.usecases.UpdateEntryUseCase
+import proton.android.authenticator.features.shared.entries.usecases.GetEntryModelUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeManualViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    getEntryUseCase: GetEntryUseCase,
+    getEntryModelUseCase: GetEntryModelUseCase,
     private val createEntryUseCase: CreateEntryUseCase,
     private val updateEntryUseCase: UpdateEntryUseCase
 ) : ViewModel() {
 
     private val entryId: String? = savedStateHandle[ARGS_ENTRY_ID]
 
-    private val entryFlow = flow {
-        entryId
-            ?.let { id -> getEntryUseCase(id) }
+    private val entryModelFlow = flow {
+        entryId?.let { id -> getEntryModelUseCase(id) }
             .also { entry -> emit(entry) }
     }
 
@@ -82,7 +81,7 @@ internal class HomeManualViewModel @Inject constructor(
     ) {
         HomeManualState.create(
             entryId = entryId,
-            entryFlow = entryFlow,
+            entryModelFlow = entryModelFlow,
             title = titleState.value,
             secret = secretState.value,
             isValidSecretFlow = isValidSecretFlow,

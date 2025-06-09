@@ -16,18 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.manual.usecases
+package proton.android.authenticator.business.shared.domain.infrastructure.files
 
-import kotlinx.coroutines.flow.first
-import proton.android.authenticator.business.entries.application.find.FindEntryQuery
-import proton.android.authenticator.business.entries.domain.Entry
-import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
-import javax.inject.Inject
+interface FileDeleter {
 
-internal class GetEntryUseCase @Inject constructor(private val queryBus: QueryBus) {
-
-    suspend operator fun invoke(entryId: String): Entry = FindEntryQuery(id = entryId)
-        .let { query -> queryBus.ask<Entry>(query) }
-        .first()
+    suspend fun delete(path: String): Boolean
 
 }

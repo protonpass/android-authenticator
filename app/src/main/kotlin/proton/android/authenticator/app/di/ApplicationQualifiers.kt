@@ -16,17 +16,9 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.backups.master.usecases
+package proton.android.authenticator.app.di
 
-import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.backups.application.find.FindBackupQuery
-import proton.android.authenticator.business.backups.domain.Backup
-import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
-import javax.inject.Inject
+import javax.inject.Qualifier
 
-internal class ObserveBackupUseCase @Inject constructor(private val queryBus: QueryBus) {
-
-    internal operator fun invoke(): Flow<Backup> = FindBackupQuery
-        .let { query -> queryBus.ask(query) }
-
-}
+@[Qualifier Retention(AnnotationRetention.RUNTIME) Target(AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER)]
+internal annotation class ApplicationCoroutineScope

@@ -16,16 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.domain
+package proton.android.authenticator.features.shared.entries.presentation
 
-import me.proton.core.crypto.common.keystore.EncryptedByteArray
+import proton.android.authenticator.business.entries.domain.EntryAlgorithm
+import proton.android.authenticator.business.entries.domain.EntryType
 
-data class Entry(
+data class EntryModel(
     val id: String,
-    val content: EncryptedByteArray,
-    val createdAt: Long,
-    val modifiedAt: Long,
-    val isSynced: Boolean,
+    val name: String,
+    val issuer: String,
+    val note: String?,
+    val period: Int,
+    val secret: String,
+    val type: EntryType,
+    val uri: String,
+    val algorithm: EntryAlgorithm,
+    val digits: Int,
+    val iconUrl: String?,
     val position: Double,
-    val iconUrl: String?
+    val createdAt: Long,
+    val modifiedAt: Long
 )

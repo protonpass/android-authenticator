@@ -19,15 +19,31 @@
 package proton.android.authenticator.business.entries.application.create
 
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
+import proton.android.authenticator.commonrust.AuthenticatorEntryModel
+import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
+import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
+import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-sealed interface CreateEntryCommand : Command {
+sealed class CreateEntryCommand : Command {
+
+    internal abstract fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel
 
     data class FromSteam(
         internal val name: String,
         internal val secret: String,
         internal val note: String? = null
-    ) : CreateEntryCommand
+    ) : CreateEntryCommand() {
+
+        override fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel =
+            authenticatorClient.newSteamEntryFromParams(
+                params = AuthenticatorEntrySteamCreateParameters(
+                    name = name,
+                    secret = secret,
+                    note = note
+                )
+            )
+    }
 
     data class FromTotp(
         internal val name: String,
@@ -37,9 +53,28 @@ sealed interface CreateEntryCommand : Command {
         internal val digits: Int,
         internal val algorithm: EntryAlgorithm,
         internal val note: String? = null
-    ) : CreateEntryCommand
+    ) : CreateEntryCommand() {
 
-    @JvmInline
-    value class FromUri(internal val uri: String) : CreateEntryCommand
+        override fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel =
+            authenticatorClient.newTotpEntryFromParams(
+                params = AuthenticatorEntryTotpCreateParameters(
+                    name = name,
+                    secret = secret,
+                    issuer = issuer,
+                    period = period.toUShort(),
+                    digits = digits.toUByte(),
+                    algorithm = algorithm.asAuthenticatorEntryAlgorithm(),
+                    note = note
+                )
+            )
+
+    }
+
+    data class FromUri(internal val uri: String) : CreateEntryCommand() {
+
+        override fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel =
+            authenticatorClient.entryFromUri(uri = uri)
+
+    }
 
 }

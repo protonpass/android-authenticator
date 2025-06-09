@@ -22,24 +22,33 @@ import android.net.Uri
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.shared.di.FileWriterContentResolver
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
-import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
+import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
+import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
 
 internal class EntriesExporter @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val encryptionContextProvider: EncryptionContextProvider,
     @FileWriterContentResolver private val fileWriter: FileWriter,
     private val repository: EntriesRepository
 ) {
 
     suspend fun export(destinationUri: Uri): Int = repository.findAll()
         .first()
-        .map(Entry::toModel)
+        .let { entries ->
+            encryptionContextProvider.withEncryptionContext {
+                entries.map { entry ->
+                    authenticatorClient.deserializeEntry(
+                        serialized = decrypt(entry.content, EncryptionTag.EntryContent)
+                    )
+                }
+            }
+        }
         .let { models ->
             models.size to withContext(appDispatchers.default) {
                 authenticatorClient.exportEntries(models)
@@ -52,14 +61,3 @@ internal class EntriesExporter @Inject constructor(
         }
 
 }
-
-private fun Entry.toModel() = AuthenticatorEntryModel(
-    id = id,
-    name = name,
-    issuer = issuer,
-    secret = secret,
-    uri = uri,
-    period = period.toUShort(),
-    note = note,
-    entryType = type.asAuthenticatorEntryType()
-)

@@ -22,10 +22,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupEntry
+import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
 import proton.android.authenticator.business.backups.domain.BackupRepository
+import proton.android.authenticator.business.shared.di.FileDeleterInternal
 import proton.android.authenticator.business.shared.di.FileWriterInternal
 import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryCreator
+import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileDeleter
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryType
@@ -38,18 +42,22 @@ internal class BackupGenerator @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
     private val directoryCreator: DirectoryCreator,
+    private val directoryReader: DirectoryReader,
+    @FileDeleterInternal private val fileDeleter: FileDeleter,
     @FileWriterInternal private val fileWriter: FileWriter,
     private val repository: BackupRepository,
     private val timeProvider: TimeProvider
 ) {
 
     internal suspend fun generate(backupEntries: List<BackupEntry>) {
-        if (backupEntries.isEmpty()) return
+        if (backupEntries.isEmpty()) {
+            throw BackupNoEntriesError()
+        }
 
         repository.find()
             .first()
             .also(::ensureBackupIsEnabled)
-            .also(::cleanLastBackupIfLimitReached)
+            .also { backup -> cleanLastBackupIfLimitReached(backup) }
             .let(::updateBackup)
             .also { backup -> generateBackup(backup, backupEntries) }
             .also { backup -> repository.save(backup) }
@@ -61,8 +69,12 @@ internal class BackupGenerator @Inject constructor(
         throw BackupNotEnabledError()
     }
 
-    private fun cleanLastBackupIfLimitReached(backup: Backup) {
+    private suspend fun cleanLastBackupIfLimitReached(backup: Backup) {
         if (!backup.isBackupLimitReached) return
+
+        directoryReader.read(backup.directoryName)
+            .minByOrNull { file -> file.lastModified() }
+            ?.also { file -> fileDeleter.delete(path = "${backup.directoryName}/${file.name}") }
     }
 
     private suspend fun generateBackup(backup: Backup, backupEntries: List<BackupEntry>) {

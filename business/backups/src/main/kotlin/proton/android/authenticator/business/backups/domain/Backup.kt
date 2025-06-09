@@ -25,6 +25,12 @@ data class Backup(
     val lastBackupMillis: Long?
 ) {
 
+    val repeatIntervalDays: Long = when (frequencyType) {
+        BackupFrequencyType.Daily -> 1
+        BackupFrequencyType.Weekly -> 7
+        BackupFrequencyType.Monthly -> 30
+    }
+
     val isBackupLimitReached: Boolean = count >= MAX_BACKUP_COUNT
 
     val maxBackupCount: Int = MAX_BACKUP_COUNT

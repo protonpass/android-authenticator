@@ -11,7 +11,7 @@ internal object PlatformAndroidConfig {
 
     internal const val EXCLUDED_PACKAGING_RESOURCES: String = "/META-INF/{AL2.0,LGPL2.1}"
 
-    internal const val MIN_SDK: Int = 24
+    internal const val MIN_SDK: Int = 26
 
     internal const val NAMESPACE: String = "proton.android.authenticator"
 

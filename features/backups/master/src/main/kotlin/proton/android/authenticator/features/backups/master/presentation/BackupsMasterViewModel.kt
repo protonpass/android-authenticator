@@ -29,12 +29,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.backups.master.R
-import proton.android.authenticator.features.backups.master.usecases.GenerateBackupUseCase
-import proton.android.authenticator.features.backups.master.usecases.ObserveBackupUseCase
 import proton.android.authenticator.features.backups.master.usecases.UpdateBackupUseCase
-import proton.android.authenticator.features.shared.usecases.entries.ObserveEntriesUseCase
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
+import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
+import proton.android.authenticator.features.shared.usecases.backups.GenerateBackupUseCase
+import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
@@ -43,7 +43,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class BackupsMasterViewModel @Inject constructor(
     observeBackupUseCase: ObserveBackupUseCase,
-    observeEntriesUseCase: ObserveEntriesUseCase,
+    observeEntryModelsUseCase: ObserveEntryModelsUseCase,
     private val generateBackupUseCase: GenerateBackupUseCase,
     private val updateBackupUseCase: UpdateBackupUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
@@ -54,15 +54,15 @@ internal class BackupsMasterViewModel @Inject constructor(
 
     private val backupFlow = observeBackupUseCase()
 
-    private val entriesFlow = observeEntriesUseCase()
-        .map(List<Entry>::toPersistentList)
+    private val entryModelsFlow = observeEntryModelsUseCase()
+        .map(List<EntryModel>::toPersistentList)
 
     internal val stateFlow: StateFlow<BackupsMasterState> = viewModelScope.launchMolecule(
         mode = RecompositionMode.Immediate
     ) {
         BackupsMasterState.create(
             backupFlow = backupFlow,
-            entriesFlow = entriesFlow
+            entryModelsFlow = entryModelsFlow
         )
     }
 
@@ -80,9 +80,9 @@ internal class BackupsMasterViewModel @Inject constructor(
             .also(::updateBackup)
     }
 
-    internal fun onCreateBackup(entries: List<Entry>) {
+    internal fun onCreateBackup(entryModels: List<EntryModel>) {
         viewModelScope.launch {
-            generateBackupUseCase(entries)
+            generateBackupUseCase(entryModels)
                 .let { answer ->
                     when (answer) {
                         is Answer.Failure -> R.string.backups_snackbar_message_backup_error

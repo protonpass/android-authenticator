@@ -1,7 +1,7 @@
 [versions]
 activityComposeVersion = "1.10.1"
 agpVersion = "8.7.3"
-authenticatorCommonVersion = "0.21.0"
+authenticatorCommonVersion = "0.21.1"
 biometricVersion = "1.4.0-alpha04"
 cameraVersion = "1.4.2"
 coilVersion = "2.7.0"
@@ -12,15 +12,17 @@ coreVersion = "32.2.0"
 datastoreVersion = "1.1.7"
 dependencyGuardVersion = "0.5.0"
 espressoCoreVersion = "3.6.1"
+hiltCompilerVersion = "1.2.0"
 hiltNavigationComposeVersion = "1.2.0"
 hiltVersion = "2.56.1"
+hiltWorkVersion = "1.2.0"
 jnaVersion = "5.17.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 kotlinVersion = "2.0.21"
 kotlinxCollectionsVersion = "0.4.0"
-kotlixDatetimeVersion = "0.6.2"
 kotlinxSerializationVersion = "1.8.0"
+kotlixDatetimeVersion = "0.6.2"
 kspVersion = "2.0.21-1.0.27"
 lifecycleRuntimeVersion = "2.9.1"
 materialVersion = "1.8.2"
@@ -34,6 +36,7 @@ roomVersion = "2.7.1"
 sentryVersion = "3.5.0"
 startupVersion = "1.2.0"
 timberVersion = "5.0.1"
+workVersion = "2.10.1"
 zxingVersion = "3.5.3"
 
 [libraries]
@@ -46,7 +49,9 @@ androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", versi
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastoreVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltCompilerVersion" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWorkVersion" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeVersion" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeVersion" }
@@ -62,6 +67,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workVersion" }
 authenticator-common = { module = "me.proton.authenticator.common:lib", version.ref = "authenticatorCommonVersion" }
 coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }

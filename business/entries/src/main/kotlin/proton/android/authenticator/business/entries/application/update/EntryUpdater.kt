@@ -23,34 +23,47 @@ import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.commonrust.IssuerInfo
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
+import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
+import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
 
 internal class EntryUpdater @Inject constructor(
-    private val entriesRepository: EntriesRepository,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val encryptionContextProvider: EncryptionContextProvider,
+    private val repository: EntriesRepository,
     private val timeProvider: TimeProvider
 ) {
 
     internal suspend fun update(
         id: String,
         position: Double,
-        model: AuthenticatorEntryModel
+        model: AuthenticatorEntryModel,
+        issuerInfo: IssuerInfo?
     ) {
-        entriesRepository.find(id = id)
-            .first()
-            .let { currentEntry ->
-                Entry.create(
-                    model = model.copy(id = id),
-                    params = authenticatorClient.getTotpParams(model),
+        authenticatorClient.serializeEntry(model)
+            .let { decryptedModelContent ->
+                encryptionContextProvider.withEncryptionContext {
+                    encrypt(decryptedModelContent, EncryptionTag.EntryContent)
+                }
+            }
+            .let { encryptedContent ->
+                encryptedContent to repository.find(id = id).first()
+            }
+            .let { (encryptedContent, currentEntry) ->
+                Entry(
+                    id = id,
+                    content = encryptedContent,
                     createdAt = currentEntry.createdAt,
                     modifiedAt = timeProvider.currentMillis(),
                     isSynced = false,
-                    position = position
+                    position = position,
+                    iconUrl = issuerInfo?.iconUrl
                 )
             }
             .also { updatedEntry ->
-                entriesRepository.save(updatedEntry)
+                repository.save(updatedEntry)
             }
     }
 

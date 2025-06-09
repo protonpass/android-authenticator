@@ -16,29 +16,29 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.backups.master.usecases
+package proton.android.authenticator.features.shared.usecases.backups
 
 import proton.android.authenticator.business.backups.application.generate.GenerateBackupCommand
 import proton.android.authenticator.business.backups.application.generate.GenerateBackupReason
 import proton.android.authenticator.business.backups.domain.BackupEntry
-import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
-internal class GenerateBackupUseCase @Inject constructor(private val commandBus: CommandBus) {
+class GenerateBackupUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(entries: List<Entry>): Answer<Unit, GenerateBackupReason> = entries
-        .map { entry ->
+    suspend operator fun invoke(entryModels: List<EntryModel>): Answer<Unit, GenerateBackupReason> = entryModels
+        .map { entryModel ->
             BackupEntry(
-                id = entry.id,
-                name = entry.name,
-                uri = entry.uri,
-                period = entry.period.toUShort(),
-                issuer = entry.issuer,
-                secret = entry.secret,
-                note = entry.note,
-                entryTypeOrdinal = entry.type.ordinal
+                id = entryModel.id,
+                name = entryModel.name,
+                uri = entryModel.uri,
+                period = entryModel.period.toUShort(),
+                issuer = entryModel.issuer,
+                secret = entryModel.secret,
+                note = entryModel.note,
+                entryTypeOrdinal = entryModel.type.ordinal
             )
         }
         .let(::GenerateBackupCommand)

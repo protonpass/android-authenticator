@@ -20,26 +20,15 @@ package proton.android.authenticator.business.shared.di
 
 import javax.inject.Qualifier
 
-@[
-Qualifier Retention(AnnotationRetention.RUNTIME) Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.VALUE_PARAMETER
-)
-]
+@[Qualifier Retention(AnnotationRetention.RUNTIME) Target(AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER)]
 annotation class DirectoryPathInternal
 
-@[
-Qualifier Retention(AnnotationRetention.RUNTIME) Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.VALUE_PARAMETER
-)
-]
+@[Qualifier Retention(AnnotationRetention.RUNTIME) Target(AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER)]
+annotation class FileDeleterInternal
+
+@[Qualifier Retention(AnnotationRetention.RUNTIME) Target(AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER)]
 annotation class FileWriterContentResolver
 
-@[
-Qualifier Retention(AnnotationRetention.RUNTIME) Target(
-    AnnotationTarget.FUNCTION,
-    AnnotationTarget.VALUE_PARAMETER
-)
-]
+
+@[Qualifier Retention(AnnotationRetention.RUNTIME) Target(AnnotationTarget.FUNCTION, AnnotationTarget.VALUE_PARAMETER)]
 annotation class FileWriterInternal

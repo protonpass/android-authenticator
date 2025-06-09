@@ -19,19 +19,25 @@
 package proton.android.authenticator.business.entries.application.update
 
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
+import proton.android.authenticator.commonrust.AuthenticatorEntryModel
+import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
+import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
+import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-sealed interface UpdateEntryCommand : Command {
+sealed class UpdateEntryCommand : Command {
 
-    val id: String
+    internal abstract val id: String
 
-    val name: String
+    internal abstract val name: String
 
-    val secret: String
+    internal abstract val secret: String
 
-    val note: String?
+    internal abstract val note: String?
 
-    val position: Double
+    internal abstract val position: Double
+
+    internal abstract fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel
 
     data class FromSteam(
         override val id: String,
@@ -39,7 +45,17 @@ sealed interface UpdateEntryCommand : Command {
         override val secret: String,
         override val note: String? = null,
         override val position: Double
-    ) : UpdateEntryCommand
+    ) : UpdateEntryCommand() {
+
+        override fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel =
+            authenticatorClient.newSteamEntryFromParams(
+                params = AuthenticatorEntrySteamCreateParameters(
+                    name = name,
+                    secret = secret,
+                    note = note
+                )
+            )
+    }
 
     data class FromTotp(
         override val id: String,
@@ -51,6 +67,21 @@ sealed interface UpdateEntryCommand : Command {
         internal val period: Int,
         internal val digits: Int,
         internal val algorithm: EntryAlgorithm
-    ) : UpdateEntryCommand
+    ) : UpdateEntryCommand() {
+
+        override fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel =
+            authenticatorClient.newTotpEntryFromParams(
+                params = AuthenticatorEntryTotpCreateParameters(
+                    name = name,
+                    secret = secret,
+                    issuer = issuer,
+                    period = period.toUShort(),
+                    digits = digits.toUByte(),
+                    algorithm = algorithm.asAuthenticatorEntryAlgorithm(),
+                    note = note
+                )
+            )
+
+    }
 
 }

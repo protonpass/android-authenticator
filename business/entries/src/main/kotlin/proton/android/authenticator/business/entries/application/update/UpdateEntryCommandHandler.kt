@@ -18,9 +18,8 @@
 
 package proton.android.authenticator.business.entries.application.update
 
-import proton.android.authenticator.commonrust.AuthenticatorEntrySteamCreateParameters
-import proton.android.authenticator.commonrust.AuthenticatorEntryTotpCreateParameters
 import proton.android.authenticator.commonrust.AuthenticatorException
+import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -28,40 +27,25 @@ import javax.inject.Inject
 
 internal class UpdateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface,
     private val updater: EntryUpdater
 ) : CommandHandler<UpdateEntryCommand, Unit, UpdateEntryReason> {
 
     override suspend fun handle(command: UpdateEntryCommand): Answer<Unit, UpdateEntryReason> = try {
-        when (command) {
-            is UpdateEntryCommand.FromSteam -> command.toModel()
-            is UpdateEntryCommand.FromTotp -> command.toModel()
-        }
-            .let { model -> updater.update(command.id, command.position, model) }
+        command.toModel(authenticatorClient)
+            .let { model ->
+                updater.update(
+                    id = command.id,
+                    position = command.position,
+                    model = model,
+                    issuerInfo = authenticatorIssuerMapper.lookup(model.issuer)
+                )
+            }
             .let(Answer<Unit, UpdateEntryReason>::Success)
     } catch (_: AuthenticatorException) {
         Answer.Failure(reason = UpdateEntryReason.InvalidEntrySecret)
     } catch (_: IllegalStateException) {
         Answer.Failure(reason = UpdateEntryReason.EntryNotFound)
     }
-
-    private fun UpdateEntryCommand.FromSteam.toModel() = authenticatorClient.newSteamEntryFromParams(
-        params = AuthenticatorEntrySteamCreateParameters(
-            name = name,
-            secret = secret,
-            note = note
-        )
-    )
-
-    private fun UpdateEntryCommand.FromTotp.toModel() = authenticatorClient.newTotpEntryFromParams(
-        params = AuthenticatorEntryTotpCreateParameters(
-            name = name,
-            secret = secret,
-            issuer = issuer,
-            period = period.toUShort(),
-            digits = digits.toUByte(),
-            algorithm = algorithm.asAuthenticatorEntryAlgorithm(),
-            note = note
-        )
-    )
 
 }

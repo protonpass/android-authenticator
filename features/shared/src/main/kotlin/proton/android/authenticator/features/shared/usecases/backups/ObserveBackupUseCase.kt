@@ -16,25 +16,17 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.shared.usecases.entries
+package proton.android.authenticator.features.shared.usecases.backups
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.mapLatest
-import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQuery
-import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.backups.application.find.FindBackupQuery
+import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
-import kotlin.collections.sortedWith
 
-class ObserveEntriesUseCase @Inject constructor(private val queryBus: QueryBus) {
+class ObserveBackupUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    operator fun invoke(): Flow<List<Entry>> = queryBus.ask<List<Entry>>(FindAllEntriesQuery)
-        .mapLatest { entries ->
-            entries.sortedWith(compareBy(Entry::position).thenByDescending(Entry::modifiedAt))
-        }
-        .distinctUntilChanged()
+    operator fun invoke(): Flow<Backup> = FindBackupQuery
+        .let { query -> queryBus.ask(query) }
 
 }

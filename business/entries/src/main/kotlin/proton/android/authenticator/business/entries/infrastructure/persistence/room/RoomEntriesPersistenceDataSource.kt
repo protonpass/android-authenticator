@@ -18,118 +18,59 @@
 
 package proton.android.authenticator.business.entries.infrastructure.persistence.room
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.shared.domain.infrastructure.persistence.PersistenceDataSource
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntryEntity
-import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
-import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
-import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContext
-import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
-import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
 
 internal class RoomEntriesPersistenceDataSource @Inject constructor(
-    private val entriesDao: EntriesDao,
-    private val encryptionContextProvider: EncryptionContextProvider,
-    private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface
+    private val entriesDao: EntriesDao
 ) : PersistenceDataSource<Entry> {
 
     override fun observeAll(): Flow<List<Entry>> = entriesDao.observeAll()
-        .map { entryEntities ->
-            coroutineScope {
-                encryptionContextProvider.withEncryptionContext {
-                    entryEntities.map { entryEntity ->
-                        async {
-                            entryEntity.toDomain(this@withEncryptionContext)
-                        }
-                    }
-                }.awaitAll()
-            }
-        }
+        .map { entryEntities -> entryEntities.map(EntryEntity::toDomain) }
 
     override fun byId(id: String): Flow<Entry> = entriesDao.observeById(id)
-        .map { entryEntity ->
-            encryptionContextProvider.withEncryptionContext {
-                entryEntity.toDomain(this@withEncryptionContext)
-            }
-        }
+        .map(EntryEntity::toDomain)
 
     override suspend fun delete(entry: Entry) {
-        encryptionContextProvider.withEncryptionContext {
-            entry.toEntity(this@withEncryptionContext)
-                .also { entryEntity -> entriesDao.delete(entryEntity) }
-        }
+        entry.toEntity()
+            .also { entryEntity -> entriesDao.delete(entryEntity) }
     }
 
     override suspend fun insert(entry: Entry) {
-        encryptionContextProvider.withEncryptionContext {
-            entry.toEntity(this@withEncryptionContext)
-                .also { entryEntity -> entriesDao.upsert(entryEntity) }
-        }
+        entry.toEntity()
+            .also { entryEntity -> entriesDao.upsert(entryEntity) }
     }
 
     override suspend fun insertAll(entries: List<Entry>) {
-        encryptionContextProvider.withEncryptionContext {
-            entries.map { entry -> entry.toEntity(this@withEncryptionContext) }
-                .also { entryEntities -> entriesDao.upsertAll(entryEntities) }
-        }
+        entries.map { entry -> entry.toEntity() }
+            .also { entryEntities -> entriesDao.upsertAll(entryEntities) }
     }
 
     override suspend fun searchMaxPosition(): Double? = entriesDao.searchMaxPosition()
 
-    private fun EntryEntity.toDomain(encryptionContext: EncryptionContext): Entry =
-        encryptionContext.decrypt(content, EncryptionTag.EntryContent)
-            .let { decryptedEntityContent ->
-                authenticatorClient.deserializeEntry(decryptedEntityContent)
-            }
-            .let { entryModel ->
-                entryModel to authenticatorClient.getTotpParams(entryModel)
-            }
-            .let { (entryModel, entryParams) ->
-                Entry.create(
-                    model = entryModel,
-                    params = entryParams,
-                    createdAt = createdAt,
-                    modifiedAt = modifiedAt,
-                    isSynced = isSynced,
-                    position = position,
-                    issuerInfo = authenticatorIssuerMapper.lookup(entryModel.issuer)
-                )
-            }
-
-    private fun Entry.toEntity(encryptionContext: EncryptionContext): EntryEntity = AuthenticatorEntryModel(
-        id = id,
-        name = name,
-        issuer = issuer,
-        secret = secret,
-        uri = uri,
-        period = period.toUShort(),
-        note = note,
-        entryType = type.asAuthenticatorEntryType()
-    )
-        .let { entryModel ->
-            authenticatorClient.serializeEntry(entryModel)
-        }
-        .let { decryptedEntityContent ->
-            encryptionContext.encrypt(decryptedEntityContent, EncryptionTag.EntryContent)
-        }
-        .let { encryptedEntityContent ->
-            EntryEntity(
-                id = id,
-                content = encryptedEntityContent,
-                createdAt = createdAt,
-                modifiedAt = modifiedAt,
-                isSynced = isSynced,
-                position = position
-            )
-        }
-
 }
+
+private fun Entry.toEntity() = EntryEntity(
+    id = id,
+    content = content,
+    createdAt = createdAt,
+    modifiedAt = modifiedAt,
+    isSynced = isSynced,
+    position = position,
+    iconUrl = iconUrl
+)
+
+private fun EntryEntity.toDomain() = Entry(
+    id = id,
+    content = content,
+    createdAt = createdAt,
+    modifiedAt = modifiedAt,
+    isSynced = isSynced,
+    position = position,
+    iconUrl = iconUrl
+)

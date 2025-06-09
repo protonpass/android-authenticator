@@ -25,17 +25,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -57,11 +55,15 @@ fun EntryIcon(
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(url)
+                .diskCacheKey(url)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .memoryCacheKey(url)
+                .memoryCachePolicy(CachePolicy.ENABLED)
                 .size(size.value.toInt())
                 .build(),
             contentDescription = null,
-            error = {
-                Box(
+            loading = {
+                GradientCharacterIcon(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(color = Theme.colorScheme.iconBackground)
@@ -70,26 +72,21 @@ fun EntryIcon(
                             color = Theme.colorScheme.iconBorder,
                             shape = RoundedCornerShape(size = ThemeRadius.Small)
                         ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = issuer
-                            .firstOrNull()
-                            ?.toString()
-                            ?.uppercase()
-                            .orEmpty(),
-                        style = Theme.typography.subtitle.copy(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    Theme.colorScheme.gradientBannerColor10,
-                                    Theme.colorScheme.gradientBannerColor8,
-                                    Theme.colorScheme.gradientBannerColor4,
-                                    Theme.colorScheme.gradientBannerColor2
-                                )
-                            )
-                        )
-                    )
-                }
+                    text = issuer
+                )
+            },
+            error = {
+                GradientCharacterIcon(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Theme.colorScheme.iconBackground)
+                        .border(
+                            width = ThemeThickness.Small,
+                            color = Theme.colorScheme.iconBorder,
+                            shape = RoundedCornerShape(size = ThemeRadius.Small)
+                        ),
+                    text = issuer
+                )
             },
             success = {
                 SubcomposeAsyncImageContent(

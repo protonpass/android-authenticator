@@ -40,10 +40,10 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
-import proton.android.authenticator.features.shared.usecases.entries.ObserveEntriesUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
 import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.RestoreEntryUseCase
+import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
@@ -57,7 +57,7 @@ import proton.android.authenticator.shared.ui.R as uiR
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class HomeMasterViewModel @Inject constructor(
-    observeEntriesUseCase: ObserveEntriesUseCase,
+    observeEntryModelsUseCase: ObserveEntryModelsUseCase,
     observeEntryCodesUseCase: ObserveEntryCodesUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
     private val copyToClipboardUseCase: CopyToClipboardUseCase,
@@ -77,15 +77,15 @@ internal class HomeMasterViewModel @Inject constructor(
             else SEARCH_QUERY_DEBOUNCE_MILLIS
         }
 
-    private val entriesFlow = combine(
-        observeEntriesUseCase(),
+    private val entryModelsFlow = combine(
+        observeEntryModelsUseCase(),
         entrySearchQueryDebouncedFlow
-    ) { entries, searchQuery ->
-        entries.filter { entry ->
+    ) { entryModels, searchQuery ->
+        entryModels.filter { entryModel ->
             if (searchQuery.isEmpty()) {
                 true
             } else {
-                entry.issuer.contains(searchQuery, true) || entry.name.contains(searchQuery, true)
+                entryModel.issuer.contains(searchQuery, true) || entryModel.name.contains(searchQuery, true)
             }
         }
     }.shareIn(
@@ -93,7 +93,7 @@ internal class HomeMasterViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
     )
 
-    private val entryCodesFlow = entriesFlow
+    private val entryCodesFlow = entryModelsFlow
         .flatMapLatest(observeEntryCodesUseCase::invoke)
         .shareIn(
             scope = viewModelScope,
@@ -109,7 +109,7 @@ internal class HomeMasterViewModel @Inject constructor(
     }
 
     private val entryCodesRemainingTimesFlow = combine(
-        entriesFlow,
+        entryModelsFlow,
         entryCodesFlow,
         entryCodesRemainingTimeTickerFlow
     ) { entries, entryCodes, _ ->
@@ -123,7 +123,7 @@ internal class HomeMasterViewModel @Inject constructor(
     ) {
         HomeMasterState.create(
             entrySearchQuery = entrySearchQueryState.value,
-            entriesFlow = entriesFlow,
+            entryModelsFlow = entryModelsFlow,
             entryCodesFlow = entryCodesFlow,
             entryCodesRemainingTimesFlow = entryCodesRemainingTimesFlow,
             settingsFlow = observeSettingsUseCase()

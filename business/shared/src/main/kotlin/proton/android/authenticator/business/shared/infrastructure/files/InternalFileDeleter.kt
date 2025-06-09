@@ -16,37 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.domain.models
+package proton.android.authenticator.business.shared.infrastructure.files
 
+import kotlinx.coroutines.withContext
+import proton.android.authenticator.business.shared.di.DirectoryPathInternal
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileDeleter
+import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
+import java.io.File
+import javax.inject.Inject
 
-sealed class UiTextMask {
+internal class InternalFileDeleter @Inject constructor(
+    private val appDispatchers: AppDispatchers,
+    @DirectoryPathInternal private val directoryPath: String
+) : FileDeleter {
 
-    internal abstract fun apply(original: String): String
-
-    data object Hidden : UiTextMask() {
-
-        override fun apply(original: String): String = '•'.toString().repeat(original.length)
-
-    }
-
-    data object Totp : UiTextMask() {
-
-        override fun apply(original: String): String {
-            if (original.length == TOTP_CODE_LENGTH_DEFAULT) {
-                return original
-                    .chunked(size = TOTP_CODE_LENGTH_DEFAULT.div(2))
-                    .joinToString(separator = " ")
-            }
-
-            return original
-        }
-
-    }
-
-    private companion object {
-
-        private const val TOTP_CODE_LENGTH_DEFAULT = 6
-
+    override suspend fun delete(path: String): Boolean = withContext(appDispatchers.io) {
+        "$directoryPath/$path"
+            .let(::File)
+            .let(File::delete)
     }
 
 }

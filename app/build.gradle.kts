@@ -155,10 +155,10 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.material.navigation)
     implementation(libs.androidx.material3)
@@ -167,27 +167,33 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(platform(libs.androidx.compose.bom))
-
-    implementation(libs.timber)
-
-    implementation(libs.kotlinx.datetime)
-
+    implementation(libs.androidx.work)
+    implementation(libs.authenticator.common)
+    implementation(libs.coil)
     implementation(libs.core.crypto)
     implementation(libs.core.data)
     implementation(libs.core.dataRoom)
+    implementation(libs.hilt.android)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.timber)
+    implementation(platform(libs.androidx.compose.bom))
+
+    implementation(projects.business.backups)
+    implementation(projects.business.entries)
+    implementation(projects.business.settings)
+    implementation(projects.features.shared)
+    implementation(projects.navigation)
+    implementation(projects.shared.common)
+    implementation(projects.shared.ui)
 
     addFdroidSpecialLib(
         default = libs.core.utilAndroidSentry,
         fdroid = null
     )
 
-    implementation(libs.authenticator.common)
-
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
+    ksp(libs.androidx.hilt.compiler)
     ksp(libs.androidx.room.compiler)
+    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
 
@@ -198,11 +204,6 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation(projects.business.settings)
-    implementation(projects.features.shared)
-    implementation(projects.navigation)
-    implementation(projects.shared.ui)
 }
 
 dependencyGuard {

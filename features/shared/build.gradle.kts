@@ -11,13 +11,17 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.authenticator.common)
+    implementation(libs.core.crypto)
     implementation(libs.hilt.android)
 
+    implementation(projects.business.backups)
     implementation(projects.business.biometrics)
     implementation(projects.business.entries)
     implementation(projects.business.settings)
     implementation(projects.business.steps)
     implementation(projects.shared.common)
+    implementation(projects.shared.crypto)
 
     ksp(libs.hilt.compiler)
 }

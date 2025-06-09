@@ -27,23 +27,26 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.backups.domain.Backup
-import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 
 @Immutable
 internal class BackupsMasterState private constructor(
     internal val backupModel: BackupMasterModel,
-    internal val entries: ImmutableList<Entry>
+    internal val entryModels: ImmutableList<EntryModel>
 ) {
 
     internal companion object {
 
         @Composable
-        internal fun create(backupFlow: Flow<Backup>, entriesFlow: Flow<ImmutableList<Entry>>): BackupsMasterState {
+        internal fun create(
+            backupFlow: Flow<Backup>,
+            entryModelsFlow: Flow<ImmutableList<EntryModel>>
+        ): BackupsMasterState {
             val backup by backupFlow.collectAsState(initial = Backup.Default)
-            val entries by entriesFlow.collectAsState(initial = persistentListOf())
+            val entryModels by entryModelsFlow.collectAsState(initial = persistentListOf())
 
-            val canCreateBackup = remember(key1 = entries) {
-                entries.isNotEmpty()
+            val canCreateBackup = remember(key1 = entryModels) {
+                entryModels.isNotEmpty()
             }
 
             val backupModel = remember(key1 = backup, key2 = canCreateBackup) {
@@ -59,7 +62,7 @@ internal class BackupsMasterState private constructor(
 
             return BackupsMasterState(
                 backupModel = backupModel,
-                entries = entries
+                entryModels = entryModels
             )
         }
 

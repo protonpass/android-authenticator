@@ -63,10 +63,15 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
 
             <meta-data
                 android:name="proton.android.authenticator.initializers.SentryInitializer"
                 android:value="androidx.startup" />
+
             <meta-data
                 android:name="proton.android.authenticator.initializers.LoggerInitializer"
                 android:value="androidx.startup" />
@@ -76,5 +81,4 @@
             android:name="io.sentry.auto-init"
             android:value="false" />
     </application>
-
 </manifest>

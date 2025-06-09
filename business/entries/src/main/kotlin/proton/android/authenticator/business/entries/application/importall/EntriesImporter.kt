@@ -28,18 +28,23 @@ import proton.android.authenticator.business.shared.domain.infrastructure.files.
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
+import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.common.domain.scanners.QrScanner
+import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
+import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
 
 internal class EntriesImporter @Inject constructor(
     private val appDispatchers: AppDispatchers,
-    private val authenticatorImporter: AuthenticatorImporterInterface,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val authenticatorImporter: AuthenticatorImporterInterface,
+    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface,
+    private val encryptionContextProvider: EncryptionContextProvider,
     private val fileReader: FileReader,
     private val mimeTypeProvider: MimeTypeProvider,
     private val qrScanner: QrScanner,
@@ -118,17 +123,20 @@ internal class EntriesImporter @Inject constructor(
         .let { currentMillis ->
             var position = repository.searchMaxPosition()
 
-            entryModels.map { entryModel ->
-                position += EntryConstants.POSITION_INCREMENT
+            encryptionContextProvider.withEncryptionContext {
+                entryModels.map { entryModel ->
+                    position += EntryConstants.POSITION_INCREMENT
 
-                Entry.create(
-                    model = entryModel,
-                    params = authenticatorClient.getTotpParams(entryModel),
-                    createdAt = currentMillis,
-                    modifiedAt = currentMillis,
-                    isSynced = false,
-                    position = position
-                )
+                    Entry(
+                        id = entryModel.id,
+                        content = encrypt(authenticatorClient.serializeEntry(entryModel), EncryptionTag.EntryContent),
+                        createdAt = currentMillis,
+                        modifiedAt = currentMillis,
+                        isSynced = false,
+                        position = position,
+                        iconUrl = authenticatorIssuerMapper.lookup(entryModel.issuer)?.iconUrl
+                    )
+                }
             }
         }
         .also { entries -> repository.saveAll(entries) }

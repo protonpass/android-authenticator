@@ -23,9 +23,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 
 @Immutable
 internal sealed interface HomeManualState {
@@ -65,7 +65,7 @@ internal sealed interface HomeManualState {
         @Composable
         internal fun create(
             entryId: String?,
-            entryFlow: Flow<Entry?>,
+            entryModelFlow: Flow<EntryModel?>,
             title: String?,
             secret: String?,
             isValidSecretFlow: Flow<Boolean>,
@@ -77,7 +77,7 @@ internal sealed interface HomeManualState {
             showAdvanceOptionsFlow: Flow<Boolean?>,
             eventFlow: Flow<HomeManualEvent>
         ): HomeManualState {
-            val entry by entryFlow.collectAsState(initial = null)
+            val entryModel by entryModelFlow.collectAsState(initial = null)
             val digits by digitsFlow.collectAsState(initial = null)
             val timeInterval by timeIntervalFlow.collectAsState(initial = null)
             val algorithm by algorithmFlow.collectAsState(initial = null)
@@ -104,17 +104,17 @@ internal sealed interface HomeManualState {
                 )
             }
 
-            return entry?.let { currentEntry ->
+            return entryModel?.let { currentEntryModel ->
                 Editing(
                     formModel = HomeManualFormModel(
-                        title = title ?: currentEntry.name,
-                        secret = secret ?: currentEntry.secret,
-                        issuer = issuer ?: currentEntry.issuer,
-                        digits = digits ?: currentEntry.digits,
-                        timeInterval = timeInterval ?: currentEntry.period,
-                        algorithm = algorithm ?: currentEntry.algorithm,
-                        type = type ?: currentEntry.type,
-                        position = currentEntry.position,
+                        title = title ?: currentEntryModel.name,
+                        secret = secret ?: currentEntryModel.secret,
+                        issuer = issuer ?: currentEntryModel.issuer,
+                        digits = digits ?: currentEntryModel.digits,
+                        timeInterval = timeInterval ?: currentEntryModel.period,
+                        algorithm = algorithm ?: currentEntryModel.algorithm,
+                        type = type ?: currentEntryModel.type,
+                        position = currentEntryModel.position,
                         showAdvanceOptions = showAdvanceOptions == true,
                         isValidSecret = isValidSecret
                     ),

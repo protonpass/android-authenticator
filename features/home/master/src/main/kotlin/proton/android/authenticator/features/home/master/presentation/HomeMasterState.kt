@@ -24,12 +24,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
@@ -103,12 +103,12 @@ internal sealed interface HomeMasterState {
         @Composable
         internal fun create(
             entrySearchQuery: String,
-            entriesFlow: Flow<List<Entry>>,
+            entryModelsFlow: Flow<List<EntryModel>>,
             entryCodesFlow: Flow<List<EntryCode>>,
             entryCodesRemainingTimesFlow: Flow<Map<Int, Int>>,
             settingsFlow: Flow<Settings>
         ): HomeMasterState {
-            val entriesList: List<Entry>? by entriesFlow.collectAsState(initial = null)
+            val entriesList: List<EntryModel>? by entryModelsFlow.collectAsState(initial = null)
             val entryCodes by entryCodesFlow.collectAsState(initial = emptyList())
             val entryCodesRemainingTimes by entryCodesRemainingTimesFlow.collectAsState(initial = emptyMap())
             val settings by settingsFlow.collectAsState(initial = Settings.Default)
@@ -152,7 +152,7 @@ internal sealed interface HomeMasterState {
                     val entryModelsMap = remember(key1 = entries, key2 = entryCodes) {
                         entries.zip(entryCodes) { entry, entryCode ->
                             HomeMasterEntryModel(
-                                entry = entry,
+                                entryModel = entry,
                                 entryCode = entryCode
                             )
                         }.associateBy { entryModel -> entryModel.id }

@@ -38,7 +38,9 @@ data class EntryEntity(
     @ColumnInfo(name = Columns.CREATED_AT)
     val createdAt: Long,
     @ColumnInfo(name = Columns.MODIFIED_AT)
-    val modifiedAt: Long
+    val modifiedAt: Long,
+    @ColumnInfo(name = Columns.ICON_URL)
+    val iconUrl: String?
 ) {
 
     internal object Columns {
@@ -54,6 +56,8 @@ data class EntryEntity(
         internal const val CREATED_AT = "created_at"
 
         internal const val MODIFIED_AT = "modified_at"
+
+        internal const val ICON_URL = "icon_url"
 
     }
 

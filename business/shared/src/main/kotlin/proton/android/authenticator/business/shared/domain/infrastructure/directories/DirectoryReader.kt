@@ -16,16 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.domain
+package proton.android.authenticator.business.shared.domain.infrastructure.directories
 
-import me.proton.core.crypto.common.keystore.EncryptedByteArray
+import java.io.File
 
-data class Entry(
-    val id: String,
-    val content: EncryptedByteArray,
-    val createdAt: Long,
-    val modifiedAt: Long,
-    val isSynced: Boolean,
-    val position: Double,
-    val iconUrl: String?
-)
+interface DirectoryReader {
+
+    suspend fun read(directoryName: String): List<File>
+
+}

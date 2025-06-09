@@ -20,15 +20,18 @@ package proton.android.authenticator.features.backups.master.presentation
 
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
+import proton.android.authenticator.shared.ui.domain.models.UiDate
 
 internal data class BackupMasterModel(
     internal val isEnabled: Boolean,
     internal val frequencyType: BackupFrequencyType,
     internal val maxBackupCount: Int,
-    internal val lastBackupMillis: Long?,
     internal val canCreateBackup: Boolean,
-    private val count: Int
+    private val count: Int,
+    private val lastBackupMillis: Long?
 ) {
+
+    internal val lastBackupDate: UiDate? = lastBackupMillis?.let(UiDate::Backup)
 
     internal val frequencyOptions: List<BackupsMasterFrequencyOption> = listOf(
         BackupsMasterFrequencyOption.Daily(selectedType = frequencyType),
