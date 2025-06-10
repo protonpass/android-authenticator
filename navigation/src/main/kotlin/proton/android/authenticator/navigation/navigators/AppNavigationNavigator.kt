@@ -25,6 +25,7 @@ import proton.android.authenticator.navigation.domain.graphs.home.homeNavigation
 import proton.android.authenticator.navigation.domain.graphs.onboarding.OnboardingNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.onboarding.onboardingNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.settings.settingsNavigationGraph
+import proton.android.authenticator.navigation.domain.graphs.sync.syncNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
 import proton.android.authenticator.shared.ui.domain.events.ObserveAsUiEvents
@@ -41,6 +42,7 @@ internal class AppNavigationNavigator @Inject constructor(
     override fun NavGraphs(isDarkTheme: Boolean) {
         Theme(isDarkTheme = isDarkTheme) {
             val step by observeStepUseCase().collectAsState(initial = null)
+
             step?.let { currentStep ->
                 val startDestination = remember {
                     when (currentStep.destination) {
@@ -105,6 +107,10 @@ internal class AppNavigationNavigator @Inject constructor(
                         }
 
                         settingsNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
+                            navigationCommandHandler.handle(navCommand, navController)
+                        }
+
+                        syncNavigationGraph { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }
                     }

@@ -312,7 +312,7 @@ sealed class ThemeColors {
 
         override val textNorm: Color = Color(color = 0xFFFFFFFF)
 
-        override val textWeak: Color = Color(color = 0x99FFFFFF)
+        override val textWeak: Color = Color(color = 0xFFDFDFDF)
 
     }
 
