@@ -35,7 +35,7 @@ data class Backup(
 
     val maxBackupCount: Int = MAX_BACKUP_COUNT
 
-    internal val directoryName: String = DIRECTORY_NAME
+    val directoryName: String = DIRECTORY_NAME
 
     internal val fileName: String = "proton_authenticator_automatic_backup_$lastBackupMillis.json"
 

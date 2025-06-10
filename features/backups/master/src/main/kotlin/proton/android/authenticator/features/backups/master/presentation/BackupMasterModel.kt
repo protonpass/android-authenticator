@@ -28,8 +28,11 @@ internal data class BackupMasterModel(
     internal val maxBackupCount: Int,
     internal val canCreateBackup: Boolean,
     private val count: Int,
-    private val lastBackupMillis: Long?
+    private val lastBackupMillis: Long?,
+    private val path: String
 ) {
+
+    internal val backupPath: String = path
 
     internal val lastBackupDate: UiDate? = lastBackupMillis?.let(UiDate::Backup)
 

@@ -56,6 +56,7 @@ internal class BackupsMasterState private constructor(
                     maxBackupCount = backup.maxBackupCount,
                     lastBackupMillis = backup.lastBackupMillis,
                     count = backup.count,
+                    path = backup.directoryName,
                     canCreateBackup = canCreateBackup
                 )
             }

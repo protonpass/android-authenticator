@@ -19,11 +19,11 @@
 <resources>
     <string name="backups_screen_title">Backups</string>
     <string name="backups_automatic_backups_title">Automatic backups</string>
-    <string name="backups_folder_location_title">Folder location</string>
+    <string name="backups_automatic_backups_location">Location: authenticator/files/%1$s</string>
     <string name="backups_frequency_title">Frequency</string>
-    <string name="backups_frequency_option_daily">Every day</string>
-    <string name="backups_frequency_option_weekly">Every week</string>
-    <string name="backups_frequency_option_monthly">Every month</string>
+    <string name="backups_frequency_option_daily">Daily</string>
+    <string name="backups_frequency_option_weekly">Weekly</string>
+    <string name="backups_frequency_option_monthly">Monthly</string>
     <string name="backups_backup_now_button">Backup now</string>
     <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Last backup: %1$s</string>
     <plurals name="backups_backup_count_description">

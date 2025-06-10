@@ -33,7 +33,6 @@ import proton.android.authenticator.features.backups.master.presentation.Backups
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
 import proton.android.authenticator.shared.ui.domain.components.containers.RowsContainer
-import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -62,22 +61,16 @@ internal fun BackupsMasterContent(
                     {
                         ToggleRow(
                             titleText = UiText.Resource(id = R.string.backups_automatic_backups_title),
+                            descriptionText = UiText.Resource(
+                                id = R.string.backups_automatic_backups_location,
+                                backupModel.backupPath
+                            ),
                             isChecked = backupModel.isEnabled,
                             onCheckedChange = onIsEnableChange
                         )
                     }
                 )
                 if (backupModel.isEnabled) {
-                    add(
-                        {
-                            NavigationRow(
-                                titleText = UiText.Resource(id = R.string.backups_folder_location_title),
-                                description = UiText.Dynamic(value = "Proton Authenticator Backups/"),
-                                showNavigationIcon = true,
-                                onClick = {}
-                            )
-                        }
-                    )
                     add(
                         {
                             SelectorRow<BackupFrequencyType>(
