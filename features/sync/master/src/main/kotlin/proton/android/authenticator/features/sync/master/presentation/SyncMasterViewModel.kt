@@ -36,9 +36,7 @@ internal class SyncMasterViewModel @Inject constructor(
 
     internal val stateFlow: StateFlow<SyncMasterState> = settingsFlow
         .map { settings ->
-            settings
-                ?.let { currentSettings -> SyncMasterState.Ready(settingsThemeType = currentSettings.themeType) }
-                ?: SyncMasterState.Loading
+            SyncMasterState.Ready(settingsThemeType = settings.themeType)
         }
         .stateIn(
             scope = viewModelScope,

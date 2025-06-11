@@ -57,15 +57,11 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
     internal val stateFlow: StateFlow<OnboardingBiometricsState> = combine(
         observeBiometricUseCase(),
         eventFlow
-    ) { nullableBiometric, event ->
-        nullableBiometric
-            ?.let { biometric ->
-                OnboardingBiometricsState.Ready(
-                    biometric = biometric,
-                    event = event
-                )
-            }
-            ?: OnboardingBiometricsState.Loading
+    ) { biometric, event ->
+        OnboardingBiometricsState.Ready(
+            biometric = biometric,
+            event = event
+        )
     }.stateIn(
         scope = viewModelScope,
         started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
