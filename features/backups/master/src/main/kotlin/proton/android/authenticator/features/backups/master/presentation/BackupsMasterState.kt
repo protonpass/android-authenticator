@@ -23,7 +23,7 @@ import kotlinx.collections.immutable.ImmutableList
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 
 @Immutable
-internal class BackupsMasterState(
+internal data class BackupsMasterState(
     internal val backupModel: BackupMasterModel,
     internal val entryModels: ImmutableList<EntryModel>
 )

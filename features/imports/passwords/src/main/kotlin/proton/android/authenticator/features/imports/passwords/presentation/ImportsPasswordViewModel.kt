@@ -19,6 +19,8 @@
 package proton.android.authenticator.features.imports.passwords.presentation
 
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,24 +49,24 @@ internal class ImportsPasswordViewModel @Inject constructor(
     private val importType = requireNotNull<Int>(savedStateHandle[ARGS_IMPORT_TYPE])
         .let(enumValues<EntryImportType>()::get)
 
-    private val passwordFlow = MutableStateFlow<String>(value = "")
+    private val passwordState = mutableStateOf<String?>(value = null)
 
-    private val isPasswordErrorFlow = MutableStateFlow<Boolean>(value = false)
+    private val isPasswordErrorFlow = MutableStateFlow(value = false)
 
-    private val isPasswordVisibleFlow = MutableStateFlow<Boolean>(value = false)
+    private val isPasswordVisibleFlow = MutableStateFlow(value = false)
 
     private val eventFlow = MutableStateFlow<ImportsPasswordEvent>(
         value = ImportsPasswordEvent.Idle
     )
 
     internal val stateFlow: StateFlow<ImportsPasswordState> = combine(
-        passwordFlow,
+        snapshotFlow { passwordState.value },
         isPasswordErrorFlow,
         isPasswordVisibleFlow,
         eventFlow
     ) { password, isPasswordError, isPasswordVisible, event ->
         ImportsPasswordState.create(
-            password = password,
+            password = password.orEmpty(),
             isPasswordError = isPasswordError,
             isPasswordVisible = isPasswordVisible,
             event = event
@@ -85,7 +87,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
     }
 
     internal fun onPasswordChange(newPassword: String) {
-        passwordFlow.update { newPassword }
+        passwordState.value = newPassword
 
         isPasswordErrorFlow.update { false }
     }
@@ -96,12 +98,10 @@ internal class ImportsPasswordViewModel @Inject constructor(
 
     internal fun onSubmitPassword(password: String) {
         viewModelScope.launch {
-            viewModelScope.launch {
-                importEntriesUseCase(uri, importType, password).also { answer ->
-                    when (answer) {
-                        is Answer.Failure -> handleImportEntriesFailure(answer)
-                        is Answer.Success -> handleImportEntriesSuccess(answer)
-                    }
+            importEntriesUseCase(uri, importType, password).also { answer ->
+                when (answer) {
+                    is Answer.Failure -> handleImportEntriesFailure(answer)
+                    is Answer.Success -> handleImportEntriesSuccess(answer)
                 }
             }
         }
@@ -122,7 +122,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
     }
 
     private fun handleImportEntriesSuccess(answer: Answer.Success<Int, ImportEntriesReason>) {
-        passwordFlow.update { "" }
+        passwordState.value = null
 
         eventFlow.update {
             ImportsPasswordEvent.OnFileImported(importedEntriesCount = answer.data)
