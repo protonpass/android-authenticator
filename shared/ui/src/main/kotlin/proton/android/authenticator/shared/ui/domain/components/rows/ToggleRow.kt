@@ -77,10 +77,12 @@ fun ToggleRow(
             onCheckedChange = null,
             colors = SwitchDefaults.colors()
                 .copy(
+                    checkedBorderColor = Theme.colorScheme.signalSuccess,
                     checkedThumbColor = Theme.colorScheme.white,
                     checkedTrackColor = Theme.colorScheme.signalSuccess,
-                    uncheckedThumbColor = Theme.colorScheme.white,
-                    uncheckedTrackColor = Theme.colorScheme.textHint
+                    uncheckedBorderColor = Theme.colorScheme.transparent,
+                    uncheckedThumbColor = Theme.colorScheme.textNorm,
+                    uncheckedTrackColor = Theme.colorScheme.textPlaceholder
                 )
         )
     }

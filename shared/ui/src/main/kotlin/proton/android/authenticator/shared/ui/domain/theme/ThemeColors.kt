@@ -159,6 +159,9 @@ sealed class ThemeColors {
     abstract val textNorm: Color
 
     @Stable
+    abstract val textPlaceholder: Color
+
+    @Stable
     abstract val textWeak: Color
 
     @Stable
@@ -202,6 +205,9 @@ sealed class ThemeColors {
 
     @Stable
     val redAlpha20: Color = Color(color = 0x33FF0000)
+
+    @Stable
+    val transparent: Color = Color.Transparent
 
     @Stable
     val white: Color = Color(color = 0xFFFFFFFF)
@@ -312,6 +318,8 @@ sealed class ThemeColors {
 
         override val textNorm: Color = Color(color = 0xFFFFFFFF)
 
+        override val textPlaceholder: Color = Color(color = 0x66FFFFFF)
+
         override val textWeak: Color = Color(color = 0xFFDFDFDF)
 
     }
@@ -406,6 +414,8 @@ sealed class ThemeColors {
         override val textHint: Color = Color(color = 0xFF88859D)
 
         override val textNorm: Color = Color(color = 0xFF44403C)
+
+        override val textPlaceholder: Color = Color(color = 0xFF9E9894)
 
         override val textWeak: Color = Color(color = 0xFF78716C)
 
