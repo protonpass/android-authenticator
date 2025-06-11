@@ -21,12 +21,12 @@ package proton.android.authenticator.features.onboarding.biometrics.presentation
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
@@ -54,14 +54,23 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
         value = OnboardingBiometricsEvent.Idle
     )
 
-    internal val stateFlow: StateFlow<OnboardingBiometricsState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        OnboardingBiometricsState.create(
-            biometricFlow = observeBiometricUseCase(),
-            eventFlow = eventFlow
-        )
-    }
+    internal val stateFlow: StateFlow<OnboardingBiometricsState> = combine(
+        observeBiometricUseCase(),
+        eventFlow
+    ) { nullableBiometric, event ->
+        nullableBiometric
+            ?.let { biometric ->
+                OnboardingBiometricsState.Ready(
+                    biometric = biometric,
+                    event = event
+                )
+            }
+            ?: OnboardingBiometricsState.Loading
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = OnboardingBiometricsState.Loading
+    )
 
     internal fun onConsumeEvent(event: OnboardingBiometricsEvent) {
         eventFlow.compareAndSet(expect = event, update = OnboardingBiometricsEvent.Idle)

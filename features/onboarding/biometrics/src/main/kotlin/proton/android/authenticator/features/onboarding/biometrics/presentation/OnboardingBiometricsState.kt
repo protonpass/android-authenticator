@@ -18,11 +18,7 @@
 
 package proton.android.authenticator.features.onboarding.biometrics.presentation
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.biometrics.domain.Biometric
 import proton.android.authenticator.business.biometrics.domain.BiometricStatus
 
@@ -49,28 +45,6 @@ internal sealed interface OnboardingBiometricsState {
             BiometricStatus.NotEnrolled,
             BiometricStatus.Unavailable,
             BiometricStatus.Unsupported -> false
-        }
-
-    }
-
-    companion object {
-
-        @Composable
-        internal fun create(
-            biometricFlow: Flow<Biometric?>,
-            eventFlow: Flow<OnboardingBiometricsEvent>
-        ): OnboardingBiometricsState {
-            val nullableBiometric by biometricFlow.collectAsState(initial = null)
-            val event by eventFlow.collectAsState(initial = OnboardingBiometricsEvent.Idle)
-
-            return nullableBiometric
-                ?.let { biometric ->
-                    Ready(
-                        biometric = biometric,
-                        event = event
-                    )
-                }
-                ?: Loading
         }
 
     }
