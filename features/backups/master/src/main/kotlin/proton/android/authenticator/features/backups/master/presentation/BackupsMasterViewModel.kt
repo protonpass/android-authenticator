@@ -21,13 +21,15 @@ package proton.android.authenticator.features.backups.master.presentation
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.backups.master.R
 import proton.android.authenticator.features.backups.master.usecases.UpdateBackupUseCase
@@ -57,14 +59,42 @@ internal class BackupsMasterViewModel @Inject constructor(
     private val entryModelsFlow = observeEntryModelsUseCase()
         .map(List<EntryModel>::toPersistentList)
 
-    internal val stateFlow: StateFlow<BackupsMasterState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        BackupsMasterState.create(
-            backupFlow = backupFlow,
-            entryModelsFlow = entryModelsFlow
+    internal val stateFlow: StateFlow<BackupsMasterState> = combine(
+        backupFlow,
+        entryModelsFlow
+    ) { backup, entryModels ->
+        val canCreateBackup = entryModels.isNotEmpty()
+
+        val backupModel = BackupMasterModel(
+            isEnabled = backup.isEnabled,
+            frequencyType = backup.frequencyType,
+            maxBackupCount = backup.maxBackupCount,
+            lastBackupMillis = backup.lastBackupMillis,
+            count = backup.count,
+            path = backup.directoryName,
+            canCreateBackup = canCreateBackup
         )
-    }
+
+        BackupsMasterState(
+            backupModel = backupModel,
+            entryModels = entryModels
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = BackupsMasterState(
+            backupModel = BackupMasterModel(
+                isEnabled = Backup.Default.isEnabled,
+                frequencyType = Backup.Default.frequencyType,
+                maxBackupCount = Backup.Default.maxBackupCount,
+                lastBackupMillis = Backup.Default.lastBackupMillis,
+                count = Backup.Default.count,
+                path = Backup.Default.directoryName,
+                canCreateBackup = false
+            ),
+            entryModels = persistentListOf()
+        )
+    )
 
     internal fun onUpdateIsEnabled(newIsEnabled: Boolean) {
         if (backupModel.isEnabled == newIsEnabled) return
