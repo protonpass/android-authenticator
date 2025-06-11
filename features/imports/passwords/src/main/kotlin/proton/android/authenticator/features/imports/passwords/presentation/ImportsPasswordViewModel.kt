@@ -19,15 +19,14 @@
 package proton.android.authenticator.features.imports.passwords.presentation
 
 import android.net.Uri
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
@@ -48,7 +47,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
     private val importType = requireNotNull<Int>(savedStateHandle[ARGS_IMPORT_TYPE])
         .let(enumValues<EntryImportType>()::get)
 
-    private val passwordState = mutableStateOf<String?>(value = null)
+    private val passwordFlow = MutableStateFlow<String>(value = "")
 
     private val isPasswordErrorFlow = MutableStateFlow<Boolean>(value = false)
 
@@ -58,23 +57,35 @@ internal class ImportsPasswordViewModel @Inject constructor(
         value = ImportsPasswordEvent.Idle
     )
 
-    internal val stateFlow: StateFlow<ImportsPasswordState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
+    internal val stateFlow: StateFlow<ImportsPasswordState> = combine(
+        passwordFlow,
+        isPasswordErrorFlow,
+        isPasswordVisibleFlow,
+        eventFlow
+    ) { password, isPasswordError, isPasswordVisible, event ->
         ImportsPasswordState.create(
-            password = passwordState.value,
-            isPasswordErrorFlow = isPasswordErrorFlow,
-            isPasswordVisibleFlow = isPasswordVisibleFlow,
-            eventFlow = eventFlow
+            password = password,
+            isPasswordError = isPasswordError,
+            isPasswordVisible = isPasswordVisible,
+            event = event
         )
-    }
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = ImportsPasswordState.create(
+            password = "",
+            isPasswordError = false,
+            isPasswordVisible = false,
+            event = ImportsPasswordEvent.Idle
+        )
+    )
 
     internal fun onConsumeEvent(event: ImportsPasswordEvent) {
         eventFlow.compareAndSet(expect = event, update = ImportsPasswordEvent.Idle)
     }
 
     internal fun onPasswordChange(newPassword: String) {
-        passwordState.value = newPassword
+        passwordFlow.update { newPassword }
 
         isPasswordErrorFlow.update { false }
     }
@@ -111,7 +122,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
     }
 
     private fun handleImportEntriesSuccess(answer: Answer.Success<Int, ImportEntriesReason>) {
-        passwordState.value = ""
+        passwordFlow.update { "" }
 
         eventFlow.update {
             ImportsPasswordEvent.OnFileImported(importedEntriesCount = answer.data)
