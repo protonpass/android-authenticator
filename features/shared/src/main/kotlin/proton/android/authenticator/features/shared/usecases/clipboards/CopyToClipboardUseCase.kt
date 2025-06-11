@@ -29,16 +29,22 @@ class CopyToClipboardUseCase @Inject constructor(
     private val clipboardManager: ClipboardManager
 ) {
 
-    operator fun invoke(text: String, isSensitive: Boolean) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    operator fun invoke(text: String, isSensitive: Boolean): Boolean {
+        val isSupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+        return if (isSupported) {
             ClipDescription.EXTRA_IS_SENSITIVE
         } else {
             CLIPBOARD_EXTRA_IS_SENSITIVE_KEY_COMPAT
-        }.let { key ->
-            PersistableBundle().apply { putBoolean(key, isSensitive) }
-        }.let { bundle ->
-            ClipData.newPlainText(CLIPBOARD_LABEL, text).apply { description.extras = bundle }
-        }.also(clipboardManager::setPrimaryClip)
+        }
+            .let { key ->
+                PersistableBundle().apply { putBoolean(key, isSensitive) }
+            }
+            .let { bundle ->
+                ClipData.newPlainText(CLIPBOARD_LABEL, text).apply { description.extras = bundle }
+            }
+            .also(clipboardManager::setPrimaryClip)
+            .let { isSupported }
     }
 
     private companion object {

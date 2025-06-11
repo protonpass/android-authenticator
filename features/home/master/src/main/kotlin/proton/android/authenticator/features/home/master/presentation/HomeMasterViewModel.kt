@@ -22,8 +22,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -35,6 +33,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.domain.Entry
@@ -70,8 +69,10 @@ internal class HomeMasterViewModel @Inject constructor(
 
     private val entrySearchQueryState = mutableStateOf<String>(value = SEARCH_QUERY_DEFAULT_VALUE)
 
+    private val entrySearchQueryFlow = snapshotFlow { entrySearchQueryState.value }
+
     @OptIn(FlowPreview::class)
-    private val entrySearchQueryDebouncedFlow = snapshotFlow { entrySearchQueryState.value }
+    private val entrySearchQueryDebouncedFlow = entrySearchQueryFlow
         .debounce { entrySearchQuery ->
             if (entrySearchQuery.isEmpty()) SEARCH_QUERY_EMPTY_DEBOUNCE_MILLIS
             else SEARCH_QUERY_DEBOUNCE_MILLIS
@@ -85,19 +86,20 @@ internal class HomeMasterViewModel @Inject constructor(
             if (searchQuery.isEmpty()) {
                 true
             } else {
-                entryModel.issuer.contains(searchQuery, true) || entryModel.name.contains(searchQuery, true)
+                entryModel.issuer.contains(searchQuery, true) ||
+                    entryModel.name.contains(searchQuery, true)
             }
         }
     }.shareIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
+        started = SharingStarted.WhileSubscribed()
     )
 
     private val entryCodesFlow = entryModelsFlow
         .flatMapLatest(observeEntryCodesUseCase::invoke)
         .shareIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000)
+            started = SharingStarted.WhileSubscribed()
         )
 
     private val entryCodesRemainingTimeTickerFlow = flow {
@@ -118,27 +120,40 @@ internal class HomeMasterViewModel @Inject constructor(
         }
     }
 
-    internal val stateFlow: StateFlow<HomeMasterState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        HomeMasterState.create(
-            entrySearchQuery = entrySearchQueryState.value,
-            entryModelsFlow = entryModelsFlow,
-            entryCodesFlow = entryCodesFlow,
-            entryCodesRemainingTimesFlow = entryCodesRemainingTimesFlow,
-            settingsFlow = observeSettingsUseCase()
-        )
-    }
+    internal val stateFlow: StateFlow<HomeMasterState> = combine(
+        entrySearchQueryFlow,
+        entryModelsFlow,
+        entryCodesFlow,
+        entryCodesRemainingTimesFlow,
+        observeSettingsUseCase(),
+        HomeMasterState::Ready
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = HomeMasterState.Loading
+    )
 
     internal fun onCopyEntryCode(entry: HomeMasterEntryModel, areCodesHidden: Boolean) {
         copyToClipboardUseCase(text = entry.currentCode, isSensitive = areCodesHidden)
+            .let { isSupported ->
+                SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_copied)
+                    .takeIf { !isSupported }
+            }
+            ?.also { event ->
+                viewModelScope.launch {
+                    dispatchSnackbarEventUseCase(event)
+                }
+            }
     }
 
     internal fun onDeleteEntry(entry: HomeMasterEntryModel) {
         viewModelScope.launch {
             deleteEntryUseCase(id = entry.id).also { answer ->
                 when (answer) {
-                    is Answer.Failure -> println("JIBIRI: Delete entry failed -> ${answer.reason}")
+                    is Answer.Failure -> {
+                        SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_delete_failed)
+                    }
+
                     is Answer.Success -> {
                         SnackbarEvent(
                             messageResId = R.string.home_snackbar_message_entry_deleted,
@@ -146,10 +161,10 @@ internal class HomeMasterViewModel @Inject constructor(
                                 nameResId = uiR.string.action_undo,
                                 onAction = { restoreEntry(entry = answer.data) }
                             )
-                        ).also { snackbarEvent ->
-                            dispatchSnackbarEventUseCase(snackbarEvent)
-                        }
+                        )
                     }
+                }.also { snackbarEvent ->
+                    dispatchSnackbarEventUseCase(snackbarEvent)
                 }
             }
         }
@@ -159,9 +174,12 @@ internal class HomeMasterViewModel @Inject constructor(
         viewModelScope.launch {
             restoreEntryUseCase(entry).also { answer ->
                 when (answer) {
-                    is Answer.Failure -> println("JIBIRI: Restore entry failed -> ${answer.reason}")
-                    is Answer.Success -> Unit
-                }
+                    is Answer.Failure -> {
+                        SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_restore_failed)
+                    }
+
+                    is Answer.Success -> null
+                }?.also { event -> dispatchSnackbarEventUseCase(event) }
             }
         }
     }
@@ -182,9 +200,12 @@ internal class HomeMasterViewModel @Inject constructor(
                 entryModelsMap = entryModelsMap
             ).also { answer ->
                 when (answer) {
-                    is Answer.Failure -> println("JIBIRI: Rearrange entry failed -> ${answer.reason}")
-                    is Answer.Success -> Unit
-                }
+                    is Answer.Failure -> {
+                        SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_rearrange_failed)
+                    }
+
+                    is Answer.Success -> null
+                }?.also { event -> dispatchSnackbarEventUseCase(event) }
             }
         }
     }
