@@ -18,10 +18,6 @@
 
 package proton.android.authenticator.features.imports.options.presentation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.features.imports.options.R
 
@@ -64,17 +60,13 @@ internal class ImportsOptionsState private constructor(
             )
         )
 
-        @Composable
         internal fun create(
-            selectedOptionFlow: Flow<ImportsOptionsModel?>,
-            eventFlow: Flow<ImportsOptionsEvent>
+            selectedOptionModel: ImportsOptionsModel?,
+            event: ImportsOptionsEvent
         ): ImportsOptionsState {
-            val selectedOption by selectedOptionFlow.collectAsState(initial = null)
-            val event by eventFlow.collectAsState(ImportsOptionsEvent.Idle)
-
             return ImportsOptionsState(
                 optionModels = optionModels,
-                selectedOptionModel = selectedOption,
+                selectedOptionModel = selectedOptionModel,
                 event = event
             )
         }

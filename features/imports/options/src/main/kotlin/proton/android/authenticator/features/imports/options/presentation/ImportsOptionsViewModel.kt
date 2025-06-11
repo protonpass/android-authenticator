@@ -21,11 +21,11 @@ package proton.android.authenticator.features.imports.options.presentation
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
@@ -43,14 +43,22 @@ internal class ImportsOptionsViewModel @Inject constructor(
 
     private val selectedOptionFlow = MutableStateFlow<ImportsOptionsModel?>(value = null)
 
-    internal val stateFlow: StateFlow<ImportsOptionsState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
+    internal val stateFlow: StateFlow<ImportsOptionsState> = combine(
+        selectedOptionFlow,
+        eventFlow
+    ) { selectedOption, event ->
         ImportsOptionsState.create(
-            selectedOptionFlow = selectedOptionFlow,
-            eventFlow = eventFlow
+            selectedOptionModel = selectedOption,
+            event = event
         )
-    }
+    }.stateIn(
+        scope = viewModelScope,
+        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        initialValue = ImportsOptionsState.create(
+            selectedOptionModel = null,
+            event = ImportsOptionsEvent.Idle
+        )
+    )
 
     internal fun onEventConsumed(event: ImportsOptionsEvent) {
         eventFlow.compareAndSet(expect = event, update = ImportsOptionsEvent.Idle)
