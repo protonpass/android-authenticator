@@ -20,6 +20,10 @@ internal abstract class LibraryConventionPlugin : ConventionPlugin() {
                 sourceCompatibility = PlatformAndroidConfig.CompileJavaVersion
                 targetCompatibility = PlatformAndroidConfig.CompileJavaVersion
             }
+
+            lint {
+                disable += PlatformAndroidConfig.LinterDisableOptions
+            }
         }
     }
 

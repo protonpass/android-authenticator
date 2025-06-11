@@ -29,6 +29,8 @@ internal object PlatformAndroidConfig {
 
     internal val CompileJvmTarget: JvmTarget = JvmTarget.JVM_17
 
+    internal val LinterDisableOptions: Set<String> = setOf("NullSafeMutableLiveData")
+
     internal object BuildTypes {
 
         internal object Debug {
