@@ -20,10 +20,10 @@ package proton.android.authenticator.features.sync.master.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import javax.inject.Inject
 
@@ -34,10 +34,16 @@ internal class SyncMasterViewModel @Inject constructor(
 
     private val settingsFlow = observeSettingsUseCase()
 
-    internal val stateFlow: StateFlow<SyncMasterState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        SyncMasterState.create(settingsFlow = settingsFlow)
-    }
+    internal val stateFlow: StateFlow<SyncMasterState> = settingsFlow
+        .map { settings ->
+            settings
+                ?.let { currentSettings -> SyncMasterState.Ready(settingsThemeType = currentSettings.themeType) }
+                ?: SyncMasterState.Loading
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+            initialValue = SyncMasterState.Loading
+        )
 
 }

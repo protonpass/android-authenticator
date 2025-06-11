@@ -18,11 +18,6 @@
 
 package proton.android.authenticator.features.sync.master.presentation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import kotlinx.coroutines.flow.Flow
-import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
@@ -36,19 +31,6 @@ internal sealed interface SyncMasterState {
             SettingsThemeType.Dark -> ThemeType.Dark
             SettingsThemeType.Light -> ThemeType.Light
             SettingsThemeType.System -> ThemeType.System
-        }
-
-    }
-
-    companion object {
-
-        @Composable
-        internal fun create(settingsFlow: Flow<Settings>): SyncMasterState {
-            val settings by settingsFlow.collectAsState(initial = null)
-
-            return settings
-                ?.let { currentSettings -> Ready(settingsThemeType = currentSettings.themeType) }
-                ?: Loading
         }
 
     }
