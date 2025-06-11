@@ -34,7 +34,8 @@ fun AlertDialogScreen(
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     modifier: Modifier = Modifier,
-    cancelText: UiText? = null
+    cancelText: UiText? = null,
+    onCancellation: (() -> Unit)? = null
 ) {
     AlertDialog(
         modifier = modifier,
@@ -65,7 +66,7 @@ fun AlertDialogScreen(
         },
         dismissButton = {
             cancelText?.let { text ->
-                TextButton(onClick = onDismissRequest) {
+                TextButton(onClick = onCancellation ?: onDismissRequest) {
                     Text(
                         text = text.asString(),
                         color = Theme.colorScheme.signalError,

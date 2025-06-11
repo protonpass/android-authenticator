@@ -34,6 +34,7 @@ dependencies {
     implementation(projects.features.onboarding.master)
     implementation(projects.features.settings.master)
     implementation(projects.features.shared)
+    implementation(projects.features.sync.disable)
     implementation(projects.features.sync.master)
     implementation(projects.shared.common)
     implementation(projects.shared.ui)

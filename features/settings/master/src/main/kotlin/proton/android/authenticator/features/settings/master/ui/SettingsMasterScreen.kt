@@ -49,6 +49,7 @@ fun SettingsMasterScreen(
     snackbarHostState: SnackbarHostState,
     onNavigationClick: () -> Unit,
     onBackupsClick: () -> Unit,
+    onSyncDisabled: () -> Unit,
     onExportCompleted: (Int) -> Unit,
     onExportFailed: (Int) -> Unit,
     onImportClick: () -> Unit,
@@ -79,6 +80,10 @@ fun SettingsMasterScreen(
 
             is SettingsMasterEvent.OnEntriesExportSuccess -> {
                 onExportCompleted(event.exportedEntriesCount)
+            }
+
+            SettingsMasterEvent.OnSyncDisabled -> {
+                onSyncDisabled()
             }
         }
 

@@ -98,8 +98,12 @@ internal class SettingsMasterViewModel @Inject constructor(
     }
 
     internal fun onUpdateIsSyncEnabled(newIsSyncEnabled: Boolean) {
-        settingsModel.copy(isSyncEnabled = newIsSyncEnabled)
-            .also(::updateSettings)
+        if (newIsSyncEnabled) {
+            settingsModel.copy(isSyncEnabled = true).also(::updateSettings)
+            return
+        }
+
+        eventFlow.update { SettingsMasterEvent.OnSyncDisabled }
     }
 
     internal fun onUpdateAppLockType(newAppLockType: SettingsAppLockType, context: Context) {

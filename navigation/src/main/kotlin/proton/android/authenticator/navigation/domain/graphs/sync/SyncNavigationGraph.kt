@@ -20,9 +20,12 @@ package proton.android.authenticator.navigation.domain.graphs.sync
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.disable.ui.SyncDisableScreen
 import proton.android.authenticator.features.sync.master.ui.SyncMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.graphs.settings.SettingsMasterNavigationDestination
 
 internal fun NavGraphBuilder.syncNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<SyncNavigationDestination>(startDestination = SyncMasterNavigationDestination) {
@@ -30,6 +33,26 @@ internal fun NavGraphBuilder.syncNavigationGraph(onNavigate: (NavigationCommand)
             SyncMasterScreen(
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
+        dialog<SyncDisableNavigationDestination> {
+            SyncDisableScreen(
+                onDisableError = {
+                    // Will be implemented in a following MR
+                },
+                onDisableSuccess = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
+                },
+                onDismissed = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
                 }
             )
         }

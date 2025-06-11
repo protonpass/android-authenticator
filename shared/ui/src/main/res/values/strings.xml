@@ -17,6 +17,7 @@
   -->
 
 <resources>
+    <string name="action_cancel">Cancel</string>
     <string name="action_close">Close</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
@@ -45,5 +46,4 @@
         <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
-
 </resources>

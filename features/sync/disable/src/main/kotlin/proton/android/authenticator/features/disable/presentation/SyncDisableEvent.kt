@@ -16,16 +16,14 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.features.disable.presentation
 
-internal sealed interface SettingsMasterEvent {
+internal sealed interface SyncDisableEvent {
 
-    data object Idle : SettingsMasterEvent
+    data object Idle : SyncDisableEvent
 
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
+    data object DisableSyncFailed : SyncDisableEvent
 
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
-
-    data object OnSyncDisabled : SettingsMasterEvent
+    data object DisableSyncSucceeded : SyncDisableEvent
 
 }
