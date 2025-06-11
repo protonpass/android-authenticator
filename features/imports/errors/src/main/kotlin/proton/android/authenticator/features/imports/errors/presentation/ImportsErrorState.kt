@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.imports.errors.presentation
 
-import androidx.compose.runtime.Composable
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
 import proton.android.authenticator.features.imports.errors.R
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -36,7 +35,6 @@ internal class ImportsErrorState private constructor(private val errorReason: Im
 
     internal companion object {
 
-        @Composable
         internal fun create(errorReason: ImportEntriesReason) = ImportsErrorState(
             errorReason = errorReason
         )
