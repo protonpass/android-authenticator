@@ -20,11 +20,10 @@ package proton.android.authenticator.features.exports.completion.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,11 +33,9 @@ internal class ExportsCompletionViewModel @Inject constructor(
 
     private val exportedEntriesCount: Int = requireNotNull(savedStateHandle[ARGS_EXPORTED_COUNT])
 
-    internal val stateFlow: StateFlow<ExportsCompletionState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
+    internal val stateFlow: StateFlow<ExportsCompletionState> = MutableStateFlow(
         ExportsCompletionState.create(exportedEntriesCount = exportedEntriesCount)
-    }
+    ).asStateFlow()
 
     private companion object {
 

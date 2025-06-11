@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.exports.completion.presentation
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 
 @Immutable
@@ -26,7 +25,6 @@ internal class ExportsCompletionState private constructor(internal val exportedE
 
     internal companion object {
 
-        @Composable
         internal fun create(exportedEntriesCount: Int): ExportsCompletionState = ExportsCompletionState(
             exportedEntriesCount = exportedEntriesCount
         )
