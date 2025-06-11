@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.exports.errors.presentation
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import proton.android.authenticator.business.entries.application.exportall.ExportEntriesReason
 import proton.android.authenticator.features.exports.errors.R
@@ -33,7 +32,6 @@ internal class ExportsErrorsState private constructor(private val errorReason: E
 
     internal companion object {
 
-        @Composable
         internal fun create(errorReason: ExportEntriesReason): ExportsErrorsState = ExportsErrorsState(
             errorReason = errorReason
         )

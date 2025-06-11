@@ -20,11 +20,10 @@ package proton.android.authenticator.features.exports.errors.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import proton.android.authenticator.business.entries.application.exportall.ExportEntriesReason
 import javax.inject.Inject
 
@@ -36,11 +35,9 @@ internal class ExportsErrorsViewModel @Inject constructor(
     private val errorReason = requireNotNull<Int>(savedStateHandle[ARGS_ERROR_REASON])
         .let(enumValues<ExportEntriesReason>()::get)
 
-    internal val stateFlow: StateFlow<ExportsErrorsState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
+    internal val stateFlow: StateFlow<ExportsErrorsState> = MutableStateFlow(
         ExportsErrorsState.create(errorReason = errorReason)
-    }
+    ).asStateFlow()
 
     private companion object {
 
