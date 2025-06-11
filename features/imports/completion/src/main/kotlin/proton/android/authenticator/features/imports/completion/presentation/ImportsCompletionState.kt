@@ -18,13 +18,10 @@
 
 package proton.android.authenticator.features.imports.completion.presentation
 
-import androidx.compose.runtime.Composable
-
 internal class ImportsCompletionState private constructor(internal val importedEntriesCount: Int) {
 
     internal companion object {
 
-        @Composable
         internal fun create(importedEntriesCount: Int): ImportsCompletionState = ImportsCompletionState(
             importedEntriesCount = importedEntriesCount
         )
