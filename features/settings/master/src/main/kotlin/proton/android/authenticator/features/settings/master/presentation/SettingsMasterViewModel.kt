@@ -23,11 +23,12 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
@@ -47,9 +48,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SettingsMasterViewModel @Inject constructor(
+    observeSettingsUseCase: ObserveSettingsUseCase,
+    observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
-    private val observeSettingsUseCase: ObserveSettingsUseCase,
-    private val observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val exportEntriesUseCase: ExportEntriesUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
@@ -57,18 +58,16 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     private val eventFlow = MutableStateFlow<SettingsMasterEvent>(value = SettingsMasterEvent.Idle)
 
-    private val settingsModel: SettingsMasterSettingsModel
-        get() = stateFlow.value.settingsModel
-
-    internal val stateFlow: StateFlow<SettingsMasterState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        SettingsMasterState.create(
-            settingsFlow = observeSettingsUseCase(),
-            uninstalledProtonAppsFlow = observeUninstalledProtonApps(),
-            eventFlow = eventFlow
-        )
-    }
+    internal val stateFlow: StateFlow<SettingsMasterState> = combine(
+        eventFlow,
+        observeSettingsUseCase(),
+        observeUninstalledProtonApps(),
+        SettingsMasterState::Ready
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = SettingsMasterState.Loading
+    )
 
     internal fun onConsumeEvent(event: SettingsMasterEvent) {
         eventFlow.compareAndSet(expect = event, update = SettingsMasterEvent.Idle)
@@ -92,12 +91,12 @@ internal class SettingsMasterViewModel @Inject constructor(
         }
     }
 
-    internal fun onUpdateIsPassBannerDismissed() {
+    internal fun onUpdateIsPassBannerDismissed(settingsModel: SettingsMasterSettingsModel) {
         settingsModel.copy(isPassBannerDismissed = true)
             .also(::updateSettings)
     }
 
-    internal fun onUpdateIsSyncEnabled(newIsSyncEnabled: Boolean) {
+    internal fun onUpdateIsSyncEnabled(settingsModel: SettingsMasterSettingsModel, newIsSyncEnabled: Boolean) {
         if (newIsSyncEnabled) {
             settingsModel.copy(isSyncEnabled = true).also(::updateSettings)
             return
@@ -106,7 +105,11 @@ internal class SettingsMasterViewModel @Inject constructor(
         eventFlow.update { SettingsMasterEvent.OnSyncDisabled }
     }
 
-    internal fun onUpdateAppLockType(newAppLockType: SettingsAppLockType, context: Context) {
+    internal fun onUpdateAppLockType(
+        settingsModel: SettingsMasterSettingsModel,
+        newAppLockType: SettingsAppLockType,
+        context: Context
+    ) {
         if (settingsModel.appLockType == newAppLockType) return
 
         when (newAppLockType) {
@@ -124,7 +127,8 @@ internal class SettingsMasterViewModel @Inject constructor(
                 titleResId = titleResId,
                 subtitleResId = subtitleResId,
                 context = context,
-                appLockType = newAppLockType
+                appLockType = newAppLockType,
+                settingsModel = settingsModel
             )
         }
     }
@@ -133,7 +137,8 @@ internal class SettingsMasterViewModel @Inject constructor(
         @StringRes titleResId: Int,
         @StringRes subtitleResId: Int,
         context: Context,
-        appLockType: SettingsAppLockType
+        appLockType: SettingsAppLockType,
+        settingsModel: SettingsMasterSettingsModel
     ) {
         viewModelScope.launch {
             authenticateBiometricUseCase(
@@ -155,33 +160,42 @@ internal class SettingsMasterViewModel @Inject constructor(
         }
     }
 
-    internal fun onUpdateIsTapToRevealEnabled(newIsTapToRevealEnabled: Boolean) {
+    internal fun onUpdateIsTapToRevealEnabled(
+        settingsModel: SettingsMasterSettingsModel,
+        newIsTapToRevealEnabled: Boolean
+    ) {
         settingsModel.copy(isHideCodesEnabled = newIsTapToRevealEnabled)
             .also(::updateSettings)
     }
 
-    internal fun onUpdateThemeType(newThemeType: SettingsThemeType) {
+    internal fun onUpdateThemeType(settingsModel: SettingsMasterSettingsModel, newThemeType: SettingsThemeType) {
         if (settingsModel.themeType == newThemeType) return
 
         settingsModel.copy(themeType = newThemeType)
             .also(::updateSettings)
     }
 
-    internal fun onUpdateSearchBarType(newSearchBarType: SettingsSearchBarType) {
+    internal fun onUpdateSearchBarType(
+        settingsModel: SettingsMasterSettingsModel,
+        newSearchBarType: SettingsSearchBarType
+    ) {
         if (settingsModel.searchBarType == newSearchBarType) return
 
         settingsModel.copy(searchBarType = newSearchBarType)
             .also(::updateSettings)
     }
 
-    internal fun onUpdateDigitType(newDigitType: SettingsDigitType) {
+    internal fun onUpdateDigitType(settingsModel: SettingsMasterSettingsModel, newDigitType: SettingsDigitType) {
         if (settingsModel.digitType == newDigitType) return
 
         settingsModel.copy(digitType = newDigitType)
             .also(::updateSettings)
     }
 
-    internal fun onUpdateIsCodeChangeAnimationEnabled(newIsCodeChangeAnimationEnabled: Boolean) {
+    internal fun onUpdateIsCodeChangeAnimationEnabled(
+        settingsModel: SettingsMasterSettingsModel,
+        newIsCodeChangeAnimationEnabled: Boolean
+    ) {
         settingsModel.copy(isCodeChangeAnimationEnabled = newIsCodeChangeAnimationEnabled)
             .also(::updateSettings)
     }

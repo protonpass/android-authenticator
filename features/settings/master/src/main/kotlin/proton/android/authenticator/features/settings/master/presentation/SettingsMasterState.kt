@@ -18,31 +18,60 @@
 
 package proton.android.authenticator.features.settings.master.presentation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.protonapps.domain.ProtonApp
 import proton.android.authenticator.shared.common.domain.models.MimeType
 
-internal class SettingsMasterState private constructor(
-    internal val settingsModel: SettingsMasterSettingsModel,
-    internal val discoverModel: SettingsMasterDiscoverModel,
-    internal val bannerModel: SettingsMasterBannerModel,
-    internal val event: SettingsMasterEvent
-) {
+internal sealed interface SettingsMasterState {
 
-    internal val exportFileName: String = FILE_NAME
+    val event: SettingsMasterEvent
 
-    internal val exportFileMimeType: String = MimeType.Json.value
+    val exportFileMimeType: String
 
-    internal val feedbackUrl: String = URL_FEEDBACK
+    data object Loading : SettingsMasterState {
 
-    internal val howToUrl: String = URL_HOW_TO
+        override val exportFileMimeType: String = MimeType.Json.value
 
-    internal companion object {
+        override val event: SettingsMasterEvent = SettingsMasterEvent.Idle
+
+    }
+
+    data class Ready(
+        override val event: SettingsMasterEvent,
+        private val settings: Settings,
+        private val uninstalledProtonApps: List<ProtonApp>
+    ) : SettingsMasterState {
+
+        override val exportFileMimeType: String = MimeType.Json.value
+
+        internal val exportFileName: String = FILE_NAME
+
+        internal val feedbackUrl: String = URL_FEEDBACK
+
+        internal val howToUrl: String = URL_HOW_TO
+
+        internal val settingsModel = SettingsMasterSettingsModel(
+            isSyncEnabled = settings.isSyncEnabled,
+            isHideCodesEnabled = settings.isHideCodesEnabled,
+            appLockType = settings.appLockType,
+            isCodeChangeAnimationEnabled = settings.isCodeChangeAnimationEnabled,
+            themeType = settings.themeType,
+            searchBarType = settings.searchBarType,
+            digitType = settings.digitType,
+            isPassBannerDismissed = settings.isPassBannerDismissed
+        )
+
+        internal val discoverModel = SettingsMasterDiscoverModel(
+            uninstalledProtonApps = uninstalledProtonApps
+        )
+
+        internal val bannerModel = SettingsMasterBannerModel(
+            isPassBannerDismissed = settings.isPassBannerDismissed,
+            uninstalledProtonApps = uninstalledProtonApps
+        )
+    }
+
+    companion object {
 
         private const val FILE_NAME = "proton_authenticator_backup.json"
 
@@ -50,52 +79,6 @@ internal class SettingsMasterState private constructor(
 
         private const val URL_HOW_TO = "https://proton.me/support/contact"
 
-        @Composable
-        internal fun create(
-            settingsFlow: Flow<Settings>,
-            uninstalledProtonAppsFlow: Flow<List<ProtonApp>>,
-            eventFlow: Flow<SettingsMasterEvent>
-        ): SettingsMasterState {
-            val settings by settingsFlow.collectAsState(initial = Settings.Default)
-            val uninstalledProtonApps by uninstalledProtonAppsFlow.collectAsState(initial = emptyList())
-            val event by eventFlow.collectAsState(initial = SettingsMasterEvent.Idle)
-
-            val settingsModel = remember(key1 = settings) {
-                SettingsMasterSettingsModel(
-                    isSyncEnabled = settings.isSyncEnabled,
-                    isHideCodesEnabled = settings.isHideCodesEnabled,
-                    appLockType = settings.appLockType,
-                    isCodeChangeAnimationEnabled = settings.isCodeChangeAnimationEnabled,
-                    themeType = settings.themeType,
-                    searchBarType = settings.searchBarType,
-                    digitType = settings.digitType,
-                    isPassBannerDismissed = settings.isPassBannerDismissed
-                )
-            }
-
-            val discoverModel = remember(key1 = uninstalledProtonApps) {
-                SettingsMasterDiscoverModel(
-                    uninstalledProtonApps = uninstalledProtonApps
-                )
-            }
-
-            val bannerModel = remember(
-                key1 = settings.isPassBannerDismissed,
-                key2 = uninstalledProtonApps
-            ) {
-                SettingsMasterBannerModel(
-                    isPassBannerDismissed = settings.isPassBannerDismissed,
-                    uninstalledProtonApps = uninstalledProtonApps
-                )
-            }
-
-            return SettingsMasterState(
-                settingsModel = settingsModel,
-                discoverModel = discoverModel,
-                bannerModel = bannerModel,
-                event = event
-            )
-        }
     }
 
 }

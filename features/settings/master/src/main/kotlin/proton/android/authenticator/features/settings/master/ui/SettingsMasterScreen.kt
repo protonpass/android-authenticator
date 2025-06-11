@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterEvent
+import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
@@ -104,27 +105,32 @@ fun SettingsMasterScreen(
             )
         }
     ) { paddingValues ->
-        SettingsContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(state = scrollState)
-                .padding(paddingValues = paddingValues)
-                .padding(horizontal = ThemePadding.Medium),
-            state = state,
-            onDismissPassBanner = ::onUpdateIsPassBannerDismissed,
-            onBackupsClick = onBackupsClick,
-            onSyncChange = ::onUpdateIsSyncEnabled,
-            onAppLockTypeChange = ::onUpdateAppLockType,
-            onTapToRevealChange = ::onUpdateIsTapToRevealEnabled,
-            onThemeTypeChange = ::onUpdateThemeType,
-            onSearchBarTypeChange = ::onUpdateSearchBarType,
-            onDigitTypeChange = ::onUpdateDigitType,
-            onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
-            onImportClick = onImportClick,
-            onExportClick = launcher::launch,
-            onHowToClick = onHowToClick,
-            onFeedbackClick = onFeedbackClick,
-            onDiscoverAppClick = onDiscoverAppClick
-        )
+        when (val currentState = state) {
+            SettingsMasterState.Loading -> Unit
+            is SettingsMasterState.Ready -> {
+                SettingsContent(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(state = scrollState)
+                        .padding(paddingValues = paddingValues)
+                        .padding(horizontal = ThemePadding.Medium),
+                    state = currentState,
+                    onDismissPassBanner = ::onUpdateIsPassBannerDismissed,
+                    onBackupsClick = onBackupsClick,
+                    onSyncChange = ::onUpdateIsSyncEnabled,
+                    onAppLockTypeChange = ::onUpdateAppLockType,
+                    onTapToRevealChange = ::onUpdateIsTapToRevealEnabled,
+                    onThemeTypeChange = ::onUpdateThemeType,
+                    onSearchBarTypeChange = ::onUpdateSearchBarType,
+                    onDigitTypeChange = ::onUpdateDigitType,
+                    onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
+                    onImportClick = onImportClick,
+                    onExportClick = launcher::launch,
+                    onHowToClick = onHowToClick,
+                    onFeedbackClick = onFeedbackClick,
+                    onDiscoverAppClick = onDiscoverAppClick
+                )
+            }
+        }
     }
 }

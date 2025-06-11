@@ -31,6 +31,7 @@ import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
+import proton.android.authenticator.features.settings.master.presentation.SettingsMasterSettingsModel
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
@@ -40,16 +41,16 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun SettingsContent(
-    state: SettingsMasterState,
-    onDismissPassBanner: () -> Unit,
+    state: SettingsMasterState.Ready,
+    onDismissPassBanner: (SettingsMasterSettingsModel) -> Unit,
     onBackupsClick: () -> Unit,
-    onSyncChange: (Boolean) -> Unit,
-    onAppLockTypeChange: (SettingsAppLockType, Context) -> Unit,
-    onTapToRevealChange: (Boolean) -> Unit,
-    onThemeTypeChange: (SettingsThemeType) -> Unit,
-    onSearchBarTypeChange: (SettingsSearchBarType) -> Unit,
-    onDigitTypeChange: (SettingsDigitType) -> Unit,
-    onCodeChangeAnimationChange: (Boolean) -> Unit,
+    onSyncChange: (SettingsMasterSettingsModel, Boolean) -> Unit,
+    onAppLockTypeChange: (SettingsMasterSettingsModel, SettingsAppLockType, Context) -> Unit,
+    onTapToRevealChange: (SettingsMasterSettingsModel, Boolean) -> Unit,
+    onThemeTypeChange: (SettingsMasterSettingsModel, SettingsThemeType) -> Unit,
+    onSearchBarTypeChange: (SettingsMasterSettingsModel, SettingsSearchBarType) -> Unit,
+    onDigitTypeChange: (SettingsMasterSettingsModel, SettingsDigitType) -> Unit,
+    onCodeChangeAnimationChange: (SettingsMasterSettingsModel, Boolean) -> Unit,
     onImportClick: () -> Unit,
     onExportClick: (String) -> Unit,
     onHowToClick: (String) -> Unit,
@@ -65,7 +66,9 @@ internal fun SettingsContent(
     ) {
         AnimatedVisibility(visible = bannerModel.shouldShowPassBanner) {
             SettingsPassBanner(
-                onDismissClick = onDismissPassBanner,
+                onDismissClick = {
+                    onDismissPassBanner(settingsModel)
+                },
                 onActionClick = {
                     onDiscoverAppClick(bannerModel.passBannerApp.id, bannerModel.passBannerApp.url)
                 }
@@ -86,7 +89,9 @@ internal fun SettingsContent(
                     ToggleRow(
                         titleText = UiText.Resource(id = R.string.settings_security_title_sync),
                         isChecked = settingsModel.isSyncEnabled,
-                        onCheckedChange = onSyncChange
+                        onCheckedChange = { isSyncEnabled ->
+                            onSyncChange(settingsModel, isSyncEnabled)
+                        }
                     )
                 },
                 {
@@ -94,7 +99,7 @@ internal fun SettingsContent(
                         titleText = UiText.Resource(id = R.string.settings_security_title_lock),
                         options = settingsModel.appLockOptions,
                         onSelectedOptionChange = { newAppLockType ->
-                            onAppLockTypeChange(newAppLockType, context)
+                            onAppLockTypeChange(settingsModel, newAppLockType, context)
                         }
                     )
                 },
@@ -102,7 +107,9 @@ internal fun SettingsContent(
                     ToggleRow(
                         titleText = UiText.Resource(id = R.string.settings_security_title_hide_codes),
                         isChecked = settingsModel.isHideCodesEnabled,
-                        onCheckedChange = onTapToRevealChange
+                        onCheckedChange = { isCodeHidden ->
+                            onTapToRevealChange(settingsModel, isCodeHidden)
+                        }
                     )
                 }
             )
@@ -115,28 +122,36 @@ internal fun SettingsContent(
                     SelectorRow<SettingsThemeType>(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_theme),
                         options = settingsModel.themeOptions,
-                        onSelectedOptionChange = onThemeTypeChange
+                        onSelectedOptionChange = { themeType ->
+                            onThemeTypeChange(settingsModel, themeType)
+                        }
                     )
                 },
                 {
                     SelectorRow<SettingsSearchBarType>(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_search_bar_position),
                         options = settingsModel.searchBarOptions,
-                        onSelectedOptionChange = onSearchBarTypeChange
+                        onSelectedOptionChange = { searchBarType ->
+                            onSearchBarTypeChange(settingsModel, searchBarType)
+                        }
                     )
                 },
                 {
                     SelectorRow<SettingsDigitType>(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_digit_style),
                         options = settingsModel.digitOptions,
-                        onSelectedOptionChange = onDigitTypeChange
+                        onSelectedOptionChange = { digitType ->
+                            onDigitTypeChange(settingsModel, digitType)
+                        }
                     )
                 },
                 {
                     ToggleRow(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_animate_code_change),
                         isChecked = settingsModel.isCodeChangeAnimationEnabled,
-                        onCheckedChange = onCodeChangeAnimationChange
+                        onCheckedChange = { isCodeChangeAnimated ->
+                            onCodeChangeAnimationChange(settingsModel, isCodeChangeAnimated)
+                        }
                     )
                 }
             )
