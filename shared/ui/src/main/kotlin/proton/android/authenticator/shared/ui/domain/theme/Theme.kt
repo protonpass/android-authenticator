@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.shared.ui.domain.theme
 
-import androidx.compose.foundation.LocalOverscrollFactory
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -42,8 +41,7 @@ fun Theme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
 
     CompositionLocalProvider(
         LocalThemeColorScheme provides colorScheme,
-        LocalThemeTypographyScheme provides ThemeTypography,
-        LocalOverscrollFactory provides null
+        LocalThemeTypographyScheme provides ThemeTypography
     ) {
         MaterialTheme(
             colorScheme = MaterialTheme.colorScheme,

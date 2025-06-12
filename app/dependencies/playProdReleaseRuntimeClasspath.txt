@@ -132,8 +132,6 @@ androidx.versionedparcelable:versionedparcelable:1.1.1
 androidx.viewpager:viewpager:1.0.0
 androidx.work:work-runtime-ktx:2.10.1
 androidx.work:work-runtime:2.10.1
-app.cash.molecule:molecule-runtime-android:2.0.0
-app.cash.molecule:molecule-runtime:2.0.0
 co.touchlab:stately-common-jvm:2.0.6
 co.touchlab:stately-common:2.0.6
 co.touchlab:stately-concurrency-jvm:2.0.6

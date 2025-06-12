@@ -26,7 +26,6 @@ kotlixDatetimeVersion = "0.6.2"
 kspVersion = "2.0.21-1.0.27"
 lifecycleRuntimeVersion = "2.9.1"
 materialVersion = "1.8.2"
-moleculeVersion = "2.0.0"
 protobufPluginVersion = "0.9.4"
 protobufVersion = "4.31.1"
 protonDetektVersion = "1.3.1"
@@ -84,7 +83,6 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsVersion" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlixDatetimeVersion" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
-molecule = { module = "app.cash.molecule:molecule-runtime", version.ref = "moleculeVersion" }
 protobuf-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobufVersion" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobufVersion" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderableVersion" }
@@ -117,7 +115,6 @@ feature-library-implementation = [
     "androidx-ui",
     "hilt-android",
     "kotlinx-collections",
-    "molecule",
 ]
 feature-library-ksp = [
     "hilt-compiler",
