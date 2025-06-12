@@ -25,11 +25,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.textfields.SearchTextField
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundPrimaryButton
@@ -39,19 +41,19 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun HomeBottomBar(
+    modifier: Modifier = Modifier,
     searchQuery: String,
     onEntryQueryChange: (String) -> Unit,
     onNewEntryClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
+            .systemBarsPadding()
             .fillMaxWidth()
             .background(color = Theme.colorScheme.backgroundGradientBottom.copy(alpha = 0.97f))
             .padding(
-                start = ThemePadding.MediumLarge,
-                top = ThemePadding.Small,
-                end = ThemePadding.MediumLarge,
-                bottom = ThemePadding.Large
+                horizontal = ThemePadding.MediumLarge,
+                vertical = ThemePadding.Small
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -67,7 +69,7 @@ internal fun HomeBottomBar(
 
             Icon(
                 modifier = Modifier
-                    .backgroundPrimaryButton()
+                    .backgroundPrimaryButton(blur = 8.dp)
                     .clickable(onClick = onNewEntryClick)
                     .padding(all = ThemePadding.MediumSmall),
                 painter = painterResource(id = R.drawable.ic_plus),

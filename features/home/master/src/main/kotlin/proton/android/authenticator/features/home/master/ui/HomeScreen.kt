@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.fabs.IconFloatingActionButton
@@ -41,7 +42,9 @@ import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundAppBar
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,6 +101,12 @@ fun HomeScreen(
                     onEntryQueryChange = ::onUpdateEntrySearchQuery,
                     onNewEntryClick = onNewEntryClick
                 )
+                if (state is HomeMasterState.Ready) {
+                    SetNavigationBarColor(
+                        color = Theme.colorScheme.backgroundGradientBottom.copy(alpha = 0.97f),
+                        useDarkIcons = !isDarkTheme((state as HomeMasterState.Ready).themeType)
+                    )
+                }
             }
         },
         fab = {
@@ -121,3 +130,4 @@ fun HomeScreen(
         )
     }
 }
+

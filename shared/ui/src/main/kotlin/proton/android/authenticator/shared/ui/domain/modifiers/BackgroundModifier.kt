@@ -106,7 +106,7 @@ fun Modifier.backgroundAppBar(isBlurred: Boolean = false) = composed {
 }
 
 @Stable
-fun Modifier.backgroundPrimaryButton(isEnable: Boolean = true) = composed {
+fun Modifier.backgroundPrimaryButton(isEnable: Boolean = true, blur: Dp = 24.dp) = composed {
     val shape = remember { CircleShape }
 
     val colors = if (isEnable) {
@@ -124,7 +124,7 @@ fun Modifier.backgroundPrimaryButton(isEnable: Boolean = true) = composed {
     dropShadow(
         shape = shape,
         color = Theme.colorScheme.purpleAlpha25,
-        blur = 24.dp
+        blur = blur
     )
         .clip(shape = shape)
         .background(brush = Brush.verticalGradient(colors = colors))
