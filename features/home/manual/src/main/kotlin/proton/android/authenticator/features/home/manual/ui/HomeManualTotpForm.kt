@@ -58,6 +58,7 @@ internal fun HomeManualTotpForm(
             label = stringResource(id = R.string.home_manual_form_title_label),
             placeholder = stringResource(id = R.string.home_manual_form_title_placeholder),
             isError = isTitleError,
+            isRequired = true,
             onValueChange = onTitleChange
         )
 

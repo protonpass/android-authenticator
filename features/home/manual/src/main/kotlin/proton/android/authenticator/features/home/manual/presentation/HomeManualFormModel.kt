@@ -73,7 +73,8 @@ internal data class HomeManualFormModel(
 
     internal val selectedTypeIndex: Int = type.value
 
-    internal val isValid: Boolean = secret.isNotBlank() && isValidSecret && isValidTitle
+    internal val isValid: Boolean =
+        secret.isNotBlank() && isValidSecret && title.isNotBlank() && isValidTitle
 
     private companion object {
 

@@ -222,7 +222,7 @@ internal class HomeManualViewModel @Inject constructor(
                                 isValidSecretFlow.update { false }
                             }
 
-                            CreateEntryReason.Unknown -> {}
+                            CreateEntryReason.Unknown -> Unit
                         }
                     }
 
