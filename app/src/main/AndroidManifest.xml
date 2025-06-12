@@ -67,11 +67,13 @@
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
-
+            <meta-data
+                android:name="proton.android.authenticator.app.initializers.BackupPeriodicWorkInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
             <meta-data
                 android:name="proton.android.authenticator.initializers.SentryInitializer"
                 android:value="androidx.startup" />
-
             <meta-data
                 android:name="proton.android.authenticator.initializers.LoggerInitializer"
                 android:value="androidx.startup" />

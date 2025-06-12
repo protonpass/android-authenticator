@@ -72,6 +72,10 @@ android {
         buildConfig = true
     }
 
+    lint {
+        disable += "NullSafeMutableLiveData"
+    }
+
     signingConfigs {
         register("signingKeystore") {
             storeFile = file("$rootDir/keystore/ProtonMail.keystore")
