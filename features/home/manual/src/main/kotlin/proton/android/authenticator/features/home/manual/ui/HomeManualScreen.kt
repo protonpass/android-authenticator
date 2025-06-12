@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +42,7 @@ import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 fun HomeManualScreen(
+    snackbarHostState: SnackbarHostState,
     onNavigationClick: () -> Unit,
     onEntryCreated: () -> Unit,
     onEntryUpdated: () -> Unit
@@ -64,6 +66,7 @@ fun HomeManualScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .backgroundScreenGradient(),
+                snackbarHostState = snackbarHostState,
                 topBar = {
                     SmallTopBar(
                         title = currentState.title,

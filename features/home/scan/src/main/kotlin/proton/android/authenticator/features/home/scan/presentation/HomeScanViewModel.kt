@@ -68,6 +68,10 @@ internal class HomeScanViewModel @Inject constructor(
                 when (answer) {
                     is Answer.Failure -> {
                         when (answer.reason) {
+                            CreateEntryReason.CannotSaveEntry -> {
+                                R.string.home_scan_snackbar_message_create_entry_code_error
+                            }
+
                             CreateEntryReason.InvalidEntrySecret -> {
                                 R.string.home_scan_snackbar_message_invalid_entry_code
                             }

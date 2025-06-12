@@ -41,6 +41,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
 
         composable<HomeManualNavigationDestination> {
             HomeManualScreen(
+                snackbarHostState = snackbarHostState,
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 },

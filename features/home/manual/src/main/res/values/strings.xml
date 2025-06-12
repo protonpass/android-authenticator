@@ -29,4 +29,7 @@
     <string name="home_manual_form_time_interval_title">Time interval</string>
     <string name="home_manual_form_time_algorithm_title">Algorithm</string>
     <string name="home_manual_form_time_type_title">Type</string>
+
+    <string name="home_manual_snackbar_message_create_error">There was an error creating the entry</string>
+    <string name="home_manual_snackbar_message_update_error">There was an error updating the entry</string>
 </resources>

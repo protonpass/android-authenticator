@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.manual.presentation
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
@@ -37,10 +38,13 @@ import proton.android.authenticator.business.entries.application.create.CreateEn
 import proton.android.authenticator.business.entries.application.update.UpdateEntryReason
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
+import proton.android.authenticator.features.home.manual.R
 import proton.android.authenticator.features.home.manual.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.manual.usecases.UpdateEntryUseCase
 import proton.android.authenticator.features.shared.entries.usecases.GetEntryModelUseCase
+import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,7 +52,8 @@ internal class HomeManualViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getEntryModelUseCase: GetEntryModelUseCase,
     private val createEntryUseCase: CreateEntryUseCase,
-    private val updateEntryUseCase: UpdateEntryUseCase
+    private val updateEntryUseCase: UpdateEntryUseCase,
+    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
 ) : ViewModel() {
 
     private val entryId: String? = savedStateHandle[ARGS_ENTRY_ID]
@@ -196,6 +201,12 @@ internal class HomeManualViewModel @Inject constructor(
                 when (answer) {
                     is Answer.Failure -> {
                         when (answer.reason) {
+                            CreateEntryReason.CannotSaveEntry -> {
+                                dispatchSnackbarEvent(
+                                    messageResId = R.string.home_manual_snackbar_message_create_error
+                                )
+                            }
+
                             CreateEntryReason.InvalidEntrySecret -> {
                                 isValidSecretFlow.update { false }
                             }
@@ -217,7 +228,9 @@ internal class HomeManualViewModel @Inject constructor(
                     is Answer.Failure -> {
                         when (answer.reason) {
                             UpdateEntryReason.EntryNotFound -> {
-
+                                dispatchSnackbarEvent(
+                                    messageResId = R.string.home_manual_snackbar_message_update_error
+                                )
                             }
 
                             UpdateEntryReason.InvalidEntrySecret -> {
@@ -231,6 +244,13 @@ internal class HomeManualViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun dispatchSnackbarEvent(@StringRes messageResId: Int) {
+        viewModelScope.launch {
+            SnackbarEvent(messageResId = messageResId)
+                .also { event -> dispatchSnackbarEventUseCase(snackbarEvent = event) }
         }
     }
 
