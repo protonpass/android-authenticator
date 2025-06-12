@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
 import proton.android.authenticator.business.entries.domain.EntryImportType
@@ -65,7 +66,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
         isPasswordVisibleFlow,
         eventFlow
     ) { password, isPasswordError, isPasswordVisible, event ->
-        ImportsPasswordState.create(
+        ImportsPasswordState(
             password = password.orEmpty(),
             isPasswordError = isPasswordError,
             isPasswordVisible = isPasswordVisible,
@@ -73,8 +74,8 @@ internal class ImportsPasswordViewModel @Inject constructor(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
-        initialValue = ImportsPasswordState.create(
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ImportsPasswordState(
             password = "",
             isPasswordError = false,
             isPasswordVisible = false,

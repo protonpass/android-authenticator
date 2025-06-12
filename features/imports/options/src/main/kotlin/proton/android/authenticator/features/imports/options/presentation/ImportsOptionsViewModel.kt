@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
 import proton.android.authenticator.business.entries.domain.EntryImportType
@@ -47,14 +48,16 @@ internal class ImportsOptionsViewModel @Inject constructor(
         selectedOptionFlow,
         eventFlow
     ) { selectedOption, event ->
-        ImportsOptionsState.create(
+        ImportsOptionsState(
+            optionModels = ImportsOptionsState.optionModels,
             selectedOptionModel = selectedOption,
             event = event
         )
     }.stateIn(
         scope = viewModelScope,
-        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
-        initialValue = ImportsOptionsState.create(
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = ImportsOptionsState(
+            optionModels = ImportsOptionsState.optionModels,
             selectedOptionModel = null,
             event = ImportsOptionsEvent.Idle
         )

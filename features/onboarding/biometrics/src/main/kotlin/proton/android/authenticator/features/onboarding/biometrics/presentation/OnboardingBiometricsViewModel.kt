@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.steps.domain.Step
@@ -64,7 +65,7 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = OnboardingBiometricsState.Loading
     )
 

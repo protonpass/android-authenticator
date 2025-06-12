@@ -24,6 +24,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.SharingStarted
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import javax.inject.Inject
 
@@ -40,7 +41,7 @@ internal class SyncMasterViewModel @Inject constructor(
         }
         .stateIn(
             scope = viewModelScope,
-            started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(5000),
             initialValue = SyncMasterState.Loading
         )
 

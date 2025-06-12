@@ -21,7 +21,7 @@ package proton.android.authenticator.features.imports.passwords.presentation
 import proton.android.authenticator.features.imports.passwords.R
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
-internal class ImportsPasswordState private constructor(
+internal class ImportsPasswordState internal constructor(
     internal val password: String,
     internal val isPasswordError: Boolean,
     internal val isPasswordVisible: Boolean,
@@ -35,22 +35,5 @@ internal class ImportsPasswordState private constructor(
     }
 
     internal val isValidPassword: Boolean = password.isNotBlank() && !isPasswordError
-
-    internal companion object {
-
-        internal fun create(
-            password: String,
-            isPasswordError: Boolean,
-            isPasswordVisible: Boolean,
-            event: ImportsPasswordEvent
-        ): ImportsPasswordState {
-            return ImportsPasswordState(
-                password = password,
-                isPasswordError = isPasswordError,
-                isPasswordVisible = isPasswordVisible,
-                event = event
-            )
-        }
-    }
 
 }

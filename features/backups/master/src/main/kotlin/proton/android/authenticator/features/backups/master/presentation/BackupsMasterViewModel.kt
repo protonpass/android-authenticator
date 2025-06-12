@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
@@ -81,7 +82,7 @@ internal class BackupsMasterViewModel @Inject constructor(
         )
     }.stateIn(
         scope = viewModelScope,
-        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = BackupsMasterState(
             backupModel = BackupMasterModel(
                 isEnabled = Backup.Default.isEnabled,
