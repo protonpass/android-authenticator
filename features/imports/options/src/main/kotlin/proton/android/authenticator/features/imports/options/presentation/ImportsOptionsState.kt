@@ -21,15 +21,15 @@ package proton.android.authenticator.features.imports.options.presentation
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.features.imports.options.R
 
-internal class ImportsOptionsState internal constructor(
-    internal val optionModels: List<ImportsOptionsModel>,
+internal data class ImportsOptionsState(
     internal val selectedOptionModel: ImportsOptionsModel?,
-    internal val event: ImportsOptionsEvent
+    internal val event: ImportsOptionsEvent,
+    internal val optionModels: List<ImportsOptionsModel> = DefaultOptionModels
 ) {
 
     internal companion object {
 
-        internal val optionModels = listOf(
+        private val DefaultOptionModels: List<ImportsOptionsModel> = listOf(
             ImportsOptionsModel(
                 type = EntryImportType.Google,
                 nameResId = R.string.imports_options_option_google

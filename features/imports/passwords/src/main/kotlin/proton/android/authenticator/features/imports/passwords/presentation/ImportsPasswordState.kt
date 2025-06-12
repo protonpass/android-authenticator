@@ -21,7 +21,7 @@ package proton.android.authenticator.features.imports.passwords.presentation
 import proton.android.authenticator.features.imports.passwords.R
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
-internal class ImportsPasswordState internal constructor(
+internal data class ImportsPasswordState(
     internal val password: String,
     internal val isPasswordError: Boolean,
     internal val isPasswordVisible: Boolean,

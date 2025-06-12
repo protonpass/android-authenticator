@@ -56,14 +56,10 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
     )
 
     internal val stateFlow: StateFlow<OnboardingBiometricsState> = combine(
+        eventFlow,
         observeBiometricUseCase(),
-        eventFlow
-    ) { biometric, event ->
-        OnboardingBiometricsState.Ready(
-            biometric = biometric,
-            event = event
-        )
-    }.stateIn(
+        OnboardingBiometricsState::Ready
+    ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = OnboardingBiometricsState.Loading

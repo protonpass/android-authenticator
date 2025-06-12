@@ -46,18 +46,12 @@ internal class ImportsOptionsViewModel @Inject constructor(
 
     internal val stateFlow: StateFlow<ImportsOptionsState> = combine(
         selectedOptionFlow,
-        eventFlow
-    ) { selectedOption, event ->
-        ImportsOptionsState(
-            optionModels = ImportsOptionsState.optionModels,
-            selectedOptionModel = selectedOption,
-            event = event
-        )
-    }.stateIn(
+        eventFlow,
+        ::ImportsOptionsState
+    ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = ImportsOptionsState(
-            optionModels = ImportsOptionsState.optionModels,
             selectedOptionModel = null,
             event = ImportsOptionsEvent.Idle
         )
