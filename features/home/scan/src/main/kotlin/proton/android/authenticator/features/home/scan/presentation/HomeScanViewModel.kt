@@ -22,11 +22,13 @@ import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.application.create.CreateEntryReason
@@ -47,11 +49,14 @@ internal class HomeScanViewModel @Inject constructor(
 
     private val eventFlow = MutableStateFlow<HomeScanEvent>(value = HomeScanEvent.Idle)
 
-    internal val stateFlow: StateFlow<HomeScanState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        HomeScanState.create(eventFlow = eventFlow)
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    internal val stateFlow: StateFlow<HomeScanState> = eventFlow
+        .mapLatest(::HomeScanState)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = HomeScanState(event = HomeScanEvent.Idle)
+        )
 
     internal fun onConsumeEvent(event: HomeScanEvent) {
         eventFlow.compareAndSet(expect = event, update = HomeScanEvent.Idle)

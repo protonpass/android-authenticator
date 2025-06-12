@@ -18,21 +18,7 @@
 
 package proton.android.authenticator.features.home.scan.presentation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.runtime.Stable
 
-internal class HomeScanState private constructor(internal val event: HomeScanEvent) {
-
-    internal companion object {
-
-        @Composable
-        internal fun create(eventFlow: Flow<HomeScanEvent>): HomeScanState {
-            val event by eventFlow.collectAsState(initial = HomeScanEvent.Idle)
-
-            return HomeScanState(event = event)
-        }
-    }
-
-}
+@Stable
+internal data class HomeScanState(internal val event: HomeScanEvent)
