@@ -145,17 +145,9 @@ android {
         }
     }
 
-    sourceSets {
-        getByName("dev") {
-            kotlin.srcDir("src/nonfdroid/kotlin")
-        }
-        getByName("alpha") {
-            kotlin.srcDir("src/nonfdroid/kotlin")
-        }
-        getByName("play") {
-            kotlin.srcDir("src/nonfdroid/kotlin")
-        }
-    }
+    sourceSets
+        .filter { it.name.startsWith("alpha") || it.name.startsWith("play") || it.name.startsWith("dev") }
+        .forEach { it.kotlin.srcDir("src/nonfdroid/kotlin") }
 }
 
 dependencies {
