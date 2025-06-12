@@ -176,7 +176,7 @@ io.sentry:sentry:7.21.0
 io.swagger.core.v3:swagger-annotations:2.2.7
 jakarta.inject:jakarta.inject-api:2.0.1
 javax.inject:javax.inject:1
-me.proton.authenticator.common:lib:0.21.1
+me.proton.authenticator.common:lib:0.22.0
 me.proton.core:account-domain:32.2.0
 me.proton.core:account-manager-domain:32.2.0
 me.proton.core:auth-fido-domain:32.2.0
