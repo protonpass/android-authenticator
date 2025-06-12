@@ -40,8 +40,15 @@ internal class CreateEntryCommandHandler @Inject constructor(
                 )
             }
             .let(Answer<Unit, CreateEntryReason>::Success)
-    } catch (_: AuthenticatorException) {
-        Answer.Failure(reason = CreateEntryReason.InvalidEntrySecret)
+    } catch (e: AuthenticatorException) {
+        when (e) {
+            is AuthenticatorException.InvalidName ->
+                Answer.Failure(reason = CreateEntryReason.InvalidEntryTitle)
+            is AuthenticatorException.InvalidSecret ->
+                Answer.Failure(reason = CreateEntryReason.InvalidEntrySecret)
+            else -> Answer.Failure(reason = CreateEntryReason.Unknown)
+        }
+
     } catch (_: IllegalStateException) {
         Answer.Failure(reason = CreateEntryReason.CannotSaveEntry)
     }

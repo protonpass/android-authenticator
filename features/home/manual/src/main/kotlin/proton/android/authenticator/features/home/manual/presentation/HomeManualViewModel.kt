@@ -68,6 +68,8 @@ internal class HomeManualViewModel @Inject constructor(
 
     private val titleState = mutableStateOf<String?>(value = null)
 
+    private val isValidTitleFlow = MutableStateFlow<Boolean>(value = true)
+
     private val secretState = mutableStateOf<String?>(value = null)
 
     private val isValidSecretFlow = MutableStateFlow<Boolean>(value = true)
@@ -104,8 +106,9 @@ internal class HomeManualViewModel @Inject constructor(
         entryModelFlow,
         formInputsFlow,
         showAdvanceOptionsFlow,
-        isValidSecretFlow
-    ) { entryModel, formInputs, showAdvanceOptions, isValidSecret ->
+        isValidSecretFlow,
+        isValidTitleFlow
+    ) { entryModel, formInputs, showAdvanceOptions, isValidSecret, isValidTitle ->
         if (entryModel == null) {
             HomeManualFormModel(
                 title = formInputs.title.orEmpty(),
@@ -118,6 +121,7 @@ internal class HomeManualViewModel @Inject constructor(
                 position = 0.0,
                 showAdvanceOptions = showAdvanceOptions == true,
                 isValidSecret = isValidSecret,
+                isValidTitle = isValidTitle,
                 mode = HomeManualMode.Create
             )
         } else {
@@ -132,6 +136,7 @@ internal class HomeManualViewModel @Inject constructor(
                 position = entryModel.position,
                 showAdvanceOptions = showAdvanceOptions == true,
                 isValidSecret = isValidSecret,
+                isValidTitle = isValidTitle,
                 mode = HomeManualMode.Edit
             )
         }
@@ -153,6 +158,8 @@ internal class HomeManualViewModel @Inject constructor(
 
     internal fun onTitleChange(newTitle: String) {
         titleState.value = newTitle
+
+        isValidTitleFlow.update { true }
     }
 
     internal fun onSecretChange(newSecret: String) {
@@ -207,9 +214,15 @@ internal class HomeManualViewModel @Inject constructor(
                                 )
                             }
 
+                            CreateEntryReason.InvalidEntryTitle -> {
+                                isValidTitleFlow.update { false }
+                            }
+
                             CreateEntryReason.InvalidEntrySecret -> {
                                 isValidSecretFlow.update { false }
                             }
+
+                            CreateEntryReason.Unknown -> {}
                         }
                     }
 

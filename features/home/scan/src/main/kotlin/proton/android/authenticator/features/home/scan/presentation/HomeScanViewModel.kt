@@ -75,6 +75,13 @@ internal class HomeScanViewModel @Inject constructor(
                             CreateEntryReason.InvalidEntrySecret -> {
                                 R.string.home_scan_snackbar_message_invalid_entry_code
                             }
+
+                            CreateEntryReason.InvalidEntryTitle -> {
+                                R.string.home_scan_snackbar_message_invalid_entry_title
+                            }
+                            CreateEntryReason.Unknown -> {
+                                R.string.home_scan_snackbar_message_invalid_entry_unknown
+                            }
                         }.also { messageResId -> dispatchSnackbarEvent(messageResId) }
                     }
 

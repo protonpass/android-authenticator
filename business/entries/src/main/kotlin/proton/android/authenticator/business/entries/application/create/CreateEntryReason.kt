@@ -22,5 +22,7 @@ import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
 enum class CreateEntryReason : AnswerReason {
     CannotSaveEntry,
-    InvalidEntrySecret
+    InvalidEntryTitle,
+    InvalidEntrySecret,
+    Unknown
 }
