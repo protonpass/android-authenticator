@@ -31,6 +31,7 @@ internal data class HomeManualFormModel(
     internal val type: EntryType,
     internal val showAdvanceOptions: Boolean,
     internal val position: Double,
+    internal val mode: HomeManualMode,
     private val isValidSecret: Boolean
 ) {
 

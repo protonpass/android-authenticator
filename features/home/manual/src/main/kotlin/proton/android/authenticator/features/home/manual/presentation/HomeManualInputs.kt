@@ -18,33 +18,21 @@
 
 package proton.android.authenticator.features.home.manual.presentation
 
-import androidx.compose.runtime.Immutable
-import proton.android.authenticator.features.home.manual.R
-import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.business.entries.domain.EntryAlgorithm
+import proton.android.authenticator.business.entries.domain.EntryType
 
-@Immutable
-internal sealed interface HomeManualState {
+internal data class HomeManualInputs(
+    internal val digits: Int?,
+    internal val timeInterval: Int?,
+    internal val algorithm: EntryAlgorithm?,
+    internal val type: EntryType?,
+    private val textInputs: HomeManualTextInputs
+) {
 
-    val event: HomeManualEvent
+    internal val title: String? = textInputs.title
 
-    @Immutable
-    data object Loading : HomeManualState {
+    internal val secret: String? = textInputs.secret
 
-        override val event: HomeManualEvent = HomeManualEvent.Idle
-
-    }
-
-    @Immutable
-    data class Ready(
-        override val event: HomeManualEvent,
-        internal val formModel: HomeManualFormModel
-    ) : HomeManualState {
-
-        internal val title: UiText = when (formModel.mode) {
-            HomeManualMode.Create -> R.string.home_manual_screen_title_create
-            HomeManualMode.Edit -> R.string.home_manual_screen_title_edit
-        }.let(UiText::Resource)
-
-    }
+    internal val issuer: String? = textInputs.issuer
 
 }

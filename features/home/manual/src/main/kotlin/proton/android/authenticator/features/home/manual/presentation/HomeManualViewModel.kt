@@ -19,16 +19,18 @@
 package proton.android.authenticator.features.home.manual.presentation
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.cash.molecule.RecompositionMode
-import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.application.create.CreateEntryReason
@@ -41,7 +43,7 @@ import proton.android.authenticator.features.shared.entries.usecases.GetEntryMod
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
-@[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
+@HiltViewModel
 internal class HomeManualViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getEntryModelUseCase: GetEntryModelUseCase,
@@ -52,7 +54,8 @@ internal class HomeManualViewModel @Inject constructor(
     private val entryId: String? = savedStateHandle[ARGS_ENTRY_ID]
 
     private val entryModelFlow = flow {
-        entryId?.let { id -> getEntryModelUseCase(id) }
+        entryId
+            ?.let { id -> getEntryModelUseCase(id) }
             .also { entry -> emit(entry) }
     }
 
@@ -76,24 +79,68 @@ internal class HomeManualViewModel @Inject constructor(
 
     private val showAdvanceOptionsFlow = MutableStateFlow<Boolean?>(value = null)
 
-    internal val stateFlow: StateFlow<HomeManualState> = viewModelScope.launchMolecule(
-        mode = RecompositionMode.Immediate
-    ) {
-        HomeManualState.create(
-            entryId = entryId,
-            entryModelFlow = entryModelFlow,
-            title = titleState.value,
-            secret = secretState.value,
-            isValidSecretFlow = isValidSecretFlow,
-            issuer = issuerState.value,
-            digitsFlow = digitsFlow,
-            timeIntervalFlow = timeIntervalFlow,
-            algorithmFlow = algorithmFlow,
-            typeFlow = typeFlow,
-            showAdvanceOptionsFlow = showAdvanceOptionsFlow,
-            eventFlow = eventFlow
-        )
+    private val formTextInputsFlow = combine(
+        snapshotFlow { titleState.value },
+        snapshotFlow { secretState.value },
+        snapshotFlow { issuerState.value },
+        ::HomeManualTextInputs
+    )
+
+    private val formInputsFlow: Flow<HomeManualInputs> = combine(
+        digitsFlow,
+        timeIntervalFlow,
+        algorithmFlow,
+        typeFlow,
+        formTextInputsFlow,
+        ::HomeManualInputs
+    )
+
+    private val formModelFlow = combine(
+        entryModelFlow,
+        formInputsFlow,
+        showAdvanceOptionsFlow,
+        isValidSecretFlow
+    ) { entryModel, formInputs, showAdvanceOptions, isValidSecret ->
+        if (entryModel == null) {
+            HomeManualFormModel(
+                title = formInputs.title.orEmpty(),
+                secret = formInputs.secret.orEmpty(),
+                issuer = formInputs.issuer.orEmpty(),
+                digits = formInputs.digits ?: DEFAULT_DIGITS,
+                timeInterval = formInputs.timeInterval ?: DEFAULT_TIME_INTERVAL,
+                algorithm = formInputs.algorithm ?: DEFAULT_ALGORITHM,
+                type = formInputs.type ?: DEFAULT_TYPE,
+                position = 0.0,
+                showAdvanceOptions = showAdvanceOptions == true,
+                isValidSecret = isValidSecret,
+                mode = HomeManualMode.Create
+            )
+        } else {
+            HomeManualFormModel(
+                title = formInputs.title ?: entryModel.name,
+                secret = formInputs.secret ?: entryModel.secret,
+                issuer = formInputs.issuer ?: entryModel.issuer,
+                digits = formInputs.digits ?: entryModel.digits,
+                timeInterval = formInputs.timeInterval ?: entryModel.period,
+                algorithm = formInputs.algorithm ?: entryModel.algorithm,
+                type = formInputs.type ?: entryModel.type,
+                position = entryModel.position,
+                showAdvanceOptions = showAdvanceOptions == true,
+                isValidSecret = isValidSecret,
+                mode = HomeManualMode.Edit
+            )
+        }
     }
+
+    internal val stateFlow: StateFlow<HomeManualState> = combine(
+        eventFlow,
+        formModelFlow,
+        HomeManualState::Ready
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = HomeManualState.Loading
+    )
 
     internal fun onEventConsumed(event: HomeManualEvent) {
         eventFlow.compareAndSet(expect = event, update = HomeManualEvent.Idle)
@@ -190,6 +237,14 @@ internal class HomeManualViewModel @Inject constructor(
     private companion object {
 
         private const val ARGS_ENTRY_ID = "entryId"
+
+        private const val DEFAULT_DIGITS = 6
+
+        private const val DEFAULT_TIME_INTERVAL = 30
+
+        private val DEFAULT_ALGORITHM = EntryAlgorithm.SHA1
+
+        private val DEFAULT_TYPE = EntryType.TOTP
 
     }
 
