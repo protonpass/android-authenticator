@@ -125,9 +125,20 @@ internal class HomeMasterViewModel @Inject constructor(
         entryModelsFlow,
         entryCodesFlow,
         entryCodesRemainingTimesFlow,
-        observeSettingsUseCase(),
-        HomeMasterState::Ready
-    ).stateIn(
+        observeSettingsUseCase()
+    ) { entrySearchQuery, entryModels, entryCodes, entryCodesRemainingTimes, settings ->
+        if (entrySearchQuery.isEmpty() && entryModels.isEmpty()) {
+            HomeMasterState.Empty
+        } else {
+            HomeMasterState.Ready(
+                searchQuery = entrySearchQuery,
+                entries = entryModels,
+                entryCodes = entryCodes,
+                entryCodesRemainingTimes = entryCodesRemainingTimes,
+                settings = settings
+            )
+        }
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = HomeMasterState.Loading
