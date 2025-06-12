@@ -49,8 +49,14 @@ internal fun HomeContent(
             )
         }
 
-        HomeMasterState.Loading -> {
-
+        is HomeMasterState.Loading -> {
+            HomeLoading(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = paddingValues)
+                    .padding(horizontal = ThemePadding.Medium),
+                state = state
+            )
         }
 
         is HomeMasterState.Ready -> {

@@ -63,6 +63,8 @@ internal sealed interface HomeMasterState {
 
         override val showTopSearchBar: Boolean = false
 
+        internal const val PLACEHOLDER_COUNT: Int = 5
+
     }
 
     @Immutable
