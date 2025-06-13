@@ -46,25 +46,28 @@ internal class EntryCodesSearcher @Inject constructor(
                     authenticatorClient.entryFromUri(uri)
                 }
             }
-
         }
             .awaitAll()
             .let { entryModels ->
-                totpGenerator.start(
-                    entries = entryModels,
-                    callback = object : MobileTotpGeneratorCallback {
-                        override fun onCodes(codes: List<AuthenticatorCodeResponse>) {
-                            codes.map { entryCodeResponse ->
-                                EntryCode(
-                                    currentCode = entryCodeResponse.currentCode,
-                                    nextCode = entryCodeResponse.nextCode
-                                )
-                            }.also(::trySend)
+                if (entryModels.isEmpty()) {
+                    trySend(emptyList<EntryCode>()).also { awaitClose() }
+                } else {
+                    totpGenerator.start(
+                        entries = entryModels,
+                        callback = object : MobileTotpGeneratorCallback {
+                            override fun onCodes(codes: List<AuthenticatorCodeResponse>) {
+                                codes.map { entryCodeResponse ->
+                                    EntryCode(
+                                        currentCode = entryCodeResponse.currentCode,
+                                        nextCode = entryCodeResponse.nextCode
+                                    )
+                                }.also(::trySend)
+                            }
                         }
-                    }
-                ).also { handle ->
-                    awaitClose {
-                        handle.cancel()
+                    ).also { handle ->
+                        awaitClose {
+                            handle.cancel()
+                        }
                     }
                 }
             }
