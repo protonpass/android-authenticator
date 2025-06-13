@@ -145,9 +145,13 @@ android {
         }
     }
 
-    sourceSets
-        .filter { it.name.startsWith("alpha") || it.name.startsWith("play") || it.name.startsWith("dev") }
-        .forEach { it.kotlin.srcDir("src/nonfdroid/kotlin") }
+    sourceSets {
+        all {
+            if (!name.contains("fdroid", ignoreCase = true)) {
+                kotlin.srcDir("src/nonFdroid/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
