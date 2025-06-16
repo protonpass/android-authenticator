@@ -24,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,6 +65,7 @@ fun HomeScanScreen(
         bottomBar = {
             HomeScanBottomBar(
                 modifier = Modifier
+                    .systemBarsPadding()
                     .fillMaxWidth()
                     .padding(
                         start = ThemePadding.Medium,
