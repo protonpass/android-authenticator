@@ -119,9 +119,9 @@ fun HomeScreen(
         }
     ) { paddingValues ->
         HomeContent(
+            modifier = Modifier.padding(paddingValues = paddingValues),
             state = state,
             listState = lazyListState,
-            paddingValues = paddingValues,
             onNewEntryClick = onNewEntryClick,
             onEditEntryClick = { entry -> onEditEntryClick(entry.id) },
             onCopyEntryCodeClick = ::onCopyEntryCode,

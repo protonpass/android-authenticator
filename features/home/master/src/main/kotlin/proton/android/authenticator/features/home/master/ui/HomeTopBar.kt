@@ -39,9 +39,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @[Composable OptIn(ExperimentalMaterial3Api::class)]
-internal fun HomeTopBar(onSettingsClick: () -> Unit) {
+internal fun HomeTopBar(modifier: Modifier = Modifier, onSettingsClick: () -> Unit) {
     TopAppBar(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         title = {
             Text(
                 text = stringResource(id = R.string.home_screen_title),

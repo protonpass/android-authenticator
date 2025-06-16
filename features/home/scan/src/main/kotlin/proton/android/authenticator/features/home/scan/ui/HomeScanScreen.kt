@@ -23,6 +23,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.SnackbarHostState
@@ -65,6 +66,7 @@ fun HomeScanScreen(
         bottomBar = {
             HomeScanBottomBar(
                 modifier = Modifier
+                    .imePadding()
                     .systemBarsPadding()
                     .fillMaxWidth()
                     .padding(

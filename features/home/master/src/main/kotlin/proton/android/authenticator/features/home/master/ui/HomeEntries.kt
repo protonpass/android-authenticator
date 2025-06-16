@@ -19,7 +19,6 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,7 +32,6 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 internal fun HomeEntries(
     state: HomeMasterState.Ready,
     listState: LazyListState,
-    contentPadding: PaddingValues,
     onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
@@ -63,7 +61,6 @@ internal fun HomeEntries(
                 modifier = modifier,
                 draggableItems = items,
                 listState = listState,
-                contentPadding = contentPadding,
                 verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
                 onMoved = { fromIndex, fromId, toIndex, toId ->
                     onEntryRearranged(fromId, fromIndex, toId, toIndex, entryModelsMap)

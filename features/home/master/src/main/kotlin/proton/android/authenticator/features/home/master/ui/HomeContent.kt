@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.features.home.master.ui
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
@@ -30,9 +29,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 internal fun HomeContent(
+    modifier: Modifier = Modifier,
     state: HomeMasterState,
     listState: LazyListState,
-    paddingValues: PaddingValues,
     onNewEntryClick: () -> Unit,
     onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
@@ -42,31 +41,23 @@ internal fun HomeContent(
     when (state) {
         HomeMasterState.Empty -> {
             HomeEmpty(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues = paddingValues),
+                modifier = modifier.fillMaxSize(),
                 onNewEntryClick = onNewEntryClick
             )
         }
 
         is HomeMasterState.Loading -> {
             HomeLoading(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues = paddingValues)
-                    .padding(horizontal = ThemePadding.Medium),
+                modifier = modifier.fillMaxSize().padding(horizontal = ThemePadding.Medium),
                 state = state
             )
         }
 
         is HomeMasterState.Ready -> {
             HomeEntries(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = ThemePadding.Medium),
+                modifier = modifier.padding(horizontal = ThemePadding.Medium),
                 state = state,
                 listState = listState,
-                contentPadding = paddingValues,
                 onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
                 onDeleteEntryClick = onDeleteEntryClick,
