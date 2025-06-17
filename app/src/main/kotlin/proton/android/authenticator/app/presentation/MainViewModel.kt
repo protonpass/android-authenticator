@@ -33,11 +33,11 @@ import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricReason
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
-import proton.android.authenticator.common.AuthenticatorLogger
 import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
