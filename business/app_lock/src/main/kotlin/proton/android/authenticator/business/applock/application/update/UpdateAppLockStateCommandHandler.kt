@@ -28,7 +28,7 @@ internal class UpdateAppLockStateCommandHandler @Inject constructor(
 ) : CommandHandler<UpdateAppLockStateCommand, Unit, UpdateAppLockStateReason> {
 
     override suspend fun handle(command: UpdateAppLockStateCommand): Answer<Unit, UpdateAppLockStateReason> = try {
-        updater.update(backup = command.backup).let(Answer<Unit, UpdateAppLockStateReason>::Success)
+        updater.update(appLockState = command.appLockState).let(Answer<Unit, UpdateAppLockStateReason>::Success)
     } catch (_: IOException) {
         Answer.Failure(UpdateAppLockStateReason.CannotUpdateAppLockState)
     }

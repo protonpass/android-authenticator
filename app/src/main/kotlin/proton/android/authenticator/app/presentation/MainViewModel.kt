@@ -67,7 +67,7 @@ internal class MainViewModel @Inject constructor(
         )
     )
 
-    fun requestReauthentication(context: Context) {
+    internal fun requestReauthentication(context: Context) {
         viewModelScope.launch {
             authenticateBiometricUseCase(
                 title = context.getString(R.string.biometric_prompt_title),
@@ -85,7 +85,7 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    companion object {
+    private companion object {
         private const val TAG = "MainViewModel"
     }
 }

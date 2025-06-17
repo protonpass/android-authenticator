@@ -21,4 +21,4 @@ package proton.android.authenticator.business.applock.application.update
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-data class UpdateAppLockStateCommand(internal val backup: AppLockState) : Command
+data class UpdateAppLockStateCommand(internal val appLockState: AppLockState) : Command

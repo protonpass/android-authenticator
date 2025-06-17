@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.update
 import proton.android.authenticator.business.applock.domain.AppLockRepository
 import proton.android.authenticator.business.applock.domain.AppLockState
 
-class AppLockRepositoryImpl @Inject constructor() : AppLockRepository {
+internal class AppLockRepositoryImpl @Inject constructor() : AppLockRepository {
     private val mutableAppLockState: MutableStateFlow<AppLockState> = MutableStateFlow(AppLockState.LOCKED)
 
     override fun find(): Flow<AppLockState> = mutableAppLockState.asStateFlow()

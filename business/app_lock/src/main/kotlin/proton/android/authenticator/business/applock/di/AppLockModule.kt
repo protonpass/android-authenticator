@@ -39,10 +39,10 @@ import javax.inject.Singleton
 internal abstract class AppLockModule {
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindAppLockStateQuery::class)]
-    internal abstract fun bindFindBackupQueryHandler(impl: FindAppLockStateQueryHandler): QueryHandler<*, *>
+    internal abstract fun bindFindAppLockStateQueryHandler(impl: FindAppLockStateQueryHandler): QueryHandler<*, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateAppLockStateCommand::class)]
-    internal abstract fun bindUpdateBackupCommandHandler(
+    internal abstract fun bindUpdateAppLockStateCommandHandler(
         impl: UpdateAppLockStateCommandHandler
     ): CommandHandler<*, *, *>
 

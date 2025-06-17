@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 internal class AppLockStateUpdater @Inject constructor(private val repository: AppLockRepository) {
 
-    internal fun update(backup: AppLockState) {
-        repository.update(backup)
+    internal fun update(appLockState: AppLockState) {
+        repository.update(appLockState)
     }
 
 }
