@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
@@ -38,6 +39,7 @@ import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.usecases.ExportEntriesUseCase
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
+import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
@@ -52,6 +54,7 @@ internal class SettingsMasterViewModel @Inject constructor(
     observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
     private val exportEntriesUseCase: ExportEntriesUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
 ) : ViewModel() {
@@ -152,6 +155,9 @@ internal class SettingsMasterViewModel @Inject constructor(
                     }
 
                     is Answer.Success -> {
+                        if (appLockType == SettingsAppLockType.Biometric) {
+                            updateAppLockStateUseCase(state = AppLockState.AUTHENTICATED)
+                        }
                         settingsModel.copy(appLockType = appLockType)
                             .also(::updateSettings)
                     }

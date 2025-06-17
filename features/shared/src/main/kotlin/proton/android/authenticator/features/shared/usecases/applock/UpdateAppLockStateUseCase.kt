@@ -19,18 +19,15 @@
 package proton.android.authenticator.features.shared.usecases.applock
 
 import proton.android.authenticator.business.applock.application.update.UpdateAppLockStateCommand
+import proton.android.authenticator.business.applock.application.update.UpdateAppLockStateReason
 import proton.android.authenticator.business.applock.domain.AppLockState
-import proton.android.authenticator.business.backups.application.generate.GenerateBackupCommand
-import proton.android.authenticator.business.backups.application.generate.GenerateBackupReason
-import proton.android.authenticator.business.backups.domain.BackupEntry
-import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
 class UpdateAppLockStateUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    suspend operator fun invoke(state: AppLockState): Answer<Unit, GenerateBackupReason> =
+    suspend operator fun invoke(state: AppLockState): Answer<Unit, UpdateAppLockStateReason> =
         commandBus.dispatch(UpdateAppLockStateCommand(state))
 
 }

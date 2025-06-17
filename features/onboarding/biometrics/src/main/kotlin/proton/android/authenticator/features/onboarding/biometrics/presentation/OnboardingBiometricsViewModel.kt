@@ -30,10 +30,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.steps.domain.Step
 import proton.android.authenticator.business.steps.domain.StepDestination
 import proton.android.authenticator.features.onboarding.biometrics.R
+import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.ObserveBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
@@ -48,7 +50,8 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
-    private val updateStepUseCase: UpdateStepUseCase,
+    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
+    private val updateStepUseCase: UpdateStepUseCase
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<OnboardingBiometricsEvent>(
@@ -82,7 +85,7 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
                     }
 
                     is Answer.Success -> {
-
+                        updateAppLockStateUseCase(state = AppLockState.AUTHENTICATED)
                         observeSettingsUseCase()
                             .first()
                             .copy(appLockType = SettingsAppLockType.Biometric)

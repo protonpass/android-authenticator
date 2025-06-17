@@ -99,7 +99,7 @@ fun CenteredLauncherIcon(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            painter = painterResource(id = R.drawable.unlockauth),
             contentDescription = null,
             modifier = Modifier.size(128.dp)
         )
