@@ -22,17 +22,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -41,10 +32,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import proton.android.authenticator.R
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
+import proton.android.authenticator.shared.ui.domain.components.icons.CenteredLauncherIcon
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import javax.inject.Inject
 
@@ -67,7 +58,7 @@ internal class MainActivity : FragmentActivity() {
                     setContent {
                         when (state.appLockState) {
                             AppLockState.LOCKED -> { finishAffinity() }
-                            AppLockState.NOT_STARTED -> {}
+                            AppLockState.NOT_STARTED -> Unit
                             AppLockState.AUTHENTICATING -> {
                                 val context = LocalContext.current
                                 LaunchedEffect(state.appLockState) {
@@ -90,18 +81,4 @@ internal class MainActivity : FragmentActivity() {
             .also { controller -> controller.isAppearanceLightStatusBars = !isDarkTheme }
     }
 
-}
-
-@Composable
-fun CenteredLauncherIcon(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.unlockauth),
-            contentDescription = null,
-            modifier = Modifier.size(128.dp)
-        )
-    }
 }
