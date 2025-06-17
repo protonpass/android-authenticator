@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.core.utilKotlin)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
     implementation(libs.zxing.core)

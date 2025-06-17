@@ -20,7 +20,7 @@ package proton.android.authenticator.common
 
 import proton.android.authenticator.commonrust.AuthenticatorLogLevel
 import proton.android.authenticator.commonrust.AuthenticatorLogger
-import proton.android.authenticator.common.AuthenticatorLogger as RustLogger
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger as RustLogger
 
 object RustLoggerImpl : AuthenticatorLogger {
     private const val TAG = "RustLogger"

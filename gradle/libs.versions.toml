@@ -73,6 +73,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion"
 core-crypto = { module = "me.proton.core:crypto", version.ref = "coreVersion" }
 core-data = { module = "me.proton.core:data", version.ref = "coreVersion" }
 core-dataRoom = { module = "me.proton.core:data-room", version.ref = "coreVersion" }
+core-utilKotlin = { module = "me.proton.core:util-kotlin", version.ref = "coreVersion" }
 core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", version.ref = "coreVersion" }
 gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "agpVersion" }
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinVersion" }

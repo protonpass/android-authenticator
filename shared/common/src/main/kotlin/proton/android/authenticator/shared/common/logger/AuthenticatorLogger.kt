@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.common
+package proton.android.authenticator.shared.common.logger
 
 import me.proton.core.util.kotlin.CoreLogger
 import me.proton.core.util.kotlin.Logger

@@ -22,6 +22,7 @@ import android.content.Context
 import android.os.Build
 import android.os.LocaleList
 import proton.android.authenticator.BuildConfig
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 
 private const val TAG = "DEVICE_INFO"
 

@@ -24,4 +24,6 @@
     <string name="home_scan_snackbar_message_invalid_entry_title">Invalid entry title</string>
     <string name="home_scan_snackbar_message_invalid_entry_unknown">Something went wrong</string>
     <string name="home_scan_snackbar_message_invalid_qr_code">Invalid QR code</string>
+    <string name="home_scan_permission_text">Camera permission required for this feature to be available</string>
+    <string name="home_scan_permission_button">Open settings</string>
 </resources>
