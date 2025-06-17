@@ -20,12 +20,15 @@ package proton.android.authenticator.app
 
 import android.app.Application
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.startup.AppInitializer
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
-import proton.android.authenticator.app.auth.AuthManager
+import kotlinx.coroutines.launch
 import proton.android.authenticator.app.initializers.BackupPeriodicWorkInitializer
+import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -36,15 +39,23 @@ internal class App : Application(), ImageLoaderFactory {
     internal lateinit var imageLoader: Provider<ImageLoader>
 
     @Inject
-    internal lateinit var authManager: AuthManager
+    internal lateinit var updateAppLockStateUseCase: UpdateAppLockStateUseCase
 
     override fun newImageLoader(): ImageLoader = imageLoader.get()
 
     override fun onCreate() {
         super.onCreate()
         val observer = AppLifecycleObserver(
-            onForeground = { authManager.requestReauthentication() },
-            onBackground = { authManager.lock() }
+            onForeground = {
+                ProcessLifecycleOwner.get().lifecycleScope.launch {
+                    updateAppLockStateUseCase(AppLockState.AUTHENTICATING)
+                }
+            },
+            onBackground = {
+                ProcessLifecycleOwner.get().lifecycleScope.launch {
+                    updateAppLockStateUseCase(AppLockState.LOCKED)
+                }
+            }
         )
         ProcessLifecycleOwner.get().lifecycle.addObserver(observer)
         initInitializerComponents()

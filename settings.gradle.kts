@@ -47,6 +47,7 @@ rootProject.name = "ProtonAuthenticator"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
+include(":business:app_lock")
 include(":business:backups")
 include(":business:biometrics")
 include(":business:entries")

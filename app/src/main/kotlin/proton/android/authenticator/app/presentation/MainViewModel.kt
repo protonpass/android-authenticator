@@ -26,36 +26,44 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import proton.android.authenticator.R
-import proton.android.authenticator.app.auth.AuthManager
-import proton.android.authenticator.app.auth.AuthState
+import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricReason
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.common.AuthenticatorLogger
+import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
+import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import javax.inject.Inject
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class MainViewModel @Inject constructor(
-    private val authManager: AuthManager,
+    observeAppLockStateUseCase: ObserveAppLockStateUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
+    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase
 ) : ViewModel() {
 
     internal val stateFlow: StateFlow<MainState> = combine(
-        observeSettingsUseCase().map { it.themeType },
-        authManager.authStateFlow,
-        ::MainState
-    ).stateIn(
+        observeSettingsUseCase(),
+        observeAppLockStateUseCase()
+    ) { settings, appLockState ->
+        MainState(
+            settingsThemeType = settings.themeType,
+            appLockState = appLockState.takeIf {
+                settings.appLockType == SettingsAppLockType.Biometric
+            } ?: AppLockState.AUTHENTICATED
+        )
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = MainState(
             settingsThemeType = SettingsThemeType.System,
-            authState = AuthState.NOT_STARTED
+            appLockState = AppLockState.NOT_STARTED
         )
     )
 
@@ -66,10 +74,12 @@ internal class MainViewModel @Inject constructor(
                 subtitle = context.getString(R.string.biometric_prompt_subtitle),
                 context = context
             ).fold(
-                onSuccess = { authManager.onAuthSuccess() },
+                onSuccess = {
+                    updateAppLockStateUseCase(AppLockState.AUTHENTICATED)
+                },
                 onFailure = { reason: AuthenticateBiometricReason ->
                     AuthenticatorLogger.w(TAG, "Biometric authentication failed: ${reason.name}")
-                    authManager.lock()
+                    updateAppLockStateUseCase(AppLockState.LOCKED)
                 }
             )
         }

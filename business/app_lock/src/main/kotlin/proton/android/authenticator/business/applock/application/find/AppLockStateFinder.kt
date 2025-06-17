@@ -16,23 +16,15 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.app.presentation
+package proton.android.authenticator.business.applock.application.find
 
-import androidx.compose.runtime.Immutable
+import jakarta.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.applock.domain.AppLockRepository
 import proton.android.authenticator.business.applock.domain.AppLockState
-import proton.android.authenticator.business.settings.domain.SettingsThemeType
-import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
-@Immutable
-internal data class MainState(
-    private val settingsThemeType: SettingsThemeType,
-    val appLockState: AppLockState
-) {
+internal class AppLockStateFinder @Inject constructor(private val repository: AppLockRepository) {
 
-    internal val themeType: ThemeType = when (settingsThemeType) {
-        SettingsThemeType.Dark -> ThemeType.Dark
-        SettingsThemeType.Light -> ThemeType.Light
-        SettingsThemeType.System -> ThemeType.System
-    }
+    internal fun find(): Flow<AppLockState> = repository.find()
 
 }

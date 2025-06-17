@@ -24,7 +24,7 @@ sealed interface Answer<out D, out R : AnswerReason> {
 
     data class Failure<out D, out R : AnswerReason>(val reason: R) : Answer<D, R>
 
-    fun <T> fold(onSuccess: (D) -> T, onFailure: (R) -> T): T = when (this) {
+    suspend fun <T> fold(onSuccess: suspend (D) -> T, onFailure: suspend (R) -> T): T = when (this) {
         is Success -> onSuccess(data)
         is Failure -> onFailure(reason)
     }

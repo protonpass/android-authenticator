@@ -179,6 +179,7 @@ dependencies {
     implementation(libs.timber)
     implementation(platform(libs.androidx.compose.bom))
 
+    implementation(projects.business.appLock)
     implementation(projects.business.backups)
     implementation(projects.business.biometrics)
     implementation(projects.business.entries)

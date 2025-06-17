@@ -42,8 +42,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import proton.android.authenticator.R
-import proton.android.authenticator.app.auth.AuthState
 import proton.android.authenticator.app.presentation.MainViewModel
+import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import javax.inject.Inject
@@ -65,17 +65,17 @@ internal class MainActivity : FragmentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collectLatest { state ->
                     setContent {
-                        when (state.authState) {
-                            AuthState.LOCKED -> { finishAffinity() }
-                            AuthState.NOT_STARTED -> {}
-                            AuthState.AUTHENTICATING -> {
+                        when (state.appLockState) {
+                            AppLockState.LOCKED -> { finishAffinity() }
+                            AppLockState.NOT_STARTED -> {}
+                            AppLockState.AUTHENTICATING -> {
                                 val context = LocalContext.current
-                                LaunchedEffect(state.authState) {
+                                LaunchedEffect(state.appLockState) {
                                     viewModel.requestReauthentication(context)
                                 }
                                 CenteredLauncherIcon()
                             }
-                            AuthState.AUTHENTICATED -> isDarkTheme(state.themeType)
+                            AppLockState.AUTHENTICATED -> isDarkTheme(state.themeType)
                                 .also(::setStatusBarTheme)
                                 .also { isDarkTheme -> navigationNavigator.NavGraphs(isDarkTheme) }
                         }

@@ -48,7 +48,7 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
-    private val updateStepUseCase: UpdateStepUseCase
+    private val updateStepUseCase: UpdateStepUseCase,
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<OnboardingBiometricsEvent>(
@@ -82,6 +82,7 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
                     }
 
                     is Answer.Success -> {
+
                         observeSettingsUseCase()
                             .first()
                             .copy(appLockType = SettingsAppLockType.Biometric)

@@ -16,6 +16,6 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.app.auth
+package proton.android.authenticator.business.applock.domain
 
-enum class AuthState { LOCKED, AUTHENTICATING, AUTHENTICATED, NOT_STARTED }
+enum class AppLockState { LOCKED, AUTHENTICATING, AUTHENTICATED, NOT_STARTED }

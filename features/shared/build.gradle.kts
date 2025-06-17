@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.core.crypto)
     implementation(libs.hilt.android)
 
+    implementation(projects.business.appLock)
     implementation(projects.business.backups)
     implementation(projects.business.biometrics)
     implementation(projects.business.entries)
