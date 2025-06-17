@@ -19,12 +19,7 @@
 package proton.android.authenticator.features.home.scan.ui
 
 import android.Manifest
-import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import android.provider.Settings
 import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,13 +42,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import proton.android.authenticator.shared.ui.domain.analyzers.QrCodeAnalyzer
 
 @Composable
 internal fun HomeScanCamera(
     onQrCodeScanned: (String) -> Unit,
     onCameraError: () -> Unit,
+    onAppSettingsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -154,22 +149,7 @@ internal fun HomeScanCamera(
 
         HomeScanCameraQrMask(cutoutRect = cutoutRect)
     } else {
-        val activity = LocalContext.current as? Activity
-        HomeScanPermission(
-            onOpenAppSettings = {
-                try {
-                    activity?.startActivity(
-                        Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", activity.packageName, null)
-                        )
-                    )
-                } catch (e: ActivityNotFoundException) {
-                    AuthenticatorLogger.w(TAG, "Cannot open app settings")
-                    AuthenticatorLogger.w(TAG, e)
-                }
-            }
-        )
+        HomeScanPermission(onOpenAppSettings = onAppSettingsClick)
     }
 
     LaunchedEffect(previewViewSize) {
@@ -196,5 +176,3 @@ internal fun HomeScanCamera(
         )
     }
 }
-
-private const val TAG = "HomeScanCamera"

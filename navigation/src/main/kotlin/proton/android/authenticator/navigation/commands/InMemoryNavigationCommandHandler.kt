@@ -2,10 +2,13 @@ package proton.android.authenticator.navigation.commands
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class InMemoryNavigationCommandHandler @Inject constructor() : NavigationCommandHandler {
@@ -60,10 +63,26 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
                     inclusive = command.inclusive
                 )
             }
+
+            is NavigationCommand.NavigateToAppSettings -> {
+                try {
+                    command.context.startActivity(
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.fromParts("package", command.context.packageName, null)
+                        )
+                    )
+                } catch (e: ActivityNotFoundException) {
+                    AuthenticatorLogger.w(TAG, "Cannot open app settings")
+                    AuthenticatorLogger.w(TAG, e)
+                }
+            }
         }
     }
 
     private companion object {
+
+        private const val TAG = "InMemoryNavigationCommandHandler"
 
         private const val PLAY_STORE_APP_URI = "market://details?id="
 

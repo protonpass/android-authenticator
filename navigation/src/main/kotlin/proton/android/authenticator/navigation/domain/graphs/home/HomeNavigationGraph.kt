@@ -1,6 +1,7 @@
 package proton.android.authenticator.navigation.domain.graphs.home
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -58,6 +59,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
         }
 
         composable<HomeScanNavigationDestination> {
+            val context = LocalContext.current
             HomeScanScreen(
                 snackbarHostState = snackbarHostState,
                 onCloseClick = {
@@ -74,6 +76,9 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                         destination = HomeMasterNavigationDestination,
                         inclusive = false
                     ).also(onNavigate)
+                },
+                onAppSettingsClick = {
+                    onNavigate(NavigationCommand.NavigateToAppSettings(context))
                 }
             )
         }

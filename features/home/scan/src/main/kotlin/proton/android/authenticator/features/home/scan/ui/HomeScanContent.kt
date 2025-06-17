@@ -25,6 +25,7 @@ import proton.android.authenticator.features.home.scan.presentation.HomeScanStat
 @Composable
 internal fun HomeScanContent(
     state: HomeScanState,
+    onAppSettingsClick: () -> Unit,
     onCloseClick: () -> Unit,
     onQrCodeScanned: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -32,6 +33,7 @@ internal fun HomeScanContent(
     HomeScanCamera(
         modifier = modifier,
         onQrCodeScanned = onQrCodeScanned,
-        onCameraError = onCloseClick
+        onCameraError = onCloseClick,
+        onAppSettingsClick = onAppSettingsClick
     )
 }

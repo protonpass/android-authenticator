@@ -42,6 +42,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 fun HomeScanScreen(
     snackbarHostState: SnackbarHostState,
     onCloseClick: () -> Unit,
+    onAppSettingsClick: () -> Unit,
     onManualEntryClick: () -> Unit,
     onEntryCreated: () -> Unit
 ) = with(hiltViewModel<HomeScanViewModel>()) {
@@ -86,6 +87,7 @@ fun HomeScanScreen(
             modifier = Modifier.fillMaxSize(),
             state = state,
             onCloseClick = onCloseClick,
+            onAppSettingsClick = onAppSettingsClick,
             onQrCodeScanned = ::onCreateEntry
         )
     }

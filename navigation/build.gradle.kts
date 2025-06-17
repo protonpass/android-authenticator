@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.androidx.material.navigation)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.core.utilKotlin)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
 

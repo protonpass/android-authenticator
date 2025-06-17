@@ -30,4 +30,8 @@ internal sealed interface NavigationCommand {
         internal val inclusive: Boolean
     ) : NavigationCommand
 
+    data class NavigateToAppSettings(
+        internal val context: Context
+    ) : NavigationCommand
+
 }
