@@ -189,6 +189,11 @@ dependencies {
     implementation(projects.shared.common)
     implementation(projects.shared.ui)
 
+    addDevBlackImplementation(
+        default = libs.core.config.dagger.staticDefaults,
+        devBlack = libs.core.config.dagger.contentProvider
+    )
+
     addFdroidSpecialLib(
         default = libs.core.utilAndroidSentry,
         fdroid = null
@@ -236,6 +241,23 @@ sentry {
     autoInstallation.enabled.set(false)
     ignoredBuildTypes.set(setOf("debug"))
     ignoredFlavors.set(setOf("fdroid"))
+}
+
+fun DependencyHandlerScope.addDevBlackImplementation(
+    default: Any,
+    devBlack: Any,
+) {
+    val devBlackImplementation = configurations.maybeCreate("devBlackImplementation")
+    val devProdImplementation = configurations.maybeCreate("devProdImplementation")
+    val alphaImplementation = configurations.getByName("alphaImplementation")
+    val playImplementation = configurations.getByName("playImplementation")
+    val fdroidImplementation = configurations.getByName("fdroidImplementation")
+
+    devBlackImplementation(devBlack)
+    devProdImplementation(default)
+    alphaImplementation(default)
+    playImplementation(default)
+    fdroidImplementation(default)
 }
 
 fun DependencyHandlerScope.addFdroidSpecialLib(

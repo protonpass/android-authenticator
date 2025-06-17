@@ -50,6 +50,7 @@ fun SettingsMasterScreen(
     snackbarHostState: SnackbarHostState,
     onNavigationClick: () -> Unit,
     onBackupsClick: () -> Unit,
+    onSyncEnabled: () -> Unit,
     onSyncDisabled: () -> Unit,
     onExportCompleted: (Int) -> Unit,
     onExportFailed: (Int) -> Unit,
@@ -85,6 +86,10 @@ fun SettingsMasterScreen(
 
             SettingsMasterEvent.OnSyncDisabled -> {
                 onSyncDisabled()
+            }
+
+            SettingsMasterEvent.OnSyncEnabled -> {
+                onSyncEnabled()
             }
         }
 

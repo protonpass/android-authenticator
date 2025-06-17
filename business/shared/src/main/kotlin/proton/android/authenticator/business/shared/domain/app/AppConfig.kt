@@ -16,18 +16,25 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.shared.domain.app
 
-internal sealed interface SettingsMasterEvent {
+import me.proton.core.account.domain.entity.AccountType
+import me.proton.core.domain.entity.AppStore
+import me.proton.core.domain.entity.Product
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
 
-    data object Idle : SettingsMasterEvent
+internal interface AppConfig {
 
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
+    val accountType: AccountType
 
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
+    val appStore: AppStore
 
-    data object OnSyncDisabled : SettingsMasterEvent
+    val buildFlavor: BuildFlavor
 
-    data object OnSyncEnabled : SettingsMasterEvent
+    val isDebug: Boolean
+
+    val product: Product
+
+    val versionName: String
 
 }

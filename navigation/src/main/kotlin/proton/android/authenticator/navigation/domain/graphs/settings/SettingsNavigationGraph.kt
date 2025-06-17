@@ -35,6 +35,7 @@ import proton.android.authenticator.features.settings.master.ui.SettingsMasterSc
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.backups.BackupsNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncDisableNavigationDestination
+import proton.android.authenticator.navigation.domain.graphs.sync.SyncNavigationDestination
 
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.settingsNavigationGraph(
@@ -53,6 +54,11 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                 onBackupsClick = {
                     NavigationCommand.NavigateTo(
                         destination = BackupsNavigationDestination
+                    ).also(onNavigate)
+                },
+                onSyncEnabled = {
+                    NavigationCommand.NavigateTo(
+                        destination = SyncNavigationDestination
                     ).also(onNavigate)
                 },
                 onSyncDisabled = {

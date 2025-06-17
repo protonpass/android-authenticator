@@ -16,18 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.shared.accounts
 
-internal sealed interface SettingsMasterEvent {
+import me.proton.core.auth.presentation.AuthOrchestrator
+import proton.android.authenticator.business.shared.domain.account.AccountRegister
+import javax.inject.Inject
 
-    data object Idle : SettingsMasterEvent
+internal class CoreAccountRegister @Inject constructor(
+    private val authOrchestrator: AuthOrchestrator
+) : AccountRegister {
 
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
-
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
-
-    data object OnSyncDisabled : SettingsMasterEvent
-
-    data object OnSyncEnabled : SettingsMasterEvent
+    override fun register() {
+        authOrchestrator.startSignupWorkflow()
+    }
 
 }

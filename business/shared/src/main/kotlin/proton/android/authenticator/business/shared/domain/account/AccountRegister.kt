@@ -16,18 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.shared.domain.account
 
-internal sealed interface SettingsMasterEvent {
+interface AccountRegister {
 
-    data object Idle : SettingsMasterEvent
-
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
-
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
-
-    data object OnSyncDisabled : SettingsMasterEvent
-
-    data object OnSyncEnabled : SettingsMasterEvent
+    fun register()
 
 }

@@ -21,14 +21,15 @@ package proton.android.authenticator.features.sync.master.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.stateIn
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import javax.inject.Inject
 
-@HiltViewModel
+@[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class SyncMasterViewModel @Inject constructor(
     observeSettingsUseCase: ObserveSettingsUseCase
 ) : ViewModel() {
@@ -36,13 +37,21 @@ internal class SyncMasterViewModel @Inject constructor(
     private val settingsFlow = observeSettingsUseCase()
 
     internal val stateFlow: StateFlow<SyncMasterState> = settingsFlow
-        .map { settings ->
+        .mapLatest { settings ->
             SyncMasterState.Ready(settingsThemeType = settings.themeType)
         }
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = SyncMasterState.Loading
         )
+
+    internal fun onSignIn() {
+        println("JIBIRI: onSignIn")
+    }
+
+    internal fun onSignUp() {
+        println("JIBIRI: onSignUp")
+    }
 
 }

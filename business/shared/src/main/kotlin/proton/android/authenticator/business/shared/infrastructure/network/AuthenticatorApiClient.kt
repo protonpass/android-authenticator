@@ -16,18 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.shared.infrastructure.network
 
-internal sealed interface SettingsMasterEvent {
+import me.proton.core.network.domain.ApiClient
+import proton.android.authenticator.business.shared.domain.network.NetworkConfig
+import javax.inject.Inject
 
-    data object Idle : SettingsMasterEvent
+internal class AuthenticatorApiClient @Inject constructor(config: NetworkConfig) : ApiClient {
 
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
+    override val appVersionHeader: String = config.appVersionHeader
 
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
+    override val enableDebugLogging: Boolean = config.enableDebugLogging
 
-    data object OnSyncDisabled : SettingsMasterEvent
+    override val shouldUseDoh: Boolean = config.shouldUseDoh
 
-    data object OnSyncEnabled : SettingsMasterEvent
+    override val userAgent: String = config.userAgent
+
+    override fun forceUpdate(errorMessage: String) {
+        println("JIBIRI: forceUpdate -> $errorMessage")
+    }
 
 }

@@ -1,7 +1,9 @@
 plugins {
     id("proton.android.authenticator.plugins.libraries.android")
 
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -16,8 +18,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.core.presentation.compose)
+    implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
     implementation(libs.reorderable)
     implementation(libs.zxing.core)
     implementation(platform(libs.androidx.compose.bom))
+
+    ksp(libs.hilt.compiler)
 }

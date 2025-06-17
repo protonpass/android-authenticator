@@ -16,18 +16,33 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.shared.domain.network
 
-internal sealed interface SettingsMasterEvent {
+import me.proton.core.humanverification.presentation.utils.HumanVerificationVersion
+import okhttp3.HttpUrl
 
-    data object Idle : SettingsMasterEvent
+internal interface NetworkConfig {
 
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
+    val alternativeApiPins: List<String>
 
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
+    val appVersionHeader: String
 
-    data object OnSyncDisabled : SettingsMasterEvent
+    val certificatePins: Array<String>
 
-    data object OnSyncEnabled : SettingsMasterEvent
+    val dohProvidersUrls: Array<String>
+
+    val enableDebugLogging: Boolean
+
+    val headers: Array<Pair<String, String>>
+
+    val hostHttpUrl: HttpUrl
+
+    val humanVerificationHost: String
+
+    val humanVerificationVersion: HumanVerificationVersion
+
+    val shouldUseDoh: Boolean
+
+    val userAgent: String
 
 }

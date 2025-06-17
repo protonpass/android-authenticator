@@ -16,18 +16,22 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.shared.ui.di
 
-internal sealed interface SettingsMasterEvent {
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import me.proton.core.compose.theme.AppTheme
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import javax.inject.Singleton
 
-    data object Idle : SettingsMasterEvent
+@[Module InstallIn(SingletonComponent::class)]
+internal object SharedUiModule {
 
-    data class OnEntriesExportError(internal val errorReason: Int) : SettingsMasterEvent
-
-    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : SettingsMasterEvent
-
-    data object OnSyncDisabled : SettingsMasterEvent
-
-    data object OnSyncEnabled : SettingsMasterEvent
+    @[Provides Singleton]
+    internal fun provideAppTheme(): AppTheme = AppTheme { content ->
+        Theme(isDarkTheme = true) { content() }
+    }
 
 }

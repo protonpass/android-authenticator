@@ -62,12 +62,8 @@ fun SyncMasterScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<SyncMas
                         .padding(paddingValues = paddingValues)
                         .padding(horizontal = ThemePadding.Large),
                     state = currentState,
-                    onSignInClick = {
-                        // Will be implemented in a following MR
-                    },
-                    onSignUpClick = {
-                        // Will be implemented in a following MR
-                    }
+                    onSignInClick = ::onSignIn,
+                    onSignUpClick = ::onSignUp
                 )
             }
         }
