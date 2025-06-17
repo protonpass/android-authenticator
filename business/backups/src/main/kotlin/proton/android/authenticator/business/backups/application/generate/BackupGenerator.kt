@@ -25,12 +25,12 @@ import proton.android.authenticator.business.backups.domain.BackupEntry
 import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
 import proton.android.authenticator.business.backups.domain.BackupRepository
-import proton.android.authenticator.business.shared.di.FileDeleterInternal
-import proton.android.authenticator.business.shared.di.FileWriterInternal
 import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryCreator
 import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileDeleter
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
+import proton.android.authenticator.business.shared.infrastructure.files.di.FileDeleterInternal
+import proton.android.authenticator.business.shared.infrastructure.files.di.FileWriterInternal
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryType
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface

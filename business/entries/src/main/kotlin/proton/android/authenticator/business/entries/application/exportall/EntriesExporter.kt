@@ -22,8 +22,8 @@ import android.net.Uri
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
-import proton.android.authenticator.business.shared.di.FileWriterContentResolver
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
+import proton.android.authenticator.business.shared.infrastructure.files.di.FileWriterContentResolver
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider

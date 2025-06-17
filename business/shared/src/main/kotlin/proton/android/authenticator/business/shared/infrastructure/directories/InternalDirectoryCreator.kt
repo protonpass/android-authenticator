@@ -19,8 +19,8 @@
 package proton.android.authenticator.business.shared.infrastructure.directories
 
 import kotlinx.coroutines.withContext
-import proton.android.authenticator.business.shared.di.DirectoryPathInternal
 import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryCreator
+import proton.android.authenticator.business.shared.infrastructure.directories.di.DirectoryPathInternal
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import java.io.File
 import javax.inject.Inject
