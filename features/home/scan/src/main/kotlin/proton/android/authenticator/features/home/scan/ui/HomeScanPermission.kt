@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,11 +34,14 @@ import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.home.scan.R
 import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 internal fun HomeScanPermission(modifier: Modifier = Modifier, onOpenAppSettings: () -> Unit) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = ThemePadding.Medium),
         verticalArrangement = Arrangement.spacedBy(60.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
