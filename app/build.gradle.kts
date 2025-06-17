@@ -160,6 +160,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.material.navigation)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.room.ktx)
@@ -179,6 +180,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     implementation(projects.business.backups)
+    implementation(projects.business.biometrics)
     implementation(projects.business.entries)
     implementation(projects.business.settings)
     implementation(projects.features.shared)

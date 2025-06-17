@@ -16,23 +16,21 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.app.presentation
+package proton.android.authenticator.app
 
-import androidx.compose.runtime.Immutable
-import proton.android.authenticator.app.auth.AuthState
-import proton.android.authenticator.business.settings.domain.SettingsThemeType
-import proton.android.authenticator.shared.ui.domain.theme.ThemeType
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
-@Immutable
-internal data class MainState(
-    private val settingsThemeType: SettingsThemeType,
-    val authState: AuthState
-) {
+class AppLifecycleObserver(
+    private val onForeground: () -> Unit,
+    private val onBackground: () -> Unit
+) : DefaultLifecycleObserver {
 
-    internal val themeType: ThemeType = when (settingsThemeType) {
-        SettingsThemeType.Dark -> ThemeType.Dark
-        SettingsThemeType.Light -> ThemeType.Light
-        SettingsThemeType.System -> ThemeType.System
+    override fun onStart(owner: LifecycleOwner) {
+        onForeground()
     }
 
+    override fun onStop(owner: LifecycleOwner) {
+        onBackground()
+    }
 }

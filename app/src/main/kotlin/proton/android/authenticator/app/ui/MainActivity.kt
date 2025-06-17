@@ -22,6 +22,17 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -30,6 +41,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import proton.android.authenticator.R
+import proton.android.authenticator.app.auth.AuthState
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
@@ -52,9 +65,20 @@ internal class MainActivity : FragmentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collectLatest { state ->
                     setContent {
-                        isDarkTheme(state.themeType)
-                            .also(::setStatusBarTheme)
-                            .also { isDarkTheme -> navigationNavigator.NavGraphs(isDarkTheme) }
+                        when (state.authState) {
+                            AuthState.LOCKED -> { finishAffinity() }
+                            AuthState.NOT_STARTED -> {}
+                            AuthState.AUTHENTICATING -> {
+                                val context = LocalContext.current
+                                LaunchedEffect(state.authState) {
+                                    viewModel.requestReauthentication(context)
+                                }
+                                CenteredLauncherIcon()
+                            }
+                            AuthState.AUTHENTICATED -> isDarkTheme(state.themeType)
+                                .also(::setStatusBarTheme)
+                                .also { isDarkTheme -> navigationNavigator.NavGraphs(isDarkTheme) }
+                        }
                     }
                 }
             }
@@ -66,4 +90,18 @@ internal class MainActivity : FragmentActivity() {
             .also { controller -> controller.isAppearanceLightStatusBars = !isDarkTheme }
     }
 
+}
+
+@Composable
+fun CenteredLauncherIcon(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = null,
+            modifier = Modifier.size(128.dp)
+        )
+    }
 }

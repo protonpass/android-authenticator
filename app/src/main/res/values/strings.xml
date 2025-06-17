@@ -18,4 +18,8 @@
 
 <resources>
     <string name="app_name" translatable="false">Proton Authenticator</string>
+
+    <string name="biometric_prompt_title">App locked</string>
+    <string name="biometric_prompt_subtitle">Unlock using your device lock</string>
+
 </resources>
