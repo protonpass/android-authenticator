@@ -18,13 +18,13 @@
 
 package proton.android.authenticator.business.applock.infrastructure
 
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import proton.android.authenticator.business.applock.domain.AppLockRepository
 import proton.android.authenticator.business.applock.domain.AppLockState
+import javax.inject.Inject
 
 internal class AppLockRepositoryImpl @Inject constructor() : AppLockRepository {
     private val mutableAppLockState: MutableStateFlow<AppLockState> = MutableStateFlow(AppLockState.LOCKED)
