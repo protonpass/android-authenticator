@@ -18,10 +18,10 @@
 
 package proton.android.authenticator.business.biometrics.application.find
 
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.biometrics.domain.Biometric
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
+import javax.inject.Inject
 
 internal class FindBiometricQueryHandler @Inject constructor(
     private val finder: BiometricFinder

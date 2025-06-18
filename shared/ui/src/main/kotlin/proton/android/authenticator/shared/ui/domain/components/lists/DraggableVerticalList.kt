@@ -18,15 +18,12 @@
 
 package proton.android.authenticator.shared.ui.domain.components.lists
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,13 +32,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import proton.android.authenticator.shared.ui.domain.models.UiDraggableItem
-import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
-import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
-import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
-import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun DraggableVerticalList(
@@ -64,17 +56,6 @@ fun DraggableVerticalList(
 
     var toItem by remember { mutableStateOf<LazyListItemInfo?>(null) }
 
-    val reorderableLazyListState = rememberReorderableLazyListState(
-        lazyListState = listState
-    ) { from, to ->
-        fromItem = from
-        toItem = to
-
-        items = items.toMutableList().apply {
-            add(to.index, removeAt(from.index))
-        }
-    }
-
     LazyColumn(
         modifier = modifier,
         state = listState,
@@ -85,56 +66,7 @@ fun DraggableVerticalList(
             items = items,
             key = { index, item -> item.id }
         ) { index, item ->
-            ReorderableItem(
-                state = reorderableLazyListState,
-                key = item.id
-            ) {
-                Box(
-                    modifier = Modifier
-                        .applyIf(
-                            condition = selectedItemId == item.id,
-                            ifTrue = {
-                                border(
-                                    shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
-                                    width = ThemeThickness.Small,
-                                    color = highlightColor
-                                )
-                            }
-                        )
-                        .longPressDraggableHandle(
-                            onDragStarted = {
-                                fromItem = null
-                                toItem = null
 
-                                selectedItemId = item.id
-                                selectedItemIndex = index
-                            },
-                            onDragStopped = {
-                                fromItem?.let { from ->
-                                    toItem?.let { to ->
-                                        selectedItemIndex?.let { selectedIndex ->
-                                            if (selectedIndex == to.index) {
-                                                items = draggableItems
-                                            } else {
-                                                onMoved(
-                                                    selectedIndex,
-                                                    from.key.toString(),
-                                                    to.index,
-                                                    to.key.toString()
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-
-                                selectedItemId = null
-                                selectedItemIndex = null
-                            }
-                        )
-                ) {
-                    item.content()
-                }
-            }
         }
     }
 }

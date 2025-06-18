@@ -36,6 +36,9 @@ import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
 import me.proton.core.eventmanager.domain.EventListener
 import me.proton.core.notification.data.NotificationEventListener
+import me.proton.core.plan.domain.ProductOnlyPaidPlans
+import me.proton.core.plan.domain.SupportSignupPaidPlans
+import me.proton.core.plan.domain.SupportUpgradePaidPlans
 import me.proton.core.push.data.PushEventListener
 import me.proton.core.telemetry.data.repository.TelemetryLocalDataSourceImpl
 import me.proton.core.telemetry.data.repository.TelemetryRemoteDataSourceImpl
@@ -111,6 +114,15 @@ internal abstract class BusinessSharedAccountModule {
 
         @[Provides Singleton]
         internal fun provideAppStore(config: AppConfig): AppStore = config.appStore
+
+        @[Provides SupportSignupPaidPlans]
+        internal fun provideSupportSignupPaidPlans() = false
+
+        @[Provides SupportUpgradePaidPlans]
+        internal fun provideSupportUpgradePaidPlans() = true
+
+        @[Provides ProductOnlyPaidPlans]
+        internal fun provideProductOnlyPaidPlans() = false
 
     }
 

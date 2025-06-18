@@ -18,11 +18,11 @@
 
 package proton.android.authenticator.features.shared.usecases.biometrics
 
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.biometrics.application.find.FindBiometricQuery
 import proton.android.authenticator.business.biometrics.domain.Biometric
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import javax.inject.Inject
 
 class ObserveBiometricUseCase @Inject constructor(private val queryBus: QueryBus) {
 

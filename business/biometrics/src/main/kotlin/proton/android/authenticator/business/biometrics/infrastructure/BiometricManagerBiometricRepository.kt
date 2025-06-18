@@ -23,12 +23,12 @@ import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import proton.android.authenticator.business.biometrics.domain.Biometric
 import proton.android.authenticator.business.biometrics.domain.BiometricRepository
 import proton.android.authenticator.business.biometrics.domain.BiometricStatus
+import javax.inject.Inject
 
 internal class BiometricManagerBiometricRepository @Inject constructor(
     private val biometricManager: BiometricManager
