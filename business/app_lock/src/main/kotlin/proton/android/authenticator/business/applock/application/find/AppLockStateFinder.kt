@@ -18,10 +18,10 @@
 
 package proton.android.authenticator.business.applock.application.find
 
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.applock.domain.AppLockRepository
 import proton.android.authenticator.business.applock.domain.AppLockState
+import javax.inject.Inject
 
 internal class AppLockStateFinder @Inject constructor(private val repository: AppLockRepository) {
 

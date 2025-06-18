@@ -18,10 +18,10 @@
 
 package proton.android.authenticator.business.applock.application.find
 
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
+import javax.inject.Inject
 
 internal class FindAppLockStateQueryHandler @Inject constructor(
     private val finder: AppLockStateFinder

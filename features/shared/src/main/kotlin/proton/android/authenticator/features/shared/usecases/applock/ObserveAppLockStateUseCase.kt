@@ -18,15 +18,15 @@
 
 package proton.android.authenticator.features.shared.usecases.applock
 
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.applock.application.find.FindAppLockStateQuery
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import javax.inject.Inject
 
 class ObserveAppLockStateUseCase @Inject constructor(private val queryBus: QueryBus) {
 
     operator fun invoke(): Flow<AppLockState> = FindAppLockStateQuery
-        .let { query -> queryBus.ask<AppLockState>(query) }
+        .let { query -> queryBus.ask(query) }
 
 }
