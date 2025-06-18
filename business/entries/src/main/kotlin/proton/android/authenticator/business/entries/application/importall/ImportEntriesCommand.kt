@@ -23,7 +23,7 @@ import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
 data class ImportEntriesCommand(
-    internal val contentUri: Uri,
+    internal val contentUris: List<Uri>,
     internal val importType: EntryImportType,
     internal val password: String?
 ) : Command

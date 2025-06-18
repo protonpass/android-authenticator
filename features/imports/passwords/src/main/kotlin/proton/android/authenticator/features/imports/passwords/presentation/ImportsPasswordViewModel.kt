@@ -99,7 +99,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
 
     internal fun onSubmitPassword(password: String) {
         viewModelScope.launch {
-            importEntriesUseCase(uri, importType, password).also { answer ->
+            importEntriesUseCase(listOf(uri), importType, password).also { answer ->
                 when (answer) {
                     is Answer.Failure -> handleImportEntriesFailure(answer)
                     is Answer.Success -> handleImportEntriesSuccess(answer)

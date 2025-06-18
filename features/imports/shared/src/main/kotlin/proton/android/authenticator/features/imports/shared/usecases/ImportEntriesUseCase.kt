@@ -29,10 +29,10 @@ import javax.inject.Inject
 class ImportEntriesUseCase @Inject constructor(private val commandBus: CommandBus) {
 
     suspend operator fun invoke(
-        uri: Uri,
+        uris: List<Uri>,
         importType: EntryImportType,
         password: String? = null
-    ): Answer<Int, ImportEntriesReason> = ImportEntriesCommand(uri, importType, password)
+    ): Answer<Int, ImportEntriesReason> = ImportEntriesCommand(uris, importType, password)
         .let { command -> commandBus.dispatch(command) }
 
 }

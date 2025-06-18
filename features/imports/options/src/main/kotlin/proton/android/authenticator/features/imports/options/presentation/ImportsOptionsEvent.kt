@@ -22,7 +22,10 @@ internal sealed interface ImportsOptionsEvent {
 
     data object Idle : ImportsOptionsEvent
 
-    data class OnChooseFile(internal val mimeTypes: List<String>) : ImportsOptionsEvent
+    data class OnChooseFile(
+        internal val isMultiSelectionAllowed: Boolean,
+        internal val mimeTypes: List<String>
+    ) : ImportsOptionsEvent
 
     data class OnFileImported(internal val importedEntriesCount: Int) : ImportsOptionsEvent
 

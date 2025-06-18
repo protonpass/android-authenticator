@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.imports.options.ui
 
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,7 +46,17 @@ fun ImportsOptionsScreen(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { result ->
-            onFilePicked(uri = result.data?.data, importType = state.selectedOptionModel?.type)
+            buildList<Uri> {
+                result.data?.data?.also(::add)
+
+                result.data?.clipData?.let { clipData ->
+                    for (index in 0 until clipData.itemCount) {
+                        clipData.getItemAt(index).uri.also(::add)
+                    }
+                }
+            }.also { uris ->
+                onFilesPicked(uris = uris, importType = state.selectedOptionModel?.type)
+            }
         }
     )
 
@@ -57,7 +68,7 @@ fun ImportsOptionsScreen(
                     .apply {
                         type = MimeType.All.value
                         addCategory(Intent.CATEGORY_OPENABLE)
-                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, event.isMultiSelectionAllowed)
                         putExtra(Intent.EXTRA_MIME_TYPES, event.mimeTypes.toTypedArray())
                     }
                     .also(launcher::launch)

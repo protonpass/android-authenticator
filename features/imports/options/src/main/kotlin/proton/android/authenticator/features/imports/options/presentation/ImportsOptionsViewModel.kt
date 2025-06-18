@@ -50,7 +50,7 @@ internal class ImportsOptionsViewModel @Inject constructor(
         ::ImportsOptionsState
     ).stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = ImportsOptionsState(
             selectedOptionModel = null,
             event = ImportsOptionsEvent.Idle
@@ -64,18 +64,21 @@ internal class ImportsOptionsViewModel @Inject constructor(
     internal fun onOptionSelected(selectedOptionModel: ImportsOptionsModel) {
         selectedOptionFlow.update { selectedOptionModel }
 
-        eventFlow.update { ImportsOptionsEvent.OnChooseFile(selectedOptionModel.mimeTypes) }
+        ImportsOptionsEvent.OnChooseFile(
+            isMultiSelectionAllowed = selectedOptionModel.isMultiSelectionAllowed,
+            mimeTypes = selectedOptionModel.mimeTypes
+        ).also { event -> eventFlow.update { event } }
     }
 
-    internal fun onFilePicked(uri: Uri?, importType: EntryImportType?) {
-        if (uri == null) return
+    internal fun onFilesPicked(uris: List<Uri>, importType: EntryImportType?) {
+        if (uris.isEmpty()) return
 
         if (importType == null) return
 
         viewModelScope.launch {
-            importEntriesUseCase(uri, importType).also { answer ->
+            importEntriesUseCase(uris, importType).also { answer ->
                 when (answer) {
-                    is Answer.Failure -> handleImportEntriesFailure(answer, uri, importType)
+                    is Answer.Failure -> handleImportEntriesFailure(answer, uris, importType)
                     is Answer.Success -> handleImportEntriesSuccess(answer)
                 }
             }
@@ -84,7 +87,7 @@ internal class ImportsOptionsViewModel @Inject constructor(
 
     private fun handleImportEntriesFailure(
         answer: Answer.Failure<Int, ImportEntriesReason>,
-        uri: Uri,
+        uris: List<Uri>,
         importType: EntryImportType
     ) {
         when (answer.reason) {
@@ -95,7 +98,11 @@ internal class ImportsOptionsViewModel @Inject constructor(
             }
 
             ImportEntriesReason.MissingPassword -> {
-                ImportsOptionsEvent.OnFilePasswordRequired(uri.toString(), importType.ordinal)
+                uris.firstOrNull()
+                    ?.let { uri ->
+                        ImportsOptionsEvent.OnFilePasswordRequired(uri.toString(), importType.ordinal)
+                    }
+                    ?: ImportsOptionsEvent.OnFileImportFailed(answer.reason.ordinal)
             }
         }.also { event -> eventFlow.update { event } }
     }

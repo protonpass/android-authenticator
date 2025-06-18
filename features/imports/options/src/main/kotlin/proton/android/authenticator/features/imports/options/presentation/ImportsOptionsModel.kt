@@ -34,4 +34,14 @@ internal data class ImportsOptionsModel(
 
     internal val mimeTypes: List<String> = type.mimeTypes.map(MimeType::value)
 
+    internal val isMultiSelectionAllowed: Boolean = when (type) {
+        EntryImportType.Google -> true
+        EntryImportType.Aegis,
+        EntryImportType.Bitwarden,
+        EntryImportType.Ente,
+        EntryImportType.LastPass,
+        EntryImportType.Proton,
+        EntryImportType.TwoFas -> false
+    }
+
 }

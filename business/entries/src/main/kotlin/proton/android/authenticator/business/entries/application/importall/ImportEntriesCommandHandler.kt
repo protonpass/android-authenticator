@@ -30,7 +30,7 @@ internal class ImportEntriesCommandHandler @Inject constructor(
 
     override suspend fun handle(command: ImportEntriesCommand): Answer<Int, ImportEntriesReason> = try {
         importer.import(
-            contentUri = command.contentUri,
+            contentUris = command.contentUris,
             importType = command.importType,
             password = command.password
         ).let(Answer<Int, ImportEntriesReason>::Success)

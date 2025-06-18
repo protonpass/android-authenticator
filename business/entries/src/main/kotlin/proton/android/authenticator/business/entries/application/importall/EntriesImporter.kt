@@ -19,6 +19,9 @@
 package proton.android.authenticator.business.entries.application.importall
 
 import android.net.Uri
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.application.shared.constants.EntryConstants
 import proton.android.authenticator.business.entries.domain.EntriesRepository
@@ -53,16 +56,30 @@ internal class EntriesImporter @Inject constructor(
 ) {
 
     internal suspend fun import(
-        contentUri: Uri,
+        contentUris: List<Uri>,
         importType: EntryImportType,
         password: String?
-    ): Int = if (importType == EntryImportType.Google) {
-        qrScanner.scan(contentUri).orEmpty()
-    } else {
-        fileReader.read(contentUri.toString())
+    ): Int = saveEntries(getEntries(contentUris, importType, password))
+
+    private suspend fun getEntries(
+        contentUris: List<Uri>,
+        importType: EntryImportType,
+        password: String?
+    ): List<AuthenticatorEntryModel> = coroutineScope {
+        contentUris.map { contentUri ->
+            async {
+                if (importType == EntryImportType.Google) {
+                    qrScanner.scan(contentUri).orEmpty()
+                } else {
+                    fileReader.read(contentUri.toString())
+                }.let { content ->
+                    getEntriesFromContent(importType, contentUri, content, password)
+                }
+            }
+        }
     }
-        .let { content -> getEntriesFromContent(importType, contentUri, content, password) }
-        .let { entryModels -> saveEntries(entryModels) }
+        .awaitAll()
+        .flatten()
 
     private suspend fun getEntriesFromContent(
         importType: EntryImportType,
@@ -129,7 +146,10 @@ internal class EntriesImporter @Inject constructor(
 
                     Entry(
                         id = entryModel.id,
-                        content = encrypt(authenticatorClient.serializeEntry(entryModel), EncryptionTag.EntryContent),
+                        content = encrypt(
+                            authenticatorClient.serializeEntry(entryModel),
+                            EncryptionTag.EntryContent
+                        ),
                         createdAt = currentMillis,
                         modifiedAt = currentMillis,
                         isSynced = false,
