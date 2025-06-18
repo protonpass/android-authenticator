@@ -22,6 +22,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,19 +32,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.features.home.master.R
-import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
+import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-internal fun HomeEmpty(onNewEntryClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun HomeEmpty(
+    onNewEntryClick: () -> Unit,
+    onImportEntriesClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
         Column(
+            modifier = Modifier.offset(y = -ThemeSpacing.Large),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
         ) {
@@ -60,21 +66,24 @@ internal fun HomeEmpty(onNewEntryClick: () -> Unit, modifier: Modifier = Modifie
                     text = stringResource(id = R.string.home_empty_title),
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textNorm,
-                    style = Theme.typography.monoNorm1
+                    style = Theme.typography.headline
                 )
 
                 Text(
-                    modifier = Modifier.padding(horizontal = ThemePadding.Large),
+                    modifier = Modifier.padding(horizontal = ThemePadding.ExtraLarge),
                     text = stringResource(id = R.string.home_empty_description),
                     textAlign = TextAlign.Center,
                     color = Theme.colorScheme.textWeak,
-                    style = Theme.typography.monoNorm2
+                    style = Theme.typography.bodyRegular
                 )
             }
 
-            PrimaryActionButton(
-                text = stringResource(id = R.string.home_empty_action),
-                onClick = onNewEntryClick
+            VerticalActionsButtons(
+                modifier = Modifier.padding(horizontal = ThemePadding.ExtraLarge),
+                primaryActionText = stringResource(id = R.string.home_empty_action_primary),
+                onPrimaryActionClick = onNewEntryClick,
+                secondaryActionText = stringResource(id = R.string.home_empty_action_secondary),
+                onSecondaryActionClick = onImportEntriesClick
             )
         }
     }

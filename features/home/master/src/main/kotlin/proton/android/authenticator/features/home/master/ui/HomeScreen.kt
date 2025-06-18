@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,13 +45,13 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     onEditEntryClick: (String) -> Unit,
     onSettingsClick: () -> Unit,
-    onNewEntryClick: () -> Unit
+    onNewEntryClick: () -> Unit,
+    onImportEntriesClick: () -> Unit
 ) = with(hiltViewModel<HomeMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -123,6 +122,7 @@ fun HomeScreen(
             state = state,
             listState = lazyListState,
             onNewEntryClick = onNewEntryClick,
+            onImportEntriesClick = onImportEntriesClick,
             onEditEntryClick = { entry -> onEditEntryClick(entry.id) },
             onCopyEntryCodeClick = ::onCopyEntryCode,
             onDeleteEntryClick = ::onDeleteEntry,
@@ -130,4 +130,3 @@ fun HomeScreen(
         )
     }
 }
-

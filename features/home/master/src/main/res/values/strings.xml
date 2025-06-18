@@ -21,7 +21,8 @@
 
     <string name="home_empty_title">No codes yet</string>
     <string name="home_empty_description">Protect your accounts with an extra layer of security.</string>
-    <string name="home_empty_action">Create New Code</string>
+    <string name="home_empty_action_primary">Create new code</string>
+    <string name="home_empty_action_secondary">Import existing codes</string>
 
     <string name="home_snackbar_message_entry_copied">Entry copied</string>
     <string name="home_snackbar_message_entry_deleted">Entry deleted</string>

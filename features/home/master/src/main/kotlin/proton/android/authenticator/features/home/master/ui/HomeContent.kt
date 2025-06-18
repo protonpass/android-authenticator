@@ -33,6 +33,7 @@ internal fun HomeContent(
     state: HomeMasterState,
     listState: LazyListState,
     onNewEntryClick: () -> Unit,
+    onImportEntriesClick: () -> Unit,
     onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
@@ -42,7 +43,8 @@ internal fun HomeContent(
         HomeMasterState.Empty -> {
             HomeEmpty(
                 modifier = modifier.fillMaxSize(),
-                onNewEntryClick = onNewEntryClick
+                onNewEntryClick = onNewEntryClick,
+                onImportEntriesClick = onImportEntriesClick
             )
         }
 
