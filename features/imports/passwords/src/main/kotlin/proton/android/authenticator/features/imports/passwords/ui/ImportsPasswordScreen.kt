@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.imports.passwords.presentation.ImportsPasswordEvent
@@ -39,10 +40,16 @@ fun ImportsPasswordScreen(onNavigationClick: () -> Unit, onCompleted: (Int) -> U
     with(hiltViewModel<ImportsPasswordViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
+        val keyboardController = LocalSoftwareKeyboardController.current
+
         LaunchedEffect(key1 = state.event) {
             when (val event = state.event) {
                 ImportsPasswordEvent.Idle -> Unit
-                is ImportsPasswordEvent.OnFileImported -> onCompleted(event.importedEntriesCount)
+                is ImportsPasswordEvent.OnFileImported -> {
+                    keyboardController?.hide()
+
+                    onCompleted(event.importedEntriesCount)
+                }
             }
 
             onConsumeEvent(state.event)
