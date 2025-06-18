@@ -22,6 +22,8 @@ internal interface ImportsPasswordEvent {
 
     data object Idle : ImportsPasswordEvent
 
-    data class OnFileImported(internal val importedEntriesCount: Int) : ImportsPasswordEvent
+    data class OnFileImportFailed(internal val reason: Int) : ImportsPasswordEvent
+
+    data class OnFileImportSucceeded(internal val importedEntriesCount: Int) : ImportsPasswordEvent
 
 }

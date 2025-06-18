@@ -134,10 +134,19 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateTo(
+                    NavigationCommand.NavigateToWithPopup(
                         destination = HomeImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
-                        )
+                        ),
+                        popDestination = HomeMasterNavigationDestination
+                    ).also(onNavigate)
+                },
+                onFailed = { errorReason ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeImportErrorNavigationDestination(
+                            errorReason = errorReason
+                        ),
+                        popDestination = HomeMasterNavigationDestination
                     ).also(onNavigate)
                 }
             )

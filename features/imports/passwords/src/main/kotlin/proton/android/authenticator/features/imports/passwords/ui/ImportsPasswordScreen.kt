@@ -36,7 +36,11 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun ImportsPasswordScreen(onNavigationClick: () -> Unit, onCompleted: (Int) -> Unit) {
+fun ImportsPasswordScreen(
+    onNavigationClick: () -> Unit,
+    onCompleted: (Int) -> Unit,
+    onFailed: (Int) -> Unit
+) {
     with(hiltViewModel<ImportsPasswordViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -45,7 +49,13 @@ fun ImportsPasswordScreen(onNavigationClick: () -> Unit, onCompleted: (Int) -> U
         LaunchedEffect(key1 = state.event) {
             when (val event = state.event) {
                 ImportsPasswordEvent.Idle -> Unit
-                is ImportsPasswordEvent.OnFileImported -> {
+                is ImportsPasswordEvent.OnFileImportFailed -> {
+                    keyboardController?.hide()
+
+                    onFailed(event.reason)
+                }
+
+                is ImportsPasswordEvent.OnFileImportSucceeded -> {
                     keyboardController?.hide()
 
                     onCompleted(event.importedEntriesCount)

@@ -36,4 +36,15 @@ internal data class ImportsPasswordState(
 
     internal val isValidPassword: Boolean = password.isNotBlank() && !isPasswordError
 
+    internal companion object {
+
+        internal val Initial: ImportsPasswordState = ImportsPasswordState(
+            password = "",
+            isPasswordError = false,
+            isPasswordVisible = false,
+            event = ImportsPasswordEvent.Idle
+        )
+
+    }
+
 }

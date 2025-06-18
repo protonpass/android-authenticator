@@ -189,6 +189,14 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                             importedEntriesCount = importedEntriesCount
                         )
                     ).also(onNavigate)
+                },
+                onFailed = { errorReason ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = SettingsImportErrorNavigationDestination(
+                            errorReason = errorReason
+                        ),
+                        popDestination = SettingsMasterNavigationDestination
+                    ).also(onNavigate)
                 }
             )
         }

@@ -51,10 +51,7 @@ internal class ImportsOptionsViewModel @Inject constructor(
     ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-        initialValue = ImportsOptionsState(
-            selectedOptionModel = null,
-            event = ImportsOptionsEvent.Idle
-        )
+        initialValue = ImportsOptionsState.Initial
     )
 
     internal fun onEventConsumed(event: ImportsOptionsEvent) {

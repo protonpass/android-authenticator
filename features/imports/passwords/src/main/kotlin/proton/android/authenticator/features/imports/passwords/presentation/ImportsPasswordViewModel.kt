@@ -61,26 +61,15 @@ internal class ImportsPasswordViewModel @Inject constructor(
     )
 
     internal val stateFlow: StateFlow<ImportsPasswordState> = combine(
-        snapshotFlow { passwordState.value },
+        snapshotFlow { passwordState.value.orEmpty() },
         isPasswordErrorFlow,
         isPasswordVisibleFlow,
-        eventFlow
-    ) { password, isPasswordError, isPasswordVisible, event ->
-        ImportsPasswordState(
-            password = password.orEmpty(),
-            isPasswordError = isPasswordError,
-            isPasswordVisible = isPasswordVisible,
-            event = event
-        )
-    }.stateIn(
+        eventFlow,
+        ::ImportsPasswordState
+    ).stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ImportsPasswordState(
-            password = "",
-            isPasswordError = false,
-            isPasswordVisible = false,
-            event = ImportsPasswordEvent.Idle
-        )
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = ImportsPasswordState.Initial
     )
 
     internal fun onConsumeEvent(event: ImportsPasswordEvent) {
@@ -117,7 +106,9 @@ internal class ImportsPasswordViewModel @Inject constructor(
             ImportEntriesReason.BadContent,
             ImportEntriesReason.DecryptionFailed,
             ImportEntriesReason.MissingPassword -> {
-                println("JIBIRI: Password import failed")
+                eventFlow.update {
+                    ImportsPasswordEvent.OnFileImportFailed(reason = answer.reason.ordinal)
+                }
             }
         }
     }
@@ -126,7 +117,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
         passwordState.value = null
 
         eventFlow.update {
-            ImportsPasswordEvent.OnFileImported(importedEntriesCount = answer.data)
+            ImportsPasswordEvent.OnFileImportSucceeded(importedEntriesCount = answer.data)
         }
     }
 

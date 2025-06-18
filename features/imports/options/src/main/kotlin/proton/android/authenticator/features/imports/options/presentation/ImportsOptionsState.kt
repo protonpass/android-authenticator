@@ -23,41 +23,45 @@ import proton.android.authenticator.features.imports.options.R
 
 internal data class ImportsOptionsState(
     internal val selectedOptionModel: ImportsOptionsModel?,
-    internal val event: ImportsOptionsEvent,
-    internal val optionModels: List<ImportsOptionsModel> = DefaultOptionModels
+    internal val event: ImportsOptionsEvent
 ) {
+
+    internal val optionModels: List<ImportsOptionsModel> = listOf(
+        ImportsOptionsModel(
+            type = EntryImportType.Google,
+            nameResId = R.string.imports_options_option_google
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.TwoFas,
+            nameResId = R.string.imports_options_option_2fas
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.Aegis,
+            nameResId = R.string.imports_options_option_aegis
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.Bitwarden,
+            nameResId = R.string.imports_options_option_bitwarden
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.Ente,
+            nameResId = R.string.imports_options_option_ente
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.LastPass,
+            nameResId = R.string.imports_options_option_last_pass
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.Proton,
+            nameResId = R.string.imports_options_option_proton
+        )
+    )
 
     internal companion object {
 
-        private val DefaultOptionModels: List<ImportsOptionsModel> = listOf(
-            ImportsOptionsModel(
-                type = EntryImportType.Google,
-                nameResId = R.string.imports_options_option_google
-            ),
-            ImportsOptionsModel(
-                type = EntryImportType.TwoFas,
-                nameResId = R.string.imports_options_option_2fas
-            ),
-            ImportsOptionsModel(
-                type = EntryImportType.Aegis,
-                nameResId = R.string.imports_options_option_aegis
-            ),
-            ImportsOptionsModel(
-                type = EntryImportType.Bitwarden,
-                nameResId = R.string.imports_options_option_bitwarden
-            ),
-            ImportsOptionsModel(
-                type = EntryImportType.Ente,
-                nameResId = R.string.imports_options_option_ente
-            ),
-            ImportsOptionsModel(
-                type = EntryImportType.LastPass,
-                nameResId = R.string.imports_options_option_last_pass
-            ),
-            ImportsOptionsModel(
-                type = EntryImportType.Proton,
-                nameResId = R.string.imports_options_option_proton
-            )
+        internal val Initial: ImportsOptionsState = ImportsOptionsState(
+            selectedOptionModel = null,
+            event = ImportsOptionsEvent.Idle
         )
 
     }

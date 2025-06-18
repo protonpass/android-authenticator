@@ -124,6 +124,14 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
                             importedEntriesCount = importedEntriesCount
                         )
                     ).also(onNavigate)
+                },
+                onFailed = { errorReason ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = OnboardingImportErrorNavigationDestination(
+                            errorReason = errorReason
+                        ),
+                        popDestination = OnboardingImportNavigationDestination
+                    ).also(onNavigate)
                 }
             )
         }
