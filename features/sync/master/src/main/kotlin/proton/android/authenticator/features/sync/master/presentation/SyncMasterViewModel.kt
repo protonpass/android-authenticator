@@ -26,12 +26,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import proton.android.authenticator.features.shared.auth.usecases.LaunchSignInFlowUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import javax.inject.Inject
 
 @[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
 internal class SyncMasterViewModel @Inject constructor(
-    observeSettingsUseCase: ObserveSettingsUseCase
+    observeSettingsUseCase: ObserveSettingsUseCase,
+    private val launchSignInFlowUseCase: LaunchSignInFlowUseCase
 ) : ViewModel() {
 
     private val settingsFlow = observeSettingsUseCase()
@@ -47,7 +49,7 @@ internal class SyncMasterViewModel @Inject constructor(
         )
 
     internal fun onSignIn() {
-        println("JIBIRI: onSignIn")
+        launchSignInFlowUseCase()
     }
 
     internal fun onSignUp() {

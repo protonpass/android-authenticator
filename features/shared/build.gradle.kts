@@ -12,6 +12,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.authenticator.common)
+    implementation(libs.core.auth)
     implementation(libs.core.crypto)
     implementation(libs.hilt.android)
 
