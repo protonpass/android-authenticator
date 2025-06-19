@@ -16,6 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+rootProject.name = "ProtonAuthenticator"
+
 pluginManagement {
     includeBuild("platform/build-logic")
 
@@ -42,7 +44,15 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ProtonAuthenticator"
+plugins {
+    id("me.proton.core.gradle-plugins.include-core-build") version "1.3.1"
+}
+
+includeCoreBuild {
+    branch.set("main")
+
+    includeBuild("gopenpgp")
+}
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

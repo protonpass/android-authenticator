@@ -50,6 +50,8 @@ internal class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.registerAuthOrchestrator(context = this)
+
         enableEdgeToEdge()
 
         lifecycleScope.launch {
@@ -57,7 +59,10 @@ internal class MainActivity : FragmentActivity() {
                 viewModel.stateFlow.collectLatest { state ->
                     setContent {
                         when (state.appLockState) {
-                            AppLockState.LOCKED -> { finishAffinity() }
+                            AppLockState.LOCKED -> {
+                                finishAffinity()
+                            }
+
                             AppLockState.NOT_STARTED -> Unit
                             AppLockState.AUTHENTICATING -> {
                                 val context = LocalContext.current
@@ -66,6 +71,7 @@ internal class MainActivity : FragmentActivity() {
                                 }
                                 CenteredLauncherIcon()
                             }
+
                             AppLockState.AUTHENTICATED -> isDarkTheme(state.themeType)
                                 .also(::setStatusBarTheme)
                                 .also { isDarkTheme -> navigationNavigator.NavGraphs(isDarkTheme) }

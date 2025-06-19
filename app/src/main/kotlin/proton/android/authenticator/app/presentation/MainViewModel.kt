@@ -19,15 +19,17 @@
 package proton.android.authenticator.app.presentation
 
 import android.content.Context
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultCaller
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.proton.core.auth.presentation.AuthOrchestrator
 import proton.android.authenticator.R
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricReason
@@ -40,12 +42,13 @@ import proton.android.authenticator.features.shared.usecases.settings.ObserveSet
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
-@[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
+@HiltViewModel
 internal class MainViewModel @Inject constructor(
     observeAppLockStateUseCase: ObserveAppLockStateUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
-    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
-    private val authenticateBiometricUseCase: AuthenticateBiometricUseCase
+    private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
+    private val authOrchestrator: AuthOrchestrator,
+    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase
 ) : ViewModel() {
 
     internal val stateFlow: StateFlow<MainState> = combine(
@@ -67,6 +70,11 @@ internal class MainViewModel @Inject constructor(
         )
     )
 
+    internal fun registerAuthOrchestrator(context: ComponentActivity) {
+        authOrchestrator.register(context as ActivityResultCaller)
+        authOrchestrator.startLoginWorkflow()
+    }
+
     internal fun requestReauthentication(context: Context) {
         viewModelScope.launch {
             authenticateBiometricUseCase(
@@ -86,6 +94,9 @@ internal class MainViewModel @Inject constructor(
     }
 
     private companion object {
+
         private const val TAG = "MainViewModel"
+
     }
+
 }

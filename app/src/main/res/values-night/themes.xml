@@ -18,7 +18,7 @@
   -->
 
 <resources>
-    <style name="Theme.ProtonAuthenticator" parent="android:Theme.Material.NoActionBar" >
+    <style name="Theme.ProtonAuthenticator" parent="Theme.AppCompat" >
         <item name="colorPrimary">@color/black</item>
     </style>
 </resources>

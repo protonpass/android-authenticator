@@ -24,7 +24,8 @@ import javax.inject.Inject
 class LaunchSignInFlowUseCase @Inject constructor(private val authOrchestrator: AuthOrchestrator) {
 
     operator fun invoke() {
-        authOrchestrator.startLoginWorkflow()
+        println("JIBIRI: startLoginWorkflow")
+        authOrchestrator.startSignupWorkflow()
     }
 
 }

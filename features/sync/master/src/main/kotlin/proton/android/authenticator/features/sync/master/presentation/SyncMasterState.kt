@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.sync.master.presentation
 
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
@@ -25,9 +26,9 @@ internal sealed interface SyncMasterState {
 
     data object Loading : SyncMasterState
 
-    data class Ready(private val settingsThemeType: SettingsThemeType) : SyncMasterState {
+    data class Ready(private val settings: Settings) : SyncMasterState {
 
-        internal val themeType: ThemeType = when (settingsThemeType) {
+        internal val themeType: ThemeType = when (settings.themeType) {
             SettingsThemeType.Dark -> ThemeType.Dark
             SettingsThemeType.Light -> ThemeType.Light
             SettingsThemeType.System -> ThemeType.System

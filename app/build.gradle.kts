@@ -66,6 +66,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
+
+        ndk {
+            abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
+        }
     }
 
     buildFeatures{
@@ -171,6 +175,7 @@ dependencies {
     implementation(libs.androidx.work)
     implementation(libs.authenticator.common)
     implementation(libs.coil)
+    implementation(libs.core.auth)
     implementation(libs.core.crypto)
     implementation(libs.core.data)
     implementation(libs.core.dataRoom)

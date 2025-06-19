@@ -21,7 +21,7 @@ dependencies {
     implementation(libs.core.presentation.compose)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
-    //implementation(libs.reorderable)
+//    implementation(libs.reorderable)
     implementation(libs.zxing.core)
     implementation(platform(libs.androidx.compose.bom))
 

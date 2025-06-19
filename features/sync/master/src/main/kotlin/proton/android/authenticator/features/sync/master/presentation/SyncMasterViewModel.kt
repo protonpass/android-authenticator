@@ -39,9 +39,7 @@ internal class SyncMasterViewModel @Inject constructor(
     private val settingsFlow = observeSettingsUseCase()
 
     internal val stateFlow: StateFlow<SyncMasterState> = settingsFlow
-        .mapLatest { settings ->
-            SyncMasterState.Ready(settingsThemeType = settings.themeType)
-        }
+        .mapLatest(SyncMasterState::Ready)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

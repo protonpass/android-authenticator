@@ -56,9 +56,30 @@ fun DraggableVerticalList(
 
     var toItem by remember { mutableStateOf<LazyListItemInfo?>(null) }
 
+//    val reorderableLazyListState = rememberReorderableLazyListState(
+//        lazyListState = listState
+//    ) { from, to ->
+//        fromItem = from
+//        toItem = to
+//
+//        items = items.toMutableList().apply {
+//            add(to.index, removeAt(from.index))
+//        }
+//    }
+
+    val data = remember(key1 = draggableItems) { mutableStateOf(draggableItems) }
+
+//    val state = rememberReorderableLazyListState(onMove = { from, to ->
+//        data.value = data.value.toMutableList().apply {
+//            add(to.index, removeAt(from.index))
+//        }
+//    })
+
     LazyColumn(
         modifier = modifier,
-        state = listState,
+//            .reorderable(state)
+//            .detectReorderAfterLongPress(state),
+//        state = state.listState,
         contentPadding = contentPadding,
         verticalArrangement = verticalArrangement
     ) {
@@ -66,7 +87,60 @@ fun DraggableVerticalList(
             items = items,
             key = { index, item -> item.id }
         ) { index, item ->
+//            ReorderableItem(reorderableLazyListState, key = item) { isDragging ->
+            item.content()
+//            }
 
+//            ReorderableItem(
+//                state = reorderableLazyListState,
+//                key = item.id
+//            ) {
+//                Box(
+//                    modifier = Modifier
+//                        .applyIf(
+//                            condition = selectedItemId == item.id,
+//                            ifTrue = {
+//                                border(
+//                                    shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+//                                    width = ThemeThickness.Small,
+//                                    color = highlightColor
+//                                )
+//                            }
+//                        )
+//                        .longPressDraggableHandle(
+//                            onDragStarted = {
+//                                fromItem = null
+//                                toItem = null
+//
+//                                selectedItemId = item.id
+//                                selectedItemIndex = index
+//                            },
+//                            onDragStopped = {
+//                                fromItem?.let { from ->
+//                                    toItem?.let { to ->
+//                                        selectedItemIndex?.let { selectedIndex ->
+//                                            if (selectedIndex == to.index) {
+//                                                items = draggableItems
+//                                            } else {
+//                                                onMoved(
+//                                                    selectedIndex,
+//                                                    from.key.toString(),
+//                                                    to.index,
+//                                                    to.key.toString()
+//                                                )
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//
+//                                selectedItemId = null
+//                                selectedItemIndex = null
+//                            }
+//                        )
+//                ) {
+//                    item.content()
+//                }
+//            }
         }
     }
 }
