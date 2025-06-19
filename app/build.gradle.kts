@@ -159,6 +159,8 @@ android {
 }
 
 dependencies {
+    implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
+
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
