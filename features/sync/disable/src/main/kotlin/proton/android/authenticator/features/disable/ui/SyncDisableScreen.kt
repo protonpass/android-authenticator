@@ -26,13 +26,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.disable.presentation.SyncDisableEvent
 import proton.android.authenticator.features.disable.presentation.SyncDisableViewModel
 import proton.android.authenticator.features.sync.disable.R
+import proton.android.authenticator.features.sync.shared.presentation.SyncErrorType
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.screens.AlertDialogScreen
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 fun SyncDisableScreen(
-    onDisableError: () -> Unit,
+    onDisableError: (SyncErrorType) -> Unit,
     onDisableSuccess: () -> Unit,
     onDismissed: () -> Unit
 ) = with(hiltViewModel<SyncDisableViewModel>()) {
@@ -41,8 +42,13 @@ fun SyncDisableScreen(
     LaunchedEffect(key1 = state.event) {
         when (state.event) {
             SyncDisableEvent.Idle -> Unit
-            SyncDisableEvent.DisableSyncFailed -> onDisableError()
-            SyncDisableEvent.DisableSyncSucceeded -> onDisableSuccess()
+            SyncDisableEvent.DisableSyncFailed -> {
+                onDisableError(SyncErrorType.DisableSync)
+            }
+
+            SyncDisableEvent.DisableSyncSucceeded -> {
+                onDisableSuccess()
+            }
         }
 
         onConsumeEvent(event = state.event)

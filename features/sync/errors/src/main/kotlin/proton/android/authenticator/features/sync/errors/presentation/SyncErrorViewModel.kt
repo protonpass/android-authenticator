@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.errors.presentation
+package proton.android.authenticator.features.sync.errors.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -24,24 +24,24 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
+import proton.android.authenticator.features.sync.shared.presentation.SyncErrorType
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ImportsErrorViewModel @Inject constructor(
+internal class SyncErrorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val errorReason = requireNotNull<Int>(savedStateHandle[ARGS_ERROR_REASON])
-        .let(enumValues<ImportEntriesReason>()::get)
+    private val errorType = requireNotNull<Int>(savedStateHandle[ARGS_ERROR_REASON])
+        .let(enumValues<SyncErrorType>()::get)
 
-    internal val stateFlow: StateFlow<ImportsErrorState> = ImportsErrorState(errorReason = errorReason)
+    internal val stateFlow: StateFlow<SyncErrorState> = SyncErrorState(errorType = errorType)
         .let(::MutableStateFlow)
         .asStateFlow()
 
     private companion object {
 
-        private const val ARGS_ERROR_REASON = "errorReason"
+        private const val ARGS_ERROR_REASON = "errorType"
 
     }
 

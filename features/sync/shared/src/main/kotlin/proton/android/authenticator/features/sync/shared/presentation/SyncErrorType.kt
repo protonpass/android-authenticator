@@ -16,16 +16,9 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.sync.master.presentation
+package proton.android.authenticator.features.sync.shared.presentation
 
-internal sealed interface SyncMasterEvent {
-
-    data object Idle : SyncMasterEvent
-
-    data object OnSyncEnableFailed : SyncMasterEvent
-
-    data object OnSyncEnableSucceeded : SyncMasterEvent
-
-    data object OnUserAuthenticated : SyncMasterEvent
-
+enum class SyncErrorType {
+    DisableSync,
+    EnableSync
 }

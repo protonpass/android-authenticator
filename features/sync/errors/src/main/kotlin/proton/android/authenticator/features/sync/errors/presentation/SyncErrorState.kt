@@ -16,23 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.errors.presentation
+package proton.android.authenticator.features.sync.errors.presentation
 
 import androidx.compose.runtime.Stable
-import proton.android.authenticator.business.entries.application.importall.ImportEntriesReason
-import proton.android.authenticator.features.imports.errors.R
+import proton.android.authenticator.features.sync.shared.presentation.SyncErrorType
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.features.sync.errors.R
 
 @Stable
-internal data class ImportsErrorState(private val errorReason: ImportEntriesReason) {
+internal data class SyncErrorState(private val errorType: SyncErrorType) {
 
-    internal val errorText: UiText = when (errorReason) {
-        ImportEntriesReason.BadContent -> R.string.imports_error_dialog_message_bad_content
-        ImportEntriesReason.DecryptionFailed -> R.string.imports_error_dialog_message_bad_encryption
-        ImportEntriesReason.BadPassword,
-        ImportEntriesReason.MissingPassword -> {
-            throw IllegalStateException("Invalid error reason: $errorReason")
-        }
+    internal val errorText: UiText = when (errorType) {
+        SyncErrorType.DisableSync -> R.string.sync_error_text_disable
+        SyncErrorType.EnableSync -> R.string.sync_error_text_enable
     }.let(UiText::Resource)
 
 }

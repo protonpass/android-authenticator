@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.sync.master.presentation.SyncMasterEvent
 import proton.android.authenticator.features.sync.master.presentation.SyncMasterState
 import proton.android.authenticator.features.sync.master.presentation.SyncMasterViewModel
+import proton.android.authenticator.features.sync.shared.presentation.SyncErrorType
 import proton.android.authenticator.shared.ui.domain.components.bars.ProtonBrandBottomBar
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
@@ -42,7 +43,8 @@ fun SyncMasterScreen(
     onNavigationClick: () -> Unit,
     onSignIn: () -> Unit,
     onSignUp: () -> Unit,
-    onSyncEnabled: () -> Unit
+    onEnableError: (SyncErrorType) -> Unit,
+    onEnableSuccess: () -> Unit
 ) = with(hiltViewModel<SyncMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -66,8 +68,12 @@ fun SyncMasterScreen(
                 LaunchedEffect(key1 = currentState.event) {
                     when (currentState.event) {
                         SyncMasterEvent.Idle -> Unit
-                        SyncMasterEvent.OnSyncEnabled -> {
-                            onSyncEnabled()
+                        SyncMasterEvent.OnSyncEnableFailed -> {
+                            onEnableError(SyncErrorType.EnableSync)
+                        }
+
+                        SyncMasterEvent.OnSyncEnableSucceeded -> {
+                            onEnableSuccess()
                         }
 
                         SyncMasterEvent.OnUserAuthenticated -> {

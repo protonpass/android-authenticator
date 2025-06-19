@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.disable.ui.SyncDisableScreen
+import proton.android.authenticator.features.sync.errors.ui.SyncErrorScreen
 import proton.android.authenticator.features.sync.master.ui.SyncMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
@@ -44,7 +45,13 @@ internal fun NavGraphBuilder.syncNavigationGraph(
                 onSignUp = {
                     onLaunchNavigationFlow(NavigationFlow.SignUp)
                 },
-                onSyncEnabled = {
+                onEnableError = { errorType ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = SyncErrorNavigationDestination(errorType = errorType.ordinal),
+                        popDestination = SettingsMasterNavigationDestination
+                    ).also(onNavigate)
+                },
+                onEnableSuccess = {
                     NavigationCommand.PopupTo(
                         destination = SettingsMasterNavigationDestination,
                         inclusive = false
@@ -55,8 +62,11 @@ internal fun NavGraphBuilder.syncNavigationGraph(
 
         dialog<SyncDisableNavigationDestination> {
             SyncDisableScreen(
-                onDisableError = {
-                    // Will be implemented in a following MR
+                onDisableError = { errorType ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = SyncErrorNavigationDestination(errorType = errorType.ordinal),
+                        popDestination = SettingsMasterNavigationDestination
+                    ).also(onNavigate)
                 },
                 onDisableSuccess = {
                     NavigationCommand.PopupTo(
@@ -69,6 +79,14 @@ internal fun NavGraphBuilder.syncNavigationGraph(
                         destination = SettingsMasterNavigationDestination,
                         inclusive = false
                     ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<SyncErrorNavigationDestination> {
+            SyncErrorScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

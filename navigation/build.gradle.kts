@@ -36,7 +36,9 @@ dependencies {
     implementation(projects.features.settings.master)
     implementation(projects.features.shared)
     implementation(projects.features.sync.disable)
+    implementation(projects.features.sync.errors)
     implementation(projects.features.sync.master)
+    implementation(projects.features.sync.shared)
     implementation(projects.shared.common)
     implementation(projects.shared.ui)
 

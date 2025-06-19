@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -34,6 +35,7 @@ import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
+import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,11 +53,8 @@ internal class SyncMasterViewModel @Inject constructor(
         viewModelScope.launch {
             observeIsUserAuthenticatedUseCase()
                 .distinctUntilChanged()
-                .collectLatest { isAuthenticated ->
-                    if (isAuthenticated) {
-                        eventFlow.update { SyncMasterEvent.OnUserAuthenticated }
-                    }
-                }
+                .filter { isAuthenticated -> isAuthenticated }
+                .collectLatest { eventFlow.update { SyncMasterEvent.OnUserAuthenticated } }
         }
     }
 
@@ -65,7 +64,7 @@ internal class SyncMasterViewModel @Inject constructor(
         SyncMasterState::Ready
     ).stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = SyncMasterState.Loading
     )
 
@@ -78,14 +77,13 @@ internal class SyncMasterViewModel @Inject constructor(
             settings
                 .copy(isSyncEnabled = true)
                 .let { updatedSettings -> updateSettingsUseCase(settings = updatedSettings) }
-                .also { answer ->
-                    answer.fold(
-                        onSuccess = {
-                            eventFlow.update { SyncMasterEvent.OnSyncEnabled }
-                        },
-                        onFailure = { reason -> }
-                    )
+                .let { answer ->
+                    when (answer) {
+                        is Answer.Failure -> SyncMasterEvent.OnSyncEnableFailed
+                        is Answer.Success -> SyncMasterEvent.OnSyncEnableSucceeded
+                    }
                 }
+                .also { event -> eventFlow.update { event } }
         }
     }
 
