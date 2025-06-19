@@ -22,6 +22,7 @@ dependencies {
     implementation(projects.business.entries)
     implementation(projects.business.settings)
     implementation(projects.business.steps)
+    implementation(projects.business.users)
     implementation(projects.shared.common)
     implementation(projects.shared.crypto)
 

@@ -22,8 +22,8 @@ internal sealed interface SyncMasterEvent {
 
     data object Idle : SyncMasterEvent
 
-    data object OnSignIn : SyncMasterEvent
-
     data object OnSyncEnabled : SyncMasterEvent
+
+    data object OnUserAuthenticated : SyncMasterEvent
 
 }

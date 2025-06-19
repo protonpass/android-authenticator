@@ -66,12 +66,12 @@ fun SyncMasterScreen(
                 LaunchedEffect(key1 = currentState.event) {
                     when (currentState.event) {
                         SyncMasterEvent.Idle -> Unit
-                        SyncMasterEvent.OnSignIn -> {
-                            onEnableSync(currentState.settings)
-                        }
-
                         SyncMasterEvent.OnSyncEnabled -> {
                             onSyncEnabled()
+                        }
+
+                        SyncMasterEvent.OnUserAuthenticated -> {
+                            onEnableSync(currentState.settings)
                         }
                     }
 

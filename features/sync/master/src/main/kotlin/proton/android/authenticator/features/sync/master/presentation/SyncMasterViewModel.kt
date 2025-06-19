@@ -26,19 +26,19 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.proton.core.accountmanager.domain.AccountManager
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SyncMasterViewModel @Inject constructor(
-    accountManager: AccountManager,
+    observeIsUserAuthenticatedUseCase: ObserveIsUserAuthenticatedUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
@@ -49,10 +49,12 @@ internal class SyncMasterViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            accountManager.getPrimaryUserId()
-                .filterNotNull()
-                .collectLatest {
-                    eventFlow.update { SyncMasterEvent.OnSignIn }
+            observeIsUserAuthenticatedUseCase()
+                .distinctUntilChanged()
+                .collectLatest { isAuthenticated ->
+                    if (isAuthenticated) {
+                        eventFlow.update { SyncMasterEvent.OnUserAuthenticated }
+                    }
                 }
         }
     }

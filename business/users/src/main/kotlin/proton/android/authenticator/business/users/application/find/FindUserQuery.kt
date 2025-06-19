@@ -16,12 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.infrastructure.queries
+package proton.android.authenticator.business.users.application.find
 
-import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
 
-interface QueryHandler<in Q : Query, out R : Any?> {
-
-    fun handle(query: Q): Flow<R>
-
-}
+object FindUserQuery : Query

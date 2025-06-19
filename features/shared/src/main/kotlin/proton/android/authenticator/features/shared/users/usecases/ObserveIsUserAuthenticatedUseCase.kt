@@ -16,12 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.infrastructure.queries
+package proton.android.authenticator.features.shared.users.usecases
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import proton.android.authenticator.business.users.application.find.FindUserQuery
+import proton.android.authenticator.business.users.domain.User
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import javax.inject.Inject
 
-interface QueryHandler<in Q : Query, out R : Any?> {
+class ObserveIsUserAuthenticatedUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    fun handle(query: Q): Flow<R>
+    operator fun invoke(): Flow<Boolean> = queryBus.ask<User?>(query = FindUserQuery)
+        .map { user -> user != null }
 
 }
