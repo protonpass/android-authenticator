@@ -30,7 +30,7 @@ protobufPluginVersion = "0.9.4"
 protobufVersion = "4.31.1"
 protonDetektVersion = "1.3.1"
 protonEnvironmentConfigVersion = "1.3.1"
-#reorderableVersion = "0.9.6"
+reorderableVersion = "2.4.3"
 roomVersion = "2.6.1"
 sentryVersion = "3.5.0"
 startupVersion = "1.2.0"
@@ -72,50 +72,33 @@ authenticator-common = { module = "me.proton.authenticator.common:lib", version.
 coil = { module = "io.coil-kt:coil", version.ref = "coilVersion" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilVersion" }
 core-account = { module = "me.proton.core:account", version.ref = "coreVersion" }
-core-account-domain = { module = "me.proton.core:account-domain", version.ref = "coreVersion" }
 core-accountManager = { module = "me.proton.core:account-manager", version.ref = "coreVersion" }
-core-accountManager-domain = { module = "me.proton.core:account-manager-domain", version.ref = "coreVersion" }
 core-accountManager-presentation-compose = { module = "me.proton.core:account-manager-presentation-compose", version.ref = "coreVersion" }
-core-accountManager-test = { module = "me.proton.core:account-manager-test", version.ref = "coreVersion" }
 core-accountRecovery = { module = "me.proton.core:account-recovery", version.ref = "coreVersion" }
-core-accountRecovery-test = { module = "me.proton.core:account-recovery-test", version.ref = "coreVersion" }
 core-auth = { module = "me.proton.core:auth", version.ref = "coreVersion" }
-core-auth-test = { module = "me.proton.core:auth-test", version.ref = "coreVersion" }
 core-authFidoDagger = { module = "me.proton.core:auth-fido-dagger", version.ref = "coreVersion" }
 core-authFidoDomain = { module = "me.proton.core:auth-fido-domain", version.ref = "coreVersion" }
-core-authFidoPlay = { module = "me.proton.core:auth-fido-play", version.ref = "coreVersion" }
 core-biometric = { module = "me.proton.core:biometric", version.ref = "coreVersion" }
 core-challenge = { module = "me.proton.core:challenge", version.ref = "coreVersion" }
 core-country = { module = "me.proton.core:country", version.ref = "coreVersion" }
 core-crypto = { module = "me.proton.core:crypto", version.ref = "coreVersion" }
-core-cryptoAndroid = { module = "me.proton.core:crypto-android", version.ref = "coreVersion" }
-core-cryptoCommon = { module = "me.proton.core:crypto-common", version.ref = "coreVersion" }
 core-cryptoValidator = { module = "me.proton.core:crypto-validator", version.ref = "coreVersion" }
 core-data = { module = "me.proton.core:data", version.ref = "coreVersion" }
 core-dataRoom = { module = "me.proton.core:data-room", version.ref = "coreVersion" }
 core-deviceMigration = { module = "me.proton.core:device-migration", version.ref = "coreVersion" }
-core-deviceMigrationDomain = { module = "me.proton.core:device-migration-domain", version.ref = "coreVersion" }
-core-deviceMigrationPresentation = { module = "me.proton.core:device-migration-presentation", version.ref = "coreVersion" }
 core-domain = { module = "me.proton.core:domain", version.ref = "coreVersion" }
 core-eventManager = { module = "me.proton.core:event-manager", version.ref = "coreVersion" }
 core-featureFlag = { module = "me.proton.core:feature-flag", version.ref = "coreVersion" }
 core-featureFlag-domain = { module = "me.proton.core:feature-flag-domain", version.ref = "coreVersion" }
 core-humanVerification = { module = "me.proton.core:human-verification", version.ref = "coreVersion" }
-core-humanVerification-test = { module = "me.proton.core:human-verification-test", version.ref = "coreVersion" }
 core-key = { module = "me.proton.core:key", version.ref = "coreVersion" }
 core-keyTransparency = { module = "me.proton.core:key-transparency", version.ref = "coreVersion" }
-core-key-domain = { module = "me.proton.core:key-domain", version.ref = "coreVersion" }
 core-network = { module = "me.proton.core:network", version.ref = "coreVersion" }
-core-network-data = { module = "me.proton.core:network-data", version.ref = "coreVersion" }
-core-network-domain = { module = "me.proton.core:network-domain", version.ref = "coreVersion" }
 core-notification = { module = "me.proton.core:notification", version.ref = "coreVersion" }
 core-observability = { module = "me.proton.core:observability", version.ref = "coreVersion" }
 core-passValidator = { module = "me.proton.core:pass-validator", version.ref = "coreVersion" }
 core-payment = { module = "me.proton.core:payment", version.ref = "coreVersion" }
-core-paymentIap = { module = "me.proton.core:payment-iap", version.ref = "coreVersion" }
-core-payment-domain = { module = "me.proton.core:payment-domain", version.ref = "coreVersion" }
 core-plan = { module = "me.proton.core:plan", version.ref = "coreVersion" }
-core-plan-test = { module = "me.proton.core:plan-test", version.ref = "coreVersion" }
 core-presentation = { module = "me.proton.core:presentation", version.ref = "coreVersion" }
 core-presentation-compose = { module = "me.proton.core:presentation-compose", version.ref = "coreVersion" }
 core-push = { module = "me.proton.core:push", version.ref = "coreVersion" }
@@ -124,12 +107,8 @@ core-telemetry-data = { module = "me.proton.core:telemetry-data", version.ref = 
 core-telemetry-domain = { module = "me.proton.core:telemetry-domain", version.ref = "coreVersion" }
 core-telemetry-presentation = { module = "me.proton.core:telemetry-presentation", version.ref = "coreVersion" }
 core-user = { module = "me.proton.core:user", version.ref = "coreVersion" }
-core-user-domain = { module = "me.proton.core:user-domain", version.ref = "coreVersion" }
 core-userRecovery = { module = "me.proton.core:user-recovery", version.ref = "coreVersion" }
-core-userRecovery-test = { module = "me.proton.core:user-recovery-test", version.ref = "coreVersion" }
 core-userSettings = { module = "me.proton.core:user-settings", version.ref = "coreVersion" }
-core-userSettings-domain = { module = "me.proton.core:user-settings-domain", version.ref = "coreVersion" }
-core-userSettings-test = { module = "me.proton.core:user-settings-test", version.ref = "coreVersion" }
 core-utilAndroidDagger = { module = "me.proton.core:util-android-dagger", version.ref = "coreVersion" }
 core-utilKotlin = { module = "me.proton.core:util-kotlin", version.ref = "coreVersion" }
 core-config-data = { module = "me.proton.core:configuration-data", version.ref = "coreVersion" }
@@ -147,8 +126,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
 protobuf-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.ref = "protobufVersion" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobufVersion" }
-#reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderableVersion" }
-#reorderable = { group = "org.burnoutcrew.composereorderable", name = "reorderable", version.ref = "reorderableVersion" }
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderableVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxingVersion" }
 
