@@ -16,22 +16,14 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.ui.di
+package proton.android.authenticator.features.sync.master.presentation
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import me.proton.core.compose.theme.AppTheme
-import proton.android.authenticator.shared.ui.domain.theme.Theme
-import javax.inject.Singleton
+internal sealed interface SyncMasterEvent {
 
-@[Module InstallIn(SingletonComponent::class)]
-internal object SharedUiModule {
+    data object Idle : SyncMasterEvent
 
-    @[Provides Singleton]
-    internal fun provideAppTheme(): AppTheme = AppTheme { content ->
-        Theme { content() }
-    }
+    data object OnSignIn : SyncMasterEvent
+
+    data object OnSyncEnabled : SyncMasterEvent
 
 }

@@ -50,7 +50,7 @@ internal class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.registerAuthOrchestrator(context = this)
+        viewModel.onRegisterOrchestrators(context = this)
 
         enableEdgeToEdge()
 
@@ -74,7 +74,12 @@ internal class MainActivity : FragmentActivity() {
 
                             AppLockState.AUTHENTICATED -> isDarkTheme(state.themeType)
                                 .also(::setStatusBarTheme)
-                                .also { isDarkTheme -> navigationNavigator.NavGraphs(isDarkTheme) }
+                                .also { isDarkTheme ->
+                                    navigationNavigator.NavGraphs(
+                                        isDarkTheme = isDarkTheme,
+                                        onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow
+                                    )
+                                }
                         }
                     }
                 }

@@ -7,5 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.core.accountManager)
+
     implementation(projects.business.settings)
 }

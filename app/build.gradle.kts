@@ -177,6 +177,7 @@ dependencies {
     implementation(libs.androidx.work)
     implementation(libs.authenticator.common)
     implementation(libs.coil)
+    implementation(libs.core.accountManager)
     implementation(libs.core.auth)
     implementation(libs.core.crypto)
     implementation(libs.core.data)

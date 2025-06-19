@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.business.steps.domain.StepDestination
 import proton.android.authenticator.features.shared.usecases.steps.ObserveStepUseCase
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
+import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.navigation.domain.graphs.backups.backupsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
@@ -39,7 +40,7 @@ internal class AppNavigationNavigator @Inject constructor(
 ) : NavigationNavigator {
 
     @Composable
-    override fun NavGraphs(isDarkTheme: Boolean) {
+    override fun NavGraphs(isDarkTheme: Boolean, onLaunchNavigationFlow: (NavigationFlow) -> Unit) {
         Theme(isDarkTheme = isDarkTheme) {
             val step by observeStepUseCase().collectAsState(initial = null)
 
@@ -110,7 +111,7 @@ internal class AppNavigationNavigator @Inject constructor(
                             navigationCommandHandler.handle(navCommand, navController)
                         }
 
-                        syncNavigationGraph { navCommand ->
+                        syncNavigationGraph(onLaunchNavigationFlow = onLaunchNavigationFlow) { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }
                     }

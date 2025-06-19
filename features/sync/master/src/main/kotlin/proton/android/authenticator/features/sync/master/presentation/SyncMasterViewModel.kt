@@ -21,37 +21,70 @@ package proton.android.authenticator.features.sync.master.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.stateIn
-import proton.android.authenticator.features.shared.auth.usecases.LaunchSignInFlowUseCase
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import me.proton.core.accountmanager.domain.AccountManager
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import javax.inject.Inject
 
-@[HiltViewModel OptIn(ExperimentalCoroutinesApi::class)]
+@HiltViewModel
 internal class SyncMasterViewModel @Inject constructor(
+    accountManager: AccountManager,
     observeSettingsUseCase: ObserveSettingsUseCase,
-    private val launchSignInFlowUseCase: LaunchSignInFlowUseCase
+    private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
+
+    private val eventFlow = MutableStateFlow<SyncMasterEvent>(value = SyncMasterEvent.Idle)
 
     private val settingsFlow = observeSettingsUseCase()
 
-    internal val stateFlow: StateFlow<SyncMasterState> = settingsFlow
-        .mapLatest(SyncMasterState::Ready)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = SyncMasterState.Loading
-        )
-
-    internal fun onSignIn() {
-        launchSignInFlowUseCase()
+    init {
+        viewModelScope.launch {
+            accountManager.getPrimaryUserId()
+                .filterNotNull()
+                .collectLatest {
+                    eventFlow.update { SyncMasterEvent.OnSignIn }
+                }
+        }
     }
 
-    internal fun onSignUp() {
-        println("JIBIRI: onSignUp")
+    internal val stateFlow: StateFlow<SyncMasterState> = combine(
+        eventFlow,
+        settingsFlow,
+        SyncMasterState::Ready
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = SyncMasterState.Loading
+    )
+
+    internal fun onConsumeEvent(event: SyncMasterEvent) {
+        eventFlow.compareAndSet(expect = event, update = SyncMasterEvent.Idle)
+    }
+
+    internal fun onEnableSync(settings: Settings) {
+        viewModelScope.launch {
+            settings
+                .copy(isSyncEnabled = true)
+                .let { updatedSettings -> updateSettingsUseCase(settings = updatedSettings) }
+                .also { answer ->
+                    answer.fold(
+                        onSuccess = {
+                            eventFlow.update { SyncMasterEvent.OnSyncEnabled }
+                        },
+                        onFailure = { reason -> }
+                    )
+                }
+        }
     }
 
 }

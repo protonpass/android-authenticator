@@ -16,16 +16,9 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.shared.auth.usecases
+package proton.android.authenticator.navigation.domain.flows
 
-import me.proton.core.auth.presentation.AuthOrchestrator
-import javax.inject.Inject
-
-class LaunchSignInFlowUseCase @Inject constructor(private val authOrchestrator: AuthOrchestrator) {
-
-    operator fun invoke() {
-        println("JIBIRI: startLoginWorkflow")
-        authOrchestrator.startSignupWorkflow()
-    }
-
+enum class NavigationFlow {
+    SignIn,
+    SignUp
 }

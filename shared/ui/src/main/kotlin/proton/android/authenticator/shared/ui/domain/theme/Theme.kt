@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
+import me.proton.core.compose.theme.isNightMode
 
 @Composable
 fun isDarkTheme(themeType: ThemeType): Boolean = when (themeType) {
@@ -33,7 +34,7 @@ fun isDarkTheme(themeType: ThemeType): Boolean = when (themeType) {
 }
 
 @Composable
-fun Theme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
+fun Theme(isDarkTheme: Boolean = isNightMode(), content: @Composable () -> Unit) {
     val colorScheme = remember(isDarkTheme) {
         if (isDarkTheme) ThemeColors.Dark
         else ThemeColors.Light

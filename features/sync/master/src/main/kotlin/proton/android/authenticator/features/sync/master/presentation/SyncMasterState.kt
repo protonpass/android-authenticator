@@ -26,7 +26,10 @@ internal sealed interface SyncMasterState {
 
     data object Loading : SyncMasterState
 
-    data class Ready(private val settings: Settings) : SyncMasterState {
+    data class Ready(
+        internal val event: SyncMasterEvent,
+        internal val settings: Settings
+    ) : SyncMasterState {
 
         internal val themeType: ThemeType = when (settings.themeType) {
             SettingsThemeType.Dark -> ThemeType.Dark

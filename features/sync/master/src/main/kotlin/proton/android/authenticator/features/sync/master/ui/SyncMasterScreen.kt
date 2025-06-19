@@ -21,10 +21,12 @@ package proton.android.authenticator.features.sync.master.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.sync.master.presentation.SyncMasterEvent
 import proton.android.authenticator.features.sync.master.presentation.SyncMasterState
 import proton.android.authenticator.features.sync.master.presentation.SyncMasterViewModel
 import proton.android.authenticator.shared.ui.domain.components.bars.ProtonBrandBottomBar
@@ -36,7 +38,12 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun SyncMasterScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<SyncMasterViewModel>()) {
+fun SyncMasterScreen(
+    onNavigationClick: () -> Unit,
+    onSignIn: () -> Unit,
+    onSignUp: () -> Unit,
+    onSyncEnabled: () -> Unit
+) = with(hiltViewModel<SyncMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
     ScaffoldScreen(
@@ -56,14 +63,29 @@ fun SyncMasterScreen(onNavigationClick: () -> Unit) = with(hiltViewModel<SyncMas
         when (val currentState = state) {
             SyncMasterState.Loading -> Unit
             is SyncMasterState.Ready -> {
+                LaunchedEffect(key1 = currentState.event) {
+                    when (currentState.event) {
+                        SyncMasterEvent.Idle -> Unit
+                        SyncMasterEvent.OnSignIn -> {
+                            onEnableSync(currentState.settings)
+                        }
+
+                        SyncMasterEvent.OnSyncEnabled -> {
+                            onSyncEnabled()
+                        }
+                    }
+
+                    onConsumeEvent(event = currentState.event)
+                }
+
                 SyncMasterContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues = paddingValues)
                         .padding(horizontal = ThemePadding.Large),
                     state = currentState,
-                    onSignInClick = ::onSignIn,
-                    onSignUpClick = ::onSignUp
+                    onSignInClick = onSignIn,
+                    onSignUpClick = onSignUp
                 )
             }
         }

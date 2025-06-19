@@ -25,14 +25,30 @@ import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.disable.ui.SyncDisableScreen
 import proton.android.authenticator.features.sync.master.ui.SyncMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.navigation.domain.graphs.settings.SettingsMasterNavigationDestination
 
-internal fun NavGraphBuilder.syncNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
+internal fun NavGraphBuilder.syncNavigationGraph(
+    onLaunchNavigationFlow: (NavigationFlow) -> Unit,
+    onNavigate: (NavigationCommand) -> Unit
+) {
     navigation<SyncNavigationDestination>(startDestination = SyncMasterNavigationDestination) {
         composable<SyncMasterNavigationDestination> {
             SyncMasterScreen(
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
+                },
+                onSignIn = {
+                    onLaunchNavigationFlow(NavigationFlow.SignIn)
+                },
+                onSignUp = {
+                    onLaunchNavigationFlow(NavigationFlow.SignUp)
+                },
+                onSyncEnabled = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
                 }
             )
         }

@@ -21,6 +21,7 @@ package proton.android.authenticator.app.presentation
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultCaller
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +30,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.accountmanager.presentation.observe
+import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
+import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
+import me.proton.core.accountmanager.presentation.onAccountDeviceSecretNeeded
+import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
+import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
+import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import proton.android.authenticator.R
 import proton.android.authenticator.business.applock.domain.AppLockState
@@ -39,6 +48,7 @@ import proton.android.authenticator.features.shared.usecases.applock.ObserveAppL
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
@@ -47,6 +57,7 @@ internal class MainViewModel @Inject constructor(
     observeAppLockStateUseCase: ObserveAppLockStateUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
+    private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase
 ) : ViewModel() {
@@ -70,9 +81,40 @@ internal class MainViewModel @Inject constructor(
         )
     )
 
-    internal fun registerAuthOrchestrator(context: ComponentActivity) {
+    internal fun onRegisterOrchestrators(context: ComponentActivity) {
         authOrchestrator.register(context as ActivityResultCaller)
-        authOrchestrator.startLoginWorkflow()
+
+        accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
+            .onAccountTwoPassModeFailed { account ->
+                accountManager.disableAccount(userId = account.userId)
+            }
+            .onAccountCreateAddressFailed { account ->
+                accountManager.disableAccount(userId = account.userId)
+            }
+            .onSessionSecondFactorNeeded { account ->
+                authOrchestrator.startSecondFactorWorkflow(account = account)
+            }
+            .onAccountTwoPassModeNeeded { account ->
+                authOrchestrator.startTwoPassModeWorkflow(account = account)
+            }
+            .onAccountCreateAddressNeeded { account ->
+                authOrchestrator.startChooseAddressWorkflow(account = account)
+            }
+            .onAccountDeviceSecretNeeded { account ->
+                authOrchestrator.startDeviceSecretWorkflow(account = account)
+            }
+    }
+
+    internal fun onLaunchNavigationFlow(flow: NavigationFlow) {
+        when (flow) {
+            NavigationFlow.SignIn -> {
+                authOrchestrator.startLoginWorkflow()
+            }
+
+            NavigationFlow.SignUp -> {
+                authOrchestrator.startSignupWorkflow()
+            }
+        }
     }
 
     internal fun requestReauthentication(context: Context) {
