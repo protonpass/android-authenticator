@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ import proton.android.authenticator.features.shared.usecases.biometrics.Authenti
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
+import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
@@ -56,7 +58,8 @@ internal class SettingsMasterViewModel @Inject constructor(
     private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
     private val exportEntriesUseCase: ExportEntriesUseCase,
-    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
+    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
+    private val observeIsUserAuthenticatedUseCase: ObserveIsUserAuthenticatedUseCase
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<SettingsMasterEvent>(value = SettingsMasterEvent.Idle)
@@ -101,10 +104,17 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     internal fun onUpdateIsSyncEnabled(settingsModel: SettingsMasterSettingsModel, newIsSyncEnabled: Boolean) {
         if (newIsSyncEnabled) {
-            SettingsMasterEvent.OnSyncEnabled
+            viewModelScope.launch {
+                if (observeIsUserAuthenticatedUseCase().first()) {
+                    settingsModel.copy(isSyncEnabled = true).also(::updateSettings)
+                    return@launch
+                }
+
+                eventFlow.update { SettingsMasterEvent.OnSyncEnabled }
+            }
         } else {
-            SettingsMasterEvent.OnSyncDisabled
-        }.also { event -> eventFlow.update { event } }
+            eventFlow.update { SettingsMasterEvent.OnSyncDisabled }
+        }
     }
 
     internal fun onUpdateAppLockType(
