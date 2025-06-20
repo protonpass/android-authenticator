@@ -31,6 +31,7 @@ import proton.android.authenticator.features.imports.passwords.presentation.Impo
 import proton.android.authenticator.features.imports.passwords.presentation.ImportsPasswordViewModel
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
@@ -66,6 +67,9 @@ fun ImportsPasswordScreen(
         }
 
         ScaffoldScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .backgroundScreenGradient(),
             topBar = {
                 SmallTopBar(
                     navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
