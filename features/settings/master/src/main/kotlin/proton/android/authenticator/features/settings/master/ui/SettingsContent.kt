@@ -95,7 +95,7 @@ internal fun SettingsContent(
                     )
                 },
                 {
-                    SelectorRow<SettingsAppLockType>(
+                    SelectorRow(
                         titleText = UiText.Resource(id = R.string.settings_security_title_lock),
                         options = settingsModel.appLockOptions,
                         onSelectedOptionChange = { newAppLockType ->
@@ -119,7 +119,7 @@ internal fun SettingsContent(
             title = stringResource(id = R.string.settings_appearance_section),
             contents = listOf(
                 {
-                    SelectorRow<SettingsThemeType>(
+                    SelectorRow(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_theme),
                         options = settingsModel.themeOptions,
                         onSelectedOptionChange = { themeType ->
@@ -128,7 +128,7 @@ internal fun SettingsContent(
                     )
                 },
                 {
-                    SelectorRow<SettingsSearchBarType>(
+                    SelectorRow(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_search_bar_position),
                         options = settingsModel.searchBarOptions,
                         onSelectedOptionChange = { searchBarType ->
@@ -137,7 +137,7 @@ internal fun SettingsContent(
                     )
                 },
                 {
-                    SelectorRow<SettingsDigitType>(
+                    SelectorRow(
                         titleText = UiText.Resource(id = R.string.settings_appearance_title_digit_style),
                         options = settingsModel.digitOptions,
                         onSelectedOptionChange = { digitType ->
@@ -209,6 +209,6 @@ internal fun SettingsContent(
             )
         }
 
-        SettingsVersionRow()
+        SettingsVersionRow(versionName = versionName)
     }
 }

@@ -38,6 +38,7 @@ internal sealed interface SettingsMasterState {
 
     data class Ready(
         override val event: SettingsMasterEvent,
+        internal val versionName: String,
         private val settings: Settings,
         private val uninstalledProtonApps: List<ProtonApp>
     ) : SettingsMasterState {

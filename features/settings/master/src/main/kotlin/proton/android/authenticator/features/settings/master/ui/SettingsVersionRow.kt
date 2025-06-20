@@ -30,12 +30,15 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
-internal fun SettingsVersionRow() {
+internal fun SettingsVersionRow(versionName: String) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = ThemePadding.Medium),
-        text = stringResource(id = R.string.settings_app_version),
+            .padding(
+                top = ThemePadding.Small,
+                bottom = ThemePadding.MediumLarge
+            ),
+        text = stringResource(id = R.string.settings_app_version, versionName),
         color = Theme.colorScheme.textWeak,
         style = Theme.typography.captionRegular,
         textAlign = TextAlign.Center

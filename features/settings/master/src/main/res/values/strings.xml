@@ -66,7 +66,7 @@
     <string name="settings_discover_drive_title" translatable="false">Proton Drive</string>
     <string name="settings_discover_drive_description">Give your precious photos and files the safe home they deserve.</string>
 
-    <string name="settings_app_version">Version 0.1.0</string>
+    <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Version %1$s</string>
 
     <string name="settings_snackbar_message_biometric_error">There was an error authenticating biometric</string>
     <string name="settings_snackbar_message_update_error">There was an error updating settings</string>
