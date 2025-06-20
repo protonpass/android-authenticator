@@ -18,6 +18,7 @@
 
 plugins {
     alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.dependency.guard) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.serialization) apply false
@@ -25,6 +26,7 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.sentry) apply false
     alias(libs.plugins.proton.detekt)
+    alias(libs.plugins.proton.environment.config) apply false
 }
 
 protonDetekt {

@@ -58,7 +58,6 @@ internal class AuthenticatorAppConfig @Inject constructor() : AppConfig {
 
     override val supportUpgradePaidPlans: Boolean = true
 
-//    override val versionName: String = BuildConfig.VERSION_NAME
-    override val versionName: String = "0.1.0"
+    override val versionName: String = BuildConfig.VERSION_NAME
 
 }

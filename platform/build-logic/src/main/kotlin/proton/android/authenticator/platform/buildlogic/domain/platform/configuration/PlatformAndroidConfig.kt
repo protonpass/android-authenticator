@@ -11,7 +11,7 @@ internal object PlatformAndroidConfig {
 
     internal const val EXCLUDED_PACKAGING_RESOURCES: String = "/META-INF/{AL2.0,LGPL2.1}"
 
-    internal const val MIN_SDK: Int = 26
+    internal const val MIN_SDK: Int = 27
 
     internal const val NAMESPACE: String = "proton.android.authenticator"
 
@@ -19,11 +19,21 @@ internal object PlatformAndroidConfig {
 
     internal const val TARGET_SDK: Int = 34
 
+    internal const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
+
+    internal const val USES_BUILD_CONFIG: Boolean = true
+
     internal const val USES_COMPOSE: Boolean = true
 
-    internal const val VERSION_CODE: Int = 1
+    internal const val VERSION_NAME: String = "0.1.0"
 
-    internal const val VERSION_NAME: String = "1.0"
+    internal val VERSION_CODE: Int = VERSION_NAME.split('.')
+        .map(String::toInt)
+        .let { segment ->
+            segment[0].times(10_000_000) + segment[1].times(100_000) + segment[2].times(1_000)
+        }
+
+    internal val AbiFilters: Set<String> = setOf("armeabi-v7a", "arm64-v8a", "x86_64")
 
     internal val CompileJavaVersion: JavaVersion = JavaVersion.VERSION_17
 

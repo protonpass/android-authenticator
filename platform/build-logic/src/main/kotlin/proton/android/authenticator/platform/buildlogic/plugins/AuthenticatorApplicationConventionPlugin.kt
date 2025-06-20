@@ -1,0 +1,53 @@
+/*
+ * Copyright (c) 2025 Proton AG
+ * This file is part of Proton AG and Proton Authenticator.
+ *
+ * Proton Authenticator is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Authenticator is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package proton.android.authenticator.platform.buildlogic.plugins
+
+import org.gradle.api.Project
+import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyBundle
+import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyConfigurationName
+import proton.android.authenticator.platform.buildlogic.domain.platform.plugins.PlatformPlugin
+import proton.android.authenticator.platform.buildlogic.domain.plugins.AndroidApplicationConventionPlugin
+
+internal class AuthenticatorApplicationConventionPlugin : AndroidApplicationConventionPlugin() {
+
+    override fun apply(project: Project) = with(project) {
+        applyPlugin(PlatformPlugin.AndroidApplication)
+        applyPlugin(PlatformPlugin.DaggerHilt)
+        applyPlugin(PlatformPlugin.DropboxDependencyGuard)
+        applyPlugin(PlatformPlugin.KotlinAndroid)
+        applyPlugin(PlatformPlugin.KotlinCompose)
+        applyPlugin(PlatformPlugin.Ksp)
+        applyPlugin(PlatformPlugin.ProtonEnvironmentConfig)
+        applyPlugin(PlatformPlugin.Sentry)
+
+        configureAndroidApplication()
+        configureKotlinOptions()
+
+        addBundleDependency(
+            bundle = PlatformDependencyBundle.AndroidApplicationImplementation,
+            configurationName = PlatformDependencyConfigurationName.Implementation,
+        )
+
+        addBundleDependency(
+            bundle = PlatformDependencyBundle.AndroidApplicationKsp,
+            configurationName = PlatformDependencyConfigurationName.Ksp,
+        )
+    }
+
+}

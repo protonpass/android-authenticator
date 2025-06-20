@@ -4,83 +4,45 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig
-import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyBundle
-import proton.android.authenticator.platform.buildlogic.domain.platform.dependencies.PlatformDependencyConfigurationName
-import proton.android.authenticator.platform.buildlogic.domain.platform.plugins.PlatformPlugin
+import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig.EXCLUDED_PACKAGING_RESOURCES
 
 internal abstract class AndroidApplicationConventionPlugin : ConventionPlugin() {
 
-    override fun apply(project: Project) = with(project) {
-        applyPlugin(PlatformPlugin.AndroidApplication)
-        applyPlugin(PlatformPlugin.DaggerHilt)
-        applyPlugin(PlatformPlugin.KotlinAndroid)
-        applyPlugin(PlatformPlugin.KotlinCompose)
-        applyPlugin(PlatformPlugin.KotlinSerialization)
-        applyPlugin(PlatformPlugin.Ksp)
-
-        configureAndroidApplication()
-        configureKotlinOptions()
-
-        addBundleDependency(
-            bundle = PlatformDependencyBundle.AndroidApplicationImplementation,
-            configurationName = PlatformDependencyConfigurationName.Implementation,
-        )
-
-        addBundleDependency(
-            bundle = PlatformDependencyBundle.AndroidApplicationKsp,
-            configurationName = PlatformDependencyConfigurationName.Ksp,
-        )
-    }
-
-    private fun Project.configureAndroidApplication() {
+    protected fun Project.configureAndroidApplication() {
         extensions.configure<BaseAppModuleExtension> {
-            with(PlatformAndroidConfig) {
-                namespace = NAMESPACE
-                compileSdk = COMPILE_SDK
+            namespace = PlatformAndroidConfig.NAMESPACE
+            compileSdk = PlatformAndroidConfig.COMPILE_SDK
 
-                defaultConfig {
-                    applicationId = APPLICATION_ID
-                    minSdk = MIN_SDK
-                    targetSdk = TARGET_SDK
-                    versionCode = VERSION_CODE
-                    versionName = VERSION_NAME
-                }
+            defaultConfig {
+                applicationId = PlatformAndroidConfig.APPLICATION_ID
+                minSdk = PlatformAndroidConfig.MIN_SDK
+                targetSdk = PlatformAndroidConfig.TARGET_SDK
+                versionCode = PlatformAndroidConfig.VERSION_CODE
+                versionName = PlatformAndroidConfig.VERSION_NAME
+                testInstrumentationRunner = PlatformAndroidConfig.TEST_INSTRUMENTATION_RUNNER
 
-                compileOptions {
-                    sourceCompatibility = CompileJavaVersion
-                    targetCompatibility = CompileJavaVersion
-                }
-
-                packaging {
-                    resources {
-                        excludes += EXCLUDED_PACKAGING_RESOURCES
-                    }
-                }
-
-                buildFeatures {
-                    compose = USES_COMPOSE
-                }
-
-                composeOptions {
-                    kotlinCompilerExtensionVersion = "1.5.15"
+                ndk {
+                    abiFilters += PlatformAndroidConfig.AbiFilters
                 }
             }
 
-            buildTypes {
-                with(PlatformAndroidConfig.BuildTypes.Debug) {
-                    getByName(NAME) {
-                        applicationIdSuffix = APPLICATION_ID_SUFFIX
-                        isMinifyEnabled = IS_MINIFY_ENABLED
-                        isShrinkResources = IS_SHRINK_RESOURCES
-                    }
-                }
+            compileOptions {
+                sourceCompatibility = PlatformAndroidConfig.CompileJavaVersion
+                targetCompatibility = PlatformAndroidConfig.CompileJavaVersion
+            }
 
-                with(PlatformAndroidConfig.BuildTypes.Release) {
-                    getByName(NAME) {
-                        applicationIdSuffix = APPLICATION_ID_SUFFIX
-                        isMinifyEnabled = IS_MINIFY_ENABLED
-                        isShrinkResources = IS_SHRINK_RESOURCES
-                    }
+            buildFeatures {
+                buildConfig = PlatformAndroidConfig.USES_BUILD_CONFIG
+                compose = PlatformAndroidConfig.USES_COMPOSE
+            }
+
+            lint {
+                disable += PlatformAndroidConfig.LinterDisableOptions
+            }
+
+            packaging {
+                resources {
+                    excludes += EXCLUDED_PACKAGING_RESOURCES
                 }
             }
         }

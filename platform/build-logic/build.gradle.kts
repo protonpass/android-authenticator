@@ -16,6 +16,11 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        register("application-authenticator") {
+            id = "proton.android.authenticator.plugins.applications.authenticator"
+            implementationClass = "proton.android.authenticator.platform.buildlogic.plugins.AuthenticatorApplicationConventionPlugin"
+        }
+
         register("library-android") {
             id = "proton.android.authenticator.plugins.libraries.android"
             implementationClass = "proton.android.authenticator.platform.buildlogic.plugins.AndroidLibraryConventionPlugin"

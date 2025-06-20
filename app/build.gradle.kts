@@ -21,14 +21,7 @@ import configuration.util.toBuildConfigValue
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.proton.environmentConfig)
-    alias(libs.plugins.dependency.guard)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.sentry)
+    id("proton.android.authenticator.plugins.applications.authenticator")
 }
 
 val privateProperties = Properties().apply {
@@ -52,32 +45,8 @@ fun versionCode(versionName: String): Int {
 }
 
 android {
-    namespace = "proton.android.authenticator"
-    compileSdk = 35
-    ndkVersion = "28.1.13356709"
-
     defaultConfig {
-        applicationId = "proton.android.authenticator"
-        minSdk = 27
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
-
-        ndk {
-            abiFilters += setOf("armeabi-v7a", "arm64-v8a", "x86_64")
-        }
-    }
-
-    buildFeatures{
-        buildConfig = true
-    }
-
-    lint {
-        disable += "NullSafeMutableLiveData"
     }
 
     signingConfigs {
@@ -92,19 +61,14 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs["signingKeystore"]
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     flavorDimensions += "version"
@@ -161,22 +125,6 @@ android {
 dependencies {
     implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
 
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.hilt.work)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.process)
-    implementation(libs.androidx.material.navigation)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.startup.runtime)
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.work)
-    implementation(libs.authenticator.common)
-    implementation(libs.coil)
     implementation(libs.core.accountManager)
     implementation(libs.core.auth)
     implementation(libs.core.crypto)
@@ -186,7 +134,6 @@ dependencies {
     implementation(libs.core.push)
     implementation(libs.core.user)
     implementation(libs.core.userSettings)
-    implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
     implementation(libs.timber)
     implementation(platform(libs.androidx.compose.bom))
@@ -210,10 +157,6 @@ dependencies {
         default = libs.core.utilAndroidSentry,
         fdroid = null
     )
-
-    ksp(libs.androidx.hilt.compiler)
-    ksp(libs.androidx.room.compiler)
-    ksp(libs.hilt.compiler)
 
     testImplementation(libs.junit)
 

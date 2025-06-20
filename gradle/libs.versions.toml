@@ -132,7 +132,22 @@ zxing-core = { module = "com.google.zxing:core", version.ref = "zxingVersion" }
 
 [bundles]
 android-application-implementation = [
+    "androidx-activity-compose",
+    "androidx-core-ktx",
+    "androidx-hilt-navigation-compose",
+    "androidx-hilt-work",
     "androidx-lifecycle-runtime-ktx",
+    "androidx-lifecycle-process",
+    "androidx-material-navigation",
+    "androidx-material3",
+    "androidx-room-ktx",
+    "androidx-startup-runtime",
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling-preview",
+    "androidx-work",
+    "authenticator-common",
+    "coil",
     "hilt-android",
 ]
 android-application-ksp = [
@@ -171,5 +186,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPluginVersion" }
 proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "protonDetektVersion" }
-proton-environmentConfig = { id = "me.proton.core.gradle-plugins.environment-config", version.ref = "protonEnvironmentConfigVersion" }
+proton-environment-config = { id = "me.proton.core.gradle-plugins.environment-config", version.ref = "protonEnvironmentConfigVersion" }
 sentry = { id = "io.sentry.android.gradle", version.ref = "sentryVersion" }
