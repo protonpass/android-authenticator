@@ -25,8 +25,8 @@ import me.proton.core.network.data.di.Constants
 import me.proton.core.util.kotlin.takeIfNotBlank
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import proton.android.authenticator.business.shared.domain.app.AppConfig
 import proton.android.authenticator.business.shared.domain.network.NetworkConfig
+import proton.android.authenticator.shared.common.domain.configs.AppConfig
 import javax.inject.Inject
 
 internal class AuthenticatorNetworkConfig @Inject constructor(

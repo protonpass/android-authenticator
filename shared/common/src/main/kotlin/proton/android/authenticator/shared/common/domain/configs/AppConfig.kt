@@ -16,37 +16,34 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.app
+package proton.android.authenticator.shared.common.domain.configs
 
 import me.proton.core.account.domain.entity.AccountType
+import me.proton.core.auth.presentation.HelpOptionHandler
 import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
-import proton.android.authenticator.business.shared.domain.app.AppConfig
 import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
-import javax.inject.Inject
 
-internal class AuthenticatorAppConfig @Inject constructor() : AppConfig {
+interface AppConfig {
 
-    override val accountType: AccountType = AccountType.External
+    val accountType: AccountType
 
-    override val buildFlavor: BuildFlavor = BuildFlavor.from("devBlack")
+    val appStore: AppStore
 
-    override val appStore: AppStore = when (buildFlavor) {
-        BuildFlavor.AlphaBlack,
-        BuildFlavor.AlphaProd,
-        BuildFlavor.DevBlack,
-        BuildFlavor.DevProd,
-        BuildFlavor.PlayBlack,
-        BuildFlavor.PlayProd -> AppStore.GooglePlay
+    val buildFlavor: BuildFlavor
 
-        BuildFlavor.FdroidBlack,
-        BuildFlavor.FdroidProd -> AppStore.FDroid
-    }
+    val isDebug: Boolean
 
-    override val product: Product = Product.Pass
+    val product: Product
 
-    override val isDebug: Boolean = true
+    val versionName: String
 
-    override val versionName: String = "0.1.0"
+    val helpOptionHandler: HelpOptionHandler
+
+    val productOnlyPaidPlans: Boolean
+
+    val supportSignupPaidPlans: Boolean
+
+    val supportUpgradePaidPlans: Boolean
 
 }
