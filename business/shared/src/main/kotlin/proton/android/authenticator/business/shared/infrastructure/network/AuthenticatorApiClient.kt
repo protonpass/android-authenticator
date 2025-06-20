@@ -20,6 +20,7 @@ package proton.android.authenticator.business.shared.infrastructure.network
 
 import me.proton.core.network.domain.ApiClient
 import proton.android.authenticator.business.shared.domain.network.NetworkConfig
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class AuthenticatorApiClient @Inject constructor(config: NetworkConfig) : ApiClient {
@@ -33,7 +34,13 @@ internal class AuthenticatorApiClient @Inject constructor(config: NetworkConfig)
     override val userAgent: String = config.userAgent
 
     override fun forceUpdate(errorMessage: String) {
-        println("JIBIRI: forceUpdate -> $errorMessage")
+        AuthenticatorLogger.i(tag = TAG, message = errorMessage)
+    }
+
+    private companion object {
+
+        private const val TAG = "AuthenticatorApiClient"
+
     }
 
 }
