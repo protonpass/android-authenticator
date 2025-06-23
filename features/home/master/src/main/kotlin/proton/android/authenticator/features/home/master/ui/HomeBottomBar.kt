@@ -25,8 +25,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,14 +49,16 @@ internal fun HomeBottomBar(
 ) {
     Box(
         modifier = modifier
-            .imePadding()
-            .systemBarsPadding()
             .fillMaxWidth()
             .background(color = Theme.colorScheme.backgroundGradientBottom.copy(alpha = 0.97f))
             .padding(
-                horizontal = ThemePadding.MediumLarge,
-                vertical = ThemePadding.Small
-            ),
+                start = ThemePadding.MediumLarge,
+                top = ThemePadding.MediumSmall,
+                end = ThemePadding.MediumLarge,
+                bottom = ThemePadding.Medium
+            )
+            .imePadding()
+            .navigationBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
         Row(
