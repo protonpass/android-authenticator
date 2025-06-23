@@ -27,6 +27,8 @@ import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 import proton.android.authenticator.app.initializers.BackupPeriodicWorkInitializer
+import proton.android.authenticator.app.initializers.SyncPeriodicWorkInitializer
+import proton.android.authenticator.app.initializers.SyncWorkInitializer
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import javax.inject.Inject
@@ -45,6 +47,7 @@ internal class App : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
+
         val observer = AppLifecycleObserver(
             onForeground = {
                 ProcessLifecycleOwner.get().lifecycleScope.launch {
@@ -64,6 +67,8 @@ internal class App : Application(), ImageLoaderFactory {
     private fun initInitializerComponents() {
         with(AppInitializer.getInstance(applicationContext)) {
             initializeComponent(BackupPeriodicWorkInitializer::class.java)
+            initializeComponent(SyncPeriodicWorkInitializer::class.java)
+            initializeComponent(SyncWorkInitializer::class.java)
         }
     }
 
