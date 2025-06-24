@@ -21,6 +21,7 @@ package proton.android.authenticator.features.imports.onboarding.presentation
 import androidx.compose.runtime.Stable
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.features.imports.onboarding.R
+import proton.android.authenticator.shared.common.domain.constants.UrlConstants
 import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -32,7 +33,7 @@ internal data class ImportOnboardingState(
     private val importType: EntryImportType
 ) {
 
-    internal val helpUrl: String = URL_CUSTOMER_SUPPORT
+    internal val helpUrl: String = UrlConstants.CUSTOMER_SUPPORT
 
     internal val isMultiSelectionAllowed: Boolean = when (importType) {
         EntryImportType.Google -> true
@@ -74,12 +75,6 @@ internal data class ImportOnboardingState(
         EntryImportType.LastPass -> R.array.imports_onboarding_lastpass_steps
         EntryImportType.Proton -> R.array.imports_onboarding_proton_authenticator_steps
         EntryImportType.TwoFas -> R.array.imports_onboarding_2fas_steps
-    }
-
-    private companion object {
-
-        private const val URL_CUSTOMER_SUPPORT = ""
-
     }
 
 }

@@ -20,6 +20,7 @@ package proton.android.authenticator.features.settings.master.presentation
 
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.protonapps.domain.ProtonApp
+import proton.android.authenticator.shared.common.domain.constants.UrlConstants
 import proton.android.authenticator.shared.common.domain.models.MimeType
 
 internal sealed interface SettingsMasterState {
@@ -47,7 +48,7 @@ internal sealed interface SettingsMasterState {
 
         internal val exportFileName: String = FILE_NAME
 
-        internal val feedbackUrl: String = URL_FEEDBACK
+        internal val feedbackUrl: String = UrlConstants.CUSTOMER_SUPPORT
 
         internal val howToUrl: String = URL_HOW_TO
 
@@ -75,8 +76,6 @@ internal sealed interface SettingsMasterState {
     companion object {
 
         private const val FILE_NAME = "proton_authenticator_backup.json"
-
-        private const val URL_FEEDBACK = "https://proton.me/support/contact"
 
         private const val URL_HOW_TO = "https://proton.me/support/contact"
 
