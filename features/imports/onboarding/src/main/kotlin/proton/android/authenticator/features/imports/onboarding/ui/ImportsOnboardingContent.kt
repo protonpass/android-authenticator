@@ -33,7 +33,9 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.features.imports.onboarding.R
 import proton.android.authenticator.features.imports.onboarding.presentation.ImportOnboardingState
+import proton.android.authenticator.shared.common.domain.constants.CharacterConstants
 import proton.android.authenticator.shared.ui.domain.components.buttons.LinkButton
+import proton.android.authenticator.shared.ui.domain.components.texts.DelimiterStyledText
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -80,10 +82,12 @@ internal fun ImportsOnboardingContent(
         )
 
         stringArrayResource(id = providerStepsResId).forEach { step ->
-            Text(
+            DelimiterStyledText(
                 text = step,
-                color = Theme.colorScheme.textWeak,
-                style = Theme.typography.bodyRegular
+                delimiter = CharacterConstants.DOUBLE_QUOTES,
+                textColor = Theme.colorScheme.textWeak,
+                textStyle = Theme.typography.bodyRegular,
+                delimitedTextStyle = Theme.typography.bodyBold
             )
         }
 
