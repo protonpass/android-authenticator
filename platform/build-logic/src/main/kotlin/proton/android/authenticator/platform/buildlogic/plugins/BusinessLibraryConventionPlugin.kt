@@ -31,6 +31,7 @@ internal class BusinessLibraryConventionPlugin : LibraryConventionPlugin() {
         applyPlugin(PlatformPlugin.AndroidLibrary)
         applyPlugin(PlatformPlugin.DaggerHilt)
         applyPlugin(PlatformPlugin.KotlinAndroid)
+        applyPlugin(PlatformPlugin.KotlinSerialization)
         applyPlugin(PlatformPlugin.Ksp)
 
         configureAndroidEnvironment()

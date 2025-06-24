@@ -83,6 +83,7 @@ internal sealed interface HomeMasterState {
     @Immutable
     data class Ready(
         override val searchQuery: String,
+        internal val isRefreshing: Boolean,
         private val entries: List<EntryModel>,
         private val entryCodes: List<EntryCode>,
         private val entryCodesRemainingTimes: Map<Int, Int>,
@@ -123,6 +124,8 @@ internal sealed interface HomeMasterState {
             }
             add(UiTextMask.Totp)
         }
+
+        internal val isSyncEnabled: Boolean = settings.isSyncEnabled
 
         internal fun getRemainingSeconds(totalSeconds: Int): Int = entryCodesRemainingTimes.getOrDefault(
             key = totalSeconds,

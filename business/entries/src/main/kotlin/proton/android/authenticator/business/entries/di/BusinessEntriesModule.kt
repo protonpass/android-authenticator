@@ -37,10 +37,14 @@ import proton.android.authenticator.business.entries.application.importall.Impor
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.restore.RestoreEntryCommand
 import proton.android.authenticator.business.entries.application.restore.RestoreEntryCommandHandler
+import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommand
+import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.update.UpdateEntryCommand
 import proton.android.authenticator.business.entries.application.update.UpdateEntryCommandHandler
+import proton.android.authenticator.business.entries.domain.EntriesApi
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.entries.infrastructure.EntriesApiImpl
 import proton.android.authenticator.business.entries.infrastructure.EntriesRepositoryImpl
 import proton.android.authenticator.business.entries.infrastructure.persistence.room.RoomEntriesPersistenceDataSource
 import proton.android.authenticator.business.shared.domain.infrastructure.persistence.PersistenceDataSource
@@ -84,6 +88,9 @@ internal abstract class BusinessEntriesModule {
     @[Binds Singleton IntoMap CommandHandlerKey(RestoreEntryCommand::class)]
     internal abstract fun bindRestoreEntryCommandHandler(impl: RestoreEntryCommandHandler): CommandHandler<*, *, *>
 
+    @[Binds Singleton IntoMap CommandHandlerKey(SyncEntriesCommand::class)]
+    internal abstract fun bindSyncEntriesCommandHandler(impl: SyncEntriesCommandHandler): CommandHandler<*, *, *>
+
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateEntryCommand.FromSteam::class)]
     internal abstract fun bindUpdateEntryFromSteamCommandHandler(
         impl: UpdateEntryCommandHandler
@@ -93,6 +100,9 @@ internal abstract class BusinessEntriesModule {
     internal abstract fun bindUpdateEntryFromTotpCommandHandler(
         impl: UpdateEntryCommandHandler
     ): CommandHandler<*, *, *>
+
+    @[Binds Singleton]
+    internal abstract fun bindEntriesApi(impl: EntriesApiImpl): EntriesApi
 
     @[Binds Singleton]
     internal abstract fun bindEntriesRepository(impl: EntriesRepositoryImpl): EntriesRepository

@@ -39,7 +39,8 @@ internal fun HomeContent(
     onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    onRearrangeEntry: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit
+    onRearrangeEntry: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
+    onRefreshEntries: (Boolean) -> Unit
 ) {
     when (state) {
         HomeMasterState.Empty -> {
@@ -78,7 +79,8 @@ internal fun HomeContent(
                 onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
                 onDeleteEntryClick = onDeleteEntryClick,
-                onEntryRearranged = onRearrangeEntry
+                onEntryRearranged = onRearrangeEntry,
+                onEntriesRefreshPull = onRefreshEntries
             )
         }
     }

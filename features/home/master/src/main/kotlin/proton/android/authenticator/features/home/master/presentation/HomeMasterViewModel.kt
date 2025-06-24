@@ -26,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.entries.domain.Entry
@@ -43,6 +45,7 @@ import proton.android.authenticator.features.home.master.usecases.ObserveEntryCo
 import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.RestoreEntryUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
+import proton.android.authenticator.features.shared.entries.usecases.SyncEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
@@ -64,12 +67,21 @@ internal class HomeMasterViewModel @Inject constructor(
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
     private val rearrangeEntryUseCase: RearrangeEntryUseCase,
     private val restoreEntryUseCase: RestoreEntryUseCase,
+    private val syncEntryModelsUseCase: SyncEntryModelsUseCase,
     private val timeProvider: TimeProvider
 ) : ViewModel() {
 
     private val entrySearchQueryState = mutableStateOf(value = SEARCH_QUERY_DEFAULT_VALUE)
 
     private val entrySearchQueryFlow = snapshotFlow { entrySearchQueryState.value }
+
+    private val isRefreshingFlow = MutableStateFlow(value = false)
+
+    private val screenModelFlow = combine(
+        entrySearchQueryFlow,
+        isRefreshingFlow,
+        ::HomeMasterScreenModel
+    )
 
     @OptIn(FlowPreview::class)
     private val entrySearchQueryDebouncedFlow = entrySearchQueryFlow
@@ -121,27 +133,28 @@ internal class HomeMasterViewModel @Inject constructor(
     }
 
     internal val stateFlow: StateFlow<HomeMasterState> = combine(
-        entrySearchQueryFlow,
+        screenModelFlow,
         entryModelsFlow,
         entryCodesFlow,
         entryCodesRemainingTimesFlow,
         observeSettingsUseCase()
-    ) { entrySearchQuery, entryModels, entryCodes, entryCodesRemainingTimes, settings ->
+    ) { screenModel, entryModels, entryCodes, entryCodesRemainingTimes, settings ->
         when {
-            entrySearchQuery.isEmpty() && entryModels.isEmpty() -> {
+            screenModel.searchQuery.isEmpty() && entryModels.isEmpty() -> {
                 HomeMasterState.Empty
             }
 
             entryModels.isEmpty() -> {
                 HomeMasterState.EmptySearch(
-                    searchQuery = entrySearchQuery,
+                    searchQuery =  screenModel.searchQuery,
                     settings = settings
                 )
             }
 
             else -> {
                 HomeMasterState.Ready(
-                    searchQuery = entrySearchQuery,
+                    searchQuery =  screenModel.searchQuery,
+                    isRefreshing = screenModel.isRefreshing,
                     entries = entryModels,
                     entryCodes = entryCodes,
                     entryCodesRemainingTimes = entryCodesRemainingTimes,
@@ -229,6 +242,34 @@ internal class HomeMasterViewModel @Inject constructor(
                     is Answer.Success -> null
                 }?.also { event -> dispatchSnackbarEventUseCase(event) }
             }
+        }
+    }
+
+    internal fun onRefreshEntries(isSyncEnabled: Boolean) {
+        viewModelScope.launch {
+            isRefreshingFlow.update { true }
+
+            if (!isSyncEnabled) {
+                delay(timeMillis = 50)
+                isRefreshingFlow.update { false }
+                return@launch
+            }
+
+            syncEntryModelsUseCase(userId = "Jibiri")
+                .also { answer ->
+                    when (answer) {
+                        is Answer.Failure -> {
+                            println("JIBIRI: sync failure")
+                        }
+
+                        is Answer.Success -> {
+                            println("JIBIRI: sync success")
+                        }
+                    }
+                }
+                .also {
+                    isRefreshingFlow.update { false }
+                }
         }
     }
 

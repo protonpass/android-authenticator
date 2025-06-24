@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.domain.components.lists.DraggableVerticalList
+import proton.android.authenticator.shared.ui.domain.components.refresh.PullToRefresh
 import proton.android.authenticator.shared.ui.domain.models.UiDraggableItem
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -36,6 +37,7 @@ internal fun HomeEntries(
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
     onEntryRearranged: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
+    onEntriesRefreshPull: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(state) {
@@ -57,15 +59,20 @@ internal fun HomeEntries(
                 }
             )
         }.also { items ->
-            DraggableVerticalList(
+            PullToRefresh(
                 modifier = modifier,
-                draggableItems = items,
-                listState = listState,
-                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
-                onMoved = { fromIndex, fromId, toIndex, toId ->
-                    onEntryRearranged(fromId, fromIndex, toId, toIndex, entryModelsMap)
-                }
-            )
+                isRefreshing = isRefreshing,
+                onRefresh = { onEntriesRefreshPull(isSyncEnabled) }
+            ) {
+                DraggableVerticalList(
+                    draggableItems = items,
+                    listState = listState,
+                    verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
+                    onMoved = { fromIndex, fromId, toIndex, toId ->
+                        onEntryRearranged(fromId, fromIndex, toId, toIndex, entryModelsMap)
+                    }
+                )
+            }
         }
     }
 }

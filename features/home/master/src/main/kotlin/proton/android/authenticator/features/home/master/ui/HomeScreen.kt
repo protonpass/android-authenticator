@@ -117,7 +117,8 @@ fun HomeScreen(
             onEditEntryClick = { entry -> onEditEntryClick(entry.id) },
             onCopyEntryCodeClick = ::onCopyEntryCode,
             onDeleteEntryClick = ::onDeleteEntry,
-            onRearrangeEntry = ::onRearrangeEntry
+            onRearrangeEntry = ::onRearrangeEntry,
+            onRefreshEntries = ::onRefreshEntries
         )
     }
 }
