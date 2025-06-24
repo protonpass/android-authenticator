@@ -19,12 +19,14 @@
 package proton.android.authenticator.navigation.domain.graphs.onboarding
 
 import androidx.compose.material.navigation.bottomSheet
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
+import proton.android.authenticator.features.imports.onboarding.ui.ImportsOnboardingScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
 import proton.android.authenticator.features.onboarding.biometrics.ui.OnboardingBiometricsScreen
@@ -82,33 +84,54 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
 
         bottomSheet<OnboardingImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
-                onPasswordRequired = { uri, importType ->
+                onImportTypeSelected = { importType ->
                     NavigationCommand.NavigateToWithPopup(
-                        destination = OnboardingImportPasswordNavigationDestination(
-                            uri = uri,
+                        destination = OnboardingImportOnboardingNavigationDestination(
                             importType = importType
-                        ),
-                        popDestination = OnboardingImportNavigationDestination
-                    ).also(onNavigate)
-                },
-                onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = OnboardingImportCompletionNavigationDestination(
-                            importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = OnboardingImportNavigationDestination
-                    ).also(onNavigate)
-                },
-                onError = { errorReason ->
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = OnboardingImportErrorNavigationDestination(
-                            errorReason = errorReason
                         ),
                         popDestination = OnboardingImportNavigationDestination
                     ).also(onNavigate)
                 },
                 onDismissed = {
                     onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
+        composable<OnboardingImportOnboardingNavigationDestination> {
+            val context = LocalContext.current
+
+            ImportsOnboardingScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onHelpClick = { url ->
+                    NavigationCommand.NavigateToUrl(
+                        url = url,
+                        context = context
+                    ).also(onNavigate)
+                },
+                onPasswordRequired = { uri, importType ->
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingImportPasswordNavigationDestination(
+                            uri = uri,
+                            importType = importType
+                        )
+                    ).also(onNavigate)
+                },
+                onCompleted = { importedEntriesCount ->
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingImportCompletionNavigationDestination(
+                            importedEntriesCount = importedEntriesCount
+                        )
+                    ).also(onNavigate)
+                },
+                onError = { errorReason ->
+                    NavigationCommand.NavigateTo(
+                        destination = OnboardingImportErrorNavigationDestination(
+                            errorReason = errorReason
+                        )
+                    ).also(onNavigate)
                 }
             )
         }

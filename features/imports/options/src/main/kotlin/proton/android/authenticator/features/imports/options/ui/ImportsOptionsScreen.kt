@@ -18,85 +18,29 @@
 
 package proton.android.authenticator.features.imports.options.ui
 
-import android.content.Intent
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import proton.android.authenticator.features.imports.options.presentation.ImportsOptionsEvent
 import proton.android.authenticator.features.imports.options.presentation.ImportsOptionsViewModel
-import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.ui.domain.screens.BottomSheetScreen
 
 @Composable
-fun ImportsOptionsScreen(
-    onPasswordRequired: (uri: String, importType: Int) -> Unit,
-    onCompleted: (Int) -> Unit,
-    onError: (Int) -> Unit,
-    onDismissed: () -> Unit
-) = with(hiltViewModel<ImportsOptionsViewModel>()) {
-    val state by stateFlow.collectAsStateWithLifecycle()
+fun ImportsOptionsScreen(onImportTypeSelected: (Int) -> Unit, onDismissed: () -> Unit) =
+    with(hiltViewModel<ImportsOptionsViewModel>()) {
+        val state by stateFlow.collectAsStateWithLifecycle()
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = { result ->
-            buildList<Uri> {
-                result.data?.data?.also(::add)
-
-                result.data?.clipData?.let { clipData ->
-                    for (index in 0 until clipData.itemCount) {
-                        clipData.getItemAt(index).uri.also(::add)
-                    }
+        BottomSheetScreen(
+            onDismissed = onDismissed
+        ) {
+            ImportsOptionsContent(
+                modifier = Modifier.fillMaxWidth(),
+                state = state,
+                onOptionSelected = { option ->
+                    onImportTypeSelected(option.type.ordinal)
                 }
-            }.also { uris ->
-                onFilesPicked(uris = uris, importType = state.selectedOptionModel?.type)
-            }
+            )
         }
-    )
-
-    LaunchedEffect(state.event) {
-        when (val event = state.event) {
-            ImportsOptionsEvent.Idle -> Unit
-            is ImportsOptionsEvent.OnChooseFile -> {
-                Intent(Intent.ACTION_GET_CONTENT)
-                    .apply {
-                        type = MimeType.All.value
-                        addCategory(Intent.CATEGORY_OPENABLE)
-                        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, event.isMultiSelectionAllowed)
-                        putExtra(Intent.EXTRA_MIME_TYPES, event.mimeTypes.toTypedArray())
-                    }
-                    .also(launcher::launch)
-            }
-
-            is ImportsOptionsEvent.OnFileImported -> {
-                onCompleted(event.importedEntriesCount)
-            }
-
-            is ImportsOptionsEvent.OnFileImportFailed -> {
-                onError(event.reason)
-            }
-
-            is ImportsOptionsEvent.OnFilePasswordRequired -> {
-                onPasswordRequired(event.uri, event.importType)
-            }
-        }
-
-        onEventConsumed(state.event)
     }
-
-    BottomSheetScreen(
-        onDismissed = onDismissed
-    ) {
-        ImportsOptionsContent(
-            modifier = Modifier.fillMaxWidth(),
-            state = state,
-            onOptionSelected = ::onOptionSelected
-        )
-    }
-}

@@ -29,6 +29,7 @@ import proton.android.authenticator.features.exports.completion.ui.ExportsComple
 import proton.android.authenticator.features.exports.errors.ui.ExportsErrorsScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
+import proton.android.authenticator.features.imports.onboarding.ui.ImportsOnboardingScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
 import proton.android.authenticator.features.settings.master.ui.SettingsMasterScreen
@@ -143,43 +144,61 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
         dialog<SettingsImportErrorNavigationDestination> {
             ImportsErrorScreen(
                 onDismissed = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
-                    ).also(onNavigate)
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }
 
         bottomSheet<SettingsImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
-                onPasswordRequired = { uri, importType ->
+                onImportTypeSelected = { importType ->
                     NavigationCommand.NavigateToWithPopup(
-                        destination = SettingsImportPasswordNavigationDestination(
-                            uri = uri,
+                        destination = SettingsImportOnboardingNavigationDestination(
                             importType = importType
-                        ),
-                        popDestination = SettingsMasterNavigationDestination
-                    ).also(onNavigate)
-                },
-                onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = SettingsImportCompletionNavigationDestination(
-                            importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = SettingsMasterNavigationDestination
-                    ).also(onNavigate)
-                },
-                onError = { errorReason ->
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = SettingsImportErrorNavigationDestination(
-                            errorReason = errorReason
                         ),
                         popDestination = SettingsMasterNavigationDestination
                     ).also(onNavigate)
                 },
                 onDismissed = {
                     onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
+        composable<SettingsImportOnboardingNavigationDestination> {
+            val context = LocalContext.current
+
+            ImportsOnboardingScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onHelpClick = { url ->
+                    NavigationCommand.NavigateToUrl(
+                        url = url,
+                        context = context
+                    ).also(onNavigate)
+                },
+                onPasswordRequired = { uri, importType ->
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsImportPasswordNavigationDestination(
+                            uri = uri,
+                            importType = importType
+                        )
+                    ).also(onNavigate)
+                },
+                onCompleted = { importedEntriesCount ->
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsImportCompletionNavigationDestination(
+                            importedEntriesCount = importedEntriesCount
+                        )
+                    ).also(onNavigate)
+                },
+                onError = { errorReason ->
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsImportErrorNavigationDestination(
+                            errorReason = errorReason
+                        )
+                    ).also(onNavigate)
                 }
             )
         }
@@ -197,11 +216,10 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                     ).also(onNavigate)
                 },
                 onFailed = { errorReason ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = SettingsImportErrorNavigationDestination(
                             errorReason = errorReason
-                        ),
-                        popDestination = SettingsMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 }
             )

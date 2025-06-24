@@ -23,11 +23,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
     snackbarHostState: SnackbarHostState,
     onNavigate: (NavigationCommand) -> Unit
 ) {
-    navigation<HomeNavigationDestination>(
-        startDestination = HomeImportOnboardingNavigationDestination(
-            importType = 0
-        )
-    ) {
+    navigation<HomeNavigationDestination>(startDestination = HomeMasterNavigationDestination) {
         composable<HomeMasterNavigationDestination> {
             HomeScreen(
                 snackbarHostState = snackbarHostState,
@@ -102,27 +98,10 @@ internal fun NavGraphBuilder.homeNavigationGraph(
 
         bottomSheet<HomeImportNavigationDestination> {
             ImportsOptionsScreen(
-                onPasswordRequired = { uri, importType ->
+                onImportTypeSelected = { importType ->
                     NavigationCommand.NavigateToWithPopup(
-                        destination = HomeImportPasswordNavigationDestination(
-                            uri = uri,
+                        destination = HomeImportOnboardingNavigationDestination(
                             importType = importType
-                        ),
-                        popDestination = HomeMasterNavigationDestination
-                    ).also(onNavigate)
-                },
-                onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = HomeImportCompletionNavigationDestination(
-                            importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = HomeMasterNavigationDestination
-                    ).also(onNavigate)
-                },
-                onError = { errorReason ->
-                    NavigationCommand.NavigateToWithPopup(
-                        destination = HomeImportErrorNavigationDestination(
-                            errorReason = errorReason
                         ),
                         popDestination = HomeMasterNavigationDestination
                     ).also(onNavigate)
@@ -147,28 +126,25 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     ).also(onNavigate)
                 },
                 onPasswordRequired = { uri, importType ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = HomeImportPasswordNavigationDestination(
                             uri = uri,
                             importType = importType
-                        ),
-                        popDestination = HomeMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 },
                 onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = HomeImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = HomeMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 },
                 onError = { errorReason ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = HomeImportErrorNavigationDestination(
                             errorReason = errorReason
-                        ),
-                        popDestination = HomeMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 }
             )
@@ -180,19 +156,17 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onCompleted = { importedEntriesCount ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = HomeImportCompletionNavigationDestination(
                             importedEntriesCount = importedEntriesCount
-                        ),
-                        popDestination = HomeMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 },
                 onFailed = { errorReason ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = HomeImportErrorNavigationDestination(
                             errorReason = errorReason
-                        ),
-                        popDestination = HomeMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 }
             )

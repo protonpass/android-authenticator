@@ -18,13 +18,12 @@
 
 package proton.android.authenticator.features.imports.options.presentation
 
+import androidx.compose.runtime.Stable
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.shared.ui.R
 
-internal data class ImportsOptionsState(
-    internal val selectedOptionModel: ImportsOptionsModel?,
-    internal val event: ImportsOptionsEvent
-) {
+@Stable
+internal data object ImportsOptionsState {
 
     internal val optionModels: List<ImportsOptionsModel> = listOf(
         ImportsOptionsModel(
@@ -56,14 +55,5 @@ internal data class ImportsOptionsState(
             nameResId = R.string.authenticator_proton
         )
     )
-
-    internal companion object {
-
-        internal val Initial: ImportsOptionsState = ImportsOptionsState(
-            selectedOptionModel = null,
-            event = ImportsOptionsEvent.Idle
-        )
-
-    }
 
 }

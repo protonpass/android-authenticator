@@ -20,7 +20,6 @@ package proton.android.authenticator.features.imports.options.presentation
 
 import androidx.annotation.StringRes
 import proton.android.authenticator.business.entries.domain.EntryImportType
-import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal data class ImportsOptionsModel(
@@ -31,17 +30,5 @@ internal data class ImportsOptionsModel(
     internal val id: String = type.name
 
     internal val nameText: UiText = UiText.Resource(id = nameResId)
-
-    internal val mimeTypes: List<String> = type.mimeTypes.map(MimeType::value)
-
-    internal val isMultiSelectionAllowed: Boolean = when (type) {
-        EntryImportType.Google -> true
-        EntryImportType.Aegis,
-        EntryImportType.Bitwarden,
-        EntryImportType.Ente,
-        EntryImportType.LastPass,
-        EntryImportType.Proton,
-        EntryImportType.TwoFas -> false
-    }
 
 }
