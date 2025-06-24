@@ -18,11 +18,4 @@
 
 <resources>
     <string name="imports_options_title">Import from</string>
-    <string name="imports_options_option_google" translatable="false">Google Authenticator</string>
-    <string name="imports_options_option_2fas" translatable="false">2FAS</string>
-    <string name="imports_options_option_aegis" translatable="false">Aegis Authenticator</string>
-    <string name="imports_options_option_bitwarden" translatable="false">Bitwarden Authenticator</string>
-    <string name="imports_options_option_ente" translatable="false">Ente Auth</string>
-    <string name="imports_options_option_last_pass" translatable="false">LastPass Authenticator</string>
-    <string name="imports_options_option_proton" translatable="false">Proton Authenticator</string>
 </resources>

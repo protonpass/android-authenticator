@@ -16,17 +16,29 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.options.presentation
+package proton.android.authenticator.shared.ui.domain.components.buttons
 
-import androidx.annotation.StringRes
-import proton.android.authenticator.features.imports.options.R
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 
-internal enum class ImportsOptionsType(@StringRes internal val id: Int) {
-    Google(id = R.string.imports_options_option_google),
-    TwoFas(id = R.string.imports_options_option_2fas),
-    Aegis(id = R.string.imports_options_option_aegis),
-    Bitwarden(id = R.string.imports_options_option_bitwarden),
-    Ente(id = R.string.imports_options_option_ente),
-    LastPass(id = R.string.imports_options_option_last_pass),
-    Proton(id = R.string.imports_options_option_proton)
+@Composable
+fun LinkButton(
+    linkText: UiText,
+    onLinkClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TextButton(
+        modifier = modifier,
+        onClick = onLinkClick
+    ) {
+        Text(
+            text = linkText.asString(),
+            color = Theme.colorScheme.accent,
+            style = Theme.typography.bodyRegular
+        )
+    }
 }

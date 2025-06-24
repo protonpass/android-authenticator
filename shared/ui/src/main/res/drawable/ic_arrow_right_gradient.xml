@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="37dp"
+    android:height="38dp"
+    android:viewportWidth="37"
+    android:viewportHeight="38">
+  <path
+      android:pathData="M36.268,20.768a2.5,2.5 0,0 0,0 -3.536l-15.91,-15.91a2.5,2.5 0,0 0,-3.536 3.536L30.965,19 16.822,33.142a2.5,2.5 0,0 0,3.536 3.536l15.91,-15.91ZM3,16.5a2.5,2.5 0,0 0,0 5v-5ZM3,19v2.5h31.5v-5H3V19Z"
+      android:fillColor="#272524"/>
+  <path
+      android:pathData="M36.268,20.768a2.5,2.5 0,0 0,0 -3.536l-15.91,-15.91a2.5,2.5 0,0 0,-3.536 3.536L30.965,19 16.822,33.142a2.5,2.5 0,0 0,3.536 3.536l15.91,-15.91ZM3,16.5a2.5,2.5 0,0 0,0 5v-5ZM3,19v2.5h31.5v-5H3V19Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:centerX="-28.112"
+          android:centerY="19.067"
+          android:gradientRadius="98.394"
+          android:type="radial">
+        <item android:offset="0" android:color="#FFFFBD80"/>
+        <item android:offset="0.29" android:color="#FFF17995"/>
+        <item android:offset="0.65" android:color="#FFBF52FF"/>
+        <item android:offset="0.77" android:color="#FF9F4CFF"/>
+        <item android:offset="0.88" android:color="#FF874AFF"/>
+        <item android:offset="1" android:color="#FF704CFF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M36.268,20.768a2.5,2.5 0,0 0,0 -3.536l-15.91,-15.91a2.5,2.5 0,0 0,-3.536 3.536L30.965,19 16.822,33.142a2.5,2.5 0,0 0,3.536 3.536l15.91,-15.91ZM3,16.5a2.5,2.5 0,0 0,0 5v-5ZM3,19v2.5h31.5v-5H3V19Z"
+      android:fillAlpha="0.4"/>
+</vector>

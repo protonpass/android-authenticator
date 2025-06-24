@@ -19,7 +19,7 @@
 package proton.android.authenticator.features.imports.options.presentation
 
 import proton.android.authenticator.business.entries.domain.EntryImportType
-import proton.android.authenticator.features.imports.options.R
+import proton.android.authenticator.shared.ui.R
 
 internal data class ImportsOptionsState(
     internal val selectedOptionModel: ImportsOptionsModel?,
@@ -29,31 +29,31 @@ internal data class ImportsOptionsState(
     internal val optionModels: List<ImportsOptionsModel> = listOf(
         ImportsOptionsModel(
             type = EntryImportType.Google,
-            nameResId = R.string.imports_options_option_google
+            nameResId = R.string.authenticator_google
         ),
         ImportsOptionsModel(
             type = EntryImportType.TwoFas,
-            nameResId = R.string.imports_options_option_2fas
+            nameResId = R.string.authenticator_2fas
         ),
         ImportsOptionsModel(
             type = EntryImportType.Aegis,
-            nameResId = R.string.imports_options_option_aegis
+            nameResId = R.string.authenticator_aegis
         ),
         ImportsOptionsModel(
             type = EntryImportType.Bitwarden,
-            nameResId = R.string.imports_options_option_bitwarden
+            nameResId = R.string.authenticator_bitwarden
         ),
         ImportsOptionsModel(
             type = EntryImportType.Ente,
-            nameResId = R.string.imports_options_option_ente
+            nameResId = R.string.authenticator_ente
         ),
         ImportsOptionsModel(
             type = EntryImportType.LastPass,
-            nameResId = R.string.imports_options_option_last_pass
+            nameResId = R.string.authenticator_last_pass
         ),
         ImportsOptionsModel(
             type = EntryImportType.Proton,
-            nameResId = R.string.imports_options_option_proton
+            nameResId = R.string.authenticator_proton
         )
     )
 

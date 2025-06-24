@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <string name="imports_onboarding_title">Import codes from %1$s</string>
+
+    <string-array name="imports_onboarding_google_steps">
+        <item>To export codes from Google Authenticator, you\'ll need to use the app\'s built-in “Transfer accounts” feature, which generates a QR code for transferring accounts to a new device.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_2fas_steps">
+        <item>Open 2FAS Authenticator and enter the “Settings” section.</item>
+        <item>Then enter the “2FAS Backup” feature.</item>
+        <item>Enter the Export tool and click the “Export to file” button.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_aegis_steps">
+        <item>To export codes from Aegis Authenticator, navigate to the app\'s Settings, find the ”Import &amp; Export” section, and select the export option.</item>
+        <item>You can choose to export as an encrypted database, or as a plain text file.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_bitwarden_steps">
+        <item>To export data from Bitwarden Authenticator, open the “Settings” tab and tap the “Export” button.</item>
+        <item>You can choose to export your data as a .json or .csv file.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_ente_steps">
+        <item>To export data from Ente Auth, open the “Settings” tab and look for “Import/Export” options.</item>
+        <item>Tap “Export Codes” and then “Ente Encrypted export”.</item>
+        <item>This creates an encrypted backup file (usually .ente or .json) containing all your codes.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_lastpass_steps">
+        <item>To export 2FA codes (TOTP) from LastPass, you\'ll need to export your vault data as a CSV file.</item>
+        <item>Open the LastPass browser extension and log in. Go to Account → Fix a problem yourself → Export vault items → Export data for use anywhere.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_proton_authenticator_steps">
+        <item>To export codes from Proton Authenticator, navigate to the app\'s settings, find the “Mange your data” section, and select the export option.</item>
+    </string-array>
+
+    <string name="imports_onboarding_help_link">Need more help?</string>
+</resources>
