@@ -87,11 +87,10 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onImportTypeSelected = { importType ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = OnboardingImportOnboardingNavigationDestination(
                             importType = importType
-                        ),
-                        popDestination = OnboardingImportNavigationDestination
+                        )
                     ).also(onNavigate)
                 }
             )

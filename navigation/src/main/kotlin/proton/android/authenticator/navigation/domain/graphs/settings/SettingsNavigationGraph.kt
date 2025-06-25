@@ -154,11 +154,10 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onImportTypeSelected = { importType ->
-                    NavigationCommand.NavigateToWithPopup(
+                    NavigationCommand.NavigateTo(
                         destination = SettingsImportOnboardingNavigationDestination(
                             importType = importType
-                        ),
-                        popDestination = SettingsMasterNavigationDestination
+                        )
                     ).also(onNavigate)
                 }
             )
