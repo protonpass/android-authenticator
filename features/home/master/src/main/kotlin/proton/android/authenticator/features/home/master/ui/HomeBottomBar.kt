@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.master.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -71,15 +72,17 @@ internal fun HomeBottomBar(
                 onValueChange = onEntryQueryChange
             )
 
-            Icon(
-                modifier = Modifier
-                    .backgroundPrimaryButton(blur = 8.dp)
-                    .clickable(onClick = onNewEntryClick)
-                    .padding(all = ThemePadding.MediumSmall),
-                painter = painterResource(id = R.drawable.ic_plus),
-                contentDescription = null,
-                tint = Theme.colorScheme.white
-            )
+            AnimatedVisibility(visible = searchQuery.isEmpty()) {
+                Icon(
+                    modifier = Modifier
+                        .backgroundPrimaryButton(blur = 8.dp)
+                        .clickable(onClick = onNewEntryClick)
+                        .padding(all = ThemePadding.MediumSmall),
+                    painter = painterResource(id = R.drawable.ic_plus),
+                    contentDescription = null,
+                    tint = Theme.colorScheme.white
+                )
+            }
         }
     }
 }
