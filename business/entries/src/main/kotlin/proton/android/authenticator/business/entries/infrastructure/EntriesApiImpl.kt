@@ -31,6 +31,7 @@ internal class EntriesApiImpl @Inject constructor(private val apiProvider: ApiPr
         .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
         .invoke { getEntries() }
         .valueOrThrow
+        .entriesDto
         .let { response ->
             println("JIBIRI: response: $response")
             emptyList()

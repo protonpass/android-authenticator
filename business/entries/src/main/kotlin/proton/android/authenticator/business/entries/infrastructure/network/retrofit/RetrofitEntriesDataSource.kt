@@ -18,16 +18,16 @@
 
 package proton.android.authenticator.business.entries.infrastructure.network.retrofit
 
-import proton.android.authenticator.business.entries.infrastructure.network.EntryResponse
+import proton.android.authenticator.business.entries.infrastructure.network.EntriesResponseDto
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val ROOT_PATH = "authenticator/v1"
+private const val ROOT_PATH = "api/authenticator/v1"
 
 internal interface RetrofitEntriesDataSource : NetworkDataSource {
 
     @GET("$ROOT_PATH/entry/")
-    suspend fun getEntries(@Query("lastId") lastId: String? = null): List<EntryResponse>
+    suspend fun getEntries(@Query("lastId") lastId: String? = null): EntriesResponseDto
 
 }

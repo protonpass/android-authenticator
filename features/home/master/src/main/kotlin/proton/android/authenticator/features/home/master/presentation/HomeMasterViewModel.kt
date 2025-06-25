@@ -146,14 +146,14 @@ internal class HomeMasterViewModel @Inject constructor(
 
             entryModels.isEmpty() -> {
                 HomeMasterState.EmptySearch(
-                    searchQuery =  screenModel.searchQuery,
+                    searchQuery = screenModel.searchQuery,
                     settings = settings
                 )
             }
 
             else -> {
                 HomeMasterState.Ready(
-                    searchQuery =  screenModel.searchQuery,
+                    searchQuery = screenModel.searchQuery,
                     isRefreshing = screenModel.isRefreshing,
                     entries = entryModels,
                     entryCodes = entryCodes,
@@ -255,7 +255,9 @@ internal class HomeMasterViewModel @Inject constructor(
                 return@launch
             }
 
-            syncEntryModelsUseCase(userId = "Jibiri")
+            syncEntryModelsUseCase(
+                userId = ""
+            )
                 .also { answer ->
                     when (answer) {
                         is Answer.Failure -> {

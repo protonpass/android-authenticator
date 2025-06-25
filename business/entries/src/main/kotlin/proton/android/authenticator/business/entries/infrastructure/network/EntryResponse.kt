@@ -18,9 +18,30 @@
 
 package proton.android.authenticator.business.entries.infrastructure.network
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class EntryResponse(
-    internal val id: String
+internal data class EntriesResponseDto(
+    @SerialName("Code") internal val code: Int,
+    @SerialName("Entries") internal val entriesDto: EntriesDto
+)
+
+@Serializable
+internal data class EntriesDto(
+    @SerialName("Entries") internal val entries: List<EntryDto>,
+    @SerialName("Total") internal val total: Int,
+    @SerialName("LastID") internal val lastId: String?
+)
+
+@Serializable
+internal data class EntryDto(
+    @SerialName("EntryID") internal val entryId: String,
+    @SerialName("AuthenticatorKeyID") internal val keyId: String,
+    @SerialName("Revision") internal val revision: Int,
+    @SerialName("ContentFormatVersion") internal val contentFormatVersion: Int,
+    @SerialName("Content") internal val content: String,
+    @SerialName("Flags") internal val flags: Int,
+    @SerialName("CreateTime") internal val createTime: Long,
+    @SerialName("ModifyTime") internal val modifyTime: Long
 )

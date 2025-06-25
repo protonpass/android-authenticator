@@ -92,7 +92,8 @@ android {
             applicationIdSuffix = ".black"
 
             protonEnvironment {
-                host = "proton.black"
+                apiPrefix = "authenticator"
+                host = "proton.black/api"
             }
         }
         create("prod") {
