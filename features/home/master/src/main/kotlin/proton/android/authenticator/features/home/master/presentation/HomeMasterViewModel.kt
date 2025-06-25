@@ -67,7 +67,7 @@ internal class HomeMasterViewModel @Inject constructor(
     private val timeProvider: TimeProvider
 ) : ViewModel() {
 
-    private val entrySearchQueryState = mutableStateOf<String>(value = SEARCH_QUERY_DEFAULT_VALUE)
+    private val entrySearchQueryState = mutableStateOf(value = SEARCH_QUERY_DEFAULT_VALUE)
 
     private val entrySearchQueryFlow = snapshotFlow { entrySearchQueryState.value }
 
@@ -114,7 +114,7 @@ internal class HomeMasterViewModel @Inject constructor(
         entryModelsFlow,
         entryCodesFlow,
         entryCodesRemainingTimeTickerFlow
-    ) { entries, entryCodes, _ ->
+    ) { entries, _, _ ->
         entries.associate { entry ->
             entry.period to timeProvider.remainingPeriodSeconds(entry.period)
         }
@@ -127,16 +127,27 @@ internal class HomeMasterViewModel @Inject constructor(
         entryCodesRemainingTimesFlow,
         observeSettingsUseCase()
     ) { entrySearchQuery, entryModels, entryCodes, entryCodesRemainingTimes, settings ->
-        if (entrySearchQuery.isEmpty() && entryModels.isEmpty()) {
-            HomeMasterState.Empty
-        } else {
-            HomeMasterState.Ready(
-                searchQuery = entrySearchQuery,
-                entries = entryModels,
-                entryCodes = entryCodes,
-                entryCodesRemainingTimes = entryCodesRemainingTimes,
-                settings = settings
-            )
+        when {
+            entrySearchQuery.isEmpty() && entryModels.isEmpty() -> {
+                HomeMasterState.Empty
+            }
+
+            entryModels.isEmpty() -> {
+                HomeMasterState.EmptySearch(
+                    searchQuery = entrySearchQuery,
+                    settings = settings
+                )
+            }
+
+            else -> {
+                HomeMasterState.Ready(
+                    searchQuery = entrySearchQuery,
+                    entries = entryModels,
+                    entryCodes = entryCodes,
+                    entryCodesRemainingTimes = entryCodesRemainingTimes,
+                    settings = settings
+                )
+            }
         }
     }.stateIn(
         scope = viewModelScope,

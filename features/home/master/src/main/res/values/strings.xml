@@ -24,6 +24,9 @@
     <string name="home_empty_action_primary">Create new code</string>
     <string name="home_empty_action_secondary">Import existing codes</string>
 
+    <string name="home_empty_search_title">No results found</string>
+    <string name="home_empty_search_subtitle">Try searching using different spelling or keywords.</string>
+
     <string name="home_snackbar_message_entry_copied">Entry copied</string>
     <string name="home_snackbar_message_entry_deleted">Entry deleted</string>
     <string name="home_snackbar_message_entry_delete_failed">There was an error deleting the entry</string>

@@ -19,12 +19,14 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
+import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
@@ -45,6 +47,17 @@ internal fun HomeContent(
                 modifier = modifier.fillMaxSize(),
                 onNewEntryClick = onNewEntryClick,
                 onImportEntriesClick = onImportEntriesClick
+            )
+        }
+
+        is HomeMasterState.EmptySearch -> {
+            HomeEmptySearch(
+                modifier = modifier
+                    .fillMaxSize()
+                    .applyIf(
+                        condition = !state.showBottomBar,
+                        ifTrue = { imePadding() }
+                    )
             )
         }
 

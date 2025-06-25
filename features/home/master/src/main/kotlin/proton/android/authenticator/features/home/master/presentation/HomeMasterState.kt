@@ -53,6 +53,19 @@ internal sealed interface HomeMasterState {
     }
 
     @Immutable
+    data class EmptySearch(
+        override val searchQuery: String,
+        private val settings: Settings
+    ) : HomeMasterState {
+
+        override val showBottomBar: Boolean = settings.searchBarType == SettingsSearchBarType.Bottom
+
+        override val showTopSearchBar: Boolean = settings.searchBarType == SettingsSearchBarType.Top
+
+        override val showFabButton: Boolean = showTopSearchBar && searchQuery.isEmpty()
+    }
+
+    @Immutable
     data object Loading : HomeMasterState {
 
         override val searchQuery: String = ""
