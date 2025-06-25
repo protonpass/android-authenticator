@@ -62,7 +62,8 @@ internal sealed interface SettingsMasterState {
             themeType = settings.themeType,
             searchBarType = settings.searchBarType,
             digitType = settings.digitType,
-            isPassBannerDismissed = settings.isPassBannerDismissed
+            isPassBannerDismissed = settings.isPassBannerDismissed,
+            installationTime = settings.installationTime
         )
 
         internal val discoverModel = SettingsMasterDiscoverModel(

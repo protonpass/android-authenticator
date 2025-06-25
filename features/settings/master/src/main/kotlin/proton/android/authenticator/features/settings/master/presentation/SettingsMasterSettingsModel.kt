@@ -32,7 +32,8 @@ internal data class SettingsMasterSettingsModel(
     internal val searchBarType: SettingsSearchBarType,
     internal val digitType: SettingsDigitType,
     internal val isCodeChangeAnimationEnabled: Boolean,
-    internal val isPassBannerDismissed: Boolean
+    internal val isPassBannerDismissed: Boolean,
+    internal val installationTime: Long
 ) {
 
     internal val appLockOptions: List<SettingsMasterAppLockOption> = listOf(
@@ -64,7 +65,8 @@ internal data class SettingsMasterSettingsModel(
         searchBarType = searchBarType,
         digitType = digitType,
         isCodeChangeAnimationEnabled = isCodeChangeAnimationEnabled,
-        isPassBannerDismissed = isPassBannerDismissed
+        isPassBannerDismissed = isPassBannerDismissed,
+        installationTime = installationTime
     )
 
 }

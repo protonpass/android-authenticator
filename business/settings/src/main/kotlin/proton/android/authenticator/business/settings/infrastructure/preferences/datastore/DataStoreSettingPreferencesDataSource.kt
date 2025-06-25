@@ -19,6 +19,7 @@
 package proton.android.authenticator.business.settings.infrastructure.preferences.datastore
 
 import androidx.datastore.core.DataStore
+import com.google.protobuf.Timestamp
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import proton.android.authenticator.business.settings.domain.Settings
@@ -32,6 +33,7 @@ import proton.android.authenticator.proto.preferences.settings.SettingsPreferenc
 import proton.android.authenticator.proto.preferences.settings.SettingsPreferencesDigitType
 import proton.android.authenticator.proto.preferences.settings.SettingsPreferencesSearchBarType
 import proton.android.authenticator.proto.preferences.settings.SettingsPreferencesThemeType
+import java.time.Instant
 import javax.inject.Inject
 
 internal class DataStoreSettingPreferencesDataSource @Inject constructor(
@@ -48,7 +50,8 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 searchBarType = settingsPreferences.searchBarType.toDomain(),
                 digitType = settingsPreferences.digitType.toDomain(),
                 isCodeChangeAnimationEnabled = settingsPreferences.isCodeChangeAnimationEnabled,
-                isPassBannerDismissed = settingsPreferences.isPassBannerDismissed
+                isPassBannerDismissed = settingsPreferences.isPassBannerDismissed,
+                installationTime = settingsPreferences.installationTime.toEpochMillis()
             )
         }
 
@@ -63,6 +66,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 .setDigitType(settings.digitType.toPreferences())
                 .setIsCodeChangeAnimationEnabled(settings.isCodeChangeAnimationEnabled)
                 .setIsPassBannerDismissed(settings.isPassBannerDismissed)
+                .setInstallationTime(settings.installationTime.toProtobufTimestamp())
                 .build()
         }
     }
@@ -113,4 +117,15 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
         SettingsDigitType.Plain -> SettingsPreferencesDigitType.SETTINGS_DIGIT_TYPE_PLAIN
     }
 
+}
+
+private fun Timestamp.toEpochMillis(): Long =
+    Instant.ofEpochSecond(this.seconds, this.nanos.toLong()).toEpochMilli()
+
+private fun Long.toProtobufTimestamp(): Timestamp {
+    val instant = Instant.ofEpochMilli(this)
+    return Timestamp.newBuilder()
+        .setSeconds(instant.epochSecond)
+        .setNanos(instant.nano)
+        .build()
 }

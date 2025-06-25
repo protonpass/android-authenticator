@@ -34,6 +34,7 @@ dependencies {
     implementation(projects.features.onboarding.biometrics)
     implementation(projects.features.onboarding.imports)
     implementation(projects.features.onboarding.master)
+    implementation(projects.features.qa.master)
     implementation(projects.features.settings.master)
     implementation(projects.features.shared)
     implementation(projects.features.sync.disable)
