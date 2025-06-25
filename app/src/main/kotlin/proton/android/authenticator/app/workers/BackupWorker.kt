@@ -44,6 +44,8 @@ internal class BackupWorker @AssistedInject constructor(
         .let { answer ->
             when (answer) {
                 is Answer.Failure -> when (answer.reason) {
+                    GenerateBackupReason.MissingFileName,
+                    GenerateBackupReason.FileCreationFailed,
                     GenerateBackupReason.CannotGenerate -> Result.failure()
                     GenerateBackupReason.NoEntries,
                     GenerateBackupReason.NotEnabled -> Result.success()

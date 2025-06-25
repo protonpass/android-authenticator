@@ -18,8 +18,10 @@
 
 package proton.android.authenticator.business.shared.domain.infrastructure.files
 
+import android.net.Uri
+
 interface FileWriter {
 
-    suspend fun write(path: String, content: String)
+    suspend fun write(uri: Uri, content: String)
 
 }

@@ -18,35 +18,17 @@
 
 package proton.android.authenticator.business.shared.infrastructure.directories.di
 
-import android.content.Context
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryCreator
 import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
-import proton.android.authenticator.business.shared.infrastructure.directories.InternalDirectoryCreator
-import proton.android.authenticator.business.shared.infrastructure.directories.InternalDirectoryReader
+import proton.android.authenticator.business.shared.infrastructure.directories.DirectoryReaderImpl
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 internal abstract class BusinessSharedDirectoriesModule {
 
     @[Binds Singleton]
-    internal abstract fun bindDirectoryCreator(impl: InternalDirectoryCreator): DirectoryCreator
-
-    @[Binds Singleton]
-    internal abstract fun bindDirectoryReader(impl: InternalDirectoryReader): DirectoryReader
-
-    internal companion object {
-
-        @[Provides Singleton DirectoryPathInternal]
-        internal fun provideDirectoryPath(@ApplicationContext context: Context): String = context
-            .filesDir
-            .absolutePath
-
-    }
-
+    internal abstract fun bindDirectoryReaderImpl(impl: DirectoryReaderImpl): DirectoryReader
 }

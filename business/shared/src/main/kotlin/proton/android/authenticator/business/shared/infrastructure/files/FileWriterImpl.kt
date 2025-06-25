@@ -19,25 +19,23 @@
 package proton.android.authenticator.business.shared.infrastructure.files
 
 import android.content.ContentResolver
-import androidx.core.net.toUri
+import android.net.Uri
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import java.io.IOException
 import javax.inject.Inject
 
-internal class ContentResolverFileWriter @Inject constructor(
+internal class FileWriterImpl @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val contentResolver: ContentResolver
 ) : FileWriter {
 
-    override suspend fun write(path: String, content: String) {
+    override suspend fun write(uri: Uri, content: String) {
         withContext(appDispatchers.io) {
-            path.toUri().also { pathUri ->
-                contentResolver.openOutputStream(pathUri)
-                    ?.use { outputStream -> outputStream.write(content.toByteArray()) }
-                    ?: throw IOException("Cannot write file content to: $pathUri")
-            }
+            contentResolver.openOutputStream(uri)
+                ?.use { outputStream -> outputStream.write(content.toByteArray()) }
+                ?: throw IOException("Cannot write file content to: $uri")
         }
     }
 

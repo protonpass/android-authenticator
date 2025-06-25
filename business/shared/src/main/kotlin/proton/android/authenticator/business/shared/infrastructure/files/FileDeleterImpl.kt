@@ -16,28 +16,24 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.infrastructure.directories
+package proton.android.authenticator.business.shared.infrastructure.files
 
+import android.content.Context
+import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
-import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
-import proton.android.authenticator.business.shared.infrastructure.directories.di.DirectoryPathInternal
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileDeleter
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
-import java.io.File
 import javax.inject.Inject
 
-internal class InternalDirectoryReader @Inject constructor(
-    private val appDispatchers: AppDispatchers,
-    @DirectoryPathInternal private val directoryPath: String
-) : DirectoryReader {
+internal class FileDeleterImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val appDispatchers: AppDispatchers
+) : FileDeleter {
 
-    override suspend fun read(directoryName: String): List<File> = withContext(appDispatchers.io) {
-        File(directoryPath, directoryName).let { internalDirectory ->
-            if (internalDirectory.exists() && internalDirectory.isDirectory) {
-                internalDirectory.listFiles()?.toList() ?: emptyList()
-            } else {
-                emptyList()
-            }
-        }
+    override suspend fun delete(uri: Uri): Boolean = withContext(appDispatchers.io) {
+        val document = DocumentFile.fromSingleUri(context, uri)
+        document?.delete() ?: false
     }
-
 }

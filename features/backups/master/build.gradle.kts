@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.core.utilKotlin)
+
     implementation(projects.business.backups)
     implementation(projects.business.entries)
 }

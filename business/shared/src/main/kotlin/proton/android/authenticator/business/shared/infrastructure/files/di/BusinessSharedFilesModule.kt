@@ -25,25 +25,20 @@ import dagger.hilt.components.SingletonComponent
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileDeleter
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
-import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileReader
-import proton.android.authenticator.business.shared.infrastructure.files.ContentResolverFileWriter
-import proton.android.authenticator.business.shared.infrastructure.files.InternalFileDeleter
-import proton.android.authenticator.business.shared.infrastructure.files.InternalFileWriter
+import proton.android.authenticator.business.shared.infrastructure.files.FileReaderImpl
+import proton.android.authenticator.business.shared.infrastructure.files.FileWriterImpl
+import proton.android.authenticator.business.shared.infrastructure.files.FileDeleterImpl
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 internal abstract class BusinessSharedFilesModule {
 
     @[Binds Singleton]
-    internal abstract fun bindFileReader(impl: ContentResolverFileReader): FileReader
+    internal abstract fun bindFileDeleterImpl(impl: FileDeleterImpl): FileDeleter
 
-    @[Binds Singleton FileWriterContentResolver]
-    internal abstract fun bindContentResolverFileWriter(impl: ContentResolverFileWriter): FileWriter
+    @[Binds Singleton]
+    internal abstract fun bindFileReaderImpl(impl: FileReaderImpl): FileReader
 
-    @[Binds Singleton FileDeleterInternal]
-    internal abstract fun bindInternalFileDeleter(impl: InternalFileDeleter): FileDeleter
-
-    @[Binds Singleton FileWriterInternal]
-    internal abstract fun bindInternalFileWriter(impl: InternalFileWriter): FileWriter
-
+    @[Binds Singleton]
+    internal abstract fun bindFileWriterImpl(impl: FileWriterImpl): FileWriter
 }

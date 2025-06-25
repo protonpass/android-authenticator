@@ -18,8 +18,10 @@
 
 package proton.android.authenticator.business.shared.domain.infrastructure.files
 
+import android.net.Uri
+
 interface FileDeleter {
 
-    suspend fun delete(path: String): Boolean
+    suspend fun delete(uri: Uri): Boolean
 
 }

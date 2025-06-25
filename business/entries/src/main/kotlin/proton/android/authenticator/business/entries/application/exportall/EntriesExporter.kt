@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
-import proton.android.authenticator.business.shared.infrastructure.files.di.FileWriterContentResolver
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
@@ -34,7 +33,7 @@ internal class EntriesExporter @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
     private val encryptionContextProvider: EncryptionContextProvider,
-    @FileWriterContentResolver private val fileWriter: FileWriter,
+    private val fileWriter: FileWriter,
     private val repository: EntriesRepository
 ) {
 
@@ -55,7 +54,7 @@ internal class EntriesExporter @Inject constructor(
             }
         }
         .let { (modelsCount, content) ->
-            fileWriter.write(destinationUri.toString(), content)
+            fileWriter.write(destinationUri, content)
 
             modelsCount
         }

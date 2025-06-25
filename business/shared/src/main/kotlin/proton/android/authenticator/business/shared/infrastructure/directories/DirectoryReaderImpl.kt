@@ -16,28 +16,29 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.infrastructure.files
+package proton.android.authenticator.business.shared.infrastructure.directories
 
-import android.content.ContentResolver
-import androidx.core.net.toUri
+import android.content.Context
+import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
-import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
+import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
-import java.io.BufferedReader
 import javax.inject.Inject
 
-internal class ContentResolverFileReader @Inject constructor(
-    private val appDispatchers: AppDispatchers,
-    private val contentResolver: ContentResolver
-) : FileReader {
+internal class DirectoryReaderImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val appDispatchers: AppDispatchers
+) : DirectoryReader {
 
-    override suspend fun read(path: String): String = withContext(appDispatchers.io) {
-        path.toUri().let { pathUri ->
-            contentResolver.openInputStream(pathUri)
-                ?.bufferedReader()
-                ?.use(BufferedReader::readText)
-                .orEmpty()
+    override suspend fun read(uri: Uri): List<DocumentFile> = withContext(appDispatchers.io) {
+        val documentDir = DocumentFile.fromTreeUri(context, uri)
+
+        if (documentDir?.exists() == true && documentDir.isDirectory) {
+            documentDir.listFiles().toList()
+        } else {
+            emptyList()
         }
     }
-
 }

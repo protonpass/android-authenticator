@@ -42,6 +42,7 @@ import proton.android.authenticator.features.shared.usecases.backups.ObserveBack
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -127,7 +128,10 @@ internal class BackupsMasterViewModel @Inject constructor(
             generateBackupUseCase(entryModels)
                 .let { answer ->
                     when (answer) {
-                        is Answer.Failure -> R.string.backups_snackbar_message_backup_error
+                        is Answer.Failure -> {
+                            AuthenticatorLogger.w(TAG, "Failed to generate backup: ${answer.reason}")
+                            R.string.backups_snackbar_message_backup_error
+                        }
                         is Answer.Success -> R.string.backups_snackbar_message_backup_success
                     }
                 }
@@ -155,6 +159,10 @@ internal class BackupsMasterViewModel @Inject constructor(
         SnackbarEvent(messageResId = messageResId).also { snackbarEvent ->
             dispatchSnackbarEventUseCase(snackbarEvent)
         }
+    }
+
+    private companion object {
+        const val TAG = "BackupsMasterViewModel"
     }
 
 }

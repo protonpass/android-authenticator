@@ -18,25 +18,25 @@
 
 package proton.android.authenticator.business.shared.infrastructure.files
 
+import android.content.ContentResolver
+import androidx.core.net.toUri
 import kotlinx.coroutines.withContext
-import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
-import proton.android.authenticator.business.shared.infrastructure.directories.di.DirectoryPathInternal
+import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
-import java.io.File
-import java.io.FileOutputStream
+import java.io.BufferedReader
 import javax.inject.Inject
 
-internal class InternalFileWriter @Inject constructor(
+internal class FileReaderImpl @Inject constructor(
     private val appDispatchers: AppDispatchers,
-    @DirectoryPathInternal private val directoryPath: String
-) : FileWriter {
+    private val contentResolver: ContentResolver
+) : FileReader {
 
-    override suspend fun write(path: String, content: String) {
-        withContext(appDispatchers.io) {
-            "$directoryPath/$path"
-                .let(::File)
-                .let(::FileOutputStream)
-                .also { outputStream -> outputStream.use { it.write(content.toByteArray()) } }
+    override suspend fun read(path: String): String = withContext(appDispatchers.io) {
+        path.toUri().let { pathUri ->
+            contentResolver.openInputStream(pathUri)
+                ?.bufferedReader()
+                ?.use(BufferedReader::readText)
+                .orEmpty()
         }
     }
 

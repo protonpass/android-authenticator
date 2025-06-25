@@ -18,10 +18,11 @@
 
 package proton.android.authenticator.business.shared.domain.infrastructure.directories
 
-import java.io.File
+import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
 
 interface DirectoryReader {
 
-    suspend fun read(directoryName: String): List<File>
+    suspend fun read(uri: Uri): List<DocumentFile>
 
 }
