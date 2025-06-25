@@ -256,7 +256,7 @@ internal class HomeMasterViewModel @Inject constructor(
             }
 
             syncEntryModelsUseCase(
-                userId = ""
+                userId = "IaVQfYyWYctcTw-RbJ8TzwKQDVqy8jnflt-SLc78v4g16uOX-ppeZKHaY5ALthObqC-54-Hkyqi0NJoazqbKMQ=="
             )
                 .also { answer ->
                     when (answer) {

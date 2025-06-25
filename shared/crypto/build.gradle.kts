@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(libs.core.crypto)
+    implementation(libs.core.key)
     implementation(libs.hilt.android)
 
     implementation(projects.shared.common)
