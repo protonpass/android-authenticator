@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.navigation.domain.graphs.onboarding
 
-import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -82,8 +81,11 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
             )
         }
 
-        bottomSheet<OnboardingImportOptionsNavigationDestination> {
+        composable<OnboardingImportOptionsNavigationDestination> {
             ImportsOptionsScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
                 onImportTypeSelected = { importType ->
                     NavigationCommand.NavigateToWithPopup(
                         destination = OnboardingImportOnboardingNavigationDestination(
@@ -91,9 +93,6 @@ internal fun NavGraphBuilder.onboardingNavigationGraph(onNavigate: (NavigationCo
                         ),
                         popDestination = OnboardingImportNavigationDestination
                     ).also(onNavigate)
-                },
-                onDismissed = {
-                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

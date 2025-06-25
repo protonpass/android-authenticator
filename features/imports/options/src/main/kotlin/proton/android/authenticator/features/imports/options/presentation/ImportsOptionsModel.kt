@@ -20,6 +20,8 @@ package proton.android.authenticator.features.imports.options.presentation
 
 import androidx.annotation.StringRes
 import proton.android.authenticator.business.entries.domain.EntryImportType
+import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 
 internal data class ImportsOptionsModel(
@@ -30,5 +32,30 @@ internal data class ImportsOptionsModel(
     internal val id: String = type.name
 
     internal val nameText: UiText = UiText.Resource(id = nameResId)
+
+    internal val icon: UiIcon = when (type) {
+        EntryImportType.Aegis -> R.drawable.ic_authenticator_aegis
+        EntryImportType.Authy -> R.drawable.ic_authenticator_authy
+        EntryImportType.Bitwarden -> R.drawable.ic_authenticator_bitwarden
+        EntryImportType.Ente -> R.drawable.ic_authenticator_ente
+        EntryImportType.Google -> R.drawable.ic_authenticator_google
+        EntryImportType.LastPass -> R.drawable.ic_authenticator_lastpass
+        EntryImportType.Microsoft -> R.drawable.ic_authenticator_microsoft
+        EntryImportType.Proton -> R.drawable.ic_authenticator_proton
+        EntryImportType.TwoFas -> R.drawable.ic_authenticator_2fas
+    }.let(UiIcon::Resource)
+
+    internal val isSupported: Boolean = when (type) {
+        EntryImportType.Aegis,
+        EntryImportType.Bitwarden,
+        EntryImportType.Ente,
+        EntryImportType.Google,
+        EntryImportType.LastPass,
+        EntryImportType.Proton,
+        EntryImportType.TwoFas -> true
+
+        EntryImportType.Authy,
+        EntryImportType.Microsoft -> false
+    }
 
 }

@@ -18,25 +18,41 @@
 
 package proton.android.authenticator.features.imports.options.ui
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.imports.options.presentation.ImportsOptionsViewModel
-import proton.android.authenticator.shared.ui.domain.screens.BottomSheetScreen
+import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
 @Composable
-fun ImportsOptionsScreen(onImportTypeSelected: (Int) -> Unit, onDismissed: () -> Unit) =
+fun ImportsOptionsScreen(onNavigationClick: () -> Unit, onImportTypeSelected: (Int) -> Unit) =
     with(hiltViewModel<ImportsOptionsViewModel>()) {
         val state by stateFlow.collectAsStateWithLifecycle()
 
-        BottomSheetScreen(
-            onDismissed = onDismissed
-        ) {
+        ScaffoldScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .backgroundScreenGradient(),
+            topBar = {
+                SmallTopBar(
+                    navigationIcon = UiIcon.Resource(id = R.drawable.ic_arrow_left),
+                    onNavigationClick = onNavigationClick
+                )
+            }
+        ) { innerPaddingValues ->
             ImportsOptionsContent(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues = innerPaddingValues),
                 state = state,
                 onOptionSelected = { option ->
                     onImportTypeSelected(option.type.ordinal)

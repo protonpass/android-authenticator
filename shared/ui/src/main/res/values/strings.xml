@@ -33,12 +33,14 @@
     <string name="action_undo">Undo</string>
     <string name="action_unlock">Unlock</string>
 
-    <string name="authenticator_google" translatable="false">Google Authenticator</string>
     <string name="authenticator_2fas" translatable="false">2FAS</string>
     <string name="authenticator_aegis" translatable="false">Aegis Authenticator</string>
+    <string name="authenticator_authy" translatable="false">Authy</string>
     <string name="authenticator_bitwarden" translatable="false">Bitwarden Authenticator</string>
     <string name="authenticator_ente" translatable="false">Ente Auth</string>
+    <string name="authenticator_google" translatable="false">Google Authenticator</string>
     <string name="authenticator_last_pass" translatable="false">LastPass Authenticator</string>
+    <string name="authenticator_microsoft" translatable="false">Microsoft Authenticator</string>
     <string name="authenticator_proton" translatable="false">Proton Authenticator</string>
 
     <string name="date_format_today">Today, %1$s</string>

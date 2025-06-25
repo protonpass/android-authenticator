@@ -20,10 +20,12 @@ package proton.android.authenticator.features.imports.options.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,8 +33,10 @@ import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.features.imports.options.R
 import proton.android.authenticator.features.imports.options.presentation.ImportsOptionsModel
 import proton.android.authenticator.features.imports.options.presentation.ImportsOptionsState
+import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun ImportsOptionsContent(
@@ -40,33 +44,49 @@ internal fun ImportsOptionsContent(
     onOptionSelected: (ImportsOptionsModel) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
-    LazyColumn(
+    Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = ThemePadding.Small)
+        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraLarge)
     ) {
-        item {
+        Column(
+            modifier = Modifier.padding(horizontal = ThemePadding.Large),
+            verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium)
+        ) {
             Text(
-                modifier = Modifier.padding(
-                    horizontal = ThemePadding.Medium,
-                    vertical = ThemePadding.Small
-                ),
                 text = stringResource(id = R.string.imports_options_title),
-                style = Theme.typography.body1Bold
+                color = Theme.colorScheme.textNorm,
+                style = Theme.typography.subtitle
+            )
+
+            Text(
+                text = stringResource(id = R.string.imports_options_subtitle),
+                color = Theme.colorScheme.textWeak,
+                style = Theme.typography.bodyRegular
             )
         }
 
-        items(
-            items = optionModels,
-            key = { optionModel -> optionModel.id }
-        ) { optionModel ->
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onOptionSelected(optionModel) }
-                    .padding(all = ThemePadding.Medium),
-                text = optionModel.nameText.asString(),
-                style = Theme.typography.body2Regular
-            )
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            itemsIndexed(
+                items = optionModels,
+                key = { _, optionModel -> optionModel.id }
+            ) { index, optionModel ->
+                ImportsOptionRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onOptionSelected(optionModel) }
+                        .padding(
+                            horizontal = ThemePadding.Large,
+                            vertical = ThemePadding.Medium
+                        ),
+                    optionModel = optionModel
+                )
+
+                if (index < optionModels.lastIndex) {
+                    DoubleHorizontalDivider(
+                        modifier = Modifier.padding(horizontal = ThemePadding.Large)
+                    )
+                }
+            }
         }
     }
 }

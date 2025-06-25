@@ -31,6 +31,10 @@ internal data object ImportsOptionsState {
             nameResId = R.string.authenticator_google
         ),
         ImportsOptionsModel(
+            type = EntryImportType.Authy,
+            nameResId = R.string.authenticator_authy
+        ),
+        ImportsOptionsModel(
             type = EntryImportType.TwoFas,
             nameResId = R.string.authenticator_2fas
         ),
@@ -49,6 +53,10 @@ internal data object ImportsOptionsState {
         ImportsOptionsModel(
             type = EntryImportType.LastPass,
             nameResId = R.string.authenticator_last_pass
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.Microsoft,
+            nameResId = R.string.authenticator_microsoft
         ),
         ImportsOptionsModel(
             type = EntryImportType.Proton,

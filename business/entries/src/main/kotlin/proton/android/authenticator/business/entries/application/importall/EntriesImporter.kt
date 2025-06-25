@@ -128,6 +128,11 @@ internal class EntriesImporter @Inject constructor(
             EntryImportType.TwoFas -> {
                 authenticatorImporter.importFrom2fas(content, password)
             }
+
+            EntryImportType.Authy,
+            EntryImportType.Microsoft -> {
+                throw IllegalArgumentException("Unsupported import type: $importType")
+            }
         }.let { result ->
             if (result.errors.isNotEmpty()) {
                 throw AuthenticatorImportException.BadContent(result.errors.first().message)

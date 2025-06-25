@@ -1,6 +1,5 @@
 package proton.android.authenticator.navigation.domain.graphs.home
 
-import androidx.compose.material.navigation.bottomSheet
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
@@ -96,8 +95,11 @@ internal fun NavGraphBuilder.homeNavigationGraph(
             )
         }
 
-        bottomSheet<HomeImportNavigationDestination> {
+        composable<HomeImportNavigationDestination> {
             ImportsOptionsScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
                 onImportTypeSelected = { importType ->
                     NavigationCommand.NavigateToWithPopup(
                         destination = HomeImportOnboardingNavigationDestination(
@@ -105,9 +107,6 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                         ),
                         popDestination = HomeMasterNavigationDestination
                     ).also(onNavigate)
-                },
-                onDismissed = {
-                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

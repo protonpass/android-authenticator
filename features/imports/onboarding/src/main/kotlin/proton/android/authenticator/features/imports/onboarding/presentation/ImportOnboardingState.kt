@@ -38,9 +38,11 @@ internal data class ImportOnboardingState(
     internal val isMultiSelectionAllowed: Boolean = when (importType) {
         EntryImportType.Google -> true
         EntryImportType.Aegis,
+        EntryImportType.Authy,
         EntryImportType.Bitwarden,
         EntryImportType.Ente,
         EntryImportType.LastPass,
+        EntryImportType.Microsoft,
         EntryImportType.Proton,
         EntryImportType.TwoFas -> false
     }
@@ -49,20 +51,24 @@ internal data class ImportOnboardingState(
 
     internal val providerIcon: UiIcon = when (importType) {
         EntryImportType.Aegis -> uiR.drawable.ic_authenticator_aegis
+        EntryImportType.Authy -> uiR.drawable.ic_authenticator_authy
         EntryImportType.Bitwarden -> uiR.drawable.ic_authenticator_bitwarden
         EntryImportType.Ente -> uiR.drawable.ic_authenticator_ente
         EntryImportType.Google -> uiR.drawable.ic_authenticator_google
         EntryImportType.LastPass -> uiR.drawable.ic_authenticator_lastpass
+        EntryImportType.Microsoft -> uiR.drawable.ic_authenticator_microsoft
         EntryImportType.Proton -> uiR.drawable.ic_authenticator_proton
         EntryImportType.TwoFas -> uiR.drawable.ic_authenticator_2fas
     }.let(UiIcon::Resource)
 
     internal val providerNameText: UiText = when (importType) {
         EntryImportType.Aegis -> uiR.string.authenticator_aegis
+        EntryImportType.Authy -> uiR.string.authenticator_authy
         EntryImportType.Bitwarden -> uiR.string.authenticator_bitwarden
         EntryImportType.Ente -> uiR.string.authenticator_ente
         EntryImportType.Google -> uiR.string.authenticator_google
         EntryImportType.LastPass -> uiR.string.authenticator_last_pass
+        EntryImportType.Microsoft -> uiR.string.authenticator_microsoft
         EntryImportType.Proton -> uiR.string.authenticator_proton
         EntryImportType.TwoFas -> uiR.string.authenticator_2fas
     }.let(UiText::Resource)
@@ -75,6 +81,8 @@ internal data class ImportOnboardingState(
         EntryImportType.LastPass -> R.array.imports_onboarding_lastpass_steps
         EntryImportType.Proton -> R.array.imports_onboarding_proton_authenticator_steps
         EntryImportType.TwoFas -> R.array.imports_onboarding_2fas_steps
+        EntryImportType.Authy,
+        EntryImportType.Microsoft -> -1
     }
 
 }

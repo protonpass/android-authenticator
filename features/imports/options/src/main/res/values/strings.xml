@@ -17,5 +17,6 @@
   -->
 
 <resources>
-    <string name="imports_options_title">Import from</string>
+    <string name="imports_options_title">Import codes</string>
+    <string name="imports_options_subtitle">Select your current 2FA provider.</string>
 </resources>

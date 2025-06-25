@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.imports.onboarding.ui
+package proton.android.authenticator.shared.ui.domain.components.icons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -25,17 +25,21 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.Dp
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
-import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 
 @Composable
-internal fun ImportsOnboardingProviderIcon(icon: UiIcon, modifier: Modifier = Modifier) {
+fun ProviderIcon(
+    icon: UiIcon,
+    size: Dp,
+    modifier: Modifier = Modifier
+) {
     Image(
         modifier = modifier
-            .size(size = ThemeSpacing.ExtraLarge)
+            .size(size = size)
             .clip(shape = RoundedCornerShape(size = ThemeRadius.MediumSmall))
             .border(
                 shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),

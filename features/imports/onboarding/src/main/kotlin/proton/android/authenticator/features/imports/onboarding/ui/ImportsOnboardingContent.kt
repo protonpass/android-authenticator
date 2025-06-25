@@ -35,6 +35,7 @@ import proton.android.authenticator.features.imports.onboarding.R
 import proton.android.authenticator.features.imports.onboarding.presentation.ImportOnboardingState
 import proton.android.authenticator.shared.common.domain.constants.CharacterConstants
 import proton.android.authenticator.shared.ui.domain.components.buttons.LinkButton
+import proton.android.authenticator.shared.ui.domain.components.icons.ProviderIcon
 import proton.android.authenticator.shared.ui.domain.components.texts.DelimiterStyledText
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -58,8 +59,9 @@ internal fun ImportsOnboardingContent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
         ) {
-            ImportsOnboardingProviderIcon(
-                icon = providerIcon
+            ProviderIcon(
+                icon = providerIcon,
+                size = ThemeSpacing.ExtraLarge
             )
 
             Image(
@@ -67,8 +69,9 @@ internal fun ImportsOnboardingContent(
                 contentDescription = null
             )
 
-            ImportsOnboardingProviderIcon(
-                icon = UiIcon.Resource(id = uiR.drawable.ic_authenticator_proton)
+            ProviderIcon(
+                icon = UiIcon.Resource(id = uiR.drawable.ic_authenticator_proton),
+                size = ThemeSpacing.ExtraLarge
             )
         }
 
