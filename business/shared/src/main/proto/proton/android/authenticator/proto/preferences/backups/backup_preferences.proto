@@ -11,4 +11,5 @@ message BackupPreferences {
   BackupPreferencesFrequency frequency = 2;
   int32 backup_count = 3;
   google.protobuf.Timestamp last_backup_date = 4;
+  string directory_uri = 5;
 }

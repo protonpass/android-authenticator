@@ -21,3 +21,7 @@ package proton.android.authenticator.business.backups.domain
 internal class BackupNoEntriesError : Exception()
 
 internal class BackupNotEnabledError : Exception()
+
+internal class BackupMissingFileNameError : Exception()
+
+internal class BackupFileCreationError : Exception()

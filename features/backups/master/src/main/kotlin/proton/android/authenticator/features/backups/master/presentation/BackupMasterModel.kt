@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.backups.master.presentation
 
+import android.net.Uri
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.shared.ui.domain.models.UiDate
@@ -27,12 +28,10 @@ internal data class BackupMasterModel(
     internal val frequencyType: BackupFrequencyType,
     internal val maxBackupCount: Int,
     internal val canCreateBackup: Boolean,
+    internal val directoryUri: Uri,
     private val count: Int,
-    private val lastBackupMillis: Long?,
-    private val path: String
+    private val lastBackupMillis: Long?
 ) {
-
-    internal val backupPath: String = path
 
     internal val lastBackupDate: UiDate? = lastBackupMillis?.let(UiDate::Backup)
 
@@ -46,7 +45,8 @@ internal data class BackupMasterModel(
         isEnabled = isEnabled,
         frequencyType = frequencyType,
         lastBackupMillis = lastBackupMillis,
-        count = count
+        count = count,
+        directoryUri = directoryUri
     )
 
 }

@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.backups.master.presentation
 
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -72,7 +73,7 @@ internal class BackupsMasterViewModel @Inject constructor(
             maxBackupCount = backup.maxBackupCount,
             lastBackupMillis = backup.lastBackupMillis,
             count = backup.count,
-            path = backup.directoryName,
+            directoryUri = backup.directoryUri,
             canCreateBackup = canCreateBackup
         )
 
@@ -90,18 +91,28 @@ internal class BackupsMasterViewModel @Inject constructor(
                 maxBackupCount = Backup.Default.maxBackupCount,
                 lastBackupMillis = Backup.Default.lastBackupMillis,
                 count = Backup.Default.count,
-                path = Backup.Default.directoryName,
+                directoryUri = Uri.EMPTY,
                 canCreateBackup = false
             ),
             entryModels = persistentListOf()
         )
     )
 
-    internal fun onUpdateIsEnabled(newIsEnabled: Boolean) {
-        if (backupModel.isEnabled == newIsEnabled) return
+    internal fun onDisableBackup() {
+        if (!backupModel.isEnabled) return
 
-        backupModel.copy(isEnabled = newIsEnabled)
-            .also(::updateBackup)
+        backupModel.copy(
+            isEnabled = false,
+            directoryUri = Uri.EMPTY
+        ).also(::updateBackup)
+    }
+
+    internal fun onFolderPicked(uri: Uri) {
+        if (backupModel.directoryUri == uri) return
+        backupModel.copy(
+            isEnabled = true,
+            directoryUri = uri
+        ).also(::updateBackup)
     }
 
     internal fun onUpdateFrequencyType(newFrequencyType: BackupFrequencyType) {

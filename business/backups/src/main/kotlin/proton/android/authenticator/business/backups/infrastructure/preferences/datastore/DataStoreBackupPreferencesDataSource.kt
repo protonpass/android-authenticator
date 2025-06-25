@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.backups.infrastructure.preferences.datastore
 
+import androidx.core.net.toUri
 import androidx.datastore.core.DataStore
 import com.google.protobuf.Timestamp
 import kotlinx.coroutines.flow.Flow
@@ -43,7 +44,8 @@ internal class DataStoreBackupPreferencesDataSource @Inject constructor(
                 lastBackupMillis = backupPreferences.lastBackupDate
                     .seconds
                     .takeIf { lastBackupSeconds -> lastBackupSeconds > 0 }
-                    ?.times(DateConstants.ONE_SECOND_IN_MILLIS)
+                    ?.times(DateConstants.ONE_SECOND_IN_MILLIS),
+                directoryUri = backupPreferences.directoryUri.toUri()
             )
         }
 
@@ -60,6 +62,7 @@ internal class DataStoreBackupPreferencesDataSource @Inject constructor(
                         )
                         .build()
                 )
+                .setDirectoryUri(preferences.directoryUri.toString())
                 .build()
         }
     }

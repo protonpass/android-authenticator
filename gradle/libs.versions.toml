@@ -11,6 +11,7 @@ coreKtxVersion = "1.16.0"
 coreVersion = "32.2.0"
 datastoreVersion = "1.1.7"
 dependencyGuardVersion = "0.5.0"
+documentfileVersion = "1.1.0"
 espressoCoreVersion = "3.6.1"
 hiltCompilerVersion = "1.2.0"
 hiltNavigationComposeVersion = "1.2.0"
@@ -115,6 +116,7 @@ core-config-data = { module = "me.proton.core:configuration-data", version.ref =
 core-config-dagger-staticDefaults = { module = "me.proton.core:configuration-dagger-staticdefaults", version.ref = "coreVersion" }
 core-config-dagger-contentProvider = { module = "me.proton.core:configuration-dagger-content-resolver", version.ref = "coreVersion" }
 core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", version.ref = "coreVersion" }
+documentfile = { module = "androidx.documentfile:documentfile", version.ref = "documentfileVersion" }
 gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "agpVersion" }
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }

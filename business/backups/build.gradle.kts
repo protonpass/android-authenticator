@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "proton.android.authenticator.business.backups"
 }
+
+dependencies {
+    implementation(libs.documentfile)
+}

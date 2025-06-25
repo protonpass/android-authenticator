@@ -61,7 +61,8 @@ fun BackupsMasterScreen(snackbarHostState: SnackbarHostState, onNavigationClick:
                     .padding(paddingValues = innerPaddingValues)
                     .padding(horizontal = ThemePadding.Medium),
                 state = state,
-                onIsEnableChange = ::onUpdateIsEnabled,
+                onDisableBackup = ::onDisableBackup,
+                onFolderPicked = ::onFolderPicked,
                 onFrequencyChange = ::onUpdateFrequencyType,
                 onBackupNowClick = ::onCreateBackup
             )

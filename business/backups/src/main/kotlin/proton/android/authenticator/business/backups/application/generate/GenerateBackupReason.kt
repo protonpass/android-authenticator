@@ -23,5 +23,7 @@ import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 enum class GenerateBackupReason : AnswerReason {
     CannotGenerate,
     NoEntries,
-    NotEnabled
+    NotEnabled,
+    MissingFileName,
+    FileCreationFailed
 }

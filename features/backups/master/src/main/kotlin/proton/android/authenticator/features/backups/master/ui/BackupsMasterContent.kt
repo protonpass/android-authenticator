@@ -18,6 +18,11 @@
 
 package proton.android.authenticator.features.backups.master.ui
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.DocumentsContract
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
@@ -33,6 +39,7 @@ import proton.android.authenticator.features.backups.master.presentation.Backups
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
 import proton.android.authenticator.shared.ui.domain.components.containers.RowsContainer
+import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -43,7 +50,8 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 @Composable
 internal fun BackupsMasterContent(
     state: BackupsMasterState,
-    onIsEnableChange: (Boolean) -> Unit,
+    onDisableBackup: () -> Unit,
+    onFolderPicked: (Uri) -> Unit,
     onFrequencyChange: (BackupFrequencyType) -> Unit,
     onBackupNowClick: (List<EntryModel>) -> Unit,
     modifier: Modifier = Modifier
@@ -52,6 +60,18 @@ internal fun BackupsMasterContent(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
     ) {
+        val context = LocalContext.current
+        val folderLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.OpenDocumentTree()
+        ) { uri: Uri? ->
+            uri?.let {
+                context.contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                onFolderPicked(it)
+            }
+        }
         RowsContainer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,19 +81,37 @@ internal fun BackupsMasterContent(
                     {
                         ToggleRow(
                             titleText = UiText.Resource(id = R.string.backups_automatic_backups_title),
-                            descriptionText = UiText.Resource(
-                                id = R.string.backups_automatic_backups_location,
-                                backupModel.backupPath
-                            ),
                             isChecked = backupModel.isEnabled,
-                            onCheckedChange = onIsEnableChange
+                            onCheckedChange = {
+                                if (it) {
+                                    folderLauncher.launch(backupModel.directoryUri)
+                                } else {
+                                    onDisableBackup()
+                                }
+                            }
                         )
                     }
                 )
                 if (backupModel.isEnabled) {
                     add(
                         {
-                            SelectorRow<BackupFrequencyType>(
+                            NavigationRow(
+                                titleText = UiText.Resource(R.string.backups_automatic_backups_location_title),
+                                description = UiText.Dynamic(
+                                    DocumentsContract.getTreeDocumentId(
+                                        backupModel.directoryUri
+                                    ).substringAfter(':')
+                                ),
+                                showNavigationIcon = true,
+                                onClick = {
+                                    folderLauncher.launch(backupModel.directoryUri)
+                                }
+                            )
+                        }
+                    )
+                    add(
+                        {
+                            SelectorRow(
                                 titleText = UiText.Resource(id = R.string.backups_frequency_title),
                                 options = backupModel.frequencyOptions,
                                 onSelectedOptionChange = onFrequencyChange

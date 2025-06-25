@@ -18,6 +18,8 @@
 
 package proton.android.authenticator.business.backups.application.generate
 
+import proton.android.authenticator.business.backups.domain.BackupFileCreationError
+import proton.android.authenticator.business.backups.domain.BackupMissingFileNameError
 import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
 import proton.android.authenticator.shared.common.domain.answers.Answer
@@ -35,6 +37,10 @@ internal class GenerateBackupCommandHandler @Inject constructor(
         Answer.Failure(reason = GenerateBackupReason.NoEntries)
     } catch (_: BackupNotEnabledError) {
         Answer.Failure(reason = GenerateBackupReason.NotEnabled)
+    } catch (_: BackupMissingFileNameError) {
+        Answer.Failure(reason = GenerateBackupReason.MissingFileName)
+    } catch (_: BackupFileCreationError) {
+        Answer.Failure(reason = GenerateBackupReason.FileCreationFailed)
     } catch (_: IOException) {
         Answer.Failure(reason = GenerateBackupReason.CannotGenerate)
     }

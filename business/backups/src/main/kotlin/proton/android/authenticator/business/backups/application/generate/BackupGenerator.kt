@@ -18,14 +18,18 @@
 
 package proton.android.authenticator.business.backups.application.generate
 
+import android.content.Context
+import androidx.documentfile.provider.DocumentFile
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupEntry
+import proton.android.authenticator.business.backups.domain.BackupFileCreationError
+import proton.android.authenticator.business.backups.domain.BackupMissingFileNameError
 import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
 import proton.android.authenticator.business.backups.domain.BackupRepository
-import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryCreator
 import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileDeleter
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
@@ -39,9 +43,9 @@ import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 
 internal class BackupGenerator @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val directoryCreator: DirectoryCreator,
     private val directoryReader: DirectoryReader,
     @FileDeleterInternal private val fileDeleter: FileDeleter,
     @FileWriterInternal private val fileWriter: FileWriter,
@@ -71,10 +75,14 @@ internal class BackupGenerator @Inject constructor(
 
     private suspend fun cleanLastBackupIfLimitReached(backup: Backup) {
         if (!backup.isBackupLimitReached) return
-
-        directoryReader.read(backup.directoryName)
+        directoryReader.read(backup.directoryUri.toString())
+            .filter { file ->
+                Backup.BACKUP_FILE_REGEX.matches(file.name.orEmpty())
+            }
             .minByOrNull { file -> file.lastModified() }
-            ?.also { file -> fileDeleter.delete(path = "${backup.directoryName}/${file.name}") }
+            ?.also { file ->
+                fileDeleter.delete(path = file.toString())
+            }
     }
 
     private suspend fun generateBackup(backup: Backup, backupEntries: List<BackupEntry>) {
@@ -84,12 +92,14 @@ internal class BackupGenerator @Inject constructor(
                     authenticatorClient.exportEntries(entryModels)
                 }
             }
-            .also { backupContent ->
-                directoryCreator.create(directoryName = backup.directoryName)
-            }
-            .also { backupContent ->
+            .also { backupContent: String ->
+                val fileName = backup.fileName ?: throw BackupMissingFileNameError()
+                val backupFile = DocumentFile.fromTreeUri(context, backup.directoryUri)
+                    ?.createFile("application/json", fileName)
+                    ?: throw BackupFileCreationError()
+
                 fileWriter.write(
-                    path = backup.path,
+                    path = backupFile.uri.toString(),
                     content = backupContent
                 )
             }

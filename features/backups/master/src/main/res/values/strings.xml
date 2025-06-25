@@ -19,7 +19,7 @@
 <resources>
     <string name="backups_screen_title">Backups</string>
     <string name="backups_automatic_backups_title">Automatic backups</string>
-    <string name="backups_automatic_backups_location">Location: authenticator/files/%1$s</string>
+    <string name="backups_automatic_backups_location_title">Folder location</string>
     <string name="backups_frequency_title">Frequency</string>
     <string name="backups_frequency_option_daily">Daily</string>
     <string name="backups_frequency_option_weekly">Weekly</string>

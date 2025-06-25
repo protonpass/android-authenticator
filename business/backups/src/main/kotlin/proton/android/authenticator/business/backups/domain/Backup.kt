@@ -18,11 +18,14 @@
 
 package proton.android.authenticator.business.backups.domain
 
+import android.net.Uri
+
 data class Backup(
     val isEnabled: Boolean,
     val frequencyType: BackupFrequencyType,
     val count: Int,
-    val lastBackupMillis: Long?
+    val lastBackupMillis: Long?,
+    val directoryUri: Uri
 ) {
 
     val repeatIntervalDays: Long = when (frequencyType) {
@@ -35,23 +38,24 @@ data class Backup(
 
     val maxBackupCount: Int = MAX_BACKUP_COUNT
 
-    val directoryName: String = DIRECTORY_NAME
-
-    internal val fileName: String = "proton_authenticator_automatic_backup_$lastBackupMillis.json"
-
-    internal val path: String = "$directoryName/$fileName"
+    val fileName: String? = lastBackupMillis?.let { "$FILE_PREFIX$it$FILE_SUFFIX" }
 
     companion object {
 
-        private const val DIRECTORY_NAME = "backups"
+        private const val FILE_PREFIX = "proton_authenticator_automatic_backup_"
+        private const val FILE_SUFFIX = ".json"
 
         internal const val MAX_BACKUP_COUNT = 5
+
+        val BACKUP_FILE_REGEX =
+            Regex("^${Regex.escape(FILE_PREFIX)}\\d+${Regex.escape(FILE_SUFFIX)}$")
 
         val Default = Backup(
             isEnabled = false,
             frequencyType = BackupFrequencyType.Daily,
             count = 0,
-            lastBackupMillis = null
+            lastBackupMillis = null,
+            directoryUri = Uri.EMPTY
         )
 
     }
