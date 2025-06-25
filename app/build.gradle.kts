@@ -49,15 +49,6 @@ android {
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
     }
 
-    signingConfigs {
-        register("signingKeystore") {
-            storeFile = file("$rootDir/keystore/ProtonMail.keystore")
-            storePassword = "${privateProperties["keyStorePassword"]}"
-            keyAlias = "ProtonMail"
-            keyPassword = "${privateProperties["keyStoreKeyPassword"]}"
-        }
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -67,7 +58,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs["signingKeystore"]
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
