@@ -62,6 +62,13 @@ for file in $string_files; do
           continue 1
         fi
 
+        # Search for usages of R.array.<string_name> in the project using rg
+        usage_count=$(rg -l "R\.array\.$string_name" . | wc -l)
+        # If the string is used, continue to the next string
+        if [ $usage_count -gt 0 ]; then
+          continue 1
+        fi
+
         # Search for usages of @string/<string_name> in the project using rg
         usage_count=$(rg -l "@string/$string_name" . | wc -l)
 
