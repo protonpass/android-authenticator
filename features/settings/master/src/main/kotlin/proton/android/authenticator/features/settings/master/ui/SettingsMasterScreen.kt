@@ -57,7 +57,8 @@ fun SettingsMasterScreen(
     onImportClick: () -> Unit,
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
-    onDiscoverAppClick: (String, String) -> Unit
+    onDiscoverAppClick: (String, String) -> Unit,
+    onVersionNameClick: () -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -133,7 +134,12 @@ fun SettingsMasterScreen(
                     onExportClick = launcher::launch,
                     onHowToClick = onHowToClick,
                     onFeedbackClick = onFeedbackClick,
-                    onDiscoverAppClick = onDiscoverAppClick
+                    onDiscoverAppClick = onDiscoverAppClick,
+                    onVersionNameClick = {
+                        if (currentState.buildFlavor.isDev()) {
+                            onVersionNameClick()
+                        }
+                    }
                 )
             }
         }

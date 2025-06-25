@@ -20,6 +20,7 @@ package proton.android.authenticator.features.settings.master.presentation
 
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.protonapps.domain.ProtonApp
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
 import proton.android.authenticator.shared.common.domain.constants.UrlConstants
 import proton.android.authenticator.shared.common.domain.models.MimeType
 
@@ -39,6 +40,7 @@ internal sealed interface SettingsMasterState {
 
     data class Ready(
         override val event: SettingsMasterEvent,
+        internal val buildFlavor: BuildFlavor,
         internal val versionName: String,
         private val settings: Settings,
         private val uninstalledProtonApps: List<ProtonApp>

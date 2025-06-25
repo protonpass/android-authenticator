@@ -19,6 +19,7 @@
 package proton.android.authenticator.navigation.domain.graphs.settings
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -34,6 +35,7 @@ import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswor
 import proton.android.authenticator.features.settings.master.ui.SettingsMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.backups.BackupsNavigationDestination
+import proton.android.authenticator.navigation.domain.graphs.qa.QaMenuNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncDisableNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncNavigationDestination
 
@@ -102,6 +104,11 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                         appPackageName = appPackageName,
                         context = context,
                         fallbackUrl = appUrl
+                    ).also(onNavigate)
+                },
+                onVersionNameClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = QaMenuNavigationDestination
                     ).also(onNavigate)
                 }
             )
@@ -221,6 +228,10 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                     ).also(onNavigate)
                 }
             )
+        }
+
+        composable<QaMenuNavigationDestination> {
+            Text("Qa Menu")
         }
     }
 }

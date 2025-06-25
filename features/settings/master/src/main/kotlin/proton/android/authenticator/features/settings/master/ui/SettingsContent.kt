@@ -33,6 +33,7 @@ import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterSettingsModel
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
+import proton.android.authenticator.shared.ui.domain.components.containers.MultipleClicksContainer
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
@@ -56,6 +57,7 @@ internal fun SettingsContent(
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
     onDiscoverAppClick: (String, String) -> Unit,
+    onVersionNameClick: () -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     val context = LocalContext.current
@@ -209,6 +211,8 @@ internal fun SettingsContent(
             )
         }
 
-        SettingsVersionRow(versionName = versionName)
+        MultipleClicksContainer(onClick = onVersionNameClick) {
+            SettingsVersionRow(versionName = versionName)
+        }
     }
 }

@@ -28,6 +28,11 @@ enum class BuildFlavor(val value: String) {
     PlayBlack(value = "playBlack"),
     PlayProd(value = "playProd");
 
+    fun isDev() = when (this) {
+        DevProd, DevBlack -> true
+        else -> false
+    }
+
     companion object {
 
         fun from(value: String): BuildFlavor = when (value) {
