@@ -19,6 +19,7 @@
 package proton.android.authenticator.shared.ui.domain.components.textfields
 
 import android.graphics.PorterDuff
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
@@ -54,6 +55,8 @@ fun SearchTextField(
     isSingleLine: Boolean = true
 ) {
     val shape = remember { CircleShape }
+
+    val interactionSource = remember { MutableInteractionSource() }
 
     BasicTextField(
         modifier = modifier
@@ -116,11 +119,23 @@ fun SearchTextField(
                         tint = Theme.colorScheme.textWeak
                     )
                 },
+                trailingIcon = {
+                    if (value.isNotEmpty()) {
+                        Icon(
+                            modifier = Modifier
+                                .size(size = 18.dp)
+                                .clickable { onValueChange("") },
+                            painter = painterResource(id = R.drawable.ic_cross_big),
+                            contentDescription = null,
+                            tint = Theme.colorScheme.textWeak
+                        )
+                    }
+                },
                 shape = shape,
                 singleLine = isSingleLine,
                 enabled = true,
                 isError = false,
-                interactionSource = MutableInteractionSource(),
+                interactionSource = interactionSource,
                 contentPadding = PaddingValues(all = ThemePadding.None),
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Theme.colorScheme.textNorm,
