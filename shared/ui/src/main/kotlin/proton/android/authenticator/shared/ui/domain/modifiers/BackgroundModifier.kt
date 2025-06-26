@@ -50,15 +50,21 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.scale
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 import kotlin.math.roundToInt
+import android.graphics.Canvas as AndroidCanvas
 
 @Stable
 fun Modifier.backgroundBlur(backgroundColor: Color, blurRadius: Dp) = drawBehind {
@@ -388,4 +394,76 @@ fun Modifier.backgroundOnboarding() = composed {
             }
         }
     }
+}
+
+@[Stable Suppress("LongMethod")]
+fun Modifier.backgroundFireball(size: Dp) = composed {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val originalImageBitmap = ImageBitmap.imageResource(R.drawable.bg_texture_hexagons)
+
+    val scaledImageBitmap: ImageBitmap = remember(originalImageBitmap, density) {
+        val targetWidthPx = with(density) { size.toPx().toInt() }
+        val targetHeightPx = with(density) { size.toPx().toInt() }
+        val androidBitmap = originalImageBitmap.asAndroidBitmap()
+        val scaledAndroidBitmap = androidBitmap.scale(targetWidthPx, targetHeightPx)
+        scaledAndroidBitmap.asImageBitmap()
+    }
+
+    val vectorImageBitmap: ImageBitmap = remember {
+        val drawable = ContextCompat.getDrawable(context, R.drawable.bg_fireball)
+        val widthPx = (size.value * context.resources.displayMetrics.density).toInt()
+        val heightPx = (size.value * context.resources.displayMetrics.density).toInt()
+        val bitmap = createBitmap(widthPx, heightPx)
+        val canvas = AndroidCanvas(bitmap)
+        drawable?.setBounds(0, 0, canvas.width, canvas.height)
+        drawable?.draw(canvas)
+        bitmap.asImageBitmap()
+    }
+
+    drawBehind {
+        drawImage(
+            image = vectorImageBitmap,
+            topLeft = Offset(
+                x = (this.size.width - vectorImageBitmap.width) / 2,
+                y = (this.size.height - vectorImageBitmap.height) / 2
+            )
+        )
+
+        drawImage(
+            image = scaledImageBitmap,
+            topLeft = Offset(
+                x = (this.size.width - scaledImageBitmap.width) / 2,
+                y = (this.size.height - scaledImageBitmap.height) / 2
+            )
+        )
+    }
+        .innerShadow(
+            shape = CircleShape,
+            color = Color(color = 0x44FFD000),
+            offsetX = 0.dp,
+            offsetY = (-24).dp,
+            blur = 21.dp
+        )
+        .innerShadow(
+            shape = CircleShape,
+            color = Color(color = 0x44FFAD2A),
+            offsetX = (-13.5).dp,
+            offsetY = (-10.5).dp,
+            blur = 24.dp
+        )
+        .dropShadow(
+            shape = CircleShape,
+            color = Color(color = 0x20FF0000),
+            offsetX = 0.dp,
+            offsetY = 0.dp,
+            blur = 104.dp
+        )
+        .dropShadow(
+            shape = CircleShape,
+            color = Color(color = 0x24FFC300),
+            offsetX = 0.dp,
+            offsetY = 4.dp,
+            blur = 24.dp
+        )
 }

@@ -47,6 +47,8 @@ internal data class ImportOnboardingState(
         EntryImportType.TwoFas -> false
     }
 
+    internal val isSupported: Boolean = importType.isSupported
+
     internal val mimeTypes: List<String> = importType.mimeTypes.map(MimeType::value)
 
     internal val providerIcon: UiIcon = when (importType) {
@@ -82,7 +84,7 @@ internal data class ImportOnboardingState(
         EntryImportType.Proton -> R.array.imports_onboarding_proton_authenticator_steps
         EntryImportType.TwoFas -> R.array.imports_onboarding_2fas_steps
         EntryImportType.Authy,
-        EntryImportType.Microsoft -> -1
+        EntryImportType.Microsoft -> R.array.imports_onboarding_unsupported_steps
     }
 
 }

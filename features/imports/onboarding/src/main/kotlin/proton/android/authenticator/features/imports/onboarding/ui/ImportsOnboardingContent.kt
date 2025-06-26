@@ -18,31 +18,9 @@
 
 package proton.android.authenticator.features.imports.onboarding.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
-import proton.android.authenticator.features.imports.onboarding.R
 import proton.android.authenticator.features.imports.onboarding.presentation.ImportOnboardingState
-import proton.android.authenticator.shared.common.domain.constants.CharacterConstants
-import proton.android.authenticator.shared.ui.domain.components.buttons.LinkButton
-import proton.android.authenticator.shared.ui.domain.components.icons.ProviderIcon
-import proton.android.authenticator.shared.ui.domain.components.texts.DelimiterStyledText
-import proton.android.authenticator.shared.ui.domain.models.UiIcon
-import proton.android.authenticator.shared.ui.domain.models.UiText
-import proton.android.authenticator.shared.ui.domain.theme.Theme
-import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
-import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
-import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun ImportsOnboardingContent(
@@ -50,54 +28,21 @@ internal fun ImportsOnboardingContent(
     onHelpClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium)
-    ) {
-        Row(
-            modifier = Modifier.padding(vertical = ThemePadding.Large),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(space = ThemeSpacing.MediumLarge)
-        ) {
-            ProviderIcon(
-                icon = providerIcon,
-                size = ThemeSpacing.ExtraLarge
-            )
-
-            Image(
-                painter = painterResource(id = uiR.drawable.ic_arrow_right_gradient),
-                contentDescription = null
-            )
-
-            ProviderIcon(
-                icon = UiIcon.Resource(id = uiR.drawable.ic_authenticator_proton),
-                size = ThemeSpacing.ExtraLarge
-            )
-        }
-
-        Text(
-            text = stringResource(
-                id = R.string.imports_onboarding_title,
-                providerNameText.asString()
-            ),
-            color = Theme.colorScheme.textNorm,
-            style = Theme.typography.subtitle
+    if (isSupported) {
+        ImportsOnboardingSupported(
+            modifier = modifier,
+            providerIcon = providerIcon,
+            providerNameText = providerNameText,
+            providerStepsResId = providerStepsResId,
+            helpUrl = helpUrl,
+            onHelpClick = onHelpClick
         )
-
-        stringArrayResource(id = providerStepsResId).forEach { step ->
-            DelimiterStyledText(
-                text = step,
-                delimiter = CharacterConstants.DOUBLE_QUOTES,
-                textColor = Theme.colorScheme.textWeak,
-                textStyle = Theme.typography.bodyRegular,
-                delimitedTextStyle = Theme.typography.bodyBold
-            )
-        }
-
-        LinkButton(
-            modifier = Modifier.offset(x = -ThemePadding.MediumSmall),
-            linkText = UiText.Resource(id = R.string.imports_onboarding_help_link),
-            onLinkClick = { onHelpClick(helpUrl) }
+    } else {
+        ImportsOnboardingUnsupported(
+            modifier = modifier,
+            providerIcon = providerIcon,
+            providerNameText = providerNameText,
+            providerStepsResId = providerStepsResId
         )
     }
 }

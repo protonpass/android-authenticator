@@ -45,17 +45,4 @@ internal data class ImportsOptionsModel(
         EntryImportType.TwoFas -> R.drawable.ic_authenticator_2fas
     }.let(UiIcon::Resource)
 
-    internal val isSupported: Boolean = when (type) {
-        EntryImportType.Aegis,
-        EntryImportType.Bitwarden,
-        EntryImportType.Ente,
-        EntryImportType.Google,
-        EntryImportType.LastPass,
-        EntryImportType.Proton,
-        EntryImportType.TwoFas -> true
-
-        EntryImportType.Authy,
-        EntryImportType.Microsoft -> false
-    }
-
 }

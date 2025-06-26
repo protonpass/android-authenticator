@@ -52,7 +52,7 @@ internal fun ImportsOptionRow(optionModel: ImportsOptionsModel, modifier: Modifi
             style = Theme.typography.body1Regular
         )
 
-        if (!optionModel.isSupported) {
+        if (!optionModel.type.isSupported) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_exclamation_triangle_filled),
                 contentDescription = null,

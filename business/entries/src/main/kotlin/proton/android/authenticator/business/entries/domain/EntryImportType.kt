@@ -20,14 +20,44 @@ package proton.android.authenticator.business.entries.domain
 
 import proton.android.authenticator.shared.common.domain.models.MimeType
 
-enum class EntryImportType(val mimeTypes: List<MimeType>) {
-    Aegis(mimeTypes = listOf(MimeType.Json)),
-    Authy(mimeTypes = emptyList()),
-    Bitwarden(mimeTypes = listOf(MimeType.CommaSeparatedValues, MimeType.Csv, MimeType.Json)),
-    Ente(mimeTypes = listOf(MimeType.Text)),
-    Google(mimeTypes = listOf(MimeType.Image)),
-    LastPass(mimeTypes = listOf(MimeType.Json)),
-    Microsoft(mimeTypes = emptyList()),
-    Proton(mimeTypes = listOf(MimeType.Json)),
-    TwoFas(mimeTypes = listOf(MimeType.Binary))
+enum class EntryImportType(
+    val isSupported: Boolean,
+    val mimeTypes: List<MimeType>
+) {
+    Aegis(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Json)
+    ),
+    Authy(
+        isSupported = false,
+        mimeTypes = emptyList()
+    ),
+    Bitwarden(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.CommaSeparatedValues, MimeType.Csv, MimeType.Json)
+    ),
+    Ente(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Text)
+    ),
+    Google(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Image)
+    ),
+    LastPass(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Json)
+    ),
+    Microsoft(
+        isSupported = false,
+        mimeTypes = emptyList()
+    ),
+    Proton(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Json)
+    ),
+    TwoFas(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Binary)
+    )
 }

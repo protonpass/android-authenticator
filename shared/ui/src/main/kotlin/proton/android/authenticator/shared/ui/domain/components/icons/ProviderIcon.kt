@@ -35,18 +35,21 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 fun ProviderIcon(
     icon: UiIcon,
     size: Dp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    borderRadius: Dp = ThemeRadius.MediumSmall,
+    alpha: Float = 1f
 ) {
     Image(
         modifier = modifier
             .size(size = size)
-            .clip(shape = RoundedCornerShape(size = ThemeRadius.MediumSmall))
+            .clip(shape = RoundedCornerShape(size = borderRadius))
             .border(
-                shape = RoundedCornerShape(size = ThemeRadius.MediumSmall),
+                shape = RoundedCornerShape(size = borderRadius),
                 width = ThemeThickness.Small,
-                color = Theme.colorScheme.blackAlpha20
+                color = Theme.colorScheme.blackAlpha10
             ),
         painter = icon.asPainter(),
-        contentDescription = null
+        contentDescription = null,
+        alpha = alpha
     )
 }

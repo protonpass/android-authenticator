@@ -101,27 +101,29 @@ fun ImportsOnboardingScreen(
             )
         },
         bottomBar = {
-            PrimaryActionButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = ThemePadding.Large,
-                        bottom = ThemePadding.Large,
-                        end = ThemePadding.Large
-                    )
-                    .navigationBarsPadding(),
-                text = stringResource(id = uiR.string.action_import),
-                onClick = {
-                    Intent(Intent.ACTION_GET_CONTENT)
-                        .apply {
-                            type = MimeType.All.value
-                            addCategory(Intent.CATEGORY_OPENABLE)
-                            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, state.isMultiSelectionAllowed)
-                            putExtra(Intent.EXTRA_MIME_TYPES, state.mimeTypes.toTypedArray())
-                        }
-                        .also(launcher::launch)
-                }
-            )
+            if (state.isSupported) {
+                PrimaryActionButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = ThemePadding.Large,
+                            bottom = ThemePadding.Large,
+                            end = ThemePadding.Large
+                        )
+                        .navigationBarsPadding(),
+                    text = stringResource(id = uiR.string.action_import),
+                    onClick = {
+                        Intent(Intent.ACTION_GET_CONTENT)
+                            .apply {
+                                type = MimeType.All.value
+                                addCategory(Intent.CATEGORY_OPENABLE)
+                                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, state.isMultiSelectionAllowed)
+                                putExtra(Intent.EXTRA_MIME_TYPES, state.mimeTypes.toTypedArray())
+                            }
+                            .also(launcher::launch)
+                    }
+                )
+            }
         }
     ) { innerPaddingValues ->
         ImportsOnboardingContent(

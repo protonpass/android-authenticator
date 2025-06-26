@@ -17,7 +17,8 @@
   -->
 
 <resources>
-    <string name="imports_onboarding_title">Import codes from %1$s</string>
+    <string name="imports_onboarding_title_supported">Import codes from %1$s</string>
+    <string name="imports_onboarding_title_unsupported">No export available</string>
 
     <string-array name="imports_onboarding_google_steps">
         <item>To export codes from Google Authenticator, you\'ll need to use the app\'s built-in \"Transfer accounts\" feature, which generates a QR code for transferring accounts to a new device.</item>
@@ -52,6 +53,11 @@
 
     <string-array name="imports_onboarding_proton_authenticator_steps">
         <item>To export codes from Proton Authenticator, navigate to the app\'s settings, find the \"Manage your data\" section, and select the export option.</item>
+    </string-array>
+
+    <string-array name="imports_onboarding_unsupported_steps">
+        <item>Unfortunately, %1$s doesn’t currently support exporting data from their app. Consider contacting %1$s to request this feature.</item>
+        <item>Please import your data manually for now.</item>
     </string-array>
 
     <string name="imports_onboarding_help_link">Need more help?</string>
