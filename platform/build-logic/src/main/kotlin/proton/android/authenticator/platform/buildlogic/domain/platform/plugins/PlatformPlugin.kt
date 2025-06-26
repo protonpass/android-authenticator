@@ -9,6 +9,7 @@ internal enum class PlatformPlugin(val value: String) {
     KotlinCompose(value = "org.jetbrains.kotlin.plugin.compose"),
     KotlinSerialization(value = "org.jetbrains.kotlin.plugin.serialization"),
     Ksp(value = "com.google.devtools.ksp"),
+    Play(value = "com.github.triplet.play"),
     ProtonEnvironmentConfig(value = "me.proton.core.gradle-plugins.environment-config"),
     Sentry(value = "io.sentry.android.gradle")
 }

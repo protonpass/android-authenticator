@@ -18,19 +18,9 @@
 
 import configuration.extensions.protonEnvironment
 import configuration.util.toBuildConfigValue
-import java.util.Properties
 
 plugins {
     id("proton.android.authenticator.plugins.applications.authenticator")
-}
-
-val privateProperties = Properties().apply {
-    try {
-        load(rootDir.resolve("private.properties").inputStream())
-    } catch (exception: java.io.FileNotFoundException) {
-        // Provide empty properties to allow the app to be built without secrets
-        Properties()
-    }
 }
 
 val sentryDSN: String? = System.getenv("SENTRY_DSN")
@@ -224,4 +214,11 @@ fun DependencyHandlerScope.addFdroidSpecialLib(
     fdroid?.let { dep ->
         fdroidImplementation(dep)
     }
+}
+
+play {
+    serviceAccountCredentials.set(file("tmp/play-service-account.json"))
+    track.set("internal")
+    releaseStatus.set(com.github.triplet.gradle.androidpublisher.ReleaseStatus.DRAFT)
+    artifactDir.set(file("signedArtifacts"))
 }

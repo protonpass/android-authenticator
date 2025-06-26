@@ -33,6 +33,7 @@ internal class AuthenticatorApplicationConventionPlugin : AndroidApplicationConv
         applyPlugin(PlatformPlugin.KotlinAndroid)
         applyPlugin(PlatformPlugin.KotlinCompose)
         applyPlugin(PlatformPlugin.Ksp)
+        applyPlugin(PlatformPlugin.Play)
         applyPlugin(PlatformPlugin.ProtonEnvironmentConfig)
         applyPlugin(PlatformPlugin.Sentry)
 
