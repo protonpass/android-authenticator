@@ -37,6 +37,7 @@ import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.backups.master.R
 import proton.android.authenticator.features.backups.master.presentation.BackupsMasterState
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
+import proton.android.authenticator.shared.common.domain.constants.CharacterConstants
 import proton.android.authenticator.shared.ui.domain.components.buttons.SecondaryActionButton
 import proton.android.authenticator.shared.ui.domain.components.containers.RowsContainer
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
@@ -100,7 +101,7 @@ internal fun BackupsMasterContent(
                                 description = UiText.Dynamic(
                                     DocumentsContract.getTreeDocumentId(
                                         backupModel.directoryUri
-                                    ).substringAfter(':')
+                                    ).substringAfter(CharacterConstants.COLON)
                                 ),
                                 showNavigationIcon = true,
                                 onClick = {

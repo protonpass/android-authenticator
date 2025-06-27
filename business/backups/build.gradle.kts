@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.documentfile)
+    implementation(libs.document.file)
 }
