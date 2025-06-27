@@ -155,6 +155,7 @@ android-application-implementation = [
     "hilt-android",
 ]
 android-application-ksp = [
+    "androidx-hilt-compiler",
     "hilt-compiler",
 ]
 business-library-implementation = [

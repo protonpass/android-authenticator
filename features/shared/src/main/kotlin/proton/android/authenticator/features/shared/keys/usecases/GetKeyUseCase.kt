@@ -16,21 +16,25 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.features.shared.keys.usecases
 
-import me.proton.core.network.domain.ApiException
-import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import kotlinx.coroutines.flow.first
+import proton.android.authenticator.business.keys.application.findall.FindAllKeysQuery
+import proton.android.authenticator.business.keys.domain.Key
+import proton.android.authenticator.features.shared.users.usecases.ObserveUserUseCase
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
 
-internal class SyncEntriesCommandHandler @Inject constructor(
-    private val syncer: EntriesSyncer
-) : CommandHandler<SyncEntriesCommand, Unit, SyncEntriesReason> {
+class GetKeyUseCase @Inject constructor(
+    private val queryBus: QueryBus,
+    private val observeUserUseCase: ObserveUserUseCase
+) {
 
-    override suspend fun handle(command: SyncEntriesCommand): Answer<Unit, SyncEntriesReason> = try {
-        syncer.sync(userId = command.userId).let(Answer<Unit, SyncEntriesReason>::Success)
-    } catch (_: ApiException) {
-        Answer.Failure(reason = SyncEntriesReason.Unknown)
-    }
+    suspend operator fun invoke(): Key? = observeUserUseCase()
+        .first()
+        ?.let { user -> FindAllKeysQuery(userId = user.id) }
+        ?.let { query -> queryBus.ask<List<Key>>(query) }
+        ?.first()
+        ?.firstOrNull()
 
 }

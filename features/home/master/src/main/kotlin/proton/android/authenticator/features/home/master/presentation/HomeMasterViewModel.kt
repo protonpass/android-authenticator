@@ -255,23 +255,19 @@ internal class HomeMasterViewModel @Inject constructor(
                 return@launch
             }
 
-            syncEntryModelsUseCase(
-                userId = "IaVQfYyWYctcTw-RbJ8TzwKQDVqy8jnflt-SLc78v4g16uOX-ppeZKHaY5ALthObqC-54-Hkyqi0NJoazqbKMQ=="
-            )
-                .also { answer ->
-                    when (answer) {
-                        is Answer.Failure -> {
-                            println("JIBIRI: sync failure")
-                        }
+            syncEntryModelsUseCase().also { answer ->
+                when (answer) {
+                    is Answer.Failure -> {
+                        // This will be implemented in the following MR
+                    }
 
-                        is Answer.Success -> {
-                            println("JIBIRI: sync success")
-                        }
+                    is Answer.Success -> {
+                        // This will be implemented in the following MR
                     }
                 }
-                .also {
-                    isRefreshingFlow.update { false }
-                }
+            }.also {
+                isRefreshingFlow.update { false }
+            }
         }
     }
 

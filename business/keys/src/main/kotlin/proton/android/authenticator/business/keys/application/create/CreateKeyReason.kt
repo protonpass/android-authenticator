@@ -21,6 +21,9 @@ package proton.android.authenticator.business.keys.application.create
 import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
 enum class CreateKeyReason : AnswerReason {
+    ApiCallFailed,
     CryptoFailed,
-    KeyGenerationFailed
+    KeyAlreadyExists,
+    KeyGenerationFailed,
+    UserNotFound
 }

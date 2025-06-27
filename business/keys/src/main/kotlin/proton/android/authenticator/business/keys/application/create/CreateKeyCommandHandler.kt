@@ -19,6 +19,8 @@
 package proton.android.authenticator.business.keys.application.create
 
 import me.proton.core.crypto.common.pgp.exception.CryptoException
+import me.proton.core.network.domain.ApiException
+import proton.android.authenticator.business.shared.domain.infrastructure.network.getErrorCode
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import javax.inject.Inject
@@ -29,10 +31,22 @@ internal class CreateKeyCommandHandler @Inject constructor(
 
     override suspend fun handle(command: CreateKeyCommand): Answer<Unit, CreateKeyReason> = try {
         creator.create(userId = command.userId).let(Answer<Unit, CreateKeyReason>::Success)
+    } catch (exception: ApiException) {
+        if (exception.getErrorCode() == ERROR_CODE_KEY_ALREADY_EXISTS) {
+            CreateKeyReason.KeyAlreadyExists
+        } else {
+            CreateKeyReason.ApiCallFailed
+        }.let(Answer<Unit, CreateKeyReason>::Failure)
     } catch (_: CryptoException) {
         Answer.Failure(reason = CreateKeyReason.CryptoFailed)
     } catch (_: IllegalStateException) {
         Answer.Failure(reason = CreateKeyReason.KeyGenerationFailed)
+    }
+
+    private companion object {
+
+        private const val ERROR_CODE_KEY_ALREADY_EXISTS = 2001
+
     }
 
 }

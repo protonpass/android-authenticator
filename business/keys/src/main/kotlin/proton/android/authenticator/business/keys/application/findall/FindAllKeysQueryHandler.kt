@@ -16,11 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.keys.application.findall
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.keys.domain.Key
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
+import javax.inject.Inject
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
+internal class FindAllKeysQueryHandler @Inject constructor(
+    private val finder: AllKeysFinder
+) : QueryHandler<FindAllKeysQuery, List<Key>> {
+
+    override fun handle(query: FindAllKeysQuery): Flow<List<Key>> = finder
+        .findAll(userId = query.userId)
+
 }

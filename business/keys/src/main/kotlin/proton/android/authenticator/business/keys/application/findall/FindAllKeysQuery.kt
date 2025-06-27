@@ -16,11 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.keys.application.findall
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
-}
+data class FindAllKeysQuery(internal val userId: String) : Query

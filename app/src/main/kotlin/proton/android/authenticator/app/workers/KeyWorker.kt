@@ -24,14 +24,39 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import proton.android.authenticator.features.shared.keys.usecases.CreateKeyUseCase
+import proton.android.authenticator.features.shared.keys.usecases.GetKeyUseCase
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 
 @HiltWorker
-internal class SyncWorker @AssistedInject constructor(
+internal class KeyWorker @AssistedInject constructor(
     @Assisted context: Context,
-    @Assisted workerParameters: WorkerParameters
+    @Assisted workerParameters: WorkerParameters,
+    private val createKeyUseCase: CreateKeyUseCase,
+    private val getKeyUseCase: GetKeyUseCase
 ) : CoroutineWorker(context, workerParameters) {
 
-    // This will be implemented in the following MR
-    override suspend fun doWork(): Result = Result.success()
+    override suspend fun doWork(): Result = getKeyUseCase()
+        ?.let { Result.success() }
+        ?: createKeyUseCase().let { answer ->
+            answer.fold(
+                onFailure = { reason ->
+                    AuthenticatorLogger.w(tag = TAG, message = "Error creating key: $reason")
+
+                    Result.failure()
+                },
+                onSuccess = {
+                    AuthenticatorLogger.i(tag = TAG, message = "Key successfully created")
+
+                    Result.success()
+                }
+            )
+        }
+
+    private companion object {
+
+        private const val TAG = "KeyWorker"
+
+    }
 
 }

@@ -53,6 +53,7 @@ import proton.android.authenticator.business.shared.infrastructure.persistence.d
 import proton.android.authenticator.business.shared.infrastructure.persistence.datastore.proto.steps.StepProtoPreferencesSerializer
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.AuthenticatorDatabase
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
+import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.keys.KeysDao
 import proton.android.authenticator.proto.preferences.backups.BackupPreferences
 import proton.android.authenticator.proto.preferences.settings.SettingsPreferences
 import proton.android.authenticator.proto.preferences.steps.StepPreferences
@@ -121,7 +122,10 @@ internal abstract class BusinessSharedPersistenceModule {
     internal companion object {
 
         @[Provides Singleton]
-        internal fun provideUsersDao(database: AuthenticatorDatabase): EntriesDao = database.entriesDao()
+        internal fun provideKeysDao(database: AuthenticatorDatabase): KeysDao = database.keysDao()
+
+        @[Provides Singleton]
+        internal fun provideEntriesDao(database: AuthenticatorDatabase): EntriesDao = database.entriesDao()
 
         @[Provides Singleton]
         internal fun provideAuthenticatorDatabase(@ApplicationContext context: Context): AuthenticatorDatabase =

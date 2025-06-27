@@ -73,6 +73,10 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
+                android:name="proton.android.authenticator.app.initializers.KeyWorkInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
                 android:name="proton.android.authenticator.app.initializers.SyncPeriodicWorkInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />

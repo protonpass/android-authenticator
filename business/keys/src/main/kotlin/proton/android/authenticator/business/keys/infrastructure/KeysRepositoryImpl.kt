@@ -16,11 +16,26 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.keys.infrastructure
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.keys.domain.Key
+import proton.android.authenticator.business.keys.domain.KeysRepository
+import proton.android.authenticator.business.shared.domain.infrastructure.persistence.PersistenceDataSource
+import javax.inject.Inject
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
+internal class KeysRepositoryImpl @Inject constructor(
+    private val localDataSource: PersistenceDataSource<Key>
+) : KeysRepository {
+
+    override fun findAll(): Flow<List<Key>> = localDataSource.observeAll()
+
+    override suspend fun save(key: Key) {
+        localDataSource.insert(key)
+    }
+
+    override suspend fun saveAll(keys: List<Key>) {
+        localDataSource.insertAll(keys)
+    }
+
 }

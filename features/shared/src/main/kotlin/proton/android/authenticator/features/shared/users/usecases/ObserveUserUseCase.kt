@@ -16,11 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.features.shared.users.usecases
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import kotlinx.coroutines.flow.Flow
+import proton.android.authenticator.business.users.application.find.FindUserQuery
+import proton.android.authenticator.business.users.domain.User
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import javax.inject.Inject
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
+class ObserveUserUseCase @Inject constructor(private val queryBus: QueryBus) {
+
+    operator fun invoke(): Flow<User?> = queryBus.ask(query = FindUserQuery)
+
 }

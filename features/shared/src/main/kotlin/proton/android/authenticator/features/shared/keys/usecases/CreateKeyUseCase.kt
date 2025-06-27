@@ -16,25 +16,25 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.shared.entries.usecases
+package proton.android.authenticator.features.shared.keys.usecases
 
 import kotlinx.coroutines.flow.first
-import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommand
-import proton.android.authenticator.business.entries.application.syncall.SyncEntriesReason
+import proton.android.authenticator.business.keys.application.create.CreateKeyCommand
+import proton.android.authenticator.business.keys.application.create.CreateKeyReason
 import proton.android.authenticator.features.shared.users.usecases.ObserveUserUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
-class SyncEntryModelsUseCase @Inject constructor(
+class CreateKeyUseCase @Inject constructor(
     private val commandBus: CommandBus,
     private val observeUserUseCase: ObserveUserUseCase
 ) {
 
-    suspend operator fun invoke(): Answer<Unit, SyncEntriesReason> = observeUserUseCase()
+    suspend operator fun invoke(): Answer<Unit, CreateKeyReason> = observeUserUseCase()
         .first()
-        ?.let { user -> SyncEntriesCommand(userId = user.id) }
+        ?.let { user -> CreateKeyCommand(userId = user.id) }
         ?.let { command -> commandBus.dispatch(command = command) }
-        ?: Answer.Failure(reason = SyncEntriesReason.UserNotFound)
+        ?: Answer.Failure(reason = CreateKeyReason.UserNotFound)
 
 }

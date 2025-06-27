@@ -37,17 +37,15 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
         .map(EntryEntity::toDomain)
 
     override suspend fun delete(entry: Entry) {
-        entry.toEntity()
-            .also { entryEntity -> entriesDao.delete(entryEntity) }
+        entriesDao.delete(entry.toEntity())
     }
 
     override suspend fun insert(entry: Entry) {
-        entry.toEntity()
-            .also { entryEntity -> entriesDao.upsert(entryEntity) }
+        entriesDao.upsert(entry.toEntity())
     }
 
     override suspend fun insertAll(entries: List<Entry>) {
-        entries.map { entry -> entry.toEntity() }
+        entries.map(Entry::toEntity)
             .also { entryEntities -> entriesDao.upsertAll(entryEntities) }
     }
 

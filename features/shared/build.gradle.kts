@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.business.appLock)
     implementation(projects.business.backups)
     implementation(projects.business.biometrics)
+    implementation(projects.business.keys)
     implementation(projects.business.entries)
     implementation(projects.business.settings)
     implementation(projects.business.steps)

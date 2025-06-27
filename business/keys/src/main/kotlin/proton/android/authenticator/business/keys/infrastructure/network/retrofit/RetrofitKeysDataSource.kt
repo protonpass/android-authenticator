@@ -16,17 +16,23 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.infrastructure.network.retrofit
+package proton.android.authenticator.business.keys.infrastructure.network.retrofit
 
-import proton.android.authenticator.business.entries.infrastructure.network.EntriesResponseDto
+import proton.android.authenticator.business.keys.infrastructure.network.CreateKeyRequestDto
+import proton.android.authenticator.business.keys.infrastructure.network.KeyResponseDto
+import proton.android.authenticator.business.keys.infrastructure.network.KeysResponseDto
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource.Companion.ROOT_PATH
+import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.POST
 
-internal interface RetrofitEntriesDataSource : NetworkDataSource {
+internal interface RetrofitKeysDataSource : NetworkDataSource {
 
-    @GET("$ROOT_PATH/entry/")
-    suspend fun getEntries(@Query("lastId") lastId: String? = null): EntriesResponseDto
+    @POST("$ROOT_PATH/key")
+    suspend fun createKey(@Body request: CreateKeyRequestDto): KeyResponseDto
+
+    @GET("$ROOT_PATH/key")
+    suspend fun getKeys(): KeysResponseDto
 
 }

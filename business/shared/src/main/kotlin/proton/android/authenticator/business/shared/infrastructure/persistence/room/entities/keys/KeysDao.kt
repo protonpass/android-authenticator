@@ -16,11 +16,30 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.keys
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Query
+import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
+@Dao
+interface KeysDao {
+
+    @Query("SELECT * FROM ${KeyEntity.TABLE}")
+    fun observeAll(): Flow<List<KeyEntity>>
+
+    @Query("SELECT * FROM ${KeyEntity.TABLE} WHERE id = :id")
+    fun observeById(id: String): Flow<KeyEntity>
+
+    @Delete
+    suspend fun delete(keyEntity: KeyEntity)
+
+    @Upsert
+    suspend fun upsert(keyEntity: KeyEntity)
+
+    @Upsert
+    suspend fun upsertAll(entryEntities: List<KeyEntity>)
+
 }

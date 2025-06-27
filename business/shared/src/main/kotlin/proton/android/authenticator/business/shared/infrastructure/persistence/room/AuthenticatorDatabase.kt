@@ -85,6 +85,8 @@ import me.proton.core.usersettings.data.entity.OrganizationKeysEntity
 import me.proton.core.usersettings.data.entity.UserSettingsEntity
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntriesDao
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.entries.EntryEntity
+import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.keys.KeyEntity
+import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.keys.KeysDao
 
 @Database(
     entities = [
@@ -101,6 +103,7 @@ import proton.android.authenticator.business.shared.infrastructure.persistence.r
         FeatureFlagEntity::class,
         GooglePurchaseEntity::class,
         HumanVerificationEntity::class,
+        KeyEntity::class,
         KeySaltEntity::class,
         MemberDeviceEntity::class,
         NotificationEntity::class,
@@ -163,6 +166,8 @@ internal abstract class AuthenticatorDatabase :
     UserSettingsDatabase {
 
     internal abstract fun entriesDao(): EntriesDao
+
+    internal abstract fun keysDao(): KeysDao
 
     internal companion object {
 

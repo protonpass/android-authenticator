@@ -20,4 +20,12 @@ package proton.android.authenticator.business.shared.domain.infrastructure.netwo
 
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 
-interface NetworkDataSource : BaseRetrofitApi
+interface NetworkDataSource : BaseRetrofitApi {
+
+    companion object {
+
+        const val ROOT_PATH: String = "api/authenticator/v1"
+
+    }
+
+}

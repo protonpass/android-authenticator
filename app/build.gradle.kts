@@ -134,6 +134,7 @@ dependencies {
     implementation(projects.business.backups)
     implementation(projects.business.biometrics)
     implementation(projects.business.entries)
+    implementation(projects.business.keys)
     implementation(projects.business.settings)
     implementation(projects.features.shared)
     implementation(projects.navigation)

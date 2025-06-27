@@ -16,11 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.keys.domain
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+internal interface KeysApi {
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
+    suspend fun create(userId: String, encryptedKey: String): Key
+
+    suspend fun fetchAll(userId: String): List<Key>
+
 }

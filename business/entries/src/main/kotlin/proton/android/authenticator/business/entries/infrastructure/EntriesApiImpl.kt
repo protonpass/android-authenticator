@@ -33,7 +33,8 @@ internal class EntriesApiImpl @Inject constructor(private val apiProvider: ApiPr
         .valueOrThrow
         .entriesDto
         .let { response ->
-            println("JIBIRI: response: $response")
+            // This will be implemented in the following MR
+
             emptyList()
         }
 

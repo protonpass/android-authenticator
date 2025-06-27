@@ -16,11 +16,38 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.keys
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import androidx.room.ColumnInfo
+import androidx.room.Entity
 
-enum class SyncEntriesReason : AnswerReason {
-    Unknown,
-    UserNotFound
+@Entity(
+    tableName = KeyEntity.TABLE,
+    primaryKeys = [KeyEntity.Columns.ID]
+)
+data class KeyEntity(
+    @ColumnInfo(name = Columns.ID)
+    val id: String,
+    @ColumnInfo(name = Columns.KEY)
+    val key: String,
+    @ColumnInfo(name = Columns.USER_KEY_ID)
+    val userKeyId: String
+) {
+
+    internal object Columns {
+
+        internal const val ID = "id"
+
+        internal const val KEY = "key"
+
+        internal const val USER_KEY_ID = "user_key_id"
+
+    }
+
+    internal companion object {
+
+        internal const val TABLE = "KeyEntity"
+
+    }
+
 }

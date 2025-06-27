@@ -16,45 +16,39 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.infrastructure.network
+package proton.android.authenticator.business.keys.infrastructure.network
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class EntriesResponseDto(
+internal data class KeyResponseDto(
     @SerialName("Code")
     internal val code: Int,
-    @SerialName("Entries")
-    internal val entriesDto: EntriesDto
+    @SerialName("Key")
+    internal val key: KeyDto
 )
 
 @Serializable
-internal data class EntriesDto(
-    @SerialName("Entries")
-    internal val entries: List<EntryDto>,
-    @SerialName("Total")
-    internal val total: Int,
-    @SerialName("LastID")
-    internal val lastId: String?
+internal data class KeysResponseDto(
+    @SerialName("Code")
+    internal val code: Int,
+    @SerialName("Keys")
+    internal val keys: KeysDto
 )
 
 @Serializable
-internal data class EntryDto(
-    @SerialName("EntryID")
-    internal val entryId: String,
-    @SerialName("AuthenticatorKeyID")
+internal data class KeysDto(
+    @SerialName("Keys")
+    internal val keys: List<KeyDto>
+)
+
+@Serializable
+internal data class KeyDto(
+    @SerialName("KeyID")
     internal val keyId: String,
-    @SerialName("Revision")
-    internal val revision: Int,
-    @SerialName("ContentFormatVersion")
-    internal val contentFormatVersion: Int,
-    @SerialName("Content")
-    internal val content: String,
-    @SerialName("Flags")
-    internal val flags: Int,
-    @SerialName("CreateTime")
-    internal val createTime: Long,
-    @SerialName("ModifyTime")
-    internal val modifyTime: Long
+    @SerialName("Key")
+    internal val key: String,
+    @SerialName("UserKeyID")
+    internal val userKeyId: String
 )
