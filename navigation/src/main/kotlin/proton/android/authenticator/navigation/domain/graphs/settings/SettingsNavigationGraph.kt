@@ -231,7 +231,14 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
         }
 
         composable<QaMenuNavigationDestination> {
-            QaMenuMasterScreen()
+            QaMenuMasterScreen(
+                onDismissed = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
+                }
+            )
         }
     }
 }

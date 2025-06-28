@@ -20,7 +20,11 @@ package proton.android.authenticator.features.qa.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -31,12 +35,22 @@ import proton.android.authenticator.features.qa.presentation.QaMenuViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QaMenuMasterScreen() = with(hiltViewModel<QaMenuViewModel>()) {
+fun QaMenuMasterScreen(
+    onDismissed: () -> Unit
+) = with(hiltViewModel<QaMenuViewModel>()) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(text = "QA menu") }
+                title = { Text(text = "QA menu") },
+                navigationIcon = {
+                    IconButton(onClick = onDismissed) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
             )
         },
         content = { innerPadding ->

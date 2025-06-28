@@ -121,8 +121,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
 
 }
 
-private fun Timestamp.toEpochMillis(): Long =
-    Instant.ofEpochSecond(this.seconds, this.nanos.toLong()).toEpochMilli()
+private fun Timestamp.toEpochMillis(): Long = Instant.ofEpochSecond(this.seconds, this.nanos.toLong()).toEpochMilli()
 
 private fun Long.toProtobufTimestamp(): Timestamp {
     val instant = Instant.ofEpochMilli(this)

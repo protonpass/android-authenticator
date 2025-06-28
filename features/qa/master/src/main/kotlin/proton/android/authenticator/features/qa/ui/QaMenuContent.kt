@@ -63,7 +63,9 @@ internal fun QaMenuContent(
         contentAlignment = Alignment.Center
     ) {
         Column {
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(text = "Installation time")
 
                 Spacer(modifier = Modifier.weight(1f))
