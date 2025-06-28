@@ -40,6 +40,7 @@ startupVersion = "1.2.0"
 timberVersion = "5.0.1"
 workVersion = "2.10.1"
 zxingVersion = "3.5.3"
+playReviewVersion = "2.0.1"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityComposeVersion" }
@@ -134,6 +135,8 @@ reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reo
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxingVersion" }
+play-review = { module = "com.google.android.play:review", version.ref = "playReviewVersion" }
+play-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "playReviewVersion" }
 
 [bundles]
 android-application-implementation = [

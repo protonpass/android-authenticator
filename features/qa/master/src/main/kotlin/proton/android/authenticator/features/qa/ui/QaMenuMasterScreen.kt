@@ -35,9 +35,7 @@ import proton.android.authenticator.features.qa.presentation.QaMenuViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QaMenuMasterScreen(
-    onDismissed: () -> Unit
-) = with(hiltViewModel<QaMenuViewModel>()) {
+fun QaMenuMasterScreen(onDismissed: () -> Unit) = with(hiltViewModel<QaMenuViewModel>()) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

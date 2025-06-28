@@ -219,6 +219,7 @@ internal class HomeMasterViewModel @Inject constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     internal fun onRearrangeEntry(
         fromEntryId: String,
         fromEntryIndex: Int,

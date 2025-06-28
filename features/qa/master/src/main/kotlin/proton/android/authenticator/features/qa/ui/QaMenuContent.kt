@@ -48,10 +48,7 @@ import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun QaMenuContent(
-    modifier: Modifier,
-    viewModel: QaMenuViewModel
-) = with(viewModel) {
+internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = with(viewModel) {
     val installationTime by installationTime.collectAsState()
     val formattedInstallationTime by formattedInstallationTime.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }

@@ -29,8 +29,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
@@ -53,6 +55,12 @@ internal class MainActivity : FragmentActivity() {
         viewModel.onRegisterOrchestrators(context = this)
 
         enableEdgeToEdge()
+
+        lifecycleScope.launch {
+            viewModel.requestReview.filterNotNull().collectLatest {
+                requestReview()
+            }
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -94,4 +102,13 @@ internal class MainActivity : FragmentActivity() {
             .also { controller -> controller.isAppearanceLightStatusBars = !isDarkTheme }
     }
 
+    private fun requestReview() {
+        val reviewManager = ReviewManagerFactory.create(this)
+        val request = reviewManager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                reviewManager.launchReviewFlow(this@MainActivity, task.result)
+            }
+        }
+    }
 }

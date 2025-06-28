@@ -141,6 +141,8 @@ dependencies {
         fdroid = null
     )
 
+    addPlayReviewToPlayAndDev()
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.junit)

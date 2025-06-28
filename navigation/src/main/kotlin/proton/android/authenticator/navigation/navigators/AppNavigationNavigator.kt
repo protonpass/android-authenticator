@@ -108,7 +108,7 @@ internal class AppNavigationNavigator @Inject constructor(
                         onEntryCreated = onAskForReview,
                         onOpenSettings = onAskForReview,
                         onEntriesRearranged = onAskForReview
-                        ) { navCommand ->
+                    ) { navCommand ->
                         navigationCommandHandler.handle(navCommand, navController)
                     }
 

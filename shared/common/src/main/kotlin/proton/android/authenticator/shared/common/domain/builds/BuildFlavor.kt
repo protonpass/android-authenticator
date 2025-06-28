@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.shared.common.domain.builds
 
+@Suppress("TooManyFunctions")
 enum class BuildFlavor(val value: String) {
     AlphaBlack(value = "alphaBlack"),
     AlphaProd(value = "alphaProd"),
@@ -30,6 +31,16 @@ enum class BuildFlavor(val value: String) {
 
     fun isDev() = when (this) {
         DevProd, DevBlack -> true
+        else -> false
+    }
+
+    fun isPlay() = when (this) {
+        PlayProd, PlayBlack -> true
+        else -> false
+    }
+
+    fun isFdroid() = when (this) {
+        FdroidProd, FdroidBlack -> true
         else -> false
     }
 
