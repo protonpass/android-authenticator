@@ -144,11 +144,13 @@ internal class MainViewModel @Inject constructor(
     internal fun setInstallationTimeIfFirstRun() {
         viewModelScope.launch {
             if (stateFlow.value.isFirstRun) {
-                val currentSettings = observeSettingsUseCase.invoke().first()
-                updateSettingsUseCase(settings = currentSettings.copy(
-                    isNotFirstRun = true,
-                    installationTime = System.currentTimeMillis()
-                ))
+                observeSettingsUseCase()
+                    .first()
+                    .copy(
+                        isNotFirstRun = true,
+                        installationTime = System.currentTimeMillis()
+                    )
+                    .let { updateSettingsUseCase(settings = it) }
             }
         }
     }

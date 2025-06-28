@@ -6,4 +6,6 @@ android {
     namespace = "proton.android.authenticator.features.qa.master"
 }
 
-dependencies {}
+dependencies {
+    implementation(projects.business.settings)
+}
