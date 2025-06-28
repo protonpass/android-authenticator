@@ -77,6 +77,7 @@ internal class MainActivity : FragmentActivity() {
                                 .also { isDarkTheme ->
                                     navigationNavigator.NavGraphs(
                                         isDarkTheme = isDarkTheme,
+                                        onFinishLaunching = viewModel::setInstallationTimeIfFirstRun,
                                         onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow
                                     )
                                 }

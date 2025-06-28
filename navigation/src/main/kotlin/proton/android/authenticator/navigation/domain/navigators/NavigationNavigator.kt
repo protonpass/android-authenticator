@@ -6,6 +6,10 @@ import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 interface NavigationNavigator {
 
     @Composable
-    fun NavGraphs(isDarkTheme: Boolean, onLaunchNavigationFlow: (NavigationFlow) -> Unit)
+    fun NavGraphs(
+        isDarkTheme: Boolean,
+        onFinishLaunching: () -> Unit,
+        onLaunchNavigationFlow: (NavigationFlow) -> Unit
+    )
 
 }

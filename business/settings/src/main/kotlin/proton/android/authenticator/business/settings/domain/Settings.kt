@@ -27,7 +27,8 @@ data class Settings(
     val themeType: SettingsThemeType,
     val isCodeChangeAnimationEnabled: Boolean,
     val isPassBannerDismissed: Boolean,
-    val installationTime: Long
+    val isNotFirstRun: Boolean,
+    val installationTime: Long,
 ) {
 
     companion object {
@@ -41,7 +42,8 @@ data class Settings(
             digitType = SettingsDigitType.Plain,
             isCodeChangeAnimationEnabled = false,
             isPassBannerDismissed = false,
-            installationTime = System.currentTimeMillis()
+            isNotFirstRun = false,
+            installationTime = System.currentTimeMillis(),
         )
 
     }

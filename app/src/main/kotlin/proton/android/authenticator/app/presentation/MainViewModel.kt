@@ -28,6 +28,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.domain.AccountManager
@@ -42,12 +43,14 @@ import me.proton.core.auth.presentation.AuthOrchestrator
 import proton.android.authenticator.R
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricReason
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
+import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
@@ -55,11 +58,12 @@ import javax.inject.Inject
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
     observeAppLockStateUseCase: ObserveAppLockStateUseCase,
-    observeSettingsUseCase: ObserveSettingsUseCase,
+    private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
-    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase
+    private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
+    private val updateSettingsUseCase: UpdateSettingsUseCase,
 ) : ViewModel() {
 
     internal val stateFlow: StateFlow<MainState> = combine(
@@ -68,6 +72,7 @@ internal class MainViewModel @Inject constructor(
     ) { settings, appLockState ->
         MainState(
             settingsThemeType = settings.themeType,
+            isNotFirstRun = settings.isNotFirstRun,
             appLockState = appLockState.takeIf {
                 settings.appLockType == SettingsAppLockType.Biometric
             } ?: AppLockState.AUTHENTICATED
@@ -77,6 +82,7 @@ internal class MainViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = MainState(
             settingsThemeType = SettingsThemeType.System,
+            isNotFirstRun = Settings.Default.isNotFirstRun,
             appLockState = AppLockState.NOT_STARTED
         )
     )
@@ -132,6 +138,18 @@ internal class MainViewModel @Inject constructor(
                     updateAppLockStateUseCase(AppLockState.LOCKED)
                 }
             )
+        }
+    }
+
+    internal fun setInstallationTimeIfFirstRun() {
+        viewModelScope.launch {
+            if (stateFlow.value.isFirstRun) {
+                val currentSettings = observeSettingsUseCase.invoke().first()
+                updateSettingsUseCase(settings = currentSettings.copy(
+                    isNotFirstRun = true,
+                    installationTime = System.currentTimeMillis()
+                ))
+            }
         }
     }
 

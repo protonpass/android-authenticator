@@ -5,6 +5,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -38,7 +39,10 @@ internal class AppNavigationNavigator @Inject constructor(
 ) : NavigationNavigator {
 
     @Composable
-    override fun NavGraphs(isDarkTheme: Boolean, onLaunchNavigationFlow: (NavigationFlow) -> Unit) {
+    override fun NavGraphs(
+        isDarkTheme: Boolean,
+        onFinishLaunching: () -> Unit,
+        onLaunchNavigationFlow: (NavigationFlow) -> Unit) {
         Theme(isDarkTheme = isDarkTheme) {
             val step by observeStepUseCase().collectAsState(initial = null)
 
@@ -53,6 +57,10 @@ internal class AppNavigationNavigator @Inject constructor(
                 val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
                 val context = LocalContext.current
+
+                LaunchedEffect(key1 = navController) {
+                    onFinishLaunching()
+                }
 
                 DisposableEffect(key1 = navController) {
                     val observer = NavController.OnDestinationChangedListener { _, _, _ ->

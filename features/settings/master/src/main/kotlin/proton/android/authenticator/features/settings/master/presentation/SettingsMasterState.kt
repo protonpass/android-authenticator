@@ -63,6 +63,7 @@ internal sealed interface SettingsMasterState {
             searchBarType = settings.searchBarType,
             digitType = settings.digitType,
             isPassBannerDismissed = settings.isPassBannerDismissed,
+            isNotFirstRun = settings.isNotFirstRun,
             installationTime = settings.installationTime
         )
 
