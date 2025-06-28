@@ -20,6 +20,9 @@ import proton.android.authenticator.navigation.domain.graphs.settings.SettingsNa
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.homeNavigationGraph(
     snackbarHostState: SnackbarHostState,
+    onEntryCreated: () -> Unit,
+    onEntriesRearranged: () -> Unit,
+    onOpenSettings: () -> Unit,
     onNavigate: (NavigationCommand) -> Unit
 ) {
     navigation<HomeNavigationDestination>(startDestination = HomeMasterNavigationDestination) {
@@ -34,6 +37,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     ).also(onNavigate)
                 },
                 onSettingsClick = {
+                    onOpenSettings()
                     NavigationCommand.NavigateTo(
                         destination = SettingsNavigationDestination
                     ).also(onNavigate)
@@ -47,7 +51,8 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     NavigationCommand.NavigateTo(
                         destination = HomeImportNavigationDestination
                     ).also(onNavigate)
-                }
+                },
+                onEntriesRearranged = onEntriesRearranged
             )
         }
 
@@ -58,6 +63,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onEntryCreated = {
+                    onEntryCreated()
                     NavigationCommand.PopupTo(
                         destination = HomeMasterNavigationDestination,
                         inclusive = false
@@ -84,6 +90,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                     ).also(onNavigate)
                 },
                 onEntryCreated = {
+                    onEntryCreated()
                     NavigationCommand.PopupTo(
                         destination = HomeMasterNavigationDestination,
                         inclusive = false

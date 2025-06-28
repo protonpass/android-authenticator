@@ -155,6 +155,10 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
+    internal fun askForReviewIfApplicable() {
+        print("")
+    }
+
     private companion object {
 
         private const val TAG = "MainViewModel"

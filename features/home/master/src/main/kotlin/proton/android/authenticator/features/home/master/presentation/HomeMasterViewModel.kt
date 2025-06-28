@@ -224,7 +224,8 @@ internal class HomeMasterViewModel @Inject constructor(
         fromEntryIndex: Int,
         toEntryId: String,
         toEntryIndex: Int,
-        entryModelsMap: Map<String, HomeMasterEntryModel>
+        entryModelsMap: Map<String, HomeMasterEntryModel>,
+        onComplete: () -> Unit
     ) {
         viewModelScope.launch {
             rearrangeEntryUseCase(
@@ -239,7 +240,10 @@ internal class HomeMasterViewModel @Inject constructor(
                         SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_rearrange_failed)
                     }
 
-                    is Answer.Success -> null
+                    is Answer.Success -> {
+                        onComplete()
+                        null
+                    }
                 }?.also { event -> dispatchSnackbarEventUseCase(event) }
             }
         }

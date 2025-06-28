@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
-import proton.android.authenticator.shared.common.domain.answers.Answer
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -37,7 +36,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class QaMenuViewModel @Inject constructor(
     private val observeSettingsUseCase: ObserveSettingsUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
     private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
@@ -72,15 +71,5 @@ internal class QaMenuViewModel @Inject constructor(
             .first()
             .copy(installationTime = newValue)
             .let { updateSettingsUseCase(it) }
-            .let { answer ->
-                when (answer) {
-                    is Answer.Failure -> {
-                        print("Failure")
-                    }
-                    is Answer.Success -> {
-                        print("Success")
-                    }
-                }
-            }
     }
 }

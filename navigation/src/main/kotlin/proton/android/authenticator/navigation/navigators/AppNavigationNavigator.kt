@@ -42,7 +42,8 @@ internal class AppNavigationNavigator @Inject constructor(
     override fun NavGraphs(
         isDarkTheme: Boolean,
         onFinishLaunching: () -> Unit,
-        onLaunchNavigationFlow: (NavigationFlow) -> Unit
+        onLaunchNavigationFlow: (NavigationFlow) -> Unit,
+        onAskForReview: () -> Unit
     ) {
         Theme(isDarkTheme = isDarkTheme) {
             val step by observeStepUseCase().collectAsState(initial = null)
@@ -102,7 +103,12 @@ internal class AppNavigationNavigator @Inject constructor(
                         navigationCommandHandler.handle(navCommand, navController)
                     }
 
-                    homeNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
+                    homeNavigationGraph(
+                        snackbarHostState = snackbarHostState,
+                        onEntryCreated = onAskForReview,
+                        onOpenSettings = onAskForReview,
+                        onEntriesRearranged = onAskForReview
+                        ) { navCommand ->
                         navigationCommandHandler.handle(navCommand, navController)
                     }
 

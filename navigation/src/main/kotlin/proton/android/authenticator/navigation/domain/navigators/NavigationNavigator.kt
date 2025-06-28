@@ -9,7 +9,8 @@ interface NavigationNavigator {
     fun NavGraphs(
         isDarkTheme: Boolean,
         onFinishLaunching: () -> Unit,
-        onLaunchNavigationFlow: (NavigationFlow) -> Unit
+        onLaunchNavigationFlow: (NavigationFlow) -> Unit,
+        onAskForReview: () -> Unit
     )
 
 }
