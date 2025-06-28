@@ -26,7 +26,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 @Immutable
 internal data class MainState(
     private val settingsThemeType: SettingsThemeType,
-    private val isNotFirstRun: Boolean,
+    val isFirstRun: Boolean,
     val appLockState: AppLockState
 ) {
 
@@ -35,6 +35,4 @@ internal data class MainState(
         SettingsThemeType.Light -> ThemeType.Light
         SettingsThemeType.System -> ThemeType.System
     }
-
-    val isFirstRun = !isNotFirstRun
 }

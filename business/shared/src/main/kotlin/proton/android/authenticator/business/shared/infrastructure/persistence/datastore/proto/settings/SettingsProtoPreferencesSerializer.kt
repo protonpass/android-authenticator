@@ -27,7 +27,10 @@ import java.io.OutputStream
 
 internal object SettingsProtoPreferencesSerializer : Serializer<SettingsPreferences> {
 
-    override val defaultValue: SettingsPreferences = SettingsPreferences.getDefaultInstance()
+    override val defaultValue: SettingsPreferences =
+        SettingsPreferences.newBuilder()
+            .setIsFirstRun(true)
+            .build()
 
     override suspend fun readFrom(input: InputStream): SettingsPreferences = try {
         SettingsPreferences.parseFrom(input)

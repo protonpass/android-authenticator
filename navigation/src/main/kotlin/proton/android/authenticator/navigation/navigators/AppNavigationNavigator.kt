@@ -42,7 +42,8 @@ internal class AppNavigationNavigator @Inject constructor(
     override fun NavGraphs(
         isDarkTheme: Boolean,
         onFinishLaunching: () -> Unit,
-        onLaunchNavigationFlow: (NavigationFlow) -> Unit) {
+        onLaunchNavigationFlow: (NavigationFlow) -> Unit
+    ) {
         Theme(isDarkTheme = isDarkTheme) {
             val step by observeStepUseCase().collectAsState(initial = null)
 

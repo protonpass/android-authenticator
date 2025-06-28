@@ -33,7 +33,7 @@ internal data class SettingsMasterSettingsModel(
     internal val digitType: SettingsDigitType,
     internal val isCodeChangeAnimationEnabled: Boolean,
     internal val isPassBannerDismissed: Boolean,
-    internal val isNotFirstRun: Boolean,
+    internal val isFirstRun: Boolean,
     internal val installationTime: Long
 ) {
 
@@ -67,7 +67,7 @@ internal data class SettingsMasterSettingsModel(
         digitType = digitType,
         isCodeChangeAnimationEnabled = isCodeChangeAnimationEnabled,
         isPassBannerDismissed = isPassBannerDismissed,
-        isNotFirstRun = isNotFirstRun,
+        isFirstRun = isFirstRun,
         installationTime = installationTime
     )
 

@@ -63,7 +63,7 @@ internal class MainViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
 
     internal val stateFlow: StateFlow<MainState> = combine(
@@ -72,7 +72,7 @@ internal class MainViewModel @Inject constructor(
     ) { settings, appLockState ->
         MainState(
             settingsThemeType = settings.themeType,
-            isNotFirstRun = settings.isNotFirstRun,
+            isFirstRun = settings.isFirstRun,
             appLockState = appLockState.takeIf {
                 settings.appLockType == SettingsAppLockType.Biometric
             } ?: AppLockState.AUTHENTICATED
@@ -82,7 +82,7 @@ internal class MainViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = MainState(
             settingsThemeType = SettingsThemeType.System,
-            isNotFirstRun = Settings.Default.isNotFirstRun,
+            isFirstRun = Settings.Default.isFirstRun,
             appLockState = AppLockState.NOT_STARTED
         )
     )
@@ -147,7 +147,7 @@ internal class MainViewModel @Inject constructor(
                 observeSettingsUseCase()
                     .first()
                     .copy(
-                        isNotFirstRun = true,
+                        isFirstRun = false,
                         installationTime = System.currentTimeMillis()
                     )
                     .let { updateSettingsUseCase(settings = it) }

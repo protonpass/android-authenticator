@@ -51,7 +51,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 digitType = settingsPreferences.digitType.toDomain(),
                 isCodeChangeAnimationEnabled = settingsPreferences.isCodeChangeAnimationEnabled,
                 isPassBannerDismissed = settingsPreferences.isPassBannerDismissed,
-                isNotFirstRun = settingsPreferences.isNotFirstRun,
+                isFirstRun = settingsPreferences.isFirstRun,
                 installationTime = settingsPreferences.installationTime.toEpochMillis()
             )
         }
@@ -67,7 +67,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 .setDigitType(settings.digitType.toPreferences())
                 .setIsCodeChangeAnimationEnabled(settings.isCodeChangeAnimationEnabled)
                 .setIsPassBannerDismissed(settings.isPassBannerDismissed)
-                .setIsNotFirstRun(settings.isNotFirstRun)
+                .setIsFirstRun(settings.isFirstRun)
                 .setInstallationTime(settings.installationTime.toProtobufTimestamp())
                 .build()
         }

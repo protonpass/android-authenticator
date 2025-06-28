@@ -18,6 +18,6 @@ message SettingsPreferences {
   SettingsPreferencesDigitType digit_type = 6;
   bool is_code_change_animation_enabled = 7;
   bool is_pass_banner_dismissed = 8;
-  bool is_not_first_run = 9;
+  bool is_first_run = 9;
   google.protobuf.Timestamp installation_time = 10;
 }
