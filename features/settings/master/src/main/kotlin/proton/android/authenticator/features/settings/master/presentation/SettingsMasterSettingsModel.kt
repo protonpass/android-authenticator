@@ -34,7 +34,7 @@ internal data class SettingsMasterSettingsModel(
     internal val isCodeChangeAnimationEnabled: Boolean,
     internal val isPassBannerDismissed: Boolean,
     internal val isFirstRun: Boolean,
-    internal val installationTime: Long
+    internal val installationTime: Long?
 ) {
 
     internal val appLockOptions: List<SettingsMasterAppLockOption> = listOf(

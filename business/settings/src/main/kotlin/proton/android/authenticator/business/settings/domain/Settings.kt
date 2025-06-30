@@ -28,7 +28,7 @@ data class Settings(
     val isCodeChangeAnimationEnabled: Boolean,
     val isPassBannerDismissed: Boolean,
     val isFirstRun: Boolean,
-    val installationTime: Long
+    val installationTime: Long?
 ) {
 
     companion object {
@@ -43,7 +43,7 @@ data class Settings(
             isCodeChangeAnimationEnabled = false,
             isPassBannerDismissed = false,
             isFirstRun = true,
-            installationTime = System.currentTimeMillis()
+            installationTime = null
         )
 
     }

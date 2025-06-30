@@ -172,8 +172,9 @@ internal class MainViewModel @Inject constructor(
     internal fun askForReviewIfApplicable() {
         if (stateFlow.value.numberOfEntries < MIN_NUM_OF_ENTRIES) return
 
+        val installationTime = stateFlow.value.installationTime ?: return
         val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
-        val distanceInMillis = System.currentTimeMillis() - stateFlow.value.installationTime
+        val distanceInMillis = System.currentTimeMillis() - installationTime
         if (distanceInMillis < sevenDaysInMillis) return
 
         val buildFlavor = getBuildFlavorUseCase()

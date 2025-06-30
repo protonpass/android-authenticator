@@ -68,7 +68,7 @@ internal class DataStoreSettingPreferencesDataSource @Inject constructor(
                 .setIsCodeChangeAnimationEnabled(settings.isCodeChangeAnimationEnabled)
                 .setIsPassBannerDismissed(settings.isPassBannerDismissed)
                 .setIsFirstRun(settings.isFirstRun)
-                .setInstallationTime(settings.installationTime.toProtobufTimestamp())
+                .setInstallationTime(settings.installationTime?.toProtobufTimestamp())
                 .build()
         }
     }

@@ -27,7 +27,7 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 internal data class MainState(
     private val settingsThemeType: SettingsThemeType,
     val isFirstRun: Boolean,
-    val installationTime: Long,
+    val installationTime: Long?,
     val numberOfEntries: Int,
     val appLockState: AppLockState
 ) {

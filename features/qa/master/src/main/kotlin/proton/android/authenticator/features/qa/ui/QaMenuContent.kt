@@ -67,8 +67,10 @@ internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = wit
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                TextButton(onClick = { showDatePicker = true }) {
-                    Text(text = "$formattedInstallationTime")
+                formattedInstallationTime?.let {
+                    TextButton(onClick = { showDatePicker = true }) {
+                        Text(text = it)
+                    }
                 }
             }
 
