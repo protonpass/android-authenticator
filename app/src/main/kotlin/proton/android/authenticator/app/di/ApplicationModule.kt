@@ -61,6 +61,9 @@ internal abstract class ApplicationModule {
     @[Binds Singleton]
     internal abstract fun bindAppConfig(impl: AuthenticatorAppConfig): AppConfig
 
+    @[Binds Singleton]
+    internal abstract fun bindRequestReviewHandler(impl: RequestReviewHandlerImpl): RequestReviewHandler
+
     internal companion object {
 
         private const val IMAGE_LOADER_DISK_CACHE_DIR = "image_cache"
@@ -132,10 +135,6 @@ internal abstract class ApplicationModule {
         @[Provides Singleton]
         internal fun provideWorkManager(@ApplicationContext context: Context): WorkManager =
             WorkManager.getInstance(context)
-
-        @[Provides Singleton]
-        internal fun bindRequestReviewHandler(@ApplicationContext context: Context):
-                RequestReviewHandler = RequestReviewHandlerImpl(context)
 
     }
 
