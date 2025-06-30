@@ -141,7 +141,15 @@ dependencies {
         fdroid = null
     )
 
-    addPlayReviewToPlayAndDev()
+    addFdroidSpecialLib(
+        default = libs.play.review,
+        fdroid = null
+    )
+
+    addFdroidSpecialLib(
+        default = libs.play.review.ktx,
+        fdroid = null
+    )
 
     testImplementation(libs.junit)
 
