@@ -29,11 +29,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import proton.android.authenticator.app.handler.RequestReviewHandler
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
@@ -49,6 +49,9 @@ internal class MainActivity : FragmentActivity() {
     @Inject
     internal lateinit var navigationNavigator: NavigationNavigator
 
+    @Inject
+    internal lateinit var requestReviewHandler: RequestReviewHandler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,7 +61,7 @@ internal class MainActivity : FragmentActivity() {
 
         lifecycleScope.launch {
             viewModel.requestReview.filterNotNull().collectLatest {
-                requestReview()
+                requestReviewHandler.request(this@MainActivity)
             }
         }
 
@@ -100,15 +103,5 @@ internal class MainActivity : FragmentActivity() {
     private fun setStatusBarTheme(isDarkTheme: Boolean) {
         WindowCompat.getInsetsController(window, window.decorView)
             .also { controller -> controller.isAppearanceLightStatusBars = !isDarkTheme }
-    }
-
-    private fun requestReview() {
-        val reviewManager = ReviewManagerFactory.create(this)
-        val request = reviewManager.requestReviewFlow()
-        request.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                reviewManager.launchReviewFlow(this@MainActivity, task.result)
-            }
-        }
     }
 }
