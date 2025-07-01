@@ -27,14 +27,6 @@ internal data object ImportsOptionsState {
 
     internal val optionModels: List<ImportsOptionsModel> = listOf(
         ImportsOptionsModel(
-            type = EntryImportType.Google,
-            nameResId = R.string.authenticator_google
-        ),
-        ImportsOptionsModel(
-            type = EntryImportType.Authy,
-            nameResId = R.string.authenticator_authy
-        ),
-        ImportsOptionsModel(
             type = EntryImportType.TwoFas,
             nameResId = R.string.authenticator_2fas
         ),
@@ -43,12 +35,20 @@ internal data object ImportsOptionsState {
             nameResId = R.string.authenticator_aegis
         ),
         ImportsOptionsModel(
+            type = EntryImportType.Authy,
+            nameResId = R.string.authenticator_authy
+        ),
+        ImportsOptionsModel(
             type = EntryImportType.Bitwarden,
             nameResId = R.string.authenticator_bitwarden
         ),
         ImportsOptionsModel(
             type = EntryImportType.Ente,
             nameResId = R.string.authenticator_ente
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.Google,
+            nameResId = R.string.authenticator_google
         ),
         ImportsOptionsModel(
             type = EntryImportType.LastPass,
