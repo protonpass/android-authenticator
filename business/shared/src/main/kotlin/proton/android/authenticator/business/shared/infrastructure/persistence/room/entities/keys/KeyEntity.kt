@@ -20,6 +20,7 @@ package proton.android.authenticator.business.shared.infrastructure.persistence.
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
 
 @Entity(
     tableName = KeyEntity.TABLE,
@@ -30,6 +31,8 @@ data class KeyEntity(
     val id: String,
     @ColumnInfo(name = Columns.KEY)
     val key: String,
+    @ColumnInfo(name = Columns.SYMMETRICALLY_ENCRYPTED_KEY)
+    val symmetricallyEncryptedKey: EncryptedByteArray,
     @ColumnInfo(name = Columns.USER_KEY_ID)
     val userKeyId: String
 ) {
@@ -39,6 +42,8 @@ data class KeyEntity(
         internal const val ID = "id"
 
         internal const val KEY = "key"
+
+        internal const val SYMMETRICALLY_ENCRYPTED_KEY = "symmetrically_encrypted_key"
 
         internal const val USER_KEY_ID = "user_key_id"
 

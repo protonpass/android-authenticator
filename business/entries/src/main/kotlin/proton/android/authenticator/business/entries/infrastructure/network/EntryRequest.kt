@@ -16,12 +16,23 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.syncall
+package proton.android.authenticator.business.entries.infrastructure.network
 
-import proton.android.authenticator.shared.common.domain.answers.AnswerReason
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-enum class SyncEntriesReason : AnswerReason {
-    KeyNotFound,
-    Unknown,
-    UserNotFound
-}
+@Serializable
+internal data class CreateEntriesRequestDto(
+    @SerialName("Entries")
+    internal val entries: List<CreateEntryRequestDto>
+)
+
+@Serializable
+internal data class CreateEntryRequestDto(
+    @SerialName("AuthenticatorKeyID")
+    internal val authenticatorKeyID: String,
+    @SerialName("Content")
+    internal val content: String,
+    @SerialName("ContentFormatVersion")
+    internal val contentFormatVersion: Int
+)

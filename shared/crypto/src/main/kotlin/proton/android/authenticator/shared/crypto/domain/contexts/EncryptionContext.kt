@@ -34,10 +34,10 @@ class EncryptionContext(encryptionKey: EncryptionKey) {
 
     private val secretKeySpec = SecretKeySpec(encryptionKey.asByteArray(), ALGORITHM)
 
-    fun encrypt(content: ByteArray, encryptionTag: EncryptionTag): EncryptedByteArray {
+    fun encrypt(content: ByteArray, encryptionTag: EncryptionTag? = null): EncryptedByteArray {
         val cipher = cipherInstance
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
-        cipher.updateAAD(encryptionTag.value)
+        encryptionTag?.let { tag -> cipher.updateAAD(tag.value) }
 
         val cipherByteArray = cipher.doFinal(content)
         val result = ByteArray(IV_SIZE + cipherByteArray.size)
@@ -46,13 +46,13 @@ class EncryptionContext(encryptionKey: EncryptionKey) {
         return EncryptedByteArray(result)
     }
 
-    fun decrypt(content: EncryptedByteArray, encryptionTag: EncryptionTag): ByteArray {
+    fun decrypt(content: EncryptedByteArray, encryptionTag: EncryptionTag? = null): ByteArray {
         val iv = content.array.copyOfRange(0, IV_SIZE)
         val cipherByteArray = content.array.copyOfRange(IV_SIZE, content.array.size)
 
         val cipher = cipherInstance
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, GCMParameterSpec(CIPHER_GCM_TAG_BITS, iv))
-        cipher.updateAAD(encryptionTag.value)
+        encryptionTag?.let { tag -> cipher.updateAAD(tag.value) }
 
         try {
             return cipher.doFinal(cipherByteArray)

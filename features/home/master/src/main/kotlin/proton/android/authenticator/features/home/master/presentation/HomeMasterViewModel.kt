@@ -45,7 +45,7 @@ import proton.android.authenticator.features.home.master.usecases.ObserveEntryCo
 import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.RestoreEntryUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
-import proton.android.authenticator.features.shared.entries.usecases.SyncEntryModelsUseCase
+import proton.android.authenticator.features.shared.entries.usecases.SyncEntriesModelsUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
@@ -67,7 +67,7 @@ internal class HomeMasterViewModel @Inject constructor(
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
     private val rearrangeEntryUseCase: RearrangeEntryUseCase,
     private val restoreEntryUseCase: RestoreEntryUseCase,
-    private val syncEntryModelsUseCase: SyncEntryModelsUseCase,
+    private val syncEntriesModelsUseCase: SyncEntriesModelsUseCase,
     private val timeProvider: TimeProvider
 ) : ViewModel() {
 
@@ -250,29 +250,32 @@ internal class HomeMasterViewModel @Inject constructor(
         }
     }
 
-    internal fun onRefreshEntries(isSyncEnabled: Boolean) {
+    internal fun onRefreshEntries(isSyncEnabled: Boolean, homeEntryModels: List<HomeMasterEntryModel>) {
         viewModelScope.launch {
             isRefreshingFlow.update { true }
 
+            delay(timeMillis = 20)
+
             if (!isSyncEnabled) {
-                delay(timeMillis = 50)
                 isRefreshingFlow.update { false }
                 return@launch
             }
 
-            syncEntryModelsUseCase().also { answer ->
-                when (answer) {
-                    is Answer.Failure -> {
-                        // This will be implemented in the following MR
-                    }
+            syncEntriesModelsUseCase(entryModels = homeEntryModels.map(HomeMasterEntryModel::entryModel))
+                .also { answer ->
+                    when (answer) {
+                        is Answer.Failure -> {
+                            // This will be implemented in the following MR
+                        }
 
-                    is Answer.Success -> {
-                        // This will be implemented in the following MR
+                        is Answer.Success -> {
+                            // This will be implemented in the following MR
+                        }
                     }
                 }
-            }.also {
-                isRefreshingFlow.update { false }
-            }
+                .also {
+                    isRefreshingFlow.update { false }
+                }
         }
     }
 

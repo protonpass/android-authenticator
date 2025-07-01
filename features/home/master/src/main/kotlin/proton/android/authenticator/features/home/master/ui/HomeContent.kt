@@ -40,7 +40,7 @@ internal fun HomeContent(
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
     onRearrangeEntry: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
-    onRefreshEntries: (Boolean) -> Unit
+    onRefreshEntries: (Boolean, List<HomeMasterEntryModel>) -> Unit
 ) {
     when (state) {
         HomeMasterState.Empty -> {

@@ -116,7 +116,7 @@ private fun BackupEntry.toModel() = AuthenticatorEntryModel(
     issuer = issuer,
     secret = secret,
     uri = uri,
-    period = period.toUShort(),
+    period = period,
     note = note,
     entryType = enumValues<AuthenticatorEntryType>()[entryTypeOrdinal]
 )

@@ -18,15 +18,32 @@
 
 package proton.android.authenticator.business.entries.infrastructure.network.retrofit
 
-import proton.android.authenticator.business.entries.infrastructure.network.EntriesResponseDto
+import proton.android.authenticator.business.entries.infrastructure.network.CreateEntriesRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.CreateEntriesResponseDto
+import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryResponseDto
+import proton.android.authenticator.business.entries.infrastructure.network.FetchEntriesResponseDto
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource.Companion.ROOT_PATH
+import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface RetrofitEntriesDataSource : NetworkDataSource {
 
-    @GET("$ROOT_PATH/entry/")
-    suspend fun getEntries(@Query("lastId") lastId: String? = null): EntriesResponseDto
+    @POST("$ROOT_PATH/entry/bulk")
+    suspend fun createEntry(@Body request: CreateEntryRequestDto): CreateEntryResponseDto
+
+    @POST("$ROOT_PATH/entry/bulk")
+    suspend fun createEntries(@Body request: CreateEntriesRequestDto): CreateEntriesResponseDto
+
+    @DELETE("$ROOT_PATH/entry/{entryId}")
+    suspend fun deleteEntry(@Path("entryId") entryId: String)
+
+    @GET("$ROOT_PATH/entry")
+    suspend fun getEntries(@Query("Since") lastId: String?): FetchEntriesResponseDto
 
 }

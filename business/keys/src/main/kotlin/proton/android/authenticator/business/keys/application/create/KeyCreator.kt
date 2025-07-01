@@ -19,12 +19,14 @@
 package proton.android.authenticator.business.keys.application.create
 
 import com.proton.gopenpgp.armor.Armor.unarmor
+import kotlinx.coroutines.withContext
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.encryptAndSignData
 import me.proton.core.user.domain.repository.UserRepository
 import proton.android.authenticator.business.keys.domain.KeysApi
 import proton.android.authenticator.business.keys.domain.KeysRepository
+import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.crypto.domain.extensions.tryUseKeys
 import proton.android.authenticator.shared.crypto.domain.keys.EncryptionKey
 import javax.inject.Inject
@@ -33,6 +35,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 internal class KeyCreator @Inject constructor(
     private val api: KeysApi,
+    private val appDispatchers: AppDispatchers,
     private val cryptoContext: CryptoContext,
     private val repository: KeysRepository,
     private val userRepository: UserRepository
@@ -45,17 +48,17 @@ internal class KeyCreator @Inject constructor(
                 userRepository.getUser(sessionUserId = sessionUserId)
             }
             .let { user ->
-                user.tryUseKeys(message = KEY_MESSAGE, cryptoContext) {
-                    encryptAndSignData(EncryptionKey.generate().asByteArray())
+                withContext(appDispatchers.default) {
+                    user.tryUseKeys(message = KEY_MESSAGE, cryptoContext) {
+                        encryptAndSignData(EncryptionKey.generate().asByteArray())
+                    }
+                        .let(::unarmor)
+                        .let(Base64::encodeToByteArray)
+                        .let(::String)
                 }
             }
-            .let { encryptedMessage ->
-                unarmor(encryptedMessage)
-                    .let(Base64::encodeToByteArray)
-                    .let(::String)
-            }
-            .let { encryptedKey ->
-                api.create(userId = userId, encryptedKey = encryptedKey)
+            .let { encodedEncryptedKey ->
+                api.create(userId = userId, encryptedKey = encodedEncryptedKey)
             }
             .also { key ->
                 repository.save(key = key)

@@ -37,7 +37,7 @@ internal fun HomeEntries(
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
     onEntryRearranged: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
-    onEntriesRefreshPull: (Boolean) -> Unit,
+    onEntriesRefreshPull: (Boolean, List<HomeMasterEntryModel>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     with(state) {
@@ -62,7 +62,7 @@ internal fun HomeEntries(
             PullToRefresh(
                 modifier = modifier,
                 isRefreshing = isRefreshing,
-                onRefresh = { onEntriesRefreshPull(isSyncEnabled) }
+                onRefresh = { onEntriesRefreshPull(isSyncEnabled, entryModels) }
             ) {
                 DraggableVerticalList(
                     draggableItems = items,

@@ -24,7 +24,7 @@ import proton.android.authenticator.business.entrycodes.domain.EntryCode
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 
 internal data class HomeMasterEntryModel(
-    private val entryModel: EntryModel,
+    internal val entryModel: EntryModel,
     private val entryCode: EntryCode
 ) {
 

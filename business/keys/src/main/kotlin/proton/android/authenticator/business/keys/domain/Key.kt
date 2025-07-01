@@ -18,8 +18,11 @@
 
 package proton.android.authenticator.business.keys.domain
 
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
+
 data class Key(
-    internal val id: String,
+    val id: String,
+    val encryptedKey: EncryptedByteArray,
     internal val key: String,
     internal val userKeyId: String
 )

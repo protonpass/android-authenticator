@@ -28,7 +28,11 @@ internal class SyncEntriesCommandHandler @Inject constructor(
 ) : CommandHandler<SyncEntriesCommand, Unit, SyncEntriesReason> {
 
     override suspend fun handle(command: SyncEntriesCommand): Answer<Unit, SyncEntriesReason> = try {
-        syncer.sync(userId = command.userId).let(Answer<Unit, SyncEntriesReason>::Success)
+        syncer.sync(
+            userId = command.userId,
+            key = command.key,
+            entries = command.entries
+        ).let(Answer<Unit, SyncEntriesReason>::Success)
     } catch (_: ApiException) {
         Answer.Failure(reason = SyncEntriesReason.Unknown)
     }

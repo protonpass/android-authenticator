@@ -22,15 +22,31 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class EntriesResponseDto(
+internal data class CreateEntryResponseDto(
     @SerialName("Code")
     internal val code: Int,
-    @SerialName("Entries")
-    internal val entriesDto: EntriesDto
+    @SerialName("Entry")
+    internal val entry: EntryDto
 )
 
 @Serializable
-internal data class EntriesDto(
+internal data class CreateEntriesResponseDto(
+    @SerialName("Code")
+    internal val code: Int,
+    @SerialName("Entries")
+    internal val entries: List<EntryDto>
+)
+
+@Serializable
+internal data class FetchEntriesResponseDto(
+    @SerialName("Code")
+    internal val code: Int,
+    @SerialName("Entries")
+    internal val fetchEntriesDto: FetchEntriesDto
+)
+
+@Serializable
+internal data class FetchEntriesDto(
     @SerialName("Entries")
     internal val entries: List<EntryDto>,
     @SerialName("Total")

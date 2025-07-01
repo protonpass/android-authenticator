@@ -23,6 +23,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.datetime.Clock
+import proton.android.authenticator.commonrust.AuthenticatorCrypto
+import proton.android.authenticator.commonrust.AuthenticatorCryptoInterface
 import proton.android.authenticator.commonrust.AuthenticatorImporter
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
 import proton.android.authenticator.commonrust.AuthenticatorIssuerMapper
@@ -32,22 +34,27 @@ import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterfac
 import proton.android.authenticator.commonrust.MobileCurrentTimeProvider
 import proton.android.authenticator.commonrust.MobileTotpGenerator
 import proton.android.authenticator.commonrust.MobileTotpGeneratorInterface
+import proton.android.authenticator.commonrust.SyncOperationChecker
+import proton.android.authenticator.commonrust.SyncOperationCheckerInterface
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
-object RustModule {
+internal object RustModule {
 
     @[Provides Singleton]
-    fun provideAuthenticatorImporter(): AuthenticatorImporterInterface = AuthenticatorImporter()
+    internal fun provideAuthenticatorCrypt(): AuthenticatorCryptoInterface = AuthenticatorCrypto()
 
     @[Provides Singleton]
-    fun provideAuthenticatorIssuerMapper(): AuthenticatorIssuerMapperInterface = AuthenticatorIssuerMapper()
+    internal fun provideAuthenticatorImporter(): AuthenticatorImporterInterface = AuthenticatorImporter()
 
     @[Provides Singleton]
-    fun provideAuthenticatorMobileClient(): AuthenticatorMobileClientInterface = AuthenticatorMobileClient()
+    internal fun provideAuthenticatorIssuerMapper(): AuthenticatorIssuerMapperInterface = AuthenticatorIssuerMapper()
 
     @[Provides Singleton]
-    fun provideMobileTotpGenerator(clock: Clock): MobileTotpGeneratorInterface = MobileTotpGenerator(
+    internal fun provideAuthenticatorMobileClient(): AuthenticatorMobileClientInterface = AuthenticatorMobileClient()
+
+    @[Provides Singleton]
+    internal fun provideMobileTotpGenerator(clock: Clock): MobileTotpGeneratorInterface = MobileTotpGenerator(
         periodMs = 500u,
         onlyOnCodeChange = true,
         currentTime = object : MobileCurrentTimeProvider {
@@ -56,5 +63,8 @@ object RustModule {
                 .toULong()
         }
     )
+
+    @[Provides Singleton]
+    internal fun provideSyncOperationChecker(): SyncOperationCheckerInterface = SyncOperationChecker()
 
 }

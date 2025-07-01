@@ -18,8 +18,36 @@
 
 package proton.android.authenticator.business.entries.domain
 
-internal interface EntriesApi {
+import proton.android.authenticator.commonrust.AuthenticatorEntryModel
+import proton.android.authenticator.commonrust.RemoteEntry
+import proton.android.authenticator.shared.crypto.domain.keys.EncryptionKey
 
-    suspend fun fetchAll(userId: String): List<Entry>
+internal abstract class EntriesApi {
+
+    protected val contentFormatVersion = CONTENT_FORMAT_VERSION
+
+    internal abstract suspend fun create(
+        userId: String,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        entryModel: AuthenticatorEntryModel
+    )
+
+    internal abstract suspend fun createAll(
+        userId: String,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        entryModels: List<AuthenticatorEntryModel>
+    )
+
+    internal abstract suspend fun delete(userId: String, entryId: String)
+
+    internal abstract suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<RemoteEntry>
+
+    private companion object {
+
+        private const val CONTENT_FORMAT_VERSION = 1
+
+    }
 
 }

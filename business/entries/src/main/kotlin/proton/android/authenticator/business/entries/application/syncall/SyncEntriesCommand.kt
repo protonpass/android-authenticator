@@ -18,8 +18,47 @@
 
 package proton.android.authenticator.business.entries.application.syncall
 
+import me.proton.core.crypto.common.keystore.EncryptedByteArray
+import proton.android.authenticator.business.entries.domain.EntryType
+import proton.android.authenticator.commonrust.AuthenticatorEntryModel
+import proton.android.authenticator.commonrust.AuthenticatorEntryType
+import proton.android.authenticator.commonrust.LocalEntryState
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
 data class SyncEntriesCommand(
-    internal val userId: String
+    internal val userId: String,
+    internal val key: SyncKey,
+    internal val entries: List<SyncEntry>
 ) : Command
+
+data class SyncEntry(
+    internal val modifyTime: Long,
+    private val id: String,
+    private val name: String,
+    private val issuer: String,
+    private val note: String?,
+    private val period: Int,
+    private val secret: String,
+    private val type: EntryType,
+    private val uri: String
+) {
+
+    internal val model: AuthenticatorEntryModel = AuthenticatorEntryModel(
+        id = id,
+        name = name,
+        issuer = issuer,
+        secret = secret,
+        uri = uri,
+        period = period.toUShort(),
+        note = note,
+        entryType = enumValues<AuthenticatorEntryType>()[type.ordinal]
+    )
+
+    internal val state: LocalEntryState = LocalEntryState.SYNCED
+
+}
+
+data class SyncKey(
+    internal val id: String,
+    internal val encryptedKey: EncryptedByteArray
+)
