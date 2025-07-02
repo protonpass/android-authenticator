@@ -19,11 +19,15 @@
 package proton.android.authenticator.shared.ui.domain.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import me.proton.core.compose.theme.ProtonColors
+import me.proton.core.compose.theme.ProtonShapes
+import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.isNightMode
 
 @Composable
@@ -35,19 +39,37 @@ fun isDarkTheme(themeType: ThemeType): Boolean = when (themeType) {
 
 @Composable
 fun Theme(isDarkTheme: Boolean = isNightMode(), content: @Composable () -> Unit) {
-    val colorScheme = remember(isDarkTheme) {
+    val colorScheme = remember(key1 = isDarkTheme) {
         if (isDarkTheme) ThemeColors.Dark
         else ThemeColors.Light
+    }
+
+    val protonColors = remember(key1 = isDarkTheme) {
+        if (isDarkTheme) ProtonColors.Dark
+        else ProtonColors.Light
     }
 
     CompositionLocalProvider(
         LocalThemeColorScheme provides colorScheme,
         LocalThemeTypographyScheme provides ThemeTypography
     ) {
-        MaterialTheme(
-            colorScheme = MaterialTheme.colorScheme,
-            shapes = MaterialTheme.shapes,
-            typography = MaterialTheme.typography,
+        ProtonTheme(
+            isDark = isDarkTheme,
+            colors = protonColors.copy(
+                backgroundNorm = Color.Transparent,
+                backgroundSecondary = colorScheme.inputBackground,
+                interactionNorm = colorScheme.buttonGradientTop,
+                interactionStrongNorm = Color.Red,
+                textAccent = colorScheme.accent,
+                textHint = colorScheme.textHint,
+                textNorm = colorScheme.textNorm,
+                textWeak = colorScheme.textWeak
+            ),
+            shapes = ProtonShapes().copy(
+                small = RoundedCornerShape(size = ThemeRadius.Small.plus(ThemeRadius.Small)),
+                medium = RoundedCornerShape(size = ThemeRadius.Medium.plus(ThemeRadius.Small)),
+                large = RoundedCornerShape(size = ThemeRadius.Large.plus(ThemeRadius.Small))
+            ),
             content = content
         )
     }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2025 Proton AG
   ~ This file is part of Proton AG and Proton Authenticator.
   ~
@@ -17,15 +16,11 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <style name="Theme.ProtonAuthenticator" parent="ProtonTheme" >
-        <item name="android:windowBackground">@drawable/background_gradient</item>
-        <item name="proton_background_norm">@color/transparent</item>
-        <item name="proton_background_secondary">@color/background_secondary</item>
-        <item name="proton_text_accent">@color/accent</item>
-        <item name="proton_text_weak">@color/text_weak</item>
-        <item name="materialButtonStyle">@style/ProtonButton.Rounded</item>
-        <item name="materialButtonOutlinedStyle">@style/ProtonButton.OutlinedButton.Rounded</item>
-        <item name="outlinedButtonStyle">@style/ProtonButton.OutlinedButton.Rounded</item>
-    </style>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="90"
+        android:endColor="#FF2D2A28"
+        android:startColor="#FF161514"
+        android:type="linear" />
+</shape>
