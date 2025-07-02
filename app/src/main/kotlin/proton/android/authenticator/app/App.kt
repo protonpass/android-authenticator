@@ -19,9 +19,11 @@
 package proton.android.authenticator.app
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.startup.AppInitializer
+import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
@@ -36,13 +38,21 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @HiltAndroidApp
-internal class App : Application(), ImageLoaderFactory {
+internal class App : Application(), Configuration.Provider, ImageLoaderFactory {
+
+    @Inject
+    internal lateinit var hiltWorkerFactory: HiltWorkerFactory
 
     @Inject
     internal lateinit var imageLoader: Provider<ImageLoader>
 
     @Inject
     internal lateinit var updateAppLockStateUseCase: UpdateAppLockStateUseCase
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setWorkerFactory(hiltWorkerFactory)
+            .build()
 
     override fun newImageLoader(): ImageLoader = imageLoader.get()
 

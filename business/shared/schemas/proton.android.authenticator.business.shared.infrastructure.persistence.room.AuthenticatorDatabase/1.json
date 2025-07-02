@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b0f5d5028df5ea01f37efd9a6f04145b",
+    "identityHash": "1f1fc64809a3bea2d46cc4f14cb39800",
     "entities": [
       {
         "tableName": "AccountEntity",
@@ -1078,7 +1078,7 @@
       },
       {
         "tableName": "KeyEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `key` TEXT NOT NULL, `symmetrically_encrypted_key` BLOB NOT NULL, `user_key_id` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `key` TEXT NOT NULL, `symmetrically_encrypted_key` BLOB NOT NULL, `user_id` TEXT NOT NULL, `user_key_id` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`user_id`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -1099,6 +1099,12 @@
             "notNull": true
           },
           {
+            "fieldPath": "userId",
+            "columnName": "user_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
             "fieldPath": "userKeyId",
             "columnName": "user_key_id",
             "affinity": "TEXT",
@@ -1111,8 +1117,30 @@
             "id"
           ]
         },
-        "indices": [],
-        "foreignKeys": []
+        "indices": [
+          {
+            "name": "index_KeyEntity_user_id",
+            "unique": false,
+            "columnNames": [
+              "user_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_KeyEntity_user_id` ON `${TABLE_NAME}` (`user_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "UserEntity",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "user_id"
+            ],
+            "referencedColumns": [
+              "userId"
+            ]
+          }
+        ]
       },
       {
         "tableName": "KeySaltEntity",
@@ -3000,7 +3028,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b0f5d5028df5ea01f37efd9a6f04145b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f1fc64809a3bea2d46cc4f14cb39800')"
     ]
   }
 }

@@ -16,14 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.keys.domain
+package proton.android.authenticator.business.users.application.delete
 
-import me.proton.core.crypto.common.keystore.EncryptedByteArray
+import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import javax.inject.Inject
 
-data class Key(
-    val id: String,
-    val encryptedKey: EncryptedByteArray,
-    internal val key: String,
-    internal val userId: String,
-    internal val userKeyId: String
-)
+internal class DeleteUserCommandHandler @Inject constructor(
+    private val deleter: UserDeleter
+) : CommandHandler<DeleteUserCommand, Unit, DeleteUserReason> {
+
+    override suspend fun handle(command: DeleteUserCommand): Answer<Unit, DeleteUserReason> = deleter
+        .delete(userId = command.userId)
+        .let(Answer<Unit, DeleteUserReason>::Success)
+
+}

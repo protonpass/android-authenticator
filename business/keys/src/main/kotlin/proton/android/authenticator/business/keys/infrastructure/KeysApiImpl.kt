@@ -86,6 +86,7 @@ internal class KeysApiImpl @Inject constructor(
             Key(
                 id = keyId,
                 key = key,
+                userId = userId,
                 userKeyId = userKeyId,
                 encryptedKey = encryptedKey
             )

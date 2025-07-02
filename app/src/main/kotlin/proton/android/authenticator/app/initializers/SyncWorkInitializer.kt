@@ -85,9 +85,7 @@ internal class SyncWorkInitializer : Initializer<Unit> {
             .also(workManager::enqueue)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>?>?> = listOf(
-        WorkManagerInitializer::class.java
-    )
+    override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
     internal interface SyncWorkManagerInitializer {

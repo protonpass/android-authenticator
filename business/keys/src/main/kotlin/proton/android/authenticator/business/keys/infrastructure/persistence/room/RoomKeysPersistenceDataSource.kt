@@ -56,6 +56,7 @@ internal class RoomKeysPersistenceDataSource @Inject constructor(
 private fun Key.toEntity() = KeyEntity(
     id = id,
     key = key,
+    userId = userId,
     userKeyId = userKeyId,
     symmetricallyEncryptedKey = encryptedKey
 )
@@ -63,6 +64,7 @@ private fun Key.toEntity() = KeyEntity(
 private fun KeyEntity.toDomain() = Key(
     id = id,
     key = key,
+    userId = userId,
     userKeyId = userKeyId,
     encryptedKey = symmetricallyEncryptedKey
 )

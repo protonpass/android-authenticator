@@ -28,4 +28,5 @@ sealed interface Answer<out D, out R : AnswerReason> {
         is Success -> onSuccess(data)
         is Failure -> onFailure(reason)
     }
+
 }

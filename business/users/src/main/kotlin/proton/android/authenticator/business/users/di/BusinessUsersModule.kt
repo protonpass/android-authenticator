@@ -23,14 +23,21 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
+import proton.android.authenticator.business.users.application.delete.DeleteUserCommand
+import proton.android.authenticator.business.users.application.delete.DeleteUserCommandHandler
 import proton.android.authenticator.business.users.application.find.FindUserQuery
 import proton.android.authenticator.business.users.application.find.FindUserQueryHandler
+import proton.android.authenticator.shared.common.di.CommandHandlerKey
 import proton.android.authenticator.shared.common.di.QueryHandlerKey
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 internal abstract class BusinessUsersModule {
+
+    @[Binds Singleton IntoMap CommandHandlerKey(DeleteUserCommand::class)]
+    internal abstract fun bindDeleteUserCommandHandler(impl: DeleteUserCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap QueryHandlerKey(FindUserQuery::class)]
     internal abstract fun bindFindUserQueryHandler(impl: FindUserQueryHandler): QueryHandler<*, *>

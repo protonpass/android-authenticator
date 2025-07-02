@@ -20,11 +20,24 @@ package proton.android.authenticator.business.shared.infrastructure.persistence.
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
+import me.proton.core.user.data.entity.UserEntity
+import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.shared.SharedColumns
 
 @Entity(
     tableName = KeyEntity.TABLE,
-    primaryKeys = [KeyEntity.Columns.ID]
+    primaryKeys = [
+        KeyEntity.Columns.ID
+    ],
+    foreignKeys = [
+        ForeignKey(
+            entity = UserEntity::class,
+            parentColumns = [SharedColumns.USER_ID],
+            childColumns = [KeyEntity.Columns.USER_ID],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
 )
 data class KeyEntity(
     @ColumnInfo(name = Columns.ID)
@@ -33,6 +46,8 @@ data class KeyEntity(
     val key: String,
     @ColumnInfo(name = Columns.SYMMETRICALLY_ENCRYPTED_KEY)
     val symmetricallyEncryptedKey: EncryptedByteArray,
+    @ColumnInfo(name = Columns.USER_ID, index = true)
+    val userId: String,
     @ColumnInfo(name = Columns.USER_KEY_ID)
     val userKeyId: String
 ) {
@@ -44,6 +59,8 @@ data class KeyEntity(
         internal const val KEY = "key"
 
         internal const val SYMMETRICALLY_ENCRYPTED_KEY = "symmetrically_encrypted_key"
+
+        internal const val USER_ID = "user_id"
 
         internal const val USER_KEY_ID = "user_key_id"
 

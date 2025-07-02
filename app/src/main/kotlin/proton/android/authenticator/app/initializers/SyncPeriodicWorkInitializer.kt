@@ -89,9 +89,7 @@ internal class SyncPeriodicWorkInitializer : Initializer<Unit> {
         workManager.cancelUniqueWork(uniqueWorkName = SYNC_WORK_NAME)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>?>?> = listOf(
-        WorkManagerInitializer::class.java
-    )
+    override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
     internal interface SyncPeriodicWorkManagerInitializer {

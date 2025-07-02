@@ -74,9 +74,7 @@ internal class KeyWorkInitializer : Initializer<Unit> {
             .also(workManager::enqueue)
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>?>?> = listOf(
-        WorkManagerInitializer::class.java
-    )
+    override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
     internal interface KeyWorkManagerInitializer {

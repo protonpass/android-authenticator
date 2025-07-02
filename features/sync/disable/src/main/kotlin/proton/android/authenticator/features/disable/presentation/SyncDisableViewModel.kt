@@ -32,11 +32,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
+import proton.android.authenticator.features.shared.users.usecases.DeleteUserUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import javax.inject.Inject
 
 @HiltViewModel
 internal class SyncDisableViewModel @Inject constructor(
+    private val deleteUserUseCase: DeleteUserUseCase,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
@@ -58,6 +60,17 @@ internal class SyncDisableViewModel @Inject constructor(
 
     internal fun onDisableSync() {
         viewModelScope.launch {
+            deleteUserUseCase().also { answer ->
+                when (answer) {
+                    is Answer.Success -> Unit
+                    is Answer.Failure -> {
+                        eventFlow.update { SyncDisableEvent.DisableSyncFailed }
+
+                        return@launch
+                    }
+                }
+            }
+
             observeSettingsUseCase()
                 .first()
                 .copy(isSyncEnabled = false)
