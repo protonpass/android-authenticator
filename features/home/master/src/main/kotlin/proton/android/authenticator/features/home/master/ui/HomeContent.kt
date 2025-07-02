@@ -43,11 +43,13 @@ internal fun HomeContent(
     onRefreshEntries: (Boolean, List<HomeMasterEntryModel>) -> Unit
 ) {
     when (state) {
-        HomeMasterState.Empty -> {
+        is HomeMasterState.Empty -> {
             HomeEmpty(
                 modifier = modifier.fillMaxSize(),
+                state = state,
                 onNewEntryClick = onNewEntryClick,
-                onImportEntriesClick = onImportEntriesClick
+                onImportEntriesClick = onImportEntriesClick,
+                onEntriesRefreshPull = onRefreshEntries
             )
         }
 

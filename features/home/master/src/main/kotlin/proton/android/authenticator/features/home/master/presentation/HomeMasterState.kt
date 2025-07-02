@@ -40,7 +40,10 @@ internal sealed interface HomeMasterState {
     val showTopSearchBar: Boolean
 
     @Immutable
-    data object Empty : HomeMasterState {
+    data class Empty(
+        internal val isRefreshing: Boolean,
+        private val settings: Settings
+    ) : HomeMasterState {
 
         override val searchQuery: String = ""
 
@@ -49,6 +52,10 @@ internal sealed interface HomeMasterState {
         override val showFabButton: Boolean = false
 
         override val showTopSearchBar: Boolean = false
+
+        internal val entryModels: List<HomeMasterEntryModel> = emptyList()
+
+        internal val isSyncEnabled: Boolean = settings.isSyncEnabled
 
     }
 

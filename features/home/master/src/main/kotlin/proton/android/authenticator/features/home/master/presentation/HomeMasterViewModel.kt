@@ -141,7 +141,10 @@ internal class HomeMasterViewModel @Inject constructor(
     ) { screenModel, entryModels, entryCodes, entryCodesRemainingTimes, settings ->
         when {
             screenModel.searchQuery.isEmpty() && entryModels.isEmpty() -> {
-                HomeMasterState.Empty
+                HomeMasterState.Empty(
+                    isRefreshing = screenModel.isRefreshing,
+                    settings = settings
+                )
             }
 
             entryModels.isEmpty() -> {
@@ -254,6 +257,9 @@ internal class HomeMasterViewModel @Inject constructor(
         viewModelScope.launch {
             isRefreshingFlow.update { true }
 
+            // Workaround to avoid a bug on pull to refresh indicator that stays on the screen forever
+            // when refreshing state is updated so fast, see the following issue:
+            // https://issuetracker.google.com/issues/248274004
             delay(timeMillis = 20)
 
             if (!isSyncEnabled) {

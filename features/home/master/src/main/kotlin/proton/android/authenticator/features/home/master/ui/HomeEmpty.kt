@@ -20,10 +20,12 @@ package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +34,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.features.home.master.R
+import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
+import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
+import proton.android.authenticator.shared.ui.domain.components.refresh.PullToRefresh
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
@@ -40,51 +45,63 @@ import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun HomeEmpty(
+    state: HomeMasterState.Empty,
     onNewEntryClick: () -> Unit,
     onImportEntriesClick: () -> Unit,
+    onEntriesRefreshPull: (Boolean, List<HomeMasterEntryModel>) -> Unit,
     modifier: Modifier = Modifier
-) {
-    Box(
+) = with(state) {
+    val scrollState = rememberScrollState()
+
+    PullToRefresh(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        isRefreshing = isRefreshing,
+        onRefresh = { onEntriesRefreshPull(isSyncEnabled, entryModels) }
     ) {
         Column(
-            modifier = Modifier.offset(y = -ThemeSpacing.Large),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(state = scrollState),
+            verticalArrangement = Arrangement.Center
         ) {
-            Image(
-                painter = painterResource(id = uiR.drawable.ic_placeholder_saturn),
-                contentDescription = null
-            )
-
             Column(
+                modifier = Modifier.offset(y = -ThemeSpacing.Large),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
+                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
             ) {
-                Text(
-                    text = stringResource(id = R.string.home_empty_title),
-                    textAlign = TextAlign.Center,
-                    color = Theme.colorScheme.textNorm,
-                    style = Theme.typography.headline
+                Image(
+                    painter = painterResource(id = uiR.drawable.ic_placeholder_saturn),
+                    contentDescription = null
                 )
 
-                Text(
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.home_empty_title),
+                        textAlign = TextAlign.Center,
+                        color = Theme.colorScheme.textNorm,
+                        style = Theme.typography.headline
+                    )
+
+                    Text(
+                        modifier = Modifier.padding(horizontal = ThemePadding.ExtraLarge),
+                        text = stringResource(id = R.string.home_empty_description),
+                        textAlign = TextAlign.Center,
+                        color = Theme.colorScheme.textWeak,
+                        style = Theme.typography.bodyRegular
+                    )
+                }
+
+                VerticalActionsButtons(
                     modifier = Modifier.padding(horizontal = ThemePadding.ExtraLarge),
-                    text = stringResource(id = R.string.home_empty_description),
-                    textAlign = TextAlign.Center,
-                    color = Theme.colorScheme.textWeak,
-                    style = Theme.typography.bodyRegular
+                    primaryActionText = stringResource(id = R.string.home_empty_action_primary),
+                    onPrimaryActionClick = onNewEntryClick,
+                    secondaryActionText = stringResource(id = R.string.home_empty_action_secondary),
+                    onSecondaryActionClick = onImportEntriesClick
                 )
             }
-
-            VerticalActionsButtons(
-                modifier = Modifier.padding(horizontal = ThemePadding.ExtraLarge),
-                primaryActionText = stringResource(id = R.string.home_empty_action_primary),
-                onPrimaryActionClick = onNewEntryClick,
-                secondaryActionText = stringResource(id = R.string.home_empty_action_secondary),
-                onSecondaryActionClick = onImportEntriesClick
-            )
         }
     }
 }
