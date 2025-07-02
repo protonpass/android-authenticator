@@ -17,7 +17,7 @@ internal object PlatformAndroidConfig {
 
     internal const val NDK_VERSION: String = "28.1.13356709"
 
-    internal const val TARGET_SDK: Int = 34
+    internal const val TARGET_SDK: Int = 35
 
     internal const val TEST_INSTRUMENTATION_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
 
