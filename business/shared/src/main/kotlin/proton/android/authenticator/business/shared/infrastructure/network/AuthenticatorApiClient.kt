@@ -23,19 +23,19 @@ import proton.android.authenticator.business.shared.domain.network.NetworkConfig
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
-internal class AuthenticatorApiClient @Inject constructor(config: NetworkConfig) : ApiClient {
+internal class AuthenticatorApiClient @Inject constructor(private val config: NetworkConfig) : ApiClient {
 
     override val appVersionHeader: String = config.appVersionHeader
 
     override val enableDebugLogging: Boolean = config.enableDebugLogging
-
-    override val shouldUseDoh: Boolean = config.shouldUseDoh
 
     override val userAgent: String = config.userAgent
 
     override fun forceUpdate(errorMessage: String) {
         AuthenticatorLogger.i(tag = TAG, message = errorMessage)
     }
+
+    override suspend fun shouldUseDoh(): Boolean = config.shouldUseDoh
 
     private companion object {
 

@@ -40,7 +40,9 @@ data class SyncEntry(
     private val period: Int,
     private val secret: String,
     private val type: EntryType,
-    private val uri: String
+    private val uri: String,
+    private val isDeleted: Boolean,
+    private val isSynced: Boolean
 ) {
 
     internal val model: AuthenticatorEntryModel = AuthenticatorEntryModel(
@@ -54,7 +56,11 @@ data class SyncEntry(
         entryType = enumValues<AuthenticatorEntryType>()[type.ordinal]
     )
 
-    internal val state: LocalEntryState = LocalEntryState.SYNCED
+    internal val state: LocalEntryState = when {
+        isDeleted -> LocalEntryState.PENDING_TO_DELETE
+        isSynced -> LocalEntryState.SYNCED
+        else -> LocalEntryState.PENDING_SYNC
+    }
 
 }
 

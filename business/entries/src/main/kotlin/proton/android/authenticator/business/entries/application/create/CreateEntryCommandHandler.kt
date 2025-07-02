@@ -19,7 +19,6 @@
 package proton.android.authenticator.business.entries.application.create
 
 import proton.android.authenticator.commonrust.AuthenticatorException
-import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -27,28 +26,19 @@ import javax.inject.Inject
 
 internal class CreateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface,
     private val creator: EntryCreator
 ) : CommandHandler<CreateEntryCommand, Unit, CreateEntryReason> {
 
     override suspend fun handle(command: CreateEntryCommand): Answer<Unit, CreateEntryReason> = try {
         command.toModel(authenticatorClient)
-            .let { model ->
-                creator.create(
-                    model = model,
-                    issuerInfo = authenticatorIssuerMapper.lookup(model.issuer)
-                )
-            }
+            .let { model -> creator.create(model = model) }
             .let(Answer<Unit, CreateEntryReason>::Success)
-    } catch (e: AuthenticatorException) {
-        when (e) {
-            is AuthenticatorException.InvalidName ->
-                Answer.Failure(reason = CreateEntryReason.InvalidEntryTitle)
-            is AuthenticatorException.InvalidSecret ->
-                Answer.Failure(reason = CreateEntryReason.InvalidEntrySecret)
-            else -> Answer.Failure(reason = CreateEntryReason.Unknown)
-        }
-
+    } catch (_: AuthenticatorException.InvalidName) {
+        Answer.Failure(reason = CreateEntryReason.InvalidEntryTitle)
+    } catch (_: AuthenticatorException.InvalidSecret) {
+        Answer.Failure(reason = CreateEntryReason.InvalidEntrySecret)
+    } catch (_: AuthenticatorException) {
+        Answer.Failure(reason = CreateEntryReason.Unknown)
     } catch (_: IllegalStateException) {
         Answer.Failure(reason = CreateEntryReason.CannotSaveEntry)
     }

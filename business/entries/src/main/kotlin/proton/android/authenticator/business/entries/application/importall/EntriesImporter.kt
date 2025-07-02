@@ -31,7 +31,6 @@ import proton.android.authenticator.business.shared.domain.infrastructure.files.
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
-import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.models.MimeType
@@ -46,7 +45,6 @@ internal class EntriesImporter @Inject constructor(
     private val appDispatchers: AppDispatchers,
     private val authenticatorClient: AuthenticatorMobileClientInterface,
     private val authenticatorImporter: AuthenticatorImporterInterface,
-    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface,
     private val encryptionContextProvider: EncryptionContextProvider,
     private val fileReader: FileReader,
     private val mimeTypeProvider: MimeTypeProvider,
@@ -155,11 +153,10 @@ internal class EntriesImporter @Inject constructor(
                             authenticatorClient.serializeEntry(entryModel),
                             EncryptionTag.EntryContent
                         ),
-                        createdAt = currentMillis,
                         modifiedAt = currentMillis,
+                        isDeleted = false,
                         isSynced = false,
-                        position = position,
-                        iconUrl = authenticatorIssuerMapper.lookup(entryModel.issuer)?.iconUrl
+                        position = position
                     )
                 }
             }

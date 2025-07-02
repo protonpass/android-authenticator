@@ -31,16 +31,14 @@ data class EntryEntity(
     val id: String,
     @ColumnInfo(name = Columns.ENCRYPTED_CONTENT)
     val content: EncryptedByteArray,
+    @ColumnInfo(name = Columns.IS_DELETED)
+    val isDeleted: Boolean,
     @ColumnInfo(name = Columns.IS_SYNCED)
     val isSynced: Boolean,
     @ColumnInfo(name = Columns.POSITION)
     val position: Double,
-    @ColumnInfo(name = Columns.CREATED_AT)
-    val createdAt: Long,
     @ColumnInfo(name = Columns.MODIFIED_AT)
-    val modifiedAt: Long,
-    @ColumnInfo(name = Columns.ICON_URL)
-    val iconUrl: String?
+    val modifiedAt: Long
 ) {
 
     internal object Columns {
@@ -49,15 +47,13 @@ data class EntryEntity(
 
         internal const val ENCRYPTED_CONTENT = "encrypted_content"
 
+        internal const val IS_DELETED = "is_deleted"
+
         internal const val IS_SYNCED = "is_synced"
 
         internal const val POSITION = "position"
 
-        internal const val CREATED_AT = "created_at"
-
         internal const val MODIFIED_AT = "modified_at"
-
-        internal const val ICON_URL = "icon_url"
 
     }
 

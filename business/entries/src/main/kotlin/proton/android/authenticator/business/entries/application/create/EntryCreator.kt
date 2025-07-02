@@ -23,7 +23,6 @@ import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
-import proton.android.authenticator.commonrust.IssuerInfo
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
 import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
@@ -36,7 +35,7 @@ internal class EntryCreator @Inject constructor(
     private val repository: EntriesRepository
 ) {
 
-    internal suspend fun create(model: AuthenticatorEntryModel, issuerInfo: IssuerInfo?) {
+    internal suspend fun create(model: AuthenticatorEntryModel) {
         authenticatorClient.serializeEntry(model)
             .let { decryptedModelContent ->
                 encryptionContextProvider.withEncryptionContext {
@@ -44,18 +43,14 @@ internal class EntryCreator @Inject constructor(
                 }
             }
             .let { encryptedContent ->
-                encryptedContent to timeProvider.currentMillis()
-            }
-            .let { (encryptedContent, currentTimestamp) ->
                 Entry(
                     id = model.id,
                     content = encryptedContent,
-                    createdAt = currentTimestamp,
-                    modifiedAt = currentTimestamp,
+                    modifiedAt = timeProvider.currentMillis(),
+                    isDeleted = false,
                     isSynced = false,
                     position = repository.searchMaxPosition()
-                        .plus(EntryConstants.POSITION_INCREMENT),
-                    iconUrl = issuerInfo?.iconUrl
+                        .plus(EntryConstants.POSITION_INCREMENT)
                 )
             }
             .also { entry ->

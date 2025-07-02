@@ -23,9 +23,8 @@ import me.proton.core.crypto.common.keystore.EncryptedByteArray
 data class Entry(
     val id: String,
     val content: EncryptedByteArray,
-    val createdAt: Long,
     val modifiedAt: Long,
+    val isDeleted: Boolean,
     val isSynced: Boolean,
-    val position: Double,
-    val iconUrl: String?
+    val position: Double
 )

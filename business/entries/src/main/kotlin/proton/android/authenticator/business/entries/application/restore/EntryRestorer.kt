@@ -20,10 +20,19 @@ package proton.android.authenticator.business.entries.application.restore
 
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 
-internal class EntryRestorer @Inject constructor(private val repository: EntriesRepository) {
+internal class EntryRestorer @Inject constructor(
+    private val repository: EntriesRepository,
+    private val timeProvider: TimeProvider
+) {
 
-    internal suspend fun restore(entry: Entry) = repository.save(entry)
+    internal suspend fun restore(entry: Entry) {
+        entry.copy(
+            isDeleted = false,
+            modifiedAt = timeProvider.currentMillis()
+        ).also { restoredEntry -> repository.save(restoredEntry) }
+    }
 
 }

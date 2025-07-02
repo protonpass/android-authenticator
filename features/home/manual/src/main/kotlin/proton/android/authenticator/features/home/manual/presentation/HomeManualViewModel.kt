@@ -68,11 +68,11 @@ internal class HomeManualViewModel @Inject constructor(
 
     private val titleState = mutableStateOf<String?>(value = null)
 
-    private val isValidTitleFlow = MutableStateFlow<Boolean>(value = true)
+    private val isValidTitleFlow = MutableStateFlow(value = true)
 
     private val secretState = mutableStateOf<String?>(value = null)
 
-    private val isValidSecretFlow = MutableStateFlow<Boolean>(value = true)
+    private val isValidSecretFlow = MutableStateFlow(value = true)
 
     private val issuerState = mutableStateOf<String?>(value = null)
 
@@ -240,7 +240,8 @@ internal class HomeManualViewModel @Inject constructor(
                 when (answer) {
                     is Answer.Failure -> {
                         when (answer.reason) {
-                            UpdateEntryReason.EntryNotFound -> {
+                            UpdateEntryReason.EntryNotFound,
+                            UpdateEntryReason.Unknown -> {
                                 dispatchSnackbarEvent(
                                     messageResId = R.string.home_manual_snackbar_message_update_error
                                 )
@@ -248,6 +249,10 @@ internal class HomeManualViewModel @Inject constructor(
 
                             UpdateEntryReason.InvalidEntrySecret -> {
                                 isValidSecretFlow.update { false }
+                            }
+
+                            UpdateEntryReason.InvalidEntryTitle -> {
+                                isValidTitleFlow.update { false }
                             }
                         }
                     }

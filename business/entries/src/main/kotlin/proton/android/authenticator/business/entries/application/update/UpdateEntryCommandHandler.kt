@@ -19,7 +19,6 @@
 package proton.android.authenticator.business.entries.application.update
 
 import proton.android.authenticator.commonrust.AuthenticatorException
-import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -27,7 +26,6 @@ import javax.inject.Inject
 
 internal class UpdateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface,
     private val updater: EntryUpdater
 ) : CommandHandler<UpdateEntryCommand, Unit, UpdateEntryReason> {
 
@@ -37,13 +35,16 @@ internal class UpdateEntryCommandHandler @Inject constructor(
                 updater.update(
                     id = command.id,
                     position = command.position,
-                    model = model,
-                    issuerInfo = authenticatorIssuerMapper.lookup(model.issuer)
+                    model = model
                 )
             }
             .let(Answer<Unit, UpdateEntryReason>::Success)
-    } catch (_: AuthenticatorException) {
+    } catch (_: AuthenticatorException.InvalidName) {
+        Answer.Failure(reason = UpdateEntryReason.InvalidEntryTitle)
+    } catch (_: AuthenticatorException.InvalidSecret) {
         Answer.Failure(reason = UpdateEntryReason.InvalidEntrySecret)
+    } catch (_: AuthenticatorException) {
+        Answer.Failure(reason = UpdateEntryReason.Unknown)
     } catch (_: IllegalStateException) {
         Answer.Failure(reason = UpdateEntryReason.EntryNotFound)
     }

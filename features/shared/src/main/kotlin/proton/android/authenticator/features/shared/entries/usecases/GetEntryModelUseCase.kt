@@ -23,6 +23,7 @@ import proton.android.authenticator.business.entries.application.find.FindEntryQ
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
+import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
@@ -32,6 +33,7 @@ import javax.inject.Inject
 
 class GetEntryModelUseCase @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
+    private val authenticatorIssuerMapper: AuthenticatorIssuerMapperInterface,
     private val encryptionContextProvider: EncryptionContextProvider,
     private val queryBus: QueryBus
 ) {
@@ -51,9 +53,9 @@ class GetEntryModelUseCase @Inject constructor(
                     EntryModel(
                         id = entry.id,
                         position = entry.position,
-                        iconUrl = entry.iconUrl,
-                        createdAt = entry.createdAt,
                         modifiedAt = entry.modifiedAt,
+                        isDeleted = entry.isDeleted,
+                        isSynced = entry.isSynced,
                         name = authenticatorEntryModel.name,
                         issuer = authenticatorEntryModel.issuer,
                         note = authenticatorEntryModel.note,
@@ -62,7 +64,8 @@ class GetEntryModelUseCase @Inject constructor(
                         period = authenticatorEntryModel.period.toInt(),
                         type = EntryType.from(authenticatorEntryModel.entryType.ordinal),
                         algorithm = EntryAlgorithm.from(authenticatorTotpParams.algorithm.ordinal),
-                        digits = authenticatorTotpParams.digits.toInt()
+                        digits = authenticatorTotpParams.digits.toInt(),
+                        iconUrl = authenticatorIssuerMapper.lookup(authenticatorEntryModel.issuer)?.iconUrl
                     )
                 }
             }

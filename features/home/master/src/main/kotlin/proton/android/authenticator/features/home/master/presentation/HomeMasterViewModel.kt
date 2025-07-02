@@ -197,7 +197,9 @@ internal class HomeMasterViewModel @Inject constructor(
                             messageResId = R.string.home_snackbar_message_entry_deleted,
                             action = SnackbarEvent.Action(
                                 nameResId = uiR.string.action_undo,
-                                onAction = { restoreEntry(entry = answer.data) }
+                                onAction = {
+                                    answer.data.also(::restoreEntry)
+                                }
                             )
                         )
                     }

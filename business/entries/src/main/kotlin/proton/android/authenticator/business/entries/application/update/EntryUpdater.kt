@@ -18,12 +18,10 @@
 
 package proton.android.authenticator.business.entries.application.update
 
-import kotlinx.coroutines.flow.first
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
-import proton.android.authenticator.commonrust.IssuerInfo
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
 import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
@@ -39,8 +37,7 @@ internal class EntryUpdater @Inject constructor(
     internal suspend fun update(
         id: String,
         position: Double,
-        model: AuthenticatorEntryModel,
-        issuerInfo: IssuerInfo?
+        model: AuthenticatorEntryModel
     ) {
         authenticatorClient.serializeEntry(model)
             .let { decryptedModelContent ->
@@ -49,17 +46,13 @@ internal class EntryUpdater @Inject constructor(
                 }
             }
             .let { encryptedContent ->
-                encryptedContent to repository.find(id = id).first()
-            }
-            .let { (encryptedContent, currentEntry) ->
                 Entry(
                     id = id,
                     content = encryptedContent,
-                    createdAt = currentEntry.createdAt,
                     modifiedAt = timeProvider.currentMillis(),
+                    isDeleted = false,
                     isSynced = false,
-                    position = position,
-                    iconUrl = issuerInfo?.iconUrl
+                    position = position
                 )
             }
             .also { updatedEntry ->

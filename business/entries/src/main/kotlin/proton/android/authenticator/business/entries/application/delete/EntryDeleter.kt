@@ -21,12 +21,20 @@ package proton.android.authenticator.business.entries.application.delete
 import kotlinx.coroutines.flow.first
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 
-internal class EntryDeleter @Inject constructor(private val entriesRepository: EntriesRepository) {
+internal class EntryDeleter @Inject constructor(
+    private val repository: EntriesRepository,
+    private val timeProvider: TimeProvider
+) {
 
-    internal suspend fun delete(id: String): Entry = entriesRepository.find(id)
+    internal suspend fun delete(id: String): Entry = repository.find(id)
         .first()
-        .also { entry -> entriesRepository.remove(entry) }
+        .copy(
+            isDeleted = true,
+            modifiedAt = timeProvider.currentMillis()
+        )
+        .also { entry -> repository.save(entry) }
 
 }
