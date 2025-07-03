@@ -55,4 +55,14 @@ internal sealed interface BackupsMasterFrequencyOption : UiSelectorOption<Backup
 
     }
 
+    data class QA(override val selectedType: BackupFrequencyType) : BackupsMasterFrequencyOption {
+
+        override val isSelected: Boolean = selectedType == BackupFrequencyType.QA
+
+        override val text: UiText = UiText.Dynamic("QA")
+
+        override val value: BackupFrequencyType = BackupFrequencyType.QA
+
+    }
+
 }

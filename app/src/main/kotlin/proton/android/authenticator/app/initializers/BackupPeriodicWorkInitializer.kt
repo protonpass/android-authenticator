@@ -61,7 +61,8 @@ internal class BackupPeriodicWorkInitializer : Initializer<Unit> {
     }
 
     private fun schedulePeriodicBackupWork(backup: Backup, workManager: WorkManager) {
-        PeriodicWorkRequestBuilder<BackupWorker>(backup.repeatIntervalDays, TimeUnit.DAYS)
+        val interval = backup.repeatInterval
+        PeriodicWorkRequestBuilder<BackupWorker>(interval.value, interval.unit)
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
                 BACKUP_WORK_BACKOFF_DELAY_SECONDS,

@@ -19,6 +19,12 @@
 package proton.android.authenticator.business.backups.domain
 
 import android.net.Uri
+import java.util.concurrent.TimeUnit
+
+data class BackUpRepeatInterval(
+    val value: Long,
+    val unit: TimeUnit
+)
 
 data class Backup(
     val isEnabled: Boolean,
@@ -28,10 +34,11 @@ data class Backup(
     val directoryUri: Uri
 ) {
 
-    val repeatIntervalDays: Long = when (frequencyType) {
-        BackupFrequencyType.Daily -> 1
-        BackupFrequencyType.Weekly -> 7
-        BackupFrequencyType.Monthly -> 30
+    val repeatInterval: BackUpRepeatInterval = when (frequencyType) {
+        BackupFrequencyType.Daily -> BackUpRepeatInterval(1, TimeUnit.DAYS)
+        BackupFrequencyType.Weekly -> BackUpRepeatInterval(7, TimeUnit.DAYS)
+        BackupFrequencyType.Monthly -> BackUpRepeatInterval(30, TimeUnit.DAYS)
+        BackupFrequencyType.QA -> BackUpRepeatInterval(5, TimeUnit.MINUTES)
     }
 
     val isBackupLimitReached: Boolean = count >= MAX_BACKUP_COUNT

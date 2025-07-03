@@ -72,12 +72,14 @@ internal class DataStoreBackupPreferencesDataSource @Inject constructor(
         BackupPreferencesFrequency.BACKUP_FREQUENCY_MONTHLY -> BackupFrequencyType.Monthly
         BackupPreferencesFrequency.BACKUP_FREQUENCY_DAILY,
         BackupPreferencesFrequency.UNRECOGNIZED -> BackupFrequencyType.Daily
+        BackupPreferencesFrequency.BACKUP_FREQUENCY_QA -> BackupFrequencyType.QA
     }
 
     private fun BackupFrequencyType.toPreferences() = when (this) {
         BackupFrequencyType.Daily -> BackupPreferencesFrequency.BACKUP_FREQUENCY_DAILY
         BackupFrequencyType.Weekly -> BackupPreferencesFrequency.BACKUP_FREQUENCY_WEEKLY
         BackupFrequencyType.Monthly -> BackupPreferencesFrequency.BACKUP_FREQUENCY_MONTHLY
+        BackupFrequencyType.QA -> BackupPreferencesFrequency.BACKUP_FREQUENCY_QA
     }
 
 }

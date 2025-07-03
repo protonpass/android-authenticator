@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.backups.master.usecases
+package proton.android.authenticator.features.shared.usecases.backups
 
 import proton.android.authenticator.business.backups.application.update.UpdateBackupCommand
 import proton.android.authenticator.business.backups.application.update.UpdateBackupReason
@@ -25,9 +25,9 @@ import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import javax.inject.Inject
 
-internal class UpdateBackupUseCase @Inject constructor(private val commandBus: CommandBus) {
+class UpdateBackupUseCase @Inject constructor(private val commandBus: CommandBus) {
 
-    internal suspend operator fun invoke(newBackup: Backup): Answer<Unit, UpdateBackupReason> =
+    suspend operator fun invoke(newBackup: Backup): Answer<Unit, UpdateBackupReason> =
         UpdateBackupCommand(backup = newBackup).let { command -> commandBus.dispatch(command) }
 
 }

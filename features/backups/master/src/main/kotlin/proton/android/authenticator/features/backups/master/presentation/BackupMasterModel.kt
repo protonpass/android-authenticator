@@ -35,11 +35,15 @@ internal data class BackupMasterModel(
 
     internal val lastBackupDate: UiDate? = lastBackupMillis?.let(UiDate::Backup)
 
-    internal val frequencyOptions: List<BackupsMasterFrequencyOption> = listOf(
-        BackupsMasterFrequencyOption.Daily(selectedType = frequencyType),
-        BackupsMasterFrequencyOption.Weekly(selectedType = frequencyType),
-        BackupsMasterFrequencyOption.Monthly(selectedType = frequencyType)
-    )
+    internal val frequencyOptions: List<BackupsMasterFrequencyOption> = buildList {
+        add(BackupsMasterFrequencyOption.Daily(selectedType = frequencyType))
+        add(BackupsMasterFrequencyOption.Weekly(selectedType = frequencyType))
+        add(BackupsMasterFrequencyOption.Monthly(selectedType = frequencyType))
+
+        if (frequencyType == BackupFrequencyType.QA) {
+            add(BackupsMasterFrequencyOption.QA(selectedType = frequencyType))
+        }
+    }
 
     internal fun asBackup(): Backup = Backup(
         isEnabled = isEnabled,

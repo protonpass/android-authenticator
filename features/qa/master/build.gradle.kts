@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(projects.business.settings)
+    implementation(projects.business.backups)
 }

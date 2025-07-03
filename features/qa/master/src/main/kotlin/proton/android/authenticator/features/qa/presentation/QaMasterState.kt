@@ -16,11 +16,22 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.backups.domain
+package proton.android.authenticator.features.qa.presentation
 
-enum class BackupFrequencyType {
-    Daily,
-    Monthly,
-    Weekly,
-    QA
+import proton.android.authenticator.business.backups.domain.BackupFrequencyType
+
+internal data class QaMasterState(
+    val installationTime: Long?,
+    val formattedInstallationTime: String?,
+    val backUpEnabled: Boolean,
+    val backUpFrequency: BackupFrequencyType
+) {
+    companion object {
+        val Default = QaMasterState(
+            installationTime = null,
+            formattedInstallationTime = null,
+            backUpEnabled = false,
+            backUpFrequency = BackupFrequencyType.Daily
+        )
+    }
 }

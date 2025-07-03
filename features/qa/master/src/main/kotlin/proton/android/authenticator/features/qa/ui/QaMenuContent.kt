@@ -27,11 +27,11 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,8 +40,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.qa.presentation.QaMenuViewModel
+import proton.android.authenticator.shared.ui.domain.theme.Theme
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -49,8 +52,7 @@ import java.time.ZoneId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = with(viewModel) {
-    val installationTime by installationTime.collectAsState()
-    val formattedInstallationTime by formattedInstallationTime.collectAsState()
+    val state by viewModel.stateFlow.collectAsStateWithLifecycle()
     var showDatePicker by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
@@ -60,19 +62,20 @@ internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = wit
         contentAlignment = Alignment.Center
     ) {
         Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Installation time")
+            InstallationTimeRow(
+                formattedInstallationTime = state.formattedInstallationTime,
+                onClick = { showDatePicker = true }
+            )
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                formattedInstallationTime?.let {
-                    TextButton(onClick = { showDatePicker = true }) {
-                        Text(text = it)
+            BackUpRow(
+                isEnabled = state.backUpEnabled,
+                frequencyType = state.backUpFrequency,
+                onForceQaFrequency = { force ->
+                    scope.launch {
+                        viewModel.forceQaFrequency(force)
                     }
                 }
-            }
+            )
 
             Spacer(modifier = Modifier.weight(1f))
         }
@@ -80,7 +83,7 @@ internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = wit
 
     if (showDatePicker) {
         val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = installationTime,
+            initialSelectedDateMillis = state.installationTime,
             selectableDates = object : SelectableDates {
                 override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                     val selectedLocalDate = Instant.ofEpochMilli(utcTimeMillis)
@@ -117,5 +120,49 @@ internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = wit
                 showModeToggle = false
             )
         }
+    }
+}
+
+@Composable
+private fun InstallationTimeRow(formattedInstallationTime: String?, onClick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = "Installation time")
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        formattedInstallationTime?.let {
+            TextButton(onClick = onClick) {
+                Text(text = it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun BackUpRow(
+    isEnabled: Boolean,
+    frequencyType: BackupFrequencyType,
+    onForceQaFrequency: (Boolean) -> Unit
+) {
+    if (isEnabled) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Force 5 minutes frequency")
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Switch(
+                checked = frequencyType == BackupFrequencyType.QA,
+                onCheckedChange = onForceQaFrequency
+            )
+        }
+    } else {
+        Text(
+            text = "Back up is not enabled",
+            color = Theme.colorScheme.textWeak
+        )
     }
 }

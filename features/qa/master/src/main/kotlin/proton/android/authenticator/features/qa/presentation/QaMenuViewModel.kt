@@ -23,9 +23,12 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import proton.android.authenticator.business.backups.domain.BackupFrequencyType
+import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
+import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import java.text.SimpleDateFormat
@@ -36,40 +39,44 @@ import javax.inject.Inject
 @HiltViewModel
 internal class QaMenuViewModel @Inject constructor(
     private val observeSettingsUseCase: ObserveSettingsUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase
+    private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val observeBackupUseCase: ObserveBackupUseCase,
+    private val updateBackupUseCase: UpdateBackupUseCase
 ) : ViewModel() {
     private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-    val installationTime: StateFlow<Long?> =
-        observeSettingsUseCase()
-            .map {
-                it.installationTime
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = null
-            )
-
-    val formattedInstallationTime: StateFlow<String?> =
-        installationTime
-            .map {
-                if (it != null) {
-                    dateFormatter.format(Date(it))
-                } else {
-                    null
-                }
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = null
-            )
+    internal val stateFlow: StateFlow<QaMasterState> = combine(
+        observeSettingsUseCase(),
+        observeBackupUseCase()
+    ) { settings, backup ->
+        val installationTime = settings.installationTime
+        val formattedInstallationTime = installationTime?.let {
+            dateFormatter.format(Date(it))
+        }
+        QaMasterState(
+            installationTime = installationTime,
+            formattedInstallationTime = formattedInstallationTime,
+            backUpEnabled = backup.isEnabled,
+            backUpFrequency = backup.frequencyType
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = QaMasterState.Default
+    )
 
     suspend fun updateInstallationTime(newValue: Long) {
         observeSettingsUseCase()
             .first()
             .copy(installationTime = newValue)
             .let { updateSettingsUseCase(it) }
+    }
+
+    suspend fun forceQaFrequency(force: Boolean) {
+        val type = if (force) BackupFrequencyType.QA else BackupFrequencyType.Daily
+        observeBackupUseCase()
+            .first()
+            .copy(frequencyType = type)
+            .let { updateBackupUseCase(it) }
     }
 }

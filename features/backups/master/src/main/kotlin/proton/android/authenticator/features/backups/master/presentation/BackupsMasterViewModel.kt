@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.backups.master.R
-import proton.android.authenticator.features.backups.master.usecases.UpdateBackupUseCase
+import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.backups.GenerateBackupUseCase
