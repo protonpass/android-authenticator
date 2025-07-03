@@ -22,6 +22,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
@@ -39,6 +41,7 @@ import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeRadius
+import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.ThemeThickness
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -83,7 +86,7 @@ fun DraggableVerticalList(
     ) {
         itemsIndexed(
             items = items,
-            key = { index, item -> item.id }
+            key = { _, item -> item.id }
         ) { index, item ->
             ReorderableItem(
                 state = reorderableLazyListState,
@@ -134,6 +137,10 @@ fun DraggableVerticalList(
                 ) {
                     item.content()
                 }
+            }
+
+            if (index == items.lastIndex) {
+                Spacer(modifier = Modifier.height(height = ThemeSpacing.Medium))
             }
         }
     }

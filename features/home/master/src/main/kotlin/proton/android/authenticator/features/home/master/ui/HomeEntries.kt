@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -65,6 +66,7 @@ internal fun HomeEntries(
                 onRefresh = { onEntriesRefreshPull(isSyncEnabled, entryModels) }
             ) {
                 DraggableVerticalList(
+                    modifier = Modifier.fillMaxSize(),
                     draggableItems = items,
                     listState = listState,
                     verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
