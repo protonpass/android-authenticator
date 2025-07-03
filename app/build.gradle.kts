@@ -89,8 +89,9 @@ android {
         create("prod") {
             dimension = "env"
             protonEnvironment {
+                apiPrefix = "authenticator-api"
+                host = host
                 useDefaultPins = true
-                apiPrefix = "pass-api"
             }
         }
     }
