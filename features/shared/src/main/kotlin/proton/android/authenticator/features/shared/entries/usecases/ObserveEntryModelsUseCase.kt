@@ -46,35 +46,33 @@ class ObserveEntryModelsUseCase @Inject constructor(
         .distinctUntilChanged()
         .mapLatest { entries ->
             encryptionContextProvider.withEncryptionContext {
-                entries
-                    .filter { entry -> !entry.isDeleted }
-                    .map { entry ->
-                        authenticatorClient.deserializeEntry(
-                            serialized = decrypt(entry.content, EncryptionTag.EntryContent)
-                        ).let { authenticatorEntryModel ->
-                            authenticatorEntryModel to authenticatorClient.getTotpParams(
-                                entry = authenticatorEntryModel
-                            )
-                        }.let { (authenticatorEntryModel, authenticatorTotpParams) ->
-                            EntryModel(
-                                id = entry.id,
-                                position = entry.position,
-                                modifiedAt = entry.modifiedAt,
-                                isDeleted = entry.isDeleted,
-                                isSynced = entry.isSynced,
-                                name = authenticatorEntryModel.name,
-                                issuer = authenticatorEntryModel.issuer,
-                                note = authenticatorEntryModel.note,
-                                secret = authenticatorEntryModel.secret,
-                                uri = authenticatorEntryModel.uri,
-                                period = authenticatorEntryModel.period.toInt(),
-                                type = EntryType.from(authenticatorEntryModel.entryType.ordinal),
-                                algorithm = EntryAlgorithm.from(authenticatorTotpParams.algorithm.ordinal),
-                                digits = authenticatorTotpParams.digits.toInt(),
-                                iconUrl = authenticatorIssuerMapper.lookup(authenticatorEntryModel.issuer)?.iconUrl
-                            )
-                        }
+                entries.map { entry ->
+                    authenticatorClient.deserializeEntry(
+                        serialized = decrypt(entry.content, EncryptionTag.EntryContent)
+                    ).let { authenticatorEntryModel ->
+                        authenticatorEntryModel to authenticatorClient.getTotpParams(
+                            entry = authenticatorEntryModel
+                        )
+                    }.let { (authenticatorEntryModel, authenticatorTotpParams) ->
+                        EntryModel(
+                            id = entry.id,
+                            position = entry.position,
+                            modifiedAt = entry.modifiedAt,
+                            isDeleted = entry.isDeleted,
+                            isSynced = entry.isSynced,
+                            name = authenticatorEntryModel.name,
+                            issuer = authenticatorEntryModel.issuer,
+                            note = authenticatorEntryModel.note,
+                            secret = authenticatorEntryModel.secret,
+                            uri = authenticatorEntryModel.uri,
+                            period = authenticatorEntryModel.period.toInt(),
+                            type = EntryType.from(authenticatorEntryModel.entryType.ordinal),
+                            algorithm = EntryAlgorithm.from(authenticatorTotpParams.algorithm.ordinal),
+                            digits = authenticatorTotpParams.digits.toInt(),
+                            iconUrl = authenticatorIssuerMapper.lookup(authenticatorEntryModel.issuer)?.iconUrl
+                        )
                     }
+                }
             }.sortedWith(compareBy(EntryModel::position).thenByDescending(EntryModel::modifiedAt))
         }
 

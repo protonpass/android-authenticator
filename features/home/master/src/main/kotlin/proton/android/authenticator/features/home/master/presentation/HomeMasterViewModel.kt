@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -90,8 +91,13 @@ internal class HomeMasterViewModel @Inject constructor(
             else SEARCH_QUERY_DEBOUNCE_MILLIS
         }
 
-    private val entryModelsFlow = combine(
-        observeEntryModelsUseCase(),
+    private val entryModelsFlow = observeEntryModelsUseCase()
+        .mapLatest { entryModels ->
+            entryModels.filter { entryModel -> !entryModel.isDeleted }
+        }
+
+    private val entriesFlow = combine(
+        entryModelsFlow,
         entrySearchQueryDebouncedFlow
     ) { entryModels, searchQuery ->
         entryModels.filter { entryModel ->
@@ -107,7 +113,7 @@ internal class HomeMasterViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    private val entryCodesFlow = entryModelsFlow
+    private val entryCodesFlow = entriesFlow
         .flatMapLatest(observeEntryCodesUseCase::invoke)
         .shareIn(
             scope = viewModelScope,
@@ -123,7 +129,7 @@ internal class HomeMasterViewModel @Inject constructor(
     }
 
     private val entryCodesRemainingTimesFlow = combine(
-        entryModelsFlow,
+        entriesFlow,
         entryCodesFlow,
         entryCodesRemainingTimeTickerFlow
     ) { entries, _, _ ->
@@ -134,7 +140,7 @@ internal class HomeMasterViewModel @Inject constructor(
 
     internal val stateFlow: StateFlow<HomeMasterState> = combine(
         screenModelFlow,
-        entryModelsFlow,
+        entriesFlow,
         entryCodesFlow,
         entryCodesRemainingTimesFlow,
         observeSettingsUseCase()

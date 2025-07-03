@@ -36,3 +36,15 @@ internal data class CreateEntryRequestDto(
     @SerialName("ContentFormatVersion")
     internal val contentFormatVersion: Int
 )
+
+@Serializable
+internal data class UpdateEntryRequestDto(
+    @SerialName("AuthenticatorKeyID")
+    internal val authenticatorKeyID: String,
+    @SerialName("Content")
+    internal val content: String,
+    @SerialName("ContentFormatVersion")
+    internal val contentFormatVersion: Int,
+    @SerialName("LastRevision")
+    internal val lastRevision: Int
+)

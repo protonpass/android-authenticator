@@ -46,6 +46,14 @@ internal data class FetchEntriesResponseDto(
 )
 
 @Serializable
+internal data class UpdateEntryResponseDto(
+    @SerialName("Code")
+    internal val code: Int,
+    @SerialName("Entry")
+    internal val entry: EntryDto
+)
+
+@Serializable
 internal data class FetchEntriesDto(
     @SerialName("Entries")
     internal val entries: List<EntryDto>,

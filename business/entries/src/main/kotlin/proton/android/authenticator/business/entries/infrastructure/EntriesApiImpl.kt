@@ -22,15 +22,14 @@ import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
 import proton.android.authenticator.business.entries.domain.EntriesApi
+import proton.android.authenticator.business.entries.domain.EntryRemote
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.retrofit.RetrofitEntriesDataSource
 import proton.android.authenticator.commonrust.AuthenticatorCryptoInterface
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
-import proton.android.authenticator.commonrust.RemoteEntry
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
-import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
 import proton.android.authenticator.shared.crypto.domain.keys.EncryptionKey
 import javax.inject.Inject
 import kotlin.io.encoding.Base64
@@ -40,9 +39,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 internal class EntriesApiImpl @Inject constructor(
     private val apiProvider: ApiProvider,
     private val appDispatchers: AppDispatchers,
-    private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val authenticatorCrypto: AuthenticatorCryptoInterface,
-    private val encryptionContextProvider: EncryptionContextProvider
+    private val authenticatorCrypto: AuthenticatorCryptoInterface
 ) : EntriesApi() {
 
     override suspend fun create(
@@ -105,7 +102,7 @@ internal class EntriesApiImpl @Inject constructor(
             .valueOrThrow
     }
 
-    override suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<RemoteEntry> {
+    override suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<EntryRemote> {
         var lastId: String? = null
 
         return buildList {
@@ -135,58 +132,43 @@ internal class EntriesApiImpl @Inject constructor(
             }
             .let { (entriesDto, entryModels) ->
                 entriesDto.zip(entryModels) { entryDto, entryModel ->
-                    RemoteEntry(
-                        remoteId = entryDto.entryId,
-                        entry = entryModel,
-                        modifyTime = entryDto.modifyTime
+                    EntryRemote(
+                        id = entryDto.entryId,
+                        revision = entryDto.revision,
+                        modifiedAt = entryDto.modifyTime,
+                        model = entryModel
                     )
                 }
             }
     }
 
-//    override suspend fun fetchAll(
-//        userId: String,
-//        encryptionKey: EncryptionKey
-//    ): List<Entry> = apiProvider
-//        .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
-//        .invoke { getEntries() }
-//        .valueOrThrow
-//        .fetchEntriesDto
-//        .entries
-//        .let { entryDtos ->
-//            entryDtos to withContext(appDispatchers.default) {
-//                entryDtos
-//                    .map { entryDto ->
-//                        entryDto.content.let(Base64::decode)
-//                    }
-//                    .let { ciphertexts ->
-//                        authenticatorCrypto.decryptManyEntries(
-//                            key = encryptionKey.asByteArray(),
-//                            ciphertexts = ciphertexts
-//                        )
-//                    }
-//                    .let(authenticatorClient::serializeEntries)
-//            }
-//        }
-//        .let { (entryDtos, modelContents) ->
-//            entryDtos to encryptionContextProvider.withEncryptionContext {
-//                modelContents.map { modelContent ->
-//                    encrypt(modelContent, EncryptionTag.EntryContent)
-//                }
-//            }
-//        }
-//        .let { (entryDtos, encryptedModelContents) ->
-//            entryDtos.zip(encryptedModelContents) { entryDto, encryptedModelContent ->
-//                Entry(
-//                    id = entryDto.entryId,
-//                    content = encryptedModelContent,
-//                    createdAt = entryDto.createTime,
-//                    modifiedAt = entryDto.modifyTime,
-//                    isSynced = false,
-//                    position = 0.0,
-//                    iconUrl = null,
-//                )
-//            }
-//        }
+    override suspend fun update(
+        userId: String,
+        entryId: String,
+        entryRevision: Int,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        entryModel: AuthenticatorEntryModel
+    ) {
+        withContext(appDispatchers.default) {
+            authenticatorCrypto.encryptEntry(
+                key = encryptionKey.asByteArray(),
+                model = entryModel
+            ).let { encryptedEntryModel ->
+                UpdateEntryRequestDto(
+                    authenticatorKeyID = keyId,
+                    content = Base64.encodeToByteArray(encryptedEntryModel).let(::String),
+                    contentFormatVersion = contentFormatVersion,
+                    lastRevision = entryRevision
+                )
+            }
+        }
+            .also { request ->
+                apiProvider
+                    .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
+                    .invoke { updateEntry(entryId = entryId, request = request) }
+                    .valueOrThrow
+            }
+    }
 
 }

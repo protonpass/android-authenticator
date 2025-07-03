@@ -26,14 +26,13 @@ import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesApi
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.business.entries.domain.EntryLocal
+import proton.android.authenticator.business.entries.domain.EntryRemote
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
-import proton.android.authenticator.commonrust.LocalEntry
 import proton.android.authenticator.commonrust.OperationType
-import proton.android.authenticator.commonrust.RemoteEntry
 import proton.android.authenticator.commonrust.SyncOperationCheckerInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
-import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
 import proton.android.authenticator.shared.crypto.domain.keys.EncryptionKey
 import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
@@ -45,8 +44,7 @@ internal class EntriesSyncer @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
     private val encryptionContextProvider: EncryptionContextProvider,
     private val repository: EntriesRepository,
-    private val syncOperationChecker: SyncOperationCheckerInterface,
-    private val timeProvider: TimeProvider
+    private val syncOperationChecker: SyncOperationCheckerInterface
 ) {
 
     internal suspend fun sync(
@@ -67,16 +65,6 @@ internal class EntriesSyncer @Inject constructor(
             remoteEntries = remoteEntries,
             localEntries = localEntries
         )
-
-//
-//        api.createAll(
-//            userId = userId,
-//            keyId = key.id,
-//            encryptionKey = encryptionKey,
-//            entryModels = entries.map(SyncEntry::toModel),
-//        ).also {
-//            println("JIBIRI: created entries")
-//        }
     }
 
     private suspend fun generateEncryptionKey(key: SyncKey) = encryptionContextProvider
@@ -84,11 +72,10 @@ internal class EntriesSyncer @Inject constructor(
         .let(::EncryptionKey)
 
     private fun getLocalEntries(syncEntries: List<SyncEntry>) = syncEntries.map { syncEntry ->
-        LocalEntry(
-            entry = syncEntry.model,
+        EntryLocal(
             state = syncEntry.state,
-            modifyTime = syncEntry.modifyTime,
-            localModifyTime = null
+            modifiedAt = syncEntry.modifyTime,
+            model = syncEntry.model
         )
     }
 
@@ -102,17 +89,15 @@ internal class EntriesSyncer @Inject constructor(
         userId: String,
         keyId: String,
         encryptionKey: EncryptionKey,
-        remoteEntries: List<RemoteEntry>,
-        localEntries: List<LocalEntry>
+        remoteEntries: List<EntryRemote>,
+        localEntries: List<EntryLocal>
     ) {
         coroutineScope {
-            println("JIBIRI: executing sync operations")
-            println("JIBIRI: remote entries: ${remoteEntries.size}")
-            println("JIBIRI: local entries: ${localEntries.size}")
-
-            syncOperationChecker.calculateOperations(remoteEntries, localEntries)
+            syncOperationChecker.calculateOperations(
+                remote = remoteEntries.map(EntryRemote::operation),
+                local = localEntries.map(EntryLocal::operation)
+            )
                 .map { entryOperation ->
-                    println("JIBIRI: operation: ${entryOperation.operation}")
                     with(entryOperation) {
                         when (operation) {
                             OperationType.DELETE_LOCAL -> async {
@@ -120,7 +105,11 @@ internal class EntriesSyncer @Inject constructor(
                             }
 
                             OperationType.DELETE_LOCAL_AND_REMOTE -> async {
-                                deleteLocalAndRemote(userId = userId, entryModel = entry)
+                                deleteLocalAndRemote(
+                                    userId = userId,
+                                    remoteEntryId = remoteId,
+                                    entryModel = entry
+                                )
                             }
 
                             OperationType.PUSH -> async {
@@ -128,12 +117,18 @@ internal class EntriesSyncer @Inject constructor(
                                     userId = userId,
                                     keyId = keyId,
                                     encryptionKey = encryptionKey,
+                                    remoteEntryId = remoteId,
+                                    remoteEntries = remoteEntries,
                                     entryModel = entry
                                 )
                             }
 
                             OperationType.UPSERT -> async {
-                                upsert(entryModel = entry)
+                                upsert(
+                                    remoteEntryId = remoteId,
+                                    entryModel = entry,
+                                    remoteEntries = remoteEntries
+                                )
                             }
                         }
                     }
@@ -145,30 +140,57 @@ internal class EntriesSyncer @Inject constructor(
         searchLocalEntry(entryModel)?.also { entry -> repository.remove(entry) }
     }
 
-    private suspend fun deleteLocalAndRemote(userId: String, entryModel: AuthenticatorEntryModel) {
-        api.delete(
-            userId = userId,
-            entryId = entryModel.id
-        ).also {
-            deleteLocal(entryModel = entryModel)
-        }
+    private suspend fun deleteLocalAndRemote(
+        userId: String,
+        remoteEntryId: String?,
+        entryModel: AuthenticatorEntryModel
+    ) {
+        remoteEntryId
+            ?.let { entryId ->
+                api.delete(
+                    userId = userId,
+                    entryId = entryId
+                )
+            }
+            .also {
+                deleteLocal(entryModel = entryModel)
+            }
     }
 
+    @Suppress("LongParameterList")
     private suspend fun push(
         userId: String,
         keyId: String,
         encryptionKey: EncryptionKey,
+        remoteEntryId: String?,
+        remoteEntries: List<EntryRemote>,
         entryModel: AuthenticatorEntryModel
     ) {
-        api.create(
-            userId = userId,
-            keyId = keyId,
-            encryptionKey = encryptionKey,
-            entryModel = entryModel
-        )
+        remoteEntries
+            .firstOrNull { entryRemote -> entryRemote.id == remoteEntryId }
+            ?.let { entryRemote ->
+                api.update(
+                    userId = userId,
+                    entryId = entryRemote.id,
+                    entryRevision = entryRemote.revision,
+                    keyId = keyId,
+                    encryptionKey = encryptionKey,
+                    entryModel = entryModel
+                )
+            }
+            ?: api.create(
+                userId = userId,
+                keyId = keyId,
+                encryptionKey = encryptionKey,
+                entryModel = entryModel
+            )
     }
 
-    private suspend fun upsert(entryModel: AuthenticatorEntryModel) {
+    private suspend fun upsert(
+        remoteEntryId: String?,
+        entryModel: AuthenticatorEntryModel,
+        remoteEntries: List<EntryRemote>
+    ) {
         val localEntry = searchLocalEntry(entryModel)
 
         withContext(appDispatchers.default) {
@@ -183,7 +205,7 @@ internal class EntriesSyncer @Inject constructor(
                 Entry(
                     id = entryModel.id,
                     content = encryptedModelContent,
-                    modifiedAt = timeProvider.currentMillis(),
+                    modifiedAt = remoteEntries.first { it.id == remoteEntryId }.modifiedAt,
                     isDeleted = false,
                     isSynced = true,
                     position = localEntry?.position ?: repository.searchMaxPosition()

@@ -19,7 +19,6 @@
 package proton.android.authenticator.business.entries.domain
 
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.RemoteEntry
 import proton.android.authenticator.shared.crypto.domain.keys.EncryptionKey
 
 internal abstract class EntriesApi {
@@ -42,7 +41,17 @@ internal abstract class EntriesApi {
 
     internal abstract suspend fun delete(userId: String, entryId: String)
 
-    internal abstract suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<RemoteEntry>
+    internal abstract suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<EntryRemote>
+
+    @Suppress("LongParameterList")
+    internal abstract suspend fun update(
+        userId: String,
+        entryId: String,
+        entryRevision: Int,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        entryModel: AuthenticatorEntryModel
+    )
 
     private companion object {
 
