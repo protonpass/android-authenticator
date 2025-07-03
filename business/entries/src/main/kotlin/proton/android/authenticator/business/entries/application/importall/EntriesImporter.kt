@@ -139,29 +139,28 @@ internal class EntriesImporter @Inject constructor(
         }
     }
 
-    private suspend fun saveEntries(entryModels: List<AuthenticatorEntryModel>): Int = timeProvider.currentMillis()
-        .let { currentMillis ->
-            var position = repository.searchMaxPosition()
+    private suspend fun saveEntries(entryModels: List<AuthenticatorEntryModel>): Int {
+        var position = repository.searchMaxPosition()
 
-            encryptionContextProvider.withEncryptionContext {
-                entryModels.map { entryModel ->
-                    position += EntryConstants.POSITION_INCREMENT
+        return encryptionContextProvider.withEncryptionContext {
+            entryModels.map { entryModel ->
+                position += EntryConstants.POSITION_INCREMENT
 
-                    Entry(
-                        id = entryModel.id,
-                        content = encrypt(
-                            authenticatorClient.serializeEntry(entryModel),
-                            EncryptionTag.EntryContent
-                        ),
-                        modifiedAt = currentMillis,
-                        isDeleted = false,
-                        isSynced = false,
-                        position = position
-                    )
-                }
+                Entry(
+                    id = entryModel.id,
+                    content = encrypt(
+                        authenticatorClient.serializeEntry(entryModel),
+                        EncryptionTag.EntryContent
+                    ),
+                    modifiedAt = timeProvider.currentSeconds(),
+                    isDeleted = false,
+                    isSynced = false,
+                    position = position
+                )
             }
         }
-        .also { entries -> repository.saveAll(entries) }
-        .let(List<Entry>::size)
+            .also { entries -> repository.saveAll(entries) }
+            .let(List<Entry>::size)
+    }
 
 }

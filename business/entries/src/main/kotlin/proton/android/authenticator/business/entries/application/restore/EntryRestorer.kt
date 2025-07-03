@@ -31,7 +31,7 @@ internal class EntryRestorer @Inject constructor(
     internal suspend fun restore(entry: Entry) {
         entry.copy(
             isDeleted = false,
-            modifiedAt = timeProvider.currentMillis()
+            modifiedAt = timeProvider.currentSeconds()
         ).also { restoredEntry -> repository.save(restoredEntry) }
     }
 

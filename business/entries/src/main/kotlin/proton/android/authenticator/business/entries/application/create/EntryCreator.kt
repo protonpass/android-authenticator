@@ -46,7 +46,7 @@ internal class EntryCreator @Inject constructor(
                 Entry(
                     id = model.id,
                     content = encryptedContent,
-                    modifiedAt = timeProvider.currentMillis(),
+                    modifiedAt = timeProvider.currentSeconds(),
                     isDeleted = false,
                     isSynced = false,
                     position = repository.searchMaxPosition()

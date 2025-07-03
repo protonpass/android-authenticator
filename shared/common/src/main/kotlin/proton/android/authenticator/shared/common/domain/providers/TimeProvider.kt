@@ -26,7 +26,7 @@ interface TimeProvider {
 
     fun currentMillis(): Long
 
-    fun currentSeconds(): Int
+    fun currentSeconds(): Long
 
     fun remainingPeriodSeconds(period: Int): Int
 

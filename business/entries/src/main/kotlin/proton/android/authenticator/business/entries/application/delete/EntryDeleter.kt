@@ -33,7 +33,7 @@ internal class EntryDeleter @Inject constructor(
         .first()
         .copy(
             isDeleted = true,
-            modifiedAt = timeProvider.currentMillis()
+            modifiedAt = timeProvider.currentSeconds()
         )
         .also { entry -> repository.save(entry) }
 

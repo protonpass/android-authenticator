@@ -49,7 +49,7 @@ internal class EntryUpdater @Inject constructor(
                 Entry(
                     id = id,
                     content = encryptedContent,
-                    modifiedAt = timeProvider.currentMillis(),
+                    modifiedAt = timeProvider.currentSeconds(),
                     isDeleted = false,
                     isSynced = false,
                     position = position

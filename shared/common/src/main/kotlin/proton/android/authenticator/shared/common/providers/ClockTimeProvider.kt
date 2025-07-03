@@ -32,7 +32,7 @@ internal class ClockTimeProvider @Inject constructor() : TimeProvider {
 
     override fun currentMillis(): Long = currentInstant().toEpochMilliseconds()
 
-    override fun currentSeconds(): Int = currentMillis().div(ONE_SECOND_IN_MILLIS).toInt()
+    override fun currentSeconds(): Long = currentMillis().div(ONE_SECOND_IN_MILLIS)
 
     override fun remainingPeriodSeconds(period: Int): Int = period
         .minus(floor(currentSeconds().toDouble()).mod(period.toDouble()))
