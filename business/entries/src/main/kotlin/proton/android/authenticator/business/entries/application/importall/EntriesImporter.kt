@@ -19,9 +19,6 @@
 package proton.android.authenticator.business.entries.application.importall
 
 import android.net.Uri
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.application.shared.constants.EntryConstants
 import proton.android.authenticator.business.entries.domain.EntriesRepository
@@ -63,21 +60,14 @@ internal class EntriesImporter @Inject constructor(
         contentUris: List<Uri>,
         importType: EntryImportType,
         password: String?
-    ): List<AuthenticatorEntryModel> = coroutineScope {
-        contentUris.map { contentUri ->
-            async {
-                if (importType == EntryImportType.Google) {
-                    qrScanner.scan(contentUri).orEmpty()
-                } else {
-                    fileReader.read(contentUri.toString())
-                }.let { content ->
-                    getEntriesFromContent(importType, contentUri, content, password)
-                }
-            }
+    ): List<AuthenticatorEntryModel> = contentUris.flatMap { contentUri ->
+        val content = if (importType == EntryImportType.Google) {
+            qrScanner.scan(contentUri).orEmpty()
+        } else {
+            fileReader.read(contentUri.toString())
         }
+        getEntriesFromContent(importType, contentUri, content, password)
     }
-        .awaitAll()
-        .flatten()
 
     private suspend fun getEntriesFromContent(
         importType: EntryImportType,
