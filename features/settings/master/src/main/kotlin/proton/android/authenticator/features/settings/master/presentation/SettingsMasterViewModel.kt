@@ -50,6 +50,7 @@ import proton.android.authenticator.features.shared.usecases.settings.ObserveSet
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
+import proton.android.authenticator.features.shared.users.usecases.ObserveUserUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
@@ -60,6 +61,7 @@ internal class SettingsMasterViewModel @Inject constructor(
     getAppVersionNameUseCase: GetAppVersionNameUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
     observeUninstalledProtonApps: ObserveUninstalledProtonApps,
+    observeUserUseCase: ObserveUserUseCase,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
@@ -70,12 +72,18 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     private val eventFlow = MutableStateFlow<SettingsMasterEvent>(value = SettingsMasterEvent.Idle)
 
+    private val configModelFlow = combine(
+        getAppVersionNameUseCase().let(::flowOf),
+        getBuildFlavorUseCase().let(::flowOf),
+        ::SettingsMasterConfigModel
+    )
+
     internal val stateFlow: StateFlow<SettingsMasterState> = combine(
         eventFlow,
-        getBuildFlavorUseCase().let(::flowOf),
-        getAppVersionNameUseCase().let(::flowOf),
+        configModelFlow,
         observeSettingsUseCase(),
         observeUninstalledProtonApps(),
+        observeUserUseCase(),
         SettingsMasterState::Ready
     ).stateIn(
         scope = viewModelScope,

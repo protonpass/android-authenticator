@@ -135,11 +135,7 @@ fun SettingsMasterScreen(
                     onHowToClick = onHowToClick,
                     onFeedbackClick = onFeedbackClick,
                     onDiscoverAppClick = onDiscoverAppClick,
-                    onVersionNameClick = {
-                        if (currentState.buildFlavor.isDev()) {
-                            onVersionNameClick()
-                        }
-                    }
+                    onVersionNameClick = onVersionNameClick
                 )
             }
         }

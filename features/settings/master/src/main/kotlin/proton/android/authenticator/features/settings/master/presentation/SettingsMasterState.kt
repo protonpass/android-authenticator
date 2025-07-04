@@ -19,8 +19,9 @@
 package proton.android.authenticator.features.settings.master.presentation
 
 import proton.android.authenticator.business.settings.domain.Settings
+import proton.android.authenticator.business.users.domain.User
 import proton.android.authenticator.protonapps.domain.ProtonApp
-import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.constants.UrlConstants
 import proton.android.authenticator.shared.common.domain.models.MimeType
 
@@ -40,11 +41,23 @@ internal sealed interface SettingsMasterState {
 
     data class Ready(
         override val event: SettingsMasterEvent,
-        internal val buildFlavor: BuildFlavor,
-        internal val versionName: String,
+        private val configModel: SettingsMasterConfigModel,
         private val settings: Settings,
-        private val uninstalledProtonApps: List<ProtonApp>
+        private val uninstalledProtonApps: List<ProtonApp>,
+        private val user: User?
     ) : SettingsMasterState {
+
+        internal val accountDisplayName: String? = user?.displayName
+
+        internal val isVersionClickable: Boolean = when (configModel.buildFlavor.type) {
+            BuildFlavorType.Alpha,
+            BuildFlavorType.Dev -> true
+
+            BuildFlavorType.Fdroid,
+            BuildFlavorType.PlayStore -> false
+        }
+
+        internal val versionName: String = configModel.appVersionName
 
         override val exportFileMimeType: String = MimeType.Json.value
 

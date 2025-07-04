@@ -16,24 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.users.application.find
+package proton.android.authenticator.features.settings.master.presentation
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import me.proton.core.account.domain.entity.Account
-import me.proton.core.account.domain.entity.isReady
-import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.accountmanager.domain.getPrimaryAccount
-import proton.android.authenticator.business.users.domain.User
-import javax.inject.Inject
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
 
-internal class UserFinder @Inject constructor(private val accountManager: AccountManager) {
-
-    internal fun find(): Flow<User?> = accountManager.getPrimaryAccount()
-        .map { primaryAccount ->
-            primaryAccount
-                ?.takeIf(Account::isReady)
-                ?.let(::User)
-        }
-
-}
+internal data class SettingsMasterConfigModel(
+    internal val appVersionName: String,
+    internal val buildFlavor: BuildFlavor
+)

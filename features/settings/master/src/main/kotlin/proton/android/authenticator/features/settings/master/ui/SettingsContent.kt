@@ -93,6 +93,12 @@ internal fun SettingsContent(
                         isChecked = settingsModel.isSyncEnabled,
                         onCheckedChange = { isSyncEnabled ->
                             onSyncChange(settingsModel, isSyncEnabled)
+                        },
+                        descriptionText = accountDisplayName?.let { displayName ->
+                            UiText.Resource(
+                                id = R.string.settings_security_description_sync,
+                                displayName
+                            )
                         }
                     )
                 },
