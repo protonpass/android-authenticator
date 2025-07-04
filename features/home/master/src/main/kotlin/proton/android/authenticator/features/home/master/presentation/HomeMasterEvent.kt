@@ -18,8 +18,10 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
-internal data class HomeMasterScreenModel(
-    internal val event: HomeMasterEvent,
-    internal val searchQuery: String,
-    internal val isRefreshing: Boolean
-)
+internal sealed interface HomeMasterEvent {
+
+    data object Idle : HomeMasterEvent
+
+    data object OnEnableSync : HomeMasterEvent
+
+}

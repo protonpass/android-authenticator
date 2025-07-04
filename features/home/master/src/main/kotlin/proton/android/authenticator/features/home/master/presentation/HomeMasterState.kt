@@ -39,8 +39,11 @@ internal sealed interface HomeMasterState {
 
     val showTopSearchBar: Boolean
 
+    val event: HomeMasterEvent
+
     @Immutable
     data class Empty(
+        override val event: HomeMasterEvent,
         internal val isRefreshing: Boolean,
         private val settings: Settings
     ) : HomeMasterState {
@@ -65,6 +68,8 @@ internal sealed interface HomeMasterState {
         private val settings: Settings
     ) : HomeMasterState {
 
+        override val event: HomeMasterEvent = HomeMasterEvent.Idle
+
         override val showBottomBar: Boolean = settings.searchBarType == SettingsSearchBarType.Bottom
 
         override val showTopSearchBar: Boolean = settings.searchBarType == SettingsSearchBarType.Top
@@ -74,6 +79,8 @@ internal sealed interface HomeMasterState {
 
     @Immutable
     data object Loading : HomeMasterState {
+
+        override val event: HomeMasterEvent = HomeMasterEvent.Idle
 
         override val searchQuery: String = ""
 
@@ -89,6 +96,7 @@ internal sealed interface HomeMasterState {
 
     @Immutable
     data class Ready(
+        override val event: HomeMasterEvent,
         override val searchQuery: String,
         internal val isRefreshing: Boolean,
         private val entries: List<EntryModel>,

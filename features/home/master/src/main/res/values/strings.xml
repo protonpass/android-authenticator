@@ -32,4 +32,5 @@
     <string name="home_snackbar_message_entry_delete_failed">There was an error deleting the entry</string>
     <string name="home_snackbar_message_entry_rearrange_failed">There was an error rearranging the entry</string>
     <string name="home_snackbar_message_entry_restore_failed">There was an error restoring the entry</string>
+    <string name="home_snackbar_message_entry_sync_disabled">Sync is disabled</string>
 </resources>

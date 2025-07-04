@@ -105,6 +105,7 @@ internal class AppNavigationNavigator @Inject constructor(
 
                     homeNavigationGraph(
                         snackbarHostState = snackbarHostState,
+                        onLaunchNavigationFlow = onLaunchNavigationFlow,
                         onEntryCreated = onAskForReview,
                         onOpenSettings = onAskForReview,
                         onEntriesRearranged = onAskForReview

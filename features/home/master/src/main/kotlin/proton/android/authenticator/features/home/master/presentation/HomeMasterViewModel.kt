@@ -76,9 +76,12 @@ internal class HomeMasterViewModel @Inject constructor(
 
     private val entrySearchQueryFlow = snapshotFlow { entrySearchQueryState.value }
 
+    private val eventFlow = MutableStateFlow<HomeMasterEvent>(value = HomeMasterEvent.Idle)
+
     private val isRefreshingFlow = MutableStateFlow(value = false)
 
     private val screenModelFlow = combine(
+        eventFlow,
         entrySearchQueryFlow,
         isRefreshingFlow,
         ::HomeMasterScreenModel
@@ -148,6 +151,7 @@ internal class HomeMasterViewModel @Inject constructor(
         when {
             screenModel.searchQuery.isEmpty() && entryModels.isEmpty() -> {
                 HomeMasterState.Empty(
+                    event = screenModel.event,
                     isRefreshing = screenModel.isRefreshing,
                     settings = settings
                 )
@@ -162,6 +166,7 @@ internal class HomeMasterViewModel @Inject constructor(
 
             else -> {
                 HomeMasterState.Ready(
+                    event = screenModel.event,
                     searchQuery = screenModel.searchQuery,
                     isRefreshing = screenModel.isRefreshing,
                     entries = entryModels,
@@ -176,6 +181,10 @@ internal class HomeMasterViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = HomeMasterState.Loading
     )
+
+    internal fun onConsumeEvent(event: HomeMasterEvent) {
+        eventFlow.compareAndSet(expect = event, update = HomeMasterEvent.Idle)
+    }
 
     internal fun onCopyEntryCode(entry: HomeMasterEntryModel, areCodesHidden: Boolean) {
         copyToClipboardUseCase(text = entry.currentCode, isSensitive = areCodesHidden)
@@ -271,8 +280,18 @@ internal class HomeMasterViewModel @Inject constructor(
             delay(timeMillis = 20)
 
             if (!isSyncEnabled) {
-                isRefreshingFlow.update { false }
-                return@launch
+                SnackbarEvent(
+                    messageResId = R.string.home_snackbar_message_entry_sync_disabled,
+                    action = SnackbarEvent.Action(
+                        nameResId = uiR.string.action_enable,
+                        onAction = {
+                            eventFlow.update { HomeMasterEvent.OnEnableSync }
+                        }
+                    )
+                )
+                    .also { event -> dispatchSnackbarEventUseCase(event) }
+                    .also { isRefreshingFlow.update { false } }
+                    .also { return@launch }
             }
 
             syncEntriesModelsUseCase(entryModels = homeEntryModels.map(HomeMasterEntryModel::entryModel))

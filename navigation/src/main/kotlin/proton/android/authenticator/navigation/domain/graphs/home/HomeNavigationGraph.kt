@@ -14,12 +14,16 @@ import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScree
 import proton.android.authenticator.features.imports.onboarding.ui.ImportsOnboardingScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
+import proton.android.authenticator.features.sync.master.ui.SyncMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.navigation.domain.graphs.settings.SettingsNavigationDestination
+import proton.android.authenticator.navigation.domain.graphs.sync.SyncErrorNavigationDestination
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "LongParameterList")
 internal fun NavGraphBuilder.homeNavigationGraph(
     snackbarHostState: SnackbarHostState,
+    onLaunchNavigationFlow: (NavigationFlow) -> Unit,
     onEntryCreated: () -> Unit,
     onEntriesRearranged: () -> Unit,
     onOpenSettings: () -> Unit,
@@ -50,6 +54,11 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                 onImportEntriesClick = {
                     NavigationCommand.NavigateTo(
                         destination = HomeImportNavigationDestination
+                    ).also(onNavigate)
+                },
+                onEnableEntriesSync = {
+                    NavigationCommand.NavigateTo(
+                        destination = HomeSyncNavigationDestination
                     ).also(onNavigate)
                 },
                 onEntriesRearranged = onEntriesRearranged
@@ -192,6 +201,32 @@ internal fun NavGraphBuilder.homeNavigationGraph(
             ImportsErrorScreen(
                 onDismissed = {
                     onNavigate(NavigationCommand.NavigateUp)
+                }
+            )
+        }
+
+        composable<HomeSyncNavigationDestination> {
+            SyncMasterScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onSignIn = {
+                    onLaunchNavigationFlow(NavigationFlow.SignIn)
+                },
+                onSignUp = {
+                    onLaunchNavigationFlow(NavigationFlow.SignUp)
+                },
+                onEnableError = { errorType ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = SyncErrorNavigationDestination(errorType = errorType.ordinal),
+                        popDestination = HomeMasterNavigationDestination
+                    ).also(onNavigate)
+                },
+                onEnableSuccess = {
+                    NavigationCommand.PopupTo(
+                        destination = HomeMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
                 }
             )
         }

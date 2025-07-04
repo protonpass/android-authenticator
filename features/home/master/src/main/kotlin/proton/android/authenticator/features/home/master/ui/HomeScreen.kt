@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.home.master.presentation.HomeMasterEvent
 import proton.android.authenticator.features.home.master.presentation.HomeMasterViewModel
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.fabs.IconFloatingActionButton
@@ -49,6 +50,7 @@ fun HomeScreen(
     onSettingsClick: () -> Unit,
     onNewEntryClick: () -> Unit,
     onImportEntriesClick: () -> Unit,
+    onEnableEntriesSync: () -> Unit,
     onEntriesRearranged: () -> Unit
 ) = with(hiltViewModel<HomeMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
@@ -61,6 +63,15 @@ fun HomeScreen(
 
     LaunchedEffect(key1 = state.searchQuery) {
         lazyListState.scrollToItem(index = 0)
+    }
+
+    LaunchedEffect(key1 = state.event) {
+        when (state.event) {
+            HomeMasterEvent.Idle -> Unit
+            HomeMasterEvent.OnEnableSync -> onEnableEntriesSync()
+        }
+
+        onConsumeEvent(event = state.event)
     }
 
     ScaffoldScreen(
