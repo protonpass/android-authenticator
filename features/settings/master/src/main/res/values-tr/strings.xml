@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="settings_screen_title">Ayarlar</string>
+  <string name="settings_pass_banner_description">Kimlik hırsızlığı ve sızıntılarını önlemek için güçlü, benzersiz parolalar saklayın.</string>
+  <string name="settings_security_section">Güvenlik</string>
+  <string name="settings_security_title_backups">Yedeklemeler</string>
+  <string name="settings_security_title_sync">Cihazlar arasında senkronizasyon</string>
+  <string name="settings_security_title_lock">Uygulama kilidi</string>
+  <string name="settings_security_title_lock_option_biometric">Biyometrik</string>
+  <string name="settings_security_title_lock_option_none">Yok</string>
+  <string name="settings_security_title_hide_codes">Kodları Gizle</string>
+  <string name="settings_security_lock_enable_title">Kilidi Açmayı Etkinleştir</string>
+  <string name="settings_security_lock_enable_subtitle">Uygulama erişim güvenliği etkinleştirilecektir</string>
+  <string name="settings_security_lock_disable_title">Kilidi Açmayı Devre Dışı Bırak</string>
+  <string name="settings_security_lock_disable_subtitle">Uygulama erişim güvenliği devre dışı bırakılacaktır</string>
+  <string name="settings_appearance_section">Görünüm</string>
+  <string name="settings_appearance_title_theme">Tema</string>
+  <string name="settings_appearance_title_theme_option_dark">Koyu</string>
+  <string name="settings_appearance_title_theme_option_light">Açık</string>
+  <string name="settings_appearance_title_theme_option_system">Sistem</string>
+  <string name="settings_appearance_title_search_bar_position">Arama çubuğu konumu</string>
+  <string name="settings_appearance_title_search_bar_position_option_bottom">Alt</string>
+  <string name="settings_appearance_title_search_bar_position_option_top">Üst</string>
+  <string name="settings_appearance_title_digit_style">Basamak stili</string>
+  <string name="settings_appearance_title_digit_style_option_plain">Düz</string>
+  <string name="settings_appearance_title_digit_style_option_boxes">Kutular</string>
+  <string name="settings_appearance_title_animate_code_change">Kod değişimini canlandırın</string>
+  <string name="settings_data_management_section">Verilerinizi yönetin</string>
+  <string name="settings_data_management_title_import">İçe aktar</string>
+  <string name="settings_data_management_title_export">Dışa aktar</string>
+  <string name="settings_support_section">Destek</string>
+  <string name="settings_support_title_how_to">Proton Authenticator nasıl kullanılır</string>
+  <string name="settings_support_title_feedback">Geri bildirim</string>
+  <string name="settings_discover_section">Proton\'u Keşfedin</string>
+  <string name="settings_discover_pass_description">Kimlik hırsızlığı ve sızıntılarını önlemek için güçlü, benzersiz parolalar saklayın.</string>
+  <string name="settings_discover_vpn_description">İzlenmeden gezin ve engellenmiş içeriğe erişin.</string>
+  <string name="settings_discover_mail_description">Posta kutunuzu spam, izleme ve hedefli reklamlardan koruyun.</string>
+  <string name="settings_discover_calendar_description">Programınızı düzenleyin ve planlarınızı yalnızca kendinize saklayın.</string>
+  <string name="settings_discover_drive_description">Değerli fotoğraflarınıza ve dosyalarınıza hak ettikleri güvenli yeri verin.</string>
+  <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">%1$s sürümü</string>
+  <string name="settings_snackbar_message_biometric_error">Biyometrik kimlik doğrulamada bir hata oluştu</string>
+  <string name="settings_snackbar_message_update_error">Ayarlar güncellenirken bir hata oluştu</string>
+</resources>

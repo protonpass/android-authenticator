@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_manual_screen_title_create">Nowy wpis</string>
+  <string name="home_manual_screen_title_edit">Edytuj wpis</string>
+  <string name="home_manual_form_title_label">Tytuł</string>
+  <string name="home_manual_form_title_placeholder">Tytuł, konto lub etykieta</string>
+  <string name="home_manual_form_secret_label">Klucz tajny</string>
+  <string name="home_manual_form_issuer_label">Wystawca</string>
+  <string name="home_manual_form_advanced_options_title">Opcje zaawansowane</string>
+  <string name="home_manual_form_digits_title">Cyfry</string>
+  <string name="home_manual_form_time_interval_title">Interwał czasowy</string>
+  <string name="home_manual_form_time_algorithm_title">Algorytm</string>
+  <string name="home_manual_form_time_type_title">Typ</string>
+  <string name="home_manual_snackbar_message_create_error">Wystąpił błąd podczas tworzenia wpisu</string>
+  <string name="home_manual_snackbar_message_update_error">Wystąpił błąd podczas aktualizowania wpisu</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_scan_qr_code_hint">Pointez votre appareil photo vers le code QR.</string>
+  <string name="home_scan_enter_manually">Saisir manuellement</string>
+  <string name="home_scan_snackbar_message_create_entry_code_error">Une erreur s\'est produite lors de la création du code d\'entrée</string>
+  <string name="home_scan_snackbar_message_invalid_entry_code">Le code de l\'entrée n\'est pas valide.</string>
+  <string name="home_scan_snackbar_message_invalid_entry_title">Le titre de l\'entrée n\'est pas valide.</string>
+  <string name="home_scan_snackbar_message_invalid_entry_unknown">Une erreur est survenue.</string>
+  <string name="home_scan_snackbar_message_invalid_qr_code">Le QR code n\'est pas valide.</string>
+  <string name="home_scan_permission_text">Vous devez autoriser l\'accès à la caméra pour que cette fonctionnalité soit disponible.</string>
+  <string name="home_scan_permission_button">Ouvrir les paramètres</string>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="action_cancel">Abbrechen</string>
+  <string name="action_close">Schließen</string>
+  <string name="action_delete">Löschen</string>
+  <string name="action_edit">Bearbeiten</string>
+  <string name="action_free">Kostenlos</string>
+  <string name="action_get">Holen</string>
+  <string name="action_import">Importieren</string>
+  <string name="action_next">Weiter</string>
+  <string name="action_ok">OK</string>
+  <string name="action_required">Erforderlich</string>
+  <string name="action_save">Speichern</string>
+  <string name="action_search">Suche</string>
+  <string name="action_skip">Überspringen</string>
+  <string name="action_undo">Rückgängig machen</string>
+  <string name="action_unlock">Entsperren</string>
+  <string name="date_format_today">Heute, %1$s</string>
+  <string name="date_format_yesterday">Gestern, %1$s</string>
+  <string name="date_format_full_compact_month" comment="This format outputs the date in the format: 09 Jun 10:30. Do not add any extra characters, just change the order if needed of grouped characters to match local date format order">dd LLL HH:mm</string>
+  <plurals name="unit_items">
+    <item quantity="one">%1$d Element</item>
+    <item quantity="other">%1$d Elemente</item>
+  </plurals>
+  <plurals name="unit_seconds">
+    <item quantity="one">%1$d Sekunde</item>
+    <item quantity="other">%1$d Sekunden</item>
+  </plurals>
+</resources>

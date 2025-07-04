@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_manual_screen_title_create">Nuova voce</string>
+  <string name="home_manual_screen_title_edit">Modifica voce</string>
+  <string name="home_manual_form_title_label">Titolo</string>
+  <string name="home_manual_form_title_placeholder">Titolo, account o etichetta</string>
+  <string name="home_manual_form_secret_label">Segreto</string>
+  <string name="home_manual_form_issuer_label">Emittente</string>
+  <string name="home_manual_form_advanced_options_title">Opzioni avanzate</string>
+  <string name="home_manual_form_digits_title">Numeri</string>
+  <string name="home_manual_form_time_interval_title">Intervallo di tempo</string>
+  <string name="home_manual_form_time_algorithm_title">Algoritmo</string>
+  <string name="home_manual_form_time_type_title">Tipo</string>
+  <string name="home_manual_snackbar_message_create_error">Si è verificato un errore durante la creazione della voce</string>
+  <string name="home_manual_snackbar_message_update_error">Si è verificato un errore durante l\'aggiornamento della voce</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="backups_screen_title">Backup</string>
+  <string name="backups_automatic_backups_title">Backup automatici</string>
+  <string name="backups_automatic_backups_location_title">Posizione della cartella</string>
+  <string name="backups_frequency_title">Frequenza</string>
+  <string name="backups_frequency_option_daily">Giornaliera</string>
+  <string name="backups_frequency_option_weekly">Settimanale</string>
+  <string name="backups_frequency_option_monthly">Mensile</string>
+  <string name="backups_backup_now_button">Esegui backup ora</string>
+  <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Ultimo backup: %1$s</string>
+  <plurals name="backups_backup_count_description">
+    <item quantity="one">Viene conservato solo l\'ultimo backup.</item>
+    <item quantity="other">Vengono conservati solo gli ultimi %1$d backup.</item>
+  </plurals>
+  <string name="backups_snackbar_message_backup_success">Backup creato con successo</string>
+  <string name="backups_snackbar_message_backup_error">Si è verificato un errore durante la creazione del backup</string>
+  <string name="backups_snackbar_message_update_error">Si è verificato un errore durante l\'aggiornamento della configurazione del backup</string>
+</resources>

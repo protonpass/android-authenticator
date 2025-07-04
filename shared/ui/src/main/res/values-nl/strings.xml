@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="action_cancel">Annuleren</string>
+  <string name="action_close">Sluiten</string>
+  <string name="action_delete">Verwijderen</string>
+  <string name="action_edit">Bewerken</string>
+  <string name="action_free">Gratis</string>
+  <string name="action_get">Ophalen</string>
+  <string name="action_import">Importeren</string>
+  <string name="action_next">Volgende</string>
+  <string name="action_ok">Oké</string>
+  <string name="action_required">Verplicht</string>
+  <string name="action_save">Opslaan</string>
+  <string name="action_search">Zoeken</string>
+  <string name="action_skip">Overslaan</string>
+  <string name="action_undo">Ongedaan maken</string>
+  <string name="action_unlock">Ontgrendelen</string>
+  <string name="date_format_today">Vandaag, %1$s</string>
+  <string name="date_format_yesterday">Gisteren, %1$s</string>
+  <string name="date_format_full_compact_month" comment="This format outputs the date in the format: 09 Jun 10:30. Do not add any extra characters, just change the order if needed of grouped characters to match local date format order">dd LLL HH:mm</string>
+  <plurals name="unit_items">
+    <item quantity="one">%1$d item</item>
+    <item quantity="other">%1$d items</item>
+  </plurals>
+  <plurals name="unit_seconds">
+    <item quantity="one">%1$d seconde</item>
+    <item quantity="other">%1$d seconden</item>
+  </plurals>
+</resources>

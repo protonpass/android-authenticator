@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="backups_screen_title">Резервные копии</string>
+  <string name="backups_automatic_backups_title">Автоматическое резервное копирование</string>
+  <string name="backups_automatic_backups_location_title">Расположение папки</string>
+  <string name="backups_frequency_title">Частота</string>
+  <string name="backups_frequency_option_daily">Ежедневно</string>
+  <string name="backups_frequency_option_weekly">Еженедельно</string>
+  <string name="backups_frequency_option_monthly">Ежемесячно</string>
+  <string name="backups_backup_now_button">Создать резервную копию сейчас</string>
+  <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Последняя резервная копия: %1$s</string>
+  <plurals name="backups_backup_count_description">
+    <item quantity="one">Сохраняется только последняя резервная копия.</item>
+    <item quantity="few">Сохраняются только последние %1$d резервные копии.</item>
+    <item quantity="many">Сохраняется только последние %1$d резервных копий.</item>
+    <item quantity="other">Сохраняется только последние %1$d резервных копий.</item>
+  </plurals>
+  <string name="backups_snackbar_message_backup_success">Резервная копия успешно создана</string>
+  <string name="backups_snackbar_message_backup_error">Произошла ошибка при создании резервной копии</string>
+  <string name="backups_snackbar_message_update_error">Произошла ошибка при обновлении конфигурации резервного копирования</string>
+</resources>

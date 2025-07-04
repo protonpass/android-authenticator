@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_screen_title">Authentificateur</string>
+  <string name="home_empty_title">Pas encore de codes</string>
+  <string name="home_empty_description">Protégez vos comptes avec une couche de sécurité supplémentaire.</string>
+  <string name="home_empty_action_primary">Créer un code</string>
+  <string name="home_empty_action_secondary">Importer des codes existants</string>
+  <string name="home_empty_search_title">Aucun résultat n\'a été trouvé.</string>
+  <string name="home_empty_search_subtitle">Essayez d\'effectuer une recherche en utilisant une autre orthographe ou d\'autres mots-clés.</string>
+  <string name="home_snackbar_message_entry_copied">L\'entrée a été copiée.</string>
+  <string name="home_snackbar_message_entry_deleted">L\'entrée a été supprimée.</string>
+  <string name="home_snackbar_message_entry_delete_failed">Une erreur est survenue lors de la suppression de l’entrée.</string>
+  <string name="home_snackbar_message_entry_rearrange_failed">Une erreur s\'est produite lors de la réorganisation de l\'entrée.</string>
+  <string name="home_snackbar_message_entry_restore_failed">Une erreur s\'est produite lors de la restauration de l\'entrée.</string>
+</resources>

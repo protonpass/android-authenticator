@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_manual_screen_title_create">Nieuwe vermelding</string>
+  <string name="home_manual_screen_title_edit">Vermelding bewerken</string>
+  <string name="home_manual_form_title_label">Titel</string>
+  <string name="home_manual_form_title_placeholder">Titel, account of label</string>
+  <string name="home_manual_form_secret_label">Geheim</string>
+  <string name="home_manual_form_issuer_label">Uitgever</string>
+  <string name="home_manual_form_advanced_options_title">Geavanceerde opties</string>
+  <string name="home_manual_form_digits_title">Cijfers</string>
+  <string name="home_manual_form_time_interval_title">Tijdinterval</string>
+  <string name="home_manual_form_time_algorithm_title">Algoritme</string>
+  <string name="home_manual_form_time_type_title">Type</string>
+  <string name="home_manual_snackbar_message_create_error">Er is een fout opgetreden bij het aanmaken van de vermelding</string>
+  <string name="home_manual_snackbar_message_update_error">Er is een fout opgetreden bij het bijwerken van de vermelding</string>
+</resources>

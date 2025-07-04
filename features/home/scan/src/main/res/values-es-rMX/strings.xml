@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_scan_qr_code_hint">Apunte su cámara al código QR.</string>
+  <string name="home_scan_enter_manually">Ingresar manualmente</string>
+  <string name="home_scan_snackbar_message_create_entry_code_error">Hubo un error al crear el código de entrada</string>
+  <string name="home_scan_snackbar_message_invalid_entry_code">Código de entrada no válido</string>
+  <string name="home_scan_snackbar_message_invalid_entry_title">Título de entrada no válido</string>
+  <string name="home_scan_snackbar_message_invalid_entry_unknown">Algo salió mal</string>
+  <string name="home_scan_snackbar_message_invalid_qr_code">Código QR no válido</string>
+  <string name="home_scan_permission_text">Se requiere permiso de la cámara para que esta función esté disponible</string>
+  <string name="home_scan_permission_button">Abrir configuración</string>
+</resources>

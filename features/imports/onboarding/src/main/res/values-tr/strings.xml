@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="imports_onboarding_title_supported">%1$s konumundan kodları içe aktarın</string>
+  <string name="imports_onboarding_title_unsupported">Dışa aktarma yok</string>
+  <string-array name="imports_onboarding_google_steps">
+    <item>Google Authenticator\'dan kod dışa aktarmak için, uygulamanın yerleşik \"Hesapları aktar\" özelliğini kullanmanız gerekmektedir. Bu özellik, hesapları yeni bir cihaza aktarmak için bir QR kodu oluşturur.</item>
+  </string-array>
+  <string-array name="imports_onboarding_2fas_steps">
+    <item>2FAS Authenticator\'ı açın ve \"Ayarlar\" bölümüne girin.</item>
+    <item>Ardından \"2FAS Yedekleme\" özelliğine girin.</item>
+    <item>Dışa Aktarma aracına girin ve \"Dosyaya aktar\" düğmesine tıklayın.</item>
+  </string-array>
+  <string-array name="imports_onboarding_aegis_steps">
+    <item>Aegis Authenticator\'dan kod dışa aktarmak için, uygulamanın Ayarlar bölümüne gidin, \"İçe &amp; Dışa Aktar\" bölümünü bulun ve dışa aktarma seçeneğini belirleyin.</item>
+    <item>Şifreli bir veritabanı olarak veya düz metin dosyası olarak dışa aktarmayı seçebilirsiniz.</item>
+  </string-array>
+  <string-array name="imports_onboarding_bitwarden_steps">
+    <item>Bitwarden Authenticator\'dan veri dışa aktarmak için, \"Ayarlar\" sekmesini açın ve \"Dışa Aktar\" düğmesine dokunun.</item>
+    <item>Verilerinizi .json veya .csv dosyası olarak dışa aktarmayı seçebilirsiniz.</item>
+  </string-array>
+  <string-array name="imports_onboarding_ente_steps">
+    <item>Ente Auth\'dan veri dışa aktarmak için, \"Ayarlar\" sekmesini açın ve \"İçe/Dışa Aktar\" seçeneklerini arayın.</item>
+    <item>\"Kodları Dışa Aktar\"a ve ardından \"Ente Şifreli dışa aktarım\"a dokunun.</item>
+    <item>Bu, tüm kodlarınızı içeren şifreli bir yedekleme dosyası (genellikle .ente veya .json) oluşturur.</item>
+  </string-array>
+  <string-array name="imports_onboarding_lastpass_steps">
+    <item>LastPass\'tan 2FA kodlarını (TOTP) dışa aktarmak için kasa verilerinizi bir CSV dosyası olarak dışa aktarmanız gerekecektir.</item>
+    <item>LastPass tarayıcı uzantısını açın ve oturum açın. Hesap → Sorunu kendiniz çözün → Kasa öğelerini dışa aktar → Her yerde kullanmak üzere verileri dışa aktar yolunu izleyin.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_authenticator_steps">
+    <item>Proton Authenticator\'dan kod dışa aktarmak için, uygulamanın ayarlarına gidin, \"Verilerinizi yönetin\" bölümünü bulun ve dışa aktarma seçeneğini belirleyin.</item>
+  </string-array>
+  <string-array name="imports_onboarding_unsupported_steps">
+    <item>Maalesef, %1$s şu anda uygulamasından veri dışa aktarmayı desteklememektedir. Bu özelliği talep etmek için lütfen %1$s ile iletişime geçmeyi düşünebilirsiniz.</item>
+    <item>Lütfen şimdilik verilerinizi manuel olarak içe aktarın.</item>
+  </string-array>
+  <string name="imports_onboarding_help_link">Daha fazla yardıma mı ihtiyacınız var?</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="backups_screen_title">Copias de seguridad</string>
+  <string name="backups_automatic_backups_title">Copias de seguridad automáticas</string>
+  <string name="backups_automatic_backups_location_title">Ubicación de la carpeta</string>
+  <string name="backups_frequency_title">Frecuencia</string>
+  <string name="backups_frequency_option_daily">Diario</string>
+  <string name="backups_frequency_option_weekly">Semanal</string>
+  <string name="backups_frequency_option_monthly">Mensual</string>
+  <string name="backups_backup_now_button">Crear copia de seguridad ahora</string>
+  <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Última copia de seguridad: %1$s</string>
+  <plurals name="backups_backup_count_description">
+    <item quantity="one">Solo se conserva la última copia de seguridad.</item>
+    <item quantity="other">Solo se conservan las últimas %1$d copias de seguridad.</item>
+  </plurals>
+  <string name="backups_snackbar_message_backup_success">Copia de seguridad creada correctamente</string>
+  <string name="backups_snackbar_message_backup_error">Hubo un error al crear la copia de seguridad</string>
+  <string name="backups_snackbar_message_update_error">Hubo un error al actualizar la configuración de la copia de seguridad</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_manual_screen_title_create">Yeni giriş</string>
+  <string name="home_manual_screen_title_edit">Girişi düzenle</string>
+  <string name="home_manual_form_title_label">Başlık</string>
+  <string name="home_manual_form_title_placeholder">Başlık, hesap veya etiket</string>
+  <string name="home_manual_form_secret_label">Gizli Anahtar</string>
+  <string name="home_manual_form_issuer_label">Sağlayıcı</string>
+  <string name="home_manual_form_advanced_options_title">Gelişmiş Seçenekler</string>
+  <string name="home_manual_form_digits_title">Basamak</string>
+  <string name="home_manual_form_time_interval_title">Zaman aralığı</string>
+  <string name="home_manual_form_time_algorithm_title">Algoritma</string>
+  <string name="home_manual_form_time_type_title">Tür</string>
+  <string name="home_manual_snackbar_message_create_error">Giriş oluşturulurken bir hata oluştu</string>
+  <string name="home_manual_snackbar_message_update_error">Giriş güncellenirken bir hata oluştu</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="backups_screen_title">Back-ups</string>
+  <string name="backups_automatic_backups_title">Automatische back-ups</string>
+  <string name="backups_automatic_backups_location_title">Maplocatie</string>
+  <string name="backups_frequency_title">Frequentie</string>
+  <string name="backups_frequency_option_daily">Dagelijks</string>
+  <string name="backups_frequency_option_weekly">Wekelijks</string>
+  <string name="backups_frequency_option_monthly">Maandelijks</string>
+  <string name="backups_backup_now_button">Nu back-up maken</string>
+  <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Laatste back-up: %1$s</string>
+  <plurals name="backups_backup_count_description">
+    <item quantity="one">Alleen de laatste back-up wordt bewaard.</item>
+    <item quantity="other">Alleen de laatste %1$d back-ups worden bewaard.</item>
+  </plurals>
+  <string name="backups_snackbar_message_backup_success">Back-up succesvol aangemaakt</string>
+  <string name="backups_snackbar_message_backup_error">Er is een fout opgetreden bij het maken van de back-up</string>
+  <string name="backups_snackbar_message_update_error">Er is een fout opgetreden bij het bijwerken van de back-upconfiguratie</string>
+</resources>

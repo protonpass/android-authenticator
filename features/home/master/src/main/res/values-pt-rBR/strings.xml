@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="home_screen_title">Authenticator</string>
+  <string name="home_empty_title">Nenhum código ainda</string>
+  <string name="home_empty_description">Proteja suas contas com uma camada extra de segurança.</string>
+  <string name="home_empty_action_primary">Criar novo código</string>
+  <string name="home_empty_action_secondary">Importar códigos existentes</string>
+  <string name="home_empty_search_title">Nenhum resultado encontrado</string>
+  <string name="home_empty_search_subtitle">Tente pesquisar com uma ortografia ou palavras-chave diferentes.</string>
+  <string name="home_snackbar_message_entry_copied">Entrada copiada</string>
+  <string name="home_snackbar_message_entry_deleted">Entrada excluída</string>
+  <string name="home_snackbar_message_entry_delete_failed">Ocorreu um erro ao excluir a entrada</string>
+  <string name="home_snackbar_message_entry_rearrange_failed">Ocorreu um erro ao rearranjar a entrada</string>
+  <string name="home_snackbar_message_entry_restore_failed">Ocorreu um erro ao restaurar a entrada</string>
+</resources>

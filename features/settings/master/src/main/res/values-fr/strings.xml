@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="settings_screen_title">Paramètres</string>
+  <string name="settings_pass_banner_description">Stockez des mots de passe forts et uniques pour éviter le vol d\'identité et les violations de données.</string>
+  <string name="settings_security_section">Sécurité</string>
+  <string name="settings_security_title_backups">Sauvegardes</string>
+  <string name="settings_security_title_sync">Synchronisation entre appareils</string>
+  <string name="settings_security_title_lock">Verrouillage de l\'application</string>
+  <string name="settings_security_title_lock_option_biometric">Biométrie</string>
+  <string name="settings_security_title_lock_option_none">Aucun</string>
+  <string name="settings_security_title_hide_codes">Masquer les codes</string>
+  <string name="settings_security_lock_enable_title">Activer le déverrouillage</string>
+  <string name="settings_security_lock_enable_subtitle">La sécurité d’accès à l’application sera activée.</string>
+  <string name="settings_security_lock_disable_title">Désactiver le déverrouillage</string>
+  <string name="settings_security_lock_disable_subtitle">La sécurité d\'accès à l\'application sera désactivée</string>
+  <string name="settings_appearance_section">Apparence</string>
+  <string name="settings_appearance_title_theme">Thème</string>
+  <string name="settings_appearance_title_theme_option_dark">Sombre</string>
+  <string name="settings_appearance_title_theme_option_light">Clair</string>
+  <string name="settings_appearance_title_theme_option_system">Système</string>
+  <string name="settings_appearance_title_search_bar_position">Position de la barre de recherche</string>
+  <string name="settings_appearance_title_search_bar_position_option_bottom">Bas</string>
+  <string name="settings_appearance_title_search_bar_position_option_top">Haut</string>
+  <string name="settings_appearance_title_digit_style">Style des chiffres</string>
+  <string name="settings_appearance_title_digit_style_option_plain">Simple</string>
+  <string name="settings_appearance_title_digit_style_option_boxes">Boîtes</string>
+  <string name="settings_appearance_title_animate_code_change">Animer le changement de code</string>
+  <string name="settings_data_management_section">Gérez vos données</string>
+  <string name="settings_data_management_title_import">Importer</string>
+  <string name="settings_data_management_title_export">Exporter</string>
+  <string name="settings_support_section">Support</string>
+  <string name="settings_support_title_how_to">Comment utiliser Proton Authenticator</string>
+  <string name="settings_support_title_feedback">Votre avis</string>
+  <string name="settings_discover_section">Découvrez Proton</string>
+  <string name="settings_discover_pass_description">Stockez des mots de passe forts et uniques pour éviter le vol d\'identité et les violations de données.</string>
+  <string name="settings_discover_vpn_description">Naviguez sans suivi et accédez aux contenus bloqués.</string>
+  <string name="settings_discover_mail_description">Protégez votre boîte de réception du spam, du suivi en ligne et des publicités ciblées.</string>
+  <string name="settings_discover_calendar_description">Planifiez votre journée en toute discrétion.</string>
+  <string name="settings_discover_drive_description">Offrez à vos précieuses photos et fichiers le foyer sécurisé qu\'ils méritent.</string>
+  <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Version %1$s</string>
+  <string name="settings_snackbar_message_biometric_error">Une erreur s\'est produite lors de l\'authentification biométrique.</string>
+  <string name="settings_snackbar_message_update_error">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
+</resources>

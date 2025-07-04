@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="backups_screen_title">Kopie zapasowe</string>
+  <string name="backups_automatic_backups_title">Automatyczne kopie zapasowe</string>
+  <string name="backups_automatic_backups_location_title">Lokalizacja folderu</string>
+  <string name="backups_frequency_title">Częstotliwość</string>
+  <string name="backups_frequency_option_daily">Codziennie</string>
+  <string name="backups_frequency_option_weekly">Co tydzień</string>
+  <string name="backups_frequency_option_monthly">Co miesiąc</string>
+  <string name="backups_backup_now_button">Utwórz kopię zapasową teraz</string>
+  <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Ostatnia kopia zapasowa: %1$s</string>
+  <plurals name="backups_backup_count_description">
+    <item quantity="one">Zachowywana jest tylko ostatnia kopia zapasowa.</item>
+    <item quantity="few">Zachowywane są tylko ostatnie %1$d kopie zapasowe.</item>
+    <item quantity="many">Zachowywanych jest tylko ostatnich %1$d kopii zapasowych.</item>
+    <item quantity="other">Zachowywane są tylko ostatnie %1$d kopie zapasowe.</item>
+  </plurals>
+  <string name="backups_snackbar_message_backup_success">Kopia zapasowa została pomyślnie utworzona</string>
+  <string name="backups_snackbar_message_backup_error">Wystąpił błąd podczas tworzenia kopii zapasowej</string>
+  <string name="backups_snackbar_message_update_error">Wystąpił błąd podczas aktualizowania konfiguracji kopii zapasowej</string>
+</resources>

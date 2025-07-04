@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2025 Proton AG
+  ~ This file is part of Proton AG and Proton Authenticator.
+  ~
+  ~ Proton Authenticator is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Authenticator is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="backups_screen_title">Sauvegardes</string>
+  <string name="backups_automatic_backups_title">Sauvegardes automatiques</string>
+  <string name="backups_automatic_backups_location_title">Emplacement du dossier</string>
+  <string name="backups_frequency_title">Fréquence</string>
+  <string name="backups_frequency_option_daily">Quotidien</string>
+  <string name="backups_frequency_option_weekly">Hebdomadaire</string>
+  <string name="backups_frequency_option_monthly">Mensuel</string>
+  <string name="backups_backup_now_button">Effectuer une sauvegarde maintenant</string>
+  <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Dernière sauvegarde : %1$s</string>
+  <plurals name="backups_backup_count_description">
+    <item quantity="one">Seule la dernière sauvegarde est conservée.</item>
+    <item quantity="other">Seules les dernières %1$d sauvegarde sont conservées.</item>
+  </plurals>
+  <string name="backups_snackbar_message_backup_success">La sauvegarde a été créée.</string>
+  <string name="backups_snackbar_message_backup_error">Une erreur s\'est produite lors de la création de la sauvegarde.</string>
+  <string name="backups_snackbar_message_update_error">Une erreur s\'est produite lors de la mise à jour de la configuration de sauvegarde</string>
+</resources>
