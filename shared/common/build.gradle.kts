@@ -10,11 +10,12 @@ android {
 }
 
 dependencies {
+    api(libs.core.utilKotlin)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.core.account)
     implementation(libs.core.auth)
     implementation(libs.core.data)
-    implementation(libs.core.utilKotlin)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
     implementation(libs.zxing.core)
