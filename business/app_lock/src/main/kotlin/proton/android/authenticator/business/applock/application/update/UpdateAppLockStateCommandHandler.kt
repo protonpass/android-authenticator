@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.applock.application.update
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -33,21 +34,12 @@ internal class UpdateAppLockStateCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully updated app lock state to: ${command.appLockState}")
         Answer.Success(Unit)
     } catch (e: IOException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update app lock state due to IO exception",
-            reason = UpdateAppLockStateReason.CannotUpdateAppLockState
+            reason = UpdateAppLockStateReason.CannotUpdateAppLockState,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: UpdateAppLockStateReason
-    ): Answer<Unit, UpdateAppLockStateReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

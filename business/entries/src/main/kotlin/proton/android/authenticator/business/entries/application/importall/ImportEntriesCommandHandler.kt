@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.importall
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -38,57 +39,54 @@ internal class ImportEntriesCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully imported $result entries")
         Answer.Success(result)
     } catch (e: AuthenticatorImportException.BadContent) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to bad content",
-            reason = ImportEntriesReason.BadContent
+            reason = ImportEntriesReason.BadContent,
+            tag = TAG
         )
     } catch (e: AuthenticatorImportException.BadPassword) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to bad password",
-            reason = ImportEntriesReason.BadPassword
+            reason = ImportEntriesReason.BadPassword,
+            tag = TAG
         )
     } catch (e: AuthenticatorImportException.DecryptionFailed) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to decryption failure",
-            reason = ImportEntriesReason.DecryptionFailed
+            reason = ImportEntriesReason.DecryptionFailed,
+            tag = TAG
         )
     } catch (e: AuthenticatorImportException.MissingPassword) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to missing password",
-            reason = ImportEntriesReason.MissingPassword
+            reason = ImportEntriesReason.MissingPassword,
+            tag = TAG
         )
     } catch (e: AuthenticatorImportException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to authenticator import exception",
-            reason = ImportEntriesReason.BadContent
+            reason = ImportEntriesReason.BadContent,
+            tag = TAG
         )
     } catch (e: FileNotFoundException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to file not found",
-            reason = ImportEntriesReason.BadContent
+            reason = ImportEntriesReason.BadContent,
+            tag = TAG
         )
     } catch (e: IllegalArgumentException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not import entries due to illegal argument",
-            reason = ImportEntriesReason.BadContent
+            reason = ImportEntriesReason.BadContent,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: ImportEntriesReason
-    ): Answer<Int, ImportEntriesReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

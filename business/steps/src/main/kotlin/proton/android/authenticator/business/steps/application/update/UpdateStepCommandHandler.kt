@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.steps.application.update
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -33,21 +34,12 @@ internal class UpdateStepCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully updated step to: ${command.step}")
         Answer.Success(Unit)
     } catch (e: IOException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update step due to save failure",
-            reason = UpdateStepReason.CannotSaveStep
+            reason = UpdateStepReason.CannotSaveStep,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: UpdateStepReason
-    ): Answer<Unit, UpdateStepReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

@@ -20,6 +20,7 @@ package proton.android.authenticator.business.keys.application.create
 
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.network.domain.ApiException
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.business.shared.domain.infrastructure.network.getErrorCode
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -36,40 +37,34 @@ internal class CreateKeyCommandHandler @Inject constructor(
         Answer.Success(Unit)
     } catch (exception: ApiException) {
         if (exception.getErrorCode() == ERROR_CODE_KEY_ALREADY_EXISTS) {
-            logAndReturnFailure(
+            ErrorLoggingUtils.logAndReturnFailure(
                 exception = exception,
                 message = "Could not create key due to key already exists",
-                reason = CreateKeyReason.KeyAlreadyExists
+                reason = CreateKeyReason.KeyAlreadyExists,
+                tag = TAG
             )
         } else {
-            logAndReturnFailure(
+            ErrorLoggingUtils.logAndReturnFailure(
                 exception = exception,
                 message = "Could not create key due to API call failure",
-                reason = CreateKeyReason.ApiCallFailed
+                reason = CreateKeyReason.ApiCallFailed,
+                tag = TAG
             )
         }
     } catch (e: CryptoException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not create key due to crypto failure",
-            reason = CreateKeyReason.CryptoFailed
+            reason = CreateKeyReason.CryptoFailed,
+            tag = TAG
         )
     } catch (e: IllegalStateException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not create key due to key generation failure",
-            reason = CreateKeyReason.KeyGenerationFailed
+            reason = CreateKeyReason.KeyGenerationFailed,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: CreateKeyReason
-    ): Answer<Unit, CreateKeyReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

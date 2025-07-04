@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.exportall
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -35,33 +36,26 @@ internal class ExportEntriesCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully exported $result entries")
         Answer.Success(result)
     } catch (e: AuthenticatorException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not export entries due to authenticator exception",
-            reason = ExportEntriesReason.InvalidEntries
+            reason = ExportEntriesReason.InvalidEntries,
+            tag = TAG
         )
     } catch (e: FileNotFoundException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not export entries due to file not found",
-            reason = ExportEntriesReason.InvalidEntries
+            reason = ExportEntriesReason.InvalidEntries,
+            tag = TAG
         )
     } catch (e: IOException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not export entries due to IO exception",
-            reason = ExportEntriesReason.InvalidEntries
+            reason = ExportEntriesReason.InvalidEntries,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: ExportEntriesReason
-    ): Answer<Int, ExportEntriesReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

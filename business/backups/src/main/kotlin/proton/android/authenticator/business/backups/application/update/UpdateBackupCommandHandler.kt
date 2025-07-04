@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.backups.application.update
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -33,21 +34,12 @@ internal class UpdateBackupCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully updated backup")
         Answer.Success(Unit)
     } catch (e: IOException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update backup due to save failure",
-            reason = UpdateBackupReason.CannotSaveBackup
+            reason = UpdateBackupReason.CannotSaveBackup,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: UpdateBackupReason
-    ): Answer<Unit, UpdateBackupReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.restore
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -32,21 +33,12 @@ internal class RestoreEntryCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully restored entry with id: ${command.entry.id}")
         Answer.Success(Unit)
     } catch (e: IllegalStateException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not restore entry due to restore failure",
-            reason = RestoreEntryReason.CannotRestore
+            reason = RestoreEntryReason.CannotRestore,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: RestoreEntryReason
-    ): Answer<Unit, RestoreEntryReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

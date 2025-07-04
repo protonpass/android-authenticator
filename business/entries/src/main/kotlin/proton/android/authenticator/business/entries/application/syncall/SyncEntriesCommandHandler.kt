@@ -19,6 +19,7 @@
 package proton.android.authenticator.business.entries.application.syncall
 
 import me.proton.core.network.domain.ApiException
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -37,21 +38,12 @@ internal class SyncEntriesCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully synced ${command.entries.size} entries for user: ${command.userId}")
         Answer.Success(Unit)
     } catch (e: ApiException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not sync entries due to API exception",
-            reason = SyncEntriesReason.Unknown
+            reason = SyncEntriesReason.Unknown,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: SyncEntriesReason
-    ): Answer<Unit, SyncEntriesReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.update
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
@@ -42,39 +43,33 @@ internal class UpdateEntryCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully updated entry with id: ${command.id}")
         Answer.Success(Unit)
     } catch (e: AuthenticatorException.InvalidName) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update entry due to invalid name",
-            reason = UpdateEntryReason.InvalidEntryTitle
+            reason = UpdateEntryReason.InvalidEntryTitle,
+            tag = TAG
         )
     } catch (e: AuthenticatorException.InvalidSecret) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update entry due to invalid secret",
-            reason = UpdateEntryReason.InvalidEntrySecret
+            reason = UpdateEntryReason.InvalidEntrySecret,
+            tag = TAG
         )
     } catch (e: AuthenticatorException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update entry due to authenticator exception",
-            reason = UpdateEntryReason.Unknown
+            reason = UpdateEntryReason.Unknown,
+            tag = TAG
         )
     } catch (e: IllegalStateException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update entry due to entry not found",
-            reason = UpdateEntryReason.EntryNotFound
+            reason = UpdateEntryReason.EntryNotFound,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: UpdateEntryReason
-    ): Answer<Unit, UpdateEntryReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

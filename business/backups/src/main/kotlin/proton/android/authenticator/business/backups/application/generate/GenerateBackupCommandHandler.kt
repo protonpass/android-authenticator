@@ -22,6 +22,7 @@ import proton.android.authenticator.business.backups.domain.BackupFileCreationEr
 import proton.android.authenticator.business.backups.domain.BackupMissingFileNameError
 import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -37,45 +38,40 @@ internal class GenerateBackupCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully generated backup with ${command.backupEntries.size} entries")
         Answer.Success(Unit)
     } catch (e: BackupNoEntriesError) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not generate backup due to no entries",
-            reason = GenerateBackupReason.NoEntries
+            reason = GenerateBackupReason.NoEntries,
+            tag = TAG
         )
     } catch (e: BackupNotEnabledError) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not generate backup due to backup not enabled",
-            reason = GenerateBackupReason.NotEnabled
+            reason = GenerateBackupReason.NotEnabled,
+            tag = TAG
         )
     } catch (e: BackupMissingFileNameError) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not generate backup due to missing file name",
-            reason = GenerateBackupReason.MissingFileName
+            reason = GenerateBackupReason.MissingFileName,
+            tag = TAG
         )
     } catch (e: BackupFileCreationError) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not generate backup due to file creation failure",
-            reason = GenerateBackupReason.FileCreationFailed
+            reason = GenerateBackupReason.FileCreationFailed,
+            tag = TAG
         )
     } catch (e: IOException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not generate backup due to IO exception",
-            reason = GenerateBackupReason.CannotGenerate
+            reason = GenerateBackupReason.CannotGenerate,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: GenerateBackupReason
-    ): Answer<Unit, GenerateBackupReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

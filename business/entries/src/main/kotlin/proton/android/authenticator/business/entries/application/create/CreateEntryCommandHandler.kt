@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.entries.application.create
 
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
@@ -36,39 +37,33 @@ internal class CreateEntryCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully created entry")
         Answer.Success(Unit)
     } catch (e: AuthenticatorException.InvalidName) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not create entry due to invalid name",
-            reason = CreateEntryReason.InvalidEntryTitle
+            reason = CreateEntryReason.InvalidEntryTitle,
+            tag = TAG
         )
     } catch (e: AuthenticatorException.InvalidSecret) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not create entry due to invalid secret",
-            reason = CreateEntryReason.InvalidEntrySecret
+            reason = CreateEntryReason.InvalidEntrySecret,
+            tag = TAG
         )
     } catch (e: AuthenticatorException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not create entry due to authenticator exception",
-            reason = CreateEntryReason.Unknown
+            reason = CreateEntryReason.Unknown,
+            tag = TAG
         )
     } catch (e: IllegalStateException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not create entry due to save failure",
-            reason = CreateEntryReason.CannotSaveEntry
+            reason = CreateEntryReason.CannotSaveEntry,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: CreateEntryReason
-    ): Answer<Unit, CreateEntryReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {

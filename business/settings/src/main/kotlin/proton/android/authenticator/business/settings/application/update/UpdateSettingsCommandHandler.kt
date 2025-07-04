@@ -19,6 +19,7 @@
 package proton.android.authenticator.business.settings.application.update
 
 import androidx.datastore.core.IOException
+import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -33,21 +34,12 @@ internal class UpdateSettingsCommandHandler @Inject constructor(
         AuthenticatorLogger.i(TAG, "Successfully updated settings")
         Answer.Success(Unit)
     } catch (e: IOException) {
-        logAndReturnFailure(
+        ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
             message = "Could not update settings due to save failure",
-            reason = UpdateSettingsReason.CannotSaveSettings
+            reason = UpdateSettingsReason.CannotSaveSettings,
+            tag = TAG
         )
-    }
-
-    private fun logAndReturnFailure(
-        exception: Exception,
-        message: String,
-        reason: UpdateSettingsReason
-    ): Answer<Unit, UpdateSettingsReason> {
-        AuthenticatorLogger.w(TAG, message)
-        AuthenticatorLogger.w(TAG, exception)
-        return Answer.Failure(reason = reason)
     }
 
     private companion object {
