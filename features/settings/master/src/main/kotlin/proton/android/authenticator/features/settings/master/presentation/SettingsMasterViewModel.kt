@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricReason
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
@@ -164,21 +165,43 @@ internal class SettingsMasterViewModel @Inject constructor(
                 title = context.getString(titleResId),
                 subtitle = context.getString(subtitleResId),
                 context = context
-            ).also { answer ->
-                when (answer) {
-                    is Answer.Failure -> {
-                        dispatchSnackbarMessage(messageResId = R.string.settings_snackbar_message_biometric_error)
+            ).fold(
+                onFailure = { reason ->
+                    when (reason) {
+                        AuthenticateBiometricReason.UserCanceled -> Unit
+
+                        AuthenticateBiometricReason.Canceled,
+                        AuthenticateBiometricReason.HardwareNotPresent,
+                        AuthenticateBiometricReason.HardwareUnavailable,
+                        AuthenticateBiometricReason.Lockout,
+                        AuthenticateBiometricReason.LockoutPermanent,
+                        AuthenticateBiometricReason.NegativeButton,
+                        AuthenticateBiometricReason.NoBiometrics,
+                        AuthenticateBiometricReason.NoDeviceCredential,
+                        AuthenticateBiometricReason.NoSpace,
+                        AuthenticateBiometricReason.NotEnrolled,
+                        AuthenticateBiometricReason.Timeout,
+                        AuthenticateBiometricReason.UnableToProcess,
+                        AuthenticateBiometricReason.Unavailable,
+                        AuthenticateBiometricReason.Unknown,
+                        AuthenticateBiometricReason.Unsupported,
+                        AuthenticateBiometricReason.Vendor,
+                        AuthenticateBiometricReason.WrongContext -> {
+                            dispatchSnackbarMessage(
+                                messageResId = R.string.settings_snackbar_message_biometric_error
+                            )
+                        }
+                    }
+                },
+                onSuccess = {
+                    if (appLockType == SettingsAppLockType.Biometric) {
+                        updateAppLockStateUseCase(state = AppLockState.AUTHENTICATED)
                     }
 
-                    is Answer.Success -> {
-                        if (appLockType == SettingsAppLockType.Biometric) {
-                            updateAppLockStateUseCase(state = AppLockState.AUTHENTICATED)
-                        }
-                        settingsModel.copy(appLockType = appLockType)
-                            .also(::updateSettings)
-                    }
+                    settingsModel.copy(appLockType = appLockType)
+                        .also(::updateSettings)
                 }
-            }
+            )
         }
     }
 
