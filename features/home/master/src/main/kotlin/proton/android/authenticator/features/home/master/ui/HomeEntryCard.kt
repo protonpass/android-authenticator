@@ -28,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextOverflow
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
@@ -35,6 +36,7 @@ import proton.android.authenticator.shared.ui.domain.components.codes.TotpCode
 import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
 import proton.android.authenticator.shared.ui.domain.components.icons.EntryIcon
 import proton.android.authenticator.shared.ui.domain.components.indicators.TotpProgressIndicator
+import proton.android.authenticator.shared.ui.domain.components.texts.HighlightText
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.models.UiTextMask
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -49,6 +51,7 @@ internal fun HomeEntryCard(
     showShadowsInTexts: Boolean,
     showIconBorder: Boolean,
     entryModel: HomeMasterEntryModel,
+    searchQuery: String,
     entryCodeMasks: List<UiTextMask>,
     remainingSeconds: Int,
     showTextShadows: Boolean,
@@ -75,28 +78,32 @@ internal fun HomeEntryCard(
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = true)
             ) {
-                Text(
+                HighlightText(
                     text = entryModel.issuer,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = Theme.colorScheme.textNorm,
-                    style = if (showTextShadows) {
+                    textColor = Theme.colorScheme.textNorm,
+                    textStyle = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body1Regular
-                    }
+                    },
+                    highlightedWord = searchQuery,
+                    highlightedStyle = SpanStyle(color = Theme.colorScheme.accent)
                 )
 
-                Text(
+                HighlightText(
                     text = entryModel.name,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = Theme.colorScheme.textWeak,
-                    style = if (showTextShadows) {
+                    textColor = Theme.colorScheme.textWeak,
+                    textStyle = if (showTextShadows) {
                         Theme.typography.body2Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body2Regular
-                    }
+                    },
+                    highlightedWord = searchQuery,
+                    highlightedStyle = SpanStyle(color = Theme.colorScheme.accent)
                 )
             }
 

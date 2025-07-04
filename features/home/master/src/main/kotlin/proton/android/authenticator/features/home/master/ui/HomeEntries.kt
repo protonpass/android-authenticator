@@ -48,6 +48,7 @@ internal fun HomeEntries(
                 content = {
                     HomeEntry(
                         animateOnCodeChange = animateOnCodeChange,
+                        searchQuery = searchQuery,
                         showBoxesInCode = showBoxesInCode,
                         themeType = themeType,
                         entryModel = entryModel,

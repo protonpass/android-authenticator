@@ -39,6 +39,7 @@ import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 @Composable
 internal fun HomeEntry(
     entryModel: HomeMasterEntryModel,
+    searchQuery: String,
     entryCodeMasks: List<UiTextMask>,
     remainingSeconds: Int,
     animateOnCodeChange: Boolean,
@@ -81,6 +82,7 @@ internal fun HomeEntry(
                 .backgroundSection(applyShadow = true)
                 .clickable(onClick = onCopyCodeClick),
             entryModel = entryModel,
+            searchQuery = searchQuery,
             entryCodeMasks = entryCodeMasks,
             remainingSeconds = remainingSeconds,
             animateOnCodeChange = animateOnCodeChange,
