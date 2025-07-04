@@ -21,6 +21,7 @@ package proton.android.authenticator.business.entries.application.exportall
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.FileNotFoundException
 import java.io.IOException
 import javax.inject.Inject
@@ -30,14 +31,41 @@ internal class ExportEntriesCommandHandler @Inject constructor(
 ) : CommandHandler<ExportEntriesCommand, Int, ExportEntriesReason> {
 
     override suspend fun handle(command: ExportEntriesCommand): Answer<Int, ExportEntriesReason> = try {
-        entriesExporter.export(destinationUri = command.destinationUri)
-            .let(Answer<Int, ExportEntriesReason>::Success)
-    } catch (_: AuthenticatorException) {
-        Answer.Failure(ExportEntriesReason.InvalidEntries)
-    } catch (_: FileNotFoundException) {
-        Answer.Failure(ExportEntriesReason.InvalidEntries)
-    } catch (_: IOException) {
-        Answer.Failure(ExportEntriesReason.InvalidEntries)
+        val result = entriesExporter.export(destinationUri = command.destinationUri)
+        AuthenticatorLogger.i(TAG, "Successfully exported $result entries")
+        Answer.Success(result)
+    } catch (e: AuthenticatorException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not export entries due to authenticator exception",
+            reason = ExportEntriesReason.InvalidEntries
+        )
+    } catch (e: FileNotFoundException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not export entries due to file not found",
+            reason = ExportEntriesReason.InvalidEntries
+        )
+    } catch (e: IOException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not export entries due to IO exception",
+            reason = ExportEntriesReason.InvalidEntries
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: ExportEntriesReason
+    ): Answer<Int, ExportEntriesReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "ExportEntriesCommandHandler"
     }
 
 }

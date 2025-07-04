@@ -24,6 +24,7 @@ import proton.android.authenticator.business.backups.domain.BackupNoEntriesError
 import proton.android.authenticator.business.backups.domain.BackupNotEnabledError
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.IOException
 import javax.inject.Inject
 
@@ -32,17 +33,53 @@ internal class GenerateBackupCommandHandler @Inject constructor(
 ) : CommandHandler<GenerateBackupCommand, Unit, GenerateBackupReason> {
 
     override suspend fun handle(command: GenerateBackupCommand): Answer<Unit, GenerateBackupReason> = try {
-        generator.generate(backupEntries = command.backupEntries).let(Answer<Unit, GenerateBackupReason>::Success)
-    } catch (_: BackupNoEntriesError) {
-        Answer.Failure(reason = GenerateBackupReason.NoEntries)
-    } catch (_: BackupNotEnabledError) {
-        Answer.Failure(reason = GenerateBackupReason.NotEnabled)
-    } catch (_: BackupMissingFileNameError) {
-        Answer.Failure(reason = GenerateBackupReason.MissingFileName)
-    } catch (_: BackupFileCreationError) {
-        Answer.Failure(reason = GenerateBackupReason.FileCreationFailed)
-    } catch (_: IOException) {
-        Answer.Failure(reason = GenerateBackupReason.CannotGenerate)
+        generator.generate(backupEntries = command.backupEntries)
+        AuthenticatorLogger.i(TAG, "Successfully generated backup with ${command.backupEntries.size} entries")
+        Answer.Success(Unit)
+    } catch (e: BackupNoEntriesError) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not generate backup due to no entries",
+            reason = GenerateBackupReason.NoEntries
+        )
+    } catch (e: BackupNotEnabledError) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not generate backup due to backup not enabled",
+            reason = GenerateBackupReason.NotEnabled
+        )
+    } catch (e: BackupMissingFileNameError) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not generate backup due to missing file name",
+            reason = GenerateBackupReason.MissingFileName
+        )
+    } catch (e: BackupFileCreationError) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not generate backup due to file creation failure",
+            reason = GenerateBackupReason.FileCreationFailed
+        )
+    } catch (e: IOException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not generate backup due to IO exception",
+            reason = GenerateBackupReason.CannotGenerate
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: GenerateBackupReason
+    ): Answer<Unit, GenerateBackupReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "GenerateBackupCommandHandler"
     }
 
 }

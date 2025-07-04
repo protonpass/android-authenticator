@@ -22,6 +22,7 @@ import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class CreateEntryCommandHandler @Inject constructor(
@@ -32,15 +33,46 @@ internal class CreateEntryCommandHandler @Inject constructor(
     override suspend fun handle(command: CreateEntryCommand): Answer<Unit, CreateEntryReason> = try {
         command.toModel(authenticatorClient)
             .let { model -> creator.create(model = model) }
-            .let(Answer<Unit, CreateEntryReason>::Success)
-    } catch (_: AuthenticatorException.InvalidName) {
-        Answer.Failure(reason = CreateEntryReason.InvalidEntryTitle)
-    } catch (_: AuthenticatorException.InvalidSecret) {
-        Answer.Failure(reason = CreateEntryReason.InvalidEntrySecret)
-    } catch (_: AuthenticatorException) {
-        Answer.Failure(reason = CreateEntryReason.Unknown)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = CreateEntryReason.CannotSaveEntry)
+        AuthenticatorLogger.i(TAG, "Successfully created entry")
+        Answer.Success(Unit)
+    } catch (e: AuthenticatorException.InvalidName) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not create entry due to invalid name",
+            reason = CreateEntryReason.InvalidEntryTitle
+        )
+    } catch (e: AuthenticatorException.InvalidSecret) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not create entry due to invalid secret",
+            reason = CreateEntryReason.InvalidEntrySecret
+        )
+    } catch (e: AuthenticatorException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not create entry due to authenticator exception",
+            reason = CreateEntryReason.Unknown
+        )
+    } catch (e: IllegalStateException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not create entry due to save failure",
+            reason = CreateEntryReason.CannotSaveEntry
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: CreateEntryReason
+    ): Answer<Unit, CreateEntryReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "CreateEntryCommandHandler"
     }
 
 }

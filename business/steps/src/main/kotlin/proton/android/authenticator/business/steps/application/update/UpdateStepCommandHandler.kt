@@ -20,6 +20,7 @@ package proton.android.authenticator.business.steps.application.update
 
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.IOException
 import javax.inject.Inject
 
@@ -28,9 +29,29 @@ internal class UpdateStepCommandHandler @Inject constructor(
 ) : CommandHandler<UpdateStepCommand, Unit, UpdateStepReason> {
 
     override suspend fun handle(command: UpdateStepCommand): Answer<Unit, UpdateStepReason> = try {
-        updater.update(step = command.step).let(Answer<Unit, UpdateStepReason>::Success)
-    } catch (_: IOException) {
-        Answer.Failure(reason = UpdateStepReason.CannotSaveStep)
+        updater.update(step = command.step)
+        AuthenticatorLogger.i(TAG, "Successfully updated step to: ${command.step}")
+        Answer.Success(Unit)
+    } catch (e: IOException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update step due to save failure",
+            reason = UpdateStepReason.CannotSaveStep
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: UpdateStepReason
+    ): Answer<Unit, UpdateStepReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "UpdateStepCommandHandler"
     }
 
 }

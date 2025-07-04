@@ -21,6 +21,7 @@ package proton.android.authenticator.business.entries.application.delete
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class DeleteEntryCommandHandler @Inject constructor(
@@ -28,9 +29,29 @@ internal class DeleteEntryCommandHandler @Inject constructor(
 ) : CommandHandler<DeleteEntryCommand, Entry, DeleteEntryReason> {
 
     override suspend fun handle(command: DeleteEntryCommand): Answer<Entry, DeleteEntryReason> = try {
-        deleter.delete(id = command.id).let(Answer<Unit, DeleteEntryReason>::Success)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = DeleteEntryReason.EntryNotFound)
+        val result = deleter.delete(id = command.id)
+        AuthenticatorLogger.i(TAG, "Successfully deleted entry with id: ${command.id}")
+        Answer.Success(result)
+    } catch (e: IllegalStateException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not delete entry due to entry not found",
+            reason = DeleteEntryReason.EntryNotFound
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: DeleteEntryReason
+    ): Answer<Entry, DeleteEntryReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "DeleteEntryCommandHandler"
     }
 
 }

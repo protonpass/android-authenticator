@@ -23,6 +23,7 @@ import proton.android.authenticator.business.biometrics.domain.BiometricStatus
 import proton.android.authenticator.business.biometrics.domain.BiometricStatusError
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class AuthenticateBiometricCommandHandler @Inject constructor(
@@ -36,15 +37,55 @@ internal class AuthenticateBiometricCommandHandler @Inject constructor(
                 subtitle = command.subtitle,
                 context = command.context
             ).first()
+            AuthenticatorLogger.i(TAG, "Successfully authenticated biometric")
+            Answer.Success(Unit)
         } catch (error: BiometricStatusError) {
             when (error.status) {
-                BiometricStatus.Available -> AuthenticateBiometricReason.Unknown
-                BiometricStatus.NotEnrolled -> AuthenticateBiometricReason.NotEnrolled
-                BiometricStatus.Unavailable -> AuthenticateBiometricReason.Unavailable
-                BiometricStatus.Unsupported -> AuthenticateBiometricReason.Unsupported
-            }.let(Answer<Unit, AuthenticateBiometricReason>::Failure)
-        } catch (_: ClassCastException) {
-            Answer.Failure(AuthenticateBiometricReason.WrongContext)
+                BiometricStatus.Available ->
+                    logAndReturnFailure(
+                        exception = error,
+                        message = "Could not authenticate biometric due to unknown status",
+                        reason = AuthenticateBiometricReason.Unknown
+                    )
+                BiometricStatus.NotEnrolled ->
+                    logAndReturnFailure(
+                        exception = error,
+                        message = "Could not authenticate biometric due to not enrolled",
+                        reason = AuthenticateBiometricReason.NotEnrolled
+                    )
+                BiometricStatus.Unavailable ->
+                    logAndReturnFailure(
+                        exception = error,
+                        message = "Could not authenticate biometric due to unavailable",
+                        reason = AuthenticateBiometricReason.Unavailable
+                    )
+                BiometricStatus.Unsupported ->
+                    logAndReturnFailure(
+                        exception = error,
+                        message = "Could not authenticate biometric due to unsupported",
+                        reason = AuthenticateBiometricReason.Unsupported
+                    )
+            }
+        } catch (e: ClassCastException) {
+            logAndReturnFailure(
+                exception = e,
+                message = "Could not authenticate biometric due to wrong context",
+                reason = AuthenticateBiometricReason.WrongContext
+            )
         }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: AuthenticateBiometricReason
+    ): Answer<Unit, AuthenticateBiometricReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "AuthenticateBiometricCommandHandler"
+    }
 
 }

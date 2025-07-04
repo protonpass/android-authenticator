@@ -20,6 +20,7 @@ package proton.android.authenticator.business.entries.application.restore
 
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class RestoreEntryCommandHandler @Inject constructor(
@@ -27,9 +28,29 @@ internal class RestoreEntryCommandHandler @Inject constructor(
 ) : CommandHandler<RestoreEntryCommand, Unit, RestoreEntryReason> {
 
     override suspend fun handle(command: RestoreEntryCommand): Answer<Unit, RestoreEntryReason> = try {
-        entryRestorer.restore(entry = command.entry).let(Answer<Unit, RestoreEntryReason>::Success)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = RestoreEntryReason.CannotRestore)
+        entryRestorer.restore(entry = command.entry)
+        AuthenticatorLogger.i(TAG, "Successfully restored entry with id: ${command.entry.id}")
+        Answer.Success(Unit)
+    } catch (e: IllegalStateException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not restore entry due to restore failure",
+            reason = RestoreEntryReason.CannotRestore
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: RestoreEntryReason
+    ): Answer<Unit, RestoreEntryReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "RestoreEntryCommandHandler"
     }
 
 }

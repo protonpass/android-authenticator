@@ -21,6 +21,7 @@ package proton.android.authenticator.business.entries.application.importall
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.FileNotFoundException
 import javax.inject.Inject
 
@@ -29,25 +30,68 @@ internal class ImportEntriesCommandHandler @Inject constructor(
 ) : CommandHandler<ImportEntriesCommand, Int, ImportEntriesReason> {
 
     override suspend fun handle(command: ImportEntriesCommand): Answer<Int, ImportEntriesReason> = try {
-        importer.import(
+        val result = importer.import(
             contentUris = command.contentUris,
             importType = command.importType,
             password = command.password
-        ).let(Answer<Int, ImportEntriesReason>::Success)
-    } catch (_: AuthenticatorImportException.BadContent) {
-        Answer.Failure(reason = ImportEntriesReason.BadContent)
-    } catch (_: AuthenticatorImportException.BadPassword) {
-        Answer.Failure(reason = ImportEntriesReason.BadPassword)
-    } catch (_: AuthenticatorImportException.DecryptionFailed) {
-        Answer.Failure(reason = ImportEntriesReason.DecryptionFailed)
-    } catch (_: AuthenticatorImportException.MissingPassword) {
-        Answer.Failure(reason = ImportEntriesReason.MissingPassword)
-    } catch (_: AuthenticatorImportException) {
-        Answer.Failure(reason = ImportEntriesReason.BadContent)
-    } catch (_: FileNotFoundException) {
-        Answer.Failure(reason = ImportEntriesReason.BadContent)
-    } catch (_: IllegalArgumentException) {
-        Answer.Failure(reason = ImportEntriesReason.BadContent)
+        )
+        AuthenticatorLogger.i(TAG, "Successfully imported $result entries")
+        Answer.Success(result)
+    } catch (e: AuthenticatorImportException.BadContent) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to bad content",
+            reason = ImportEntriesReason.BadContent
+        )
+    } catch (e: AuthenticatorImportException.BadPassword) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to bad password",
+            reason = ImportEntriesReason.BadPassword
+        )
+    } catch (e: AuthenticatorImportException.DecryptionFailed) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to decryption failure",
+            reason = ImportEntriesReason.DecryptionFailed
+        )
+    } catch (e: AuthenticatorImportException.MissingPassword) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to missing password",
+            reason = ImportEntriesReason.MissingPassword
+        )
+    } catch (e: AuthenticatorImportException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to authenticator import exception",
+            reason = ImportEntriesReason.BadContent
+        )
+    } catch (e: FileNotFoundException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to file not found",
+            reason = ImportEntriesReason.BadContent
+        )
+    } catch (e: IllegalArgumentException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to illegal argument",
+            reason = ImportEntriesReason.BadContent
+        )
     }
 
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: ImportEntriesReason
+    ): Answer<Int, ImportEntriesReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "ImportEntriesCommandHandler"
+    }
 }

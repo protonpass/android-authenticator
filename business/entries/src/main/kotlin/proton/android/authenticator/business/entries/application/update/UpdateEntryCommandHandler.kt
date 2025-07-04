@@ -22,6 +22,7 @@ import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class UpdateEntryCommandHandler @Inject constructor(
@@ -38,15 +39,46 @@ internal class UpdateEntryCommandHandler @Inject constructor(
                     model = model
                 )
             }
-            .let(Answer<Unit, UpdateEntryReason>::Success)
-    } catch (_: AuthenticatorException.InvalidName) {
-        Answer.Failure(reason = UpdateEntryReason.InvalidEntryTitle)
-    } catch (_: AuthenticatorException.InvalidSecret) {
-        Answer.Failure(reason = UpdateEntryReason.InvalidEntrySecret)
-    } catch (_: AuthenticatorException) {
-        Answer.Failure(reason = UpdateEntryReason.Unknown)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = UpdateEntryReason.EntryNotFound)
+        AuthenticatorLogger.i(TAG, "Successfully updated entry with id: ${command.id}")
+        Answer.Success(Unit)
+    } catch (e: AuthenticatorException.InvalidName) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update entry due to invalid name",
+            reason = UpdateEntryReason.InvalidEntryTitle
+        )
+    } catch (e: AuthenticatorException.InvalidSecret) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update entry due to invalid secret",
+            reason = UpdateEntryReason.InvalidEntrySecret
+        )
+    } catch (e: AuthenticatorException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update entry due to authenticator exception",
+            reason = UpdateEntryReason.Unknown
+        )
+    } catch (e: IllegalStateException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update entry due to entry not found",
+            reason = UpdateEntryReason.EntryNotFound
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: UpdateEntryReason
+    ): Answer<Unit, UpdateEntryReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "UpdateEntryCommandHandler"
     }
 
 }

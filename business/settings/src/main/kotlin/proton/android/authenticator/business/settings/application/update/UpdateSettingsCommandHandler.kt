@@ -21,6 +21,7 @@ package proton.android.authenticator.business.settings.application.update
 import androidx.datastore.core.IOException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class UpdateSettingsCommandHandler @Inject constructor(
@@ -28,9 +29,29 @@ internal class UpdateSettingsCommandHandler @Inject constructor(
 ) : CommandHandler<UpdateSettingsCommand, Unit, UpdateSettingsReason> {
 
     override suspend fun handle(command: UpdateSettingsCommand): Answer<Unit, UpdateSettingsReason> = try {
-        updater.update(settings = command.settings).let(Answer<Unit, UpdateSettingsReason>::Success)
-    } catch (_: IOException) {
-        Answer.Failure(reason = UpdateSettingsReason.CannotSaveSettings)
+        updater.update(settings = command.settings)
+        AuthenticatorLogger.i(TAG, "Successfully updated settings")
+        Answer.Success(Unit)
+    } catch (e: IOException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update settings due to save failure",
+            reason = UpdateSettingsReason.CannotSaveSettings
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: UpdateSettingsReason
+    ): Answer<Unit, UpdateSettingsReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "UpdateSettingsCommandHandler"
     }
 
 }

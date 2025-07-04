@@ -20,6 +20,7 @@ package proton.android.authenticator.business.applock.application.update
 
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.IOException
 import javax.inject.Inject
 
@@ -28,9 +29,29 @@ internal class UpdateAppLockStateCommandHandler @Inject constructor(
 ) : CommandHandler<UpdateAppLockStateCommand, Unit, UpdateAppLockStateReason> {
 
     override suspend fun handle(command: UpdateAppLockStateCommand): Answer<Unit, UpdateAppLockStateReason> = try {
-        updater.update(appLockState = command.appLockState).let(Answer<Unit, UpdateAppLockStateReason>::Success)
-    } catch (_: IOException) {
-        Answer.Failure(UpdateAppLockStateReason.CannotUpdateAppLockState)
+        updater.update(appLockState = command.appLockState)
+        AuthenticatorLogger.i(TAG, "Successfully updated app lock state to: ${command.appLockState}")
+        Answer.Success(Unit)
+    } catch (e: IOException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update app lock state due to IO exception",
+            reason = UpdateAppLockStateReason.CannotUpdateAppLockState
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: UpdateAppLockStateReason
+    ): Answer<Unit, UpdateAppLockStateReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "UpdateAppLockStateCommandHandler"
     }
 
 }

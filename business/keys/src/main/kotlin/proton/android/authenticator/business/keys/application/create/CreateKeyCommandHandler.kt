@@ -23,6 +23,7 @@ import me.proton.core.network.domain.ApiException
 import proton.android.authenticator.business.shared.domain.infrastructure.network.getErrorCode
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class CreateKeyCommandHandler @Inject constructor(
@@ -30,23 +31,50 @@ internal class CreateKeyCommandHandler @Inject constructor(
 ) : CommandHandler<CreateKeyCommand, Unit, CreateKeyReason> {
 
     override suspend fun handle(command: CreateKeyCommand): Answer<Unit, CreateKeyReason> = try {
-        creator.create(userId = command.userId).let(Answer<Unit, CreateKeyReason>::Success)
+        creator.create(userId = command.userId)
+        AuthenticatorLogger.i(TAG, "Successfully created key for user: ${command.userId}")
+        Answer.Success(Unit)
     } catch (exception: ApiException) {
         if (exception.getErrorCode() == ERROR_CODE_KEY_ALREADY_EXISTS) {
-            CreateKeyReason.KeyAlreadyExists
+            logAndReturnFailure(
+                exception = exception,
+                message = "Could not create key due to key already exists",
+                reason = CreateKeyReason.KeyAlreadyExists
+            )
         } else {
-            CreateKeyReason.ApiCallFailed
-        }.let(Answer<Unit, CreateKeyReason>::Failure)
-    } catch (_: CryptoException) {
-        Answer.Failure(reason = CreateKeyReason.CryptoFailed)
-    } catch (_: IllegalStateException) {
-        Answer.Failure(reason = CreateKeyReason.KeyGenerationFailed)
+            logAndReturnFailure(
+                exception = exception,
+                message = "Could not create key due to API call failure",
+                reason = CreateKeyReason.ApiCallFailed
+            )
+        }
+    } catch (e: CryptoException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not create key due to crypto failure",
+            reason = CreateKeyReason.CryptoFailed
+        )
+    } catch (e: IllegalStateException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not create key due to key generation failure",
+            reason = CreateKeyReason.KeyGenerationFailed
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: CreateKeyReason
+    ): Answer<Unit, CreateKeyReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
     }
 
     private companion object {
-
+        private const val TAG = "CreateKeyCommandHandler"
         private const val ERROR_CODE_KEY_ALREADY_EXISTS = 2001
-
     }
 
 }

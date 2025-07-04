@@ -18,4 +18,4 @@
 
 package proton.android.authenticator.business.biometrics.domain
 
-internal class BiometricStatusError(internal val status: BiometricStatus) : Throwable()
+internal class BiometricStatusError(internal val status: BiometricStatus) : Exception()

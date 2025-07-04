@@ -20,6 +20,7 @@ package proton.android.authenticator.business.backups.application.update
 
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
+import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.IOException
 import javax.inject.Inject
 
@@ -28,9 +29,29 @@ internal class UpdateBackupCommandHandler @Inject constructor(
 ) : CommandHandler<UpdateBackupCommand, Unit, UpdateBackupReason> {
 
     override suspend fun handle(command: UpdateBackupCommand): Answer<Unit, UpdateBackupReason> = try {
-        updater.update(backup = command.backup).let(Answer<Unit, UpdateBackupReason>::Success)
-    } catch (_: IOException) {
-        Answer.Failure(UpdateBackupReason.CannotSaveBackup)
+        updater.update(backup = command.backup)
+        AuthenticatorLogger.i(TAG, "Successfully updated backup")
+        Answer.Success(Unit)
+    } catch (e: IOException) {
+        logAndReturnFailure(
+            exception = e,
+            message = "Could not update backup due to save failure",
+            reason = UpdateBackupReason.CannotSaveBackup
+        )
+    }
+
+    private fun logAndReturnFailure(
+        exception: Exception,
+        message: String,
+        reason: UpdateBackupReason
+    ): Answer<Unit, UpdateBackupReason> {
+        AuthenticatorLogger.w(TAG, message)
+        AuthenticatorLogger.w(TAG, exception)
+        return Answer.Failure(reason = reason)
+    }
+
+    private companion object {
+        private const val TAG = "UpdateBackupCommandHandler"
     }
 
 }
