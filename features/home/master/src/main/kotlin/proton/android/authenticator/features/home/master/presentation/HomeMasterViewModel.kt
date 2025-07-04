@@ -298,12 +298,12 @@ internal class HomeMasterViewModel @Inject constructor(
                 .also { answer ->
                     when (answer) {
                         is Answer.Failure -> {
-                            // This will be implemented in the following MR
+                            SnackbarEvent(
+                                messageResId = R.string.home_snackbar_message_entry_sync_failed
+                            ).also { event -> dispatchSnackbarEventUseCase(event) }
                         }
 
-                        is Answer.Success -> {
-                            // This will be implemented in the following MR
-                        }
+                        is Answer.Success -> Unit
                     }
                 }
                 .also {
