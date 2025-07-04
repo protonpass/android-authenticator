@@ -22,9 +22,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -32,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundActionButton
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
@@ -43,10 +43,15 @@ internal fun HomeTopBar(modifier: Modifier = Modifier, onSettingsClick: () -> Un
     TopAppBar(
         modifier = modifier.fillMaxWidth(),
         title = {
-            Text(
-                text = stringResource(id = R.string.home_screen_title),
-                color = Theme.colorScheme.textNorm,
+            BasicText(
+                modifier = Modifier.padding(end = ThemePadding.Medium),
+                text = stringResource(id = uiR.string.authenticator_proton),
+                maxLines = 1,
+                autoSize = TextAutoSize.StepBased(
+                    maxFontSize = Theme.typography.title.fontSize
+                ),
                 style = Theme.typography.title
+                    .copy(color = Theme.colorScheme.textNorm)
             )
         },
         actions = {

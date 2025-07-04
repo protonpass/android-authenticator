@@ -17,8 +17,6 @@
   -->
 
 <resources>
-    <string name="home_screen_title">Authenticator</string>
-
     <string name="home_empty_title">No codes yet</string>
     <string name="home_empty_description">Protect your accounts with an extra layer of security.</string>
     <string name="home_empty_action_primary">Create new code</string>
