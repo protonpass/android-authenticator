@@ -20,10 +20,15 @@ package proton.android.authenticator.features.settings.master.ui
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
@@ -33,14 +38,16 @@ import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterSettingsModel
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
-import proton.android.authenticator.shared.ui.domain.components.containers.MultipleClicksContainer
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
 import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
+import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
-@Composable
+
+@[Composable OptIn(ExperimentalFoundationApi::class)]
 internal fun SettingsContent(
     state: SettingsMasterState.Ready,
     onDismissPassBanner: (SettingsMasterSettingsModel) -> Unit,
@@ -217,8 +224,26 @@ internal fun SettingsContent(
             )
         }
 
-        MultipleClicksContainer(onClick = onVersionNameClick) {
-            SettingsVersionRow(versionName = versionName)
-        }
+        SettingsVersionRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .applyIf(
+                    condition = isVersionClickable,
+                    ifTrue = {
+                        pointerInput(key1 = Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    onVersionNameClick()
+                                }
+                            )
+                        }
+                    }
+                )
+                .padding(
+                    top = ThemePadding.Small,
+                    bottom = ThemePadding.MediumLarge
+                ),
+            versionName = versionName
+        )
     }
 }

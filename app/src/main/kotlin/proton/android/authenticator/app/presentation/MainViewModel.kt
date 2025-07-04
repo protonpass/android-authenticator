@@ -55,6 +55,8 @@ import proton.android.authenticator.features.shared.usecases.biometrics.Authenti
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -69,6 +71,7 @@ internal class MainViewModel @Inject constructor(
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
+    private val timeProvider: TimeProvider,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase
 ) : ViewModel() {
@@ -174,19 +177,23 @@ internal class MainViewModel @Inject constructor(
 
         val installationTime = stateFlow.value.installationTime ?: return
         val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
-        val distanceInMillis = System.currentTimeMillis() - installationTime
+        val distanceInMillis = timeProvider.currentMillis().minus(installationTime)
         if (distanceInMillis < sevenDaysInMillis) return
 
-        val buildFlavor = getBuildFlavorUseCase()
-        if (buildFlavor.isPlay() || buildFlavor.isDev() && !buildFlavor.isFdroid()) {
-            requestReview.value = Unit
+        when (getBuildFlavorUseCase().type) {
+            BuildFlavorType.Fdroid -> Unit
+            BuildFlavorType.Alpha,
+            BuildFlavorType.Dev,
+            BuildFlavorType.PlayStore -> requestReview.value = Unit
         }
     }
 
     private companion object {
 
         private const val TAG = "MainViewModel"
+
         private const val DEFAULT_NUM_OF_ENTRIES = 0
+
         private const val MIN_NUM_OF_ENTRIES = 4
 
     }

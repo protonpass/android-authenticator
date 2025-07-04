@@ -16,23 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.ui
+package proton.android.authenticator.shared.common.domain.builds
 
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import proton.android.authenticator.features.settings.master.R
-import proton.android.authenticator.shared.ui.domain.theme.Theme
-
-@Composable
-internal fun SettingsVersionRow(versionName: String, modifier: Modifier = Modifier) {
-    Text(
-        modifier = modifier,
-        text = stringResource(id = R.string.settings_app_version, versionName),
-        color = Theme.colorScheme.textWeak,
-        style = Theme.typography.captionRegular,
-        textAlign = TextAlign.Center
-    )
+enum class BuildFlavorType {
+    Alpha,
+    Dev,
+    Fdroid,
+    PlayStore
 }

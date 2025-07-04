@@ -18,31 +18,15 @@
 
 package proton.android.authenticator.shared.common.domain.builds
 
-@Suppress("TooManyFunctions")
-enum class BuildFlavor(val value: String) {
-    AlphaBlack(value = "alphaBlack"),
-    AlphaProd(value = "alphaProd"),
-    DevBlack(value = "devBlack"),
-    DevProd(value = "devProd"),
-    FdroidBlack(value = "fdroidBlack"),
-    FdroidProd(value = "fdroidProd"),
-    PlayBlack(value = "playBlack"),
-    PlayProd(value = "playProd");
-
-    fun isDev() = when (this) {
-        DevProd, DevBlack -> true
-        else -> false
-    }
-
-    fun isPlay() = when (this) {
-        PlayProd, PlayBlack -> true
-        else -> false
-    }
-
-    fun isFdroid() = when (this) {
-        FdroidProd, FdroidBlack -> true
-        else -> false
-    }
+enum class BuildFlavor(val value: String, val type: BuildFlavorType) {
+    AlphaBlack(value = "alphaBlack", type = BuildFlavorType.Alpha),
+    AlphaProd(value = "alphaProd", type = BuildFlavorType.Alpha),
+    DevBlack(value = "devBlack", type = BuildFlavorType.Dev),
+    DevProd(value = "devProd", type = BuildFlavorType.Dev),
+    FdroidBlack(value = "fdroidBlack", type = BuildFlavorType.Fdroid),
+    FdroidProd(value = "fdroidProd", type = BuildFlavorType.Fdroid),
+    PlayBlack(value = "playBlack", type = BuildFlavorType.PlayStore),
+    PlayProd(value = "playProd", type = BuildFlavorType.PlayStore);
 
     companion object {
 
