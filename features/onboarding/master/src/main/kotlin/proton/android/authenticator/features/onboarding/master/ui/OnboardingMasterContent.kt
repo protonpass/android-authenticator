@@ -56,7 +56,7 @@ internal fun OnboardingMasterContent(onGetStartedClick: () -> Unit, modifier: Mo
                 modifier = Modifier.padding(
                     start = ThemePadding.Large,
                     end = ThemePadding.Large,
-                    bottom = ThemePadding.Large
+                    bottom = ThemePadding.ExtraLarge
                 ),
                 verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
             ) {
