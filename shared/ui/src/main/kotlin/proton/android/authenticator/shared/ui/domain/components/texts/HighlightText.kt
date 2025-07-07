@@ -21,6 +21,7 @@ package proton.android.authenticator.shared.ui.domain.components.texts
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -30,45 +31,77 @@ import androidx.compose.ui.text.withStyle
 
 @Composable
 fun HighlightText(
-    modifier: Modifier = Modifier,
     text: String,
     textColor: Color,
+    highlightedText: String,
+    highlightedTextColor: Color,
+    modifier: Modifier = Modifier,
     textStyle: TextStyle = LocalTextStyle.current,
-    highlightedWord: String,
-    highlightedColor: Color,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip
 ) {
-    val annotatedString = buildAnnotatedString {
-        val lowerCaseText = text.lowercase()
-        val lowerCaseHighlightedWord = highlightedWord.lowercase()
+    val highlightedAnnotatedText = remember(
+        keys = arrayOf(
+            text,
+            textColor,
+            highlightedText,
+            highlightedTextColor,
+            textStyle,
+            maxLines,
+            overflow
+        )
+    ) {
+        buildAnnotatedString {
+            if (highlightedText.isEmpty()) {
+                append(text)
 
-        if (highlightedWord.isEmpty() || !lowerCaseText.contains(lowerCaseHighlightedWord)) {
-            append(text)
-            return@buildAnnotatedString
+                return@buildAnnotatedString
+            }
+
+            val lowerCaseText = text.lowercase()
+            val lowerCaseHighlightedText = highlightedText.lowercase()
+
+            if (!lowerCaseText.contains(lowerCaseHighlightedText)) {
+                append(text)
+
+                return@buildAnnotatedString
+            }
+
+            var currentIndex = 0
+            var startIndex: Int
+
+            val highlightedStyle = textStyle.copy(color = highlightedTextColor).toSpanStyle()
+
+            while (true) {
+                startIndex = lowerCaseText.indexOf(lowerCaseHighlightedText, currentIndex)
+
+                if (startIndex == -1) {
+                    break
+                }
+
+                val endIndex = startIndex.plus(lowerCaseHighlightedText.length)
+
+                // Append text before the highlight
+                append(text.substring(currentIndex, startIndex))
+
+                // Append highlighted text
+                withStyle(style = highlightedStyle) {
+                    append(text.substring(startIndex, endIndex))
+                }
+
+                currentIndex = endIndex
+            }
+
+            // Append any remaining text after the last highlight
+            if (currentIndex < text.length) {
+                append(text.substring(currentIndex, text.length))
+            }
         }
-
-        val startIndex = lowerCaseText.indexOf(lowerCaseHighlightedWord)
-
-        if (startIndex < 0) {
-            append(text)
-            return@buildAnnotatedString
-        }
-
-        val endIndex = startIndex + lowerCaseHighlightedWord.length
-
-        append(text.substring(0, startIndex))
-
-        withStyle(style = textStyle.copy(color = highlightedColor).toSpanStyle()) {
-            append(text.substring(startIndex, endIndex))
-        }
-
-        append(text.substring(endIndex, text.length))
     }
 
     Text(
         modifier = modifier,
-        text = annotatedString,
+        text = highlightedAnnotatedText,
         color = textColor,
         maxLines = maxLines,
         overflow = overflow,

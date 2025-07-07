@@ -79,30 +79,30 @@ internal fun HomeEntryCard(
             ) {
                 HighlightText(
                     text = entryModel.issuer,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                     textColor = Theme.colorScheme.textNorm,
                     textStyle = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body1Regular
                     },
-                    highlightedWord = searchQuery,
-                    highlightedColor = Theme.colorScheme.accent
+                    highlightedText = searchQuery,
+                    highlightedTextColor = Theme.colorScheme.accent,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 HighlightText(
                     text = entryModel.name,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
                     textColor = Theme.colorScheme.textWeak,
                     textStyle = if (showTextShadows) {
                         Theme.typography.body2Regular.copy(shadow = ThemeShadow.TextDefault)
                     } else {
                         Theme.typography.body2Regular
                     },
-                    highlightedWord = searchQuery,
-                    highlightedColor = Theme.colorScheme.accent
+                    highlightedText = searchQuery,
+                    highlightedTextColor = Theme.colorScheme.accent,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
