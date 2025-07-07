@@ -21,6 +21,7 @@ package proton.android.authenticator.features.disable.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringArrayResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.disable.presentation.SyncDisableEvent
@@ -56,7 +57,7 @@ fun SyncDisableScreen(
 
     AlertDialogScreen(
         title = UiText.Resource(id = R.string.sync_disable_dialog_title),
-        text = UiText.Resource(id = R.string.sync_disable_dialog_message),
+        messages = stringArrayResource(id = R.array.sync_disable_dialog_messages).map(UiText::Dynamic),
         confirmText = UiText.Resource(id = uiR.string.action_cancel),
         cancelText = UiText.Resource(id = R.string.sync_disable_dialog_stop_button),
         onDismissRequest = onDismissed,

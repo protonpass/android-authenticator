@@ -34,7 +34,7 @@ fun SyncErrorScreen(onDismissed: () -> Unit) = with(hiltViewModel<SyncErrorViewM
 
     AlertDialogScreen(
         title = UiText.Resource(id = R.string.sync_error_dialog_title),
-        text = state.errorText,
+        message = state.errorText,
         confirmText = UiText.Resource(id = uiR.string.action_close),
         onDismissRequest = onDismissed,
         onConfirmation = onDismissed

@@ -35,7 +35,7 @@ fun ImportsCompletionScreen(onDismissed: () -> Unit) = with(hiltViewModel<Import
 
     AlertDialogScreen(
         title = UiText.Resource(id = R.string.imports_completion_dialog_title),
-        text = UiText.Resource(
+        message = UiText.Resource(
             id = R.string.imports_completion_dialog_message,
             pluralStringResource(
                 id = uiR.plurals.unit_items,

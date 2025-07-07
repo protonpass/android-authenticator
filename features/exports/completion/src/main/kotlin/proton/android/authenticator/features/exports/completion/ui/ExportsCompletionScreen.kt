@@ -35,7 +35,7 @@ fun ExportsCompletionScreen(onDismissed: () -> Unit) = with(hiltViewModel<Export
 
     AlertDialogScreen(
         title = UiText.Resource(id = R.string.exports_completion_dialog_title),
-        text = UiText.Resource(
+        message = UiText.Resource(
             id = R.string.exports_completion_dialog_message,
             pluralStringResource(
                 id = uiR.plurals.unit_items,

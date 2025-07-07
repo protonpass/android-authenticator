@@ -34,7 +34,7 @@ fun ExportsErrorsScreen(onDismissed: () -> Unit) = with(hiltViewModel<ExportsErr
 
     AlertDialogScreen(
         title = UiText.Resource(id = R.string.exports_error_dialog_title),
-        text = state.errorText,
+        message = state.errorText,
         confirmText = UiText.Resource(id = uiR.string.action_close),
         onDismissRequest = onDismissed,
         onConfirmation = onDismissed

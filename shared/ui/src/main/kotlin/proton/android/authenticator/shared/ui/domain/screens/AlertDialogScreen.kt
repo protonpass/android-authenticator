@@ -18,25 +18,58 @@
 
 package proton.android.authenticator.shared.ui.domain.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import proton.android.authenticator.shared.ui.domain.components.buttons.DialogActionTextButton
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 fun AlertDialogScreen(
     title: UiText,
-    text: UiText,
+    message: UiText,
     confirmText: UiText,
     onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     modifier: Modifier = Modifier,
     cancelText: UiText? = null,
-    onCancellation: (() -> Unit)? = null
+    onCancellation: (() -> Unit)? = null,
+    isLoading: Boolean = false
 ) {
+    AlertDialogScreen(
+        title = title,
+        messages = message.let(::listOf),
+        confirmText = confirmText,
+        onDismissRequest = onDismissRequest,
+        onConfirmation = onConfirmation,
+        modifier = modifier,
+        cancelText = cancelText,
+        onCancellation = onCancellation,
+        isLoading = isLoading
+    )
+}
+
+@Composable
+fun AlertDialogScreen(
+    title: UiText,
+    messages: List<UiText>,
+    confirmText: UiText,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    modifier: Modifier = Modifier,
+    cancelText: UiText? = null,
+    onCancellation: (() -> Unit)? = null,
+    isLoading: Boolean = false
+) {
+    val isActionButtonVisible = remember(key1 = isLoading) { !isLoading }
+
     AlertDialog(
         modifier = modifier,
         titleContentColor = Theme.colorScheme.surface,
@@ -50,27 +83,33 @@ fun AlertDialogScreen(
             )
         },
         text = {
-            Text(
-                text = text.asString(),
-                style = Theme.typography.body2Regular
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Medium)
+            ) {
+                messages.forEach { message ->
+                    Text(
+                        text = message.asString(),
+                        style = Theme.typography.body2Regular
+                    )
+                }
+
+            }
         },
         confirmButton = {
-            TextButton(onClick = onConfirmation) {
-                Text(
-                    text = confirmText.asString(),
-                    color = Theme.colorScheme.accent,
-                    style = Theme.typography.body2Regular
+            AnimatedVisibility(visible = isActionButtonVisible) {
+                DialogActionTextButton(
+                    text = confirmText,
+                    onClick = onConfirmation
                 )
             }
         },
         dismissButton = {
             cancelText?.let { text ->
-                TextButton(onClick = onCancellation ?: onDismissRequest) {
-                    Text(
-                        text = text.asString(),
-                        color = Theme.colorScheme.signalError,
-                        style = Theme.typography.body2Regular
+                AnimatedVisibility(visible = isActionButtonVisible) {
+                    DialogActionTextButton(
+                        text = text,
+                        textColor = Theme.colorScheme.signalError,
+                        onClick = onCancellation ?: onDismissRequest
                     )
                 }
             }
