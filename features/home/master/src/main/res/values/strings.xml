@@ -20,7 +20,7 @@
     <string name="home_empty_title">No codes yet</string>
     <string name="home_empty_description">Protect your accounts with an extra layer of security.</string>
     <string name="home_empty_action_primary">Create new code</string>
-    <string name="home_empty_action_secondary">Import codes</string>
+    <string name="home_empty_action_import_codes">Import codes</string>
 
     <string name="home_empty_search_title">No results found</string>
     <string name="home_empty_search_subtitle">Try searching using different spelling or keywords.</string>

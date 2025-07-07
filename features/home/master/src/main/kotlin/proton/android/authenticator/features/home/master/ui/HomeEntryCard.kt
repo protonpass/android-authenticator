@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextOverflow
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
@@ -89,7 +88,7 @@ internal fun HomeEntryCard(
                         Theme.typography.body1Regular
                     },
                     highlightedWord = searchQuery,
-                    highlightedStyle = SpanStyle(color = Theme.colorScheme.accent)
+                    highlightedColor = Theme.colorScheme.accent
                 )
 
                 HighlightText(
@@ -103,7 +102,7 @@ internal fun HomeEntryCard(
                         Theme.typography.body2Regular
                     },
                     highlightedWord = searchQuery,
-                    highlightedStyle = SpanStyle(color = Theme.colorScheme.accent)
+                    highlightedColor = Theme.colorScheme.accent
                 )
             }
 

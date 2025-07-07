@@ -98,7 +98,7 @@ internal fun HomeEmpty(
                     modifier = Modifier.padding(horizontal = ThemePadding.ExtraLarge),
                     primaryActionText = stringResource(id = R.string.home_empty_action_primary),
                     onPrimaryActionClick = onNewEntryClick,
-                    secondaryActionText = stringResource(id = R.string.home_empty_action_secondary),
+                    secondaryActionText = stringResource(id = R.string.home_empty_action_import_codes),
                     onSecondaryActionClick = onImportEntriesClick
                 )
             }

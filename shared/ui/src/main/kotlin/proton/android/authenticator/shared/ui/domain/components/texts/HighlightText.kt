@@ -23,7 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,7 +35,7 @@ fun HighlightText(
     textColor: Color,
     textStyle: TextStyle = LocalTextStyle.current,
     highlightedWord: String,
-    highlightedStyle: SpanStyle,
+    highlightedColor: Color,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip
 ) {
@@ -60,7 +59,7 @@ fun HighlightText(
 
         append(text.substring(0, startIndex))
 
-        withStyle(style = highlightedStyle) {
+        withStyle(style = textStyle.copy(color = highlightedColor).toSpanStyle()) {
             append(text.substring(startIndex, endIndex))
         }
 
