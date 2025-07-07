@@ -21,12 +21,11 @@ package proton.android.authenticator.features.disable.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -45,14 +44,17 @@ internal class SyncDisableViewModel @Inject constructor(
 
     private val eventFlow = MutableStateFlow<SyncDisableEvent>(value = SyncDisableEvent.Idle)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    internal val stateFlow: StateFlow<SyncDisableState> = eventFlow
-        .mapLatest(::SyncDisableState)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-            initialValue = SyncDisableState.Initial
-        )
+    private val isLoadingFlow = MutableStateFlow(value = false)
+
+    internal val stateFlow: StateFlow<SyncDisableState> = combine(
+        eventFlow,
+        isLoadingFlow,
+        ::SyncDisableState
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = SyncDisableState.Initial
+    )
 
     internal fun onConsumeEvent(event: SyncDisableEvent) {
         eventFlow.compareAndSet(expect = event, update = SyncDisableEvent.Idle)
@@ -60,6 +62,8 @@ internal class SyncDisableViewModel @Inject constructor(
 
     internal fun onDisableSync() {
         viewModelScope.launch {
+            isLoadingFlow.update { true }
+
             deleteUserUseCase().also { answer ->
                 when (answer) {
                     is Answer.Success -> Unit

@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.shared.ui.domain.screens
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
@@ -27,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.shared.ui.domain.components.buttons.DialogActionTextButton
+import proton.android.authenticator.shared.ui.domain.components.indicators.DialogProgressIndicator
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
@@ -68,7 +68,7 @@ fun AlertDialogScreen(
     onCancellation: (() -> Unit)? = null,
     isLoading: Boolean = false
 ) {
-    val isActionButtonVisible = remember(key1 = isLoading) { !isLoading }
+    val shouldShowActionButton = remember(key1 = isLoading) { !isLoading }
 
     AlertDialog(
         modifier = modifier,
@@ -96,16 +96,18 @@ fun AlertDialogScreen(
             }
         },
         confirmButton = {
-            AnimatedVisibility(visible = isActionButtonVisible) {
+            if (shouldShowActionButton) {
                 DialogActionTextButton(
                     text = confirmText,
                     onClick = onConfirmation
                 )
+            } else {
+                DialogProgressIndicator()
             }
         },
         dismissButton = {
-            cancelText?.let { text ->
-                AnimatedVisibility(visible = isActionButtonVisible) {
+            if (shouldShowActionButton) {
+                cancelText?.let { text ->
                     DialogActionTextButton(
                         text = text,
                         textColor = Theme.colorScheme.signalError,

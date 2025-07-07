@@ -62,6 +62,7 @@ fun SyncDisableScreen(
         cancelText = UiText.Resource(id = R.string.sync_disable_dialog_stop_button),
         onDismissRequest = onDismissed,
         onConfirmation = onDismissed,
-        onCancellation = ::onDisableSync
+        onCancellation = ::onDisableSync,
+        isLoading = state.isLoading
     )
 }

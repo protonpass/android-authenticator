@@ -21,11 +21,17 @@ package proton.android.authenticator.features.disable.presentation
 import androidx.compose.runtime.Stable
 
 @Stable
-internal data class SyncDisableState(internal val event: SyncDisableEvent) {
+internal data class SyncDisableState(
+    internal val event: SyncDisableEvent,
+    internal val isLoading: Boolean
+) {
 
     internal companion object {
 
-        internal val Initial = SyncDisableState(event = SyncDisableEvent.Idle)
+        internal val Initial = SyncDisableState(
+            event = SyncDisableEvent.Idle,
+            isLoading = false
+        )
 
     }
 
