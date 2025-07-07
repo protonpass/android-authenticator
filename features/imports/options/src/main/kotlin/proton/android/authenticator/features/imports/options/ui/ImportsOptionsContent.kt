@@ -46,7 +46,7 @@ internal fun ImportsOptionsContent(
 ) = with(state) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.ExtraLarge)
+        verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = ThemePadding.Large),
@@ -76,7 +76,7 @@ internal fun ImportsOptionsContent(
                         .clickable { onOptionSelected(optionModel) }
                         .padding(
                             horizontal = ThemePadding.Large,
-                            vertical = ThemePadding.Medium
+                            vertical = ThemePadding.MediumSmall
                         ),
                     optionModel = optionModel
                 )

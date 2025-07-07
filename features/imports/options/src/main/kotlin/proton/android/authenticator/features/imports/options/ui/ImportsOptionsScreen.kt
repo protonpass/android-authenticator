@@ -19,7 +19,6 @@
 package proton.android.authenticator.features.imports.options.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,7 +50,7 @@ fun ImportsOptionsScreen(onNavigationClick: () -> Unit, onImportTypeSelected: (I
         ) { innerPaddingValues ->
             ImportsOptionsContent(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(paddingValues = innerPaddingValues),
                 state = state,
                 onOptionSelected = { option ->
