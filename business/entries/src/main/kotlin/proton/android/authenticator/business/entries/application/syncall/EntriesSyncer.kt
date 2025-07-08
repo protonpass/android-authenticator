@@ -22,7 +22,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import proton.android.authenticator.business.entries.domain.EntriesApi
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
@@ -30,6 +32,7 @@ import proton.android.authenticator.business.entries.domain.EntryLocal
 import proton.android.authenticator.business.entries.domain.EntryRemote
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
+import proton.android.authenticator.commonrust.EntryOperation
 import proton.android.authenticator.commonrust.OperationType
 import proton.android.authenticator.commonrust.SyncOperationCheckerInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
@@ -54,16 +57,16 @@ internal class EntriesSyncer @Inject constructor(
     ) {
         val encryptionKey = generateEncryptionKey(key)
 
-        val remoteEntries = getRemoteEntries(userId, encryptionKey)
+        val remoteEntriesMap = getRemoteEntriesMap(userId, encryptionKey)
 
-        val localEntries = getLocalEntries(entries)
+        val localEntriesMap = getLocalEntriesMap(entries)
 
         executeSyncOperations(
             userId = userId,
             keyId = key.id,
             encryptionKey = encryptionKey,
-            remoteEntries = remoteEntries,
-            localEntries = localEntries
+            remoteEntriesMap = remoteEntriesMap,
+            localEntriesMap = localEntriesMap
         )
     }
 
@@ -71,150 +74,207 @@ internal class EntriesSyncer @Inject constructor(
         .withEncryptionContext { decrypt(key.encryptedKey) }
         .let(::EncryptionKey)
 
-    private fun getLocalEntries(syncEntries: List<SyncEntry>) = syncEntries.map { syncEntry ->
-        EntryLocal(
-            state = syncEntry.state,
-            modifiedAt = syncEntry.modifyTime,
-            model = syncEntry.model
-        )
-    }
+    private fun getLocalEntriesMap(syncEntries: List<SyncEntry>) = syncEntries
+        .map { syncEntry ->
+            EntryLocal(
+                state = syncEntry.state,
+                modifiedAt = syncEntry.modifyTime,
+                model = syncEntry.model
+            )
+        }
+        .associateBy(EntryLocal::id)
 
-    private suspend fun getRemoteEntries(userId: String, encryptionKey: EncryptionKey) = api
+    private suspend fun getRemoteEntriesMap(userId: String, encryptionKey: EncryptionKey) = api
         .fetchAll(
             userId = userId,
             encryptionKey = encryptionKey
         )
+        .associateBy(EntryRemote::id)
 
     private suspend fun executeSyncOperations(
         userId: String,
         keyId: String,
         encryptionKey: EncryptionKey,
-        remoteEntries: List<EntryRemote>,
-        localEntries: List<EntryLocal>
+        remoteEntriesMap: Map<String, EntryRemote>,
+        localEntriesMap: Map<String, EntryLocal>
     ) {
-        coroutineScope {
+        withContext(appDispatchers.default) {
             syncOperationChecker.calculateOperations(
-                remote = remoteEntries.map(EntryRemote::operation),
-                local = localEntries.map(EntryLocal::operation)
-            )
-                .map { entryOperation ->
-                    with(entryOperation) {
-                        when (operation) {
-                            OperationType.DELETE_LOCAL -> async {
-                                deleteLocal(entryModel = entry)
-                            }
-
-                            OperationType.DELETE_LOCAL_AND_REMOTE -> async {
-                                deleteLocalAndRemote(
-                                    userId = userId,
-                                    remoteEntryId = remoteId,
-                                    entryModel = entry
+                remote = remoteEntriesMap.map { it.value.operation },
+                local = localEntriesMap.map { it.value.operation }
+            ).groupBy { entryOperation -> entryOperation.operation }
+        }.let { entryOperationsMap ->
+            coroutineScope {
+                entryOperationsMap.keys.map { operationType ->
+                    when (operationType) {
+                        OperationType.DELETE_LOCAL -> {
+                            async {
+                                deleteAllLocal(
+                                    entryOperations = entryOperationsMap.getOperations(operationType)
                                 )
                             }
+                        }
 
-                            OperationType.PUSH -> async {
-                                push(
+                        OperationType.DELETE_LOCAL_AND_REMOTE -> {
+                            async {
+                                deleteAllLocalAndRemote(
+                                    entryOperations = entryOperationsMap.getOperations(operationType),
+                                    userId = userId
+                                )
+                            }
+                        }
+
+                        OperationType.PUSH -> {
+                            async {
+                                pushAll(
+                                    entryOperations = entryOperationsMap.getOperations(operationType),
                                     userId = userId,
                                     keyId = keyId,
                                     encryptionKey = encryptionKey,
-                                    remoteEntryId = remoteId,
-                                    remoteEntries = remoteEntries,
-                                    entryModel = entry
+                                    remoteEntriesMap = remoteEntriesMap
                                 )
                             }
+                        }
 
-                            OperationType.UPSERT -> async {
-                                upsert(
-                                    remoteEntryId = remoteId,
-                                    entryModel = entry,
-                                    remoteEntries = remoteEntries
+                        OperationType.UPSERT -> {
+                            async {
+                                upsertAll(
+                                    entryOperations = entryOperationsMap.getOperations(operationType),
+                                    remoteEntriesMap = remoteEntriesMap
                                 )
                             }
                         }
                     }
                 }
+            }
         }.awaitAll()
     }
 
-    private suspend fun deleteLocal(entryModel: AuthenticatorEntryModel) {
-        searchLocalEntry(entryModel)?.also { entry -> repository.remove(entry) }
+    private fun Map<OperationType, List<EntryOperation>>.getOperations(type: OperationType) = getOrDefault(
+        key = type,
+        defaultValue = emptyList()
+    )
+
+    private suspend fun deleteAllLocalAndRemote(entryOperations: List<EntryOperation>, userId: String) {
+        entryOperations
+            .mapNotNull { entryOperation -> entryOperation.remoteId }
+            .takeIfNotEmpty()
+            ?.let { entryIds -> api.deleteAll(userId = userId, entryIds = entryIds) }
+            .also { deleteAllLocal(entryOperations = entryOperations) }
     }
 
-    private suspend fun deleteLocalAndRemote(
-        userId: String,
-        remoteEntryId: String?,
-        entryModel: AuthenticatorEntryModel
-    ) {
-        remoteEntryId
-            ?.let { entryId ->
-                api.delete(
-                    userId = userId,
-                    entryId = entryId
-                )
-            }
-            .also {
-                deleteLocal(entryModel = entryModel)
-            }
+    private suspend fun deleteAllLocal(entryOperations: List<EntryOperation>) {
+        entryOperations
+            .map(EntryOperation::entry)
+            .mapNotNull { entryModel -> searchLocalEntry(entryModel) }
+            .takeIfNotEmpty()
+            ?.also { entries -> repository.removeAll(entries) }
     }
 
-    @Suppress("LongParameterList")
-    private suspend fun push(
+    private suspend fun pushAll(
+        entryOperations: List<EntryOperation>,
         userId: String,
         keyId: String,
         encryptionKey: EncryptionKey,
-        remoteEntryId: String?,
-        remoteEntries: List<EntryRemote>,
-        entryModel: AuthenticatorEntryModel
+        remoteEntriesMap: Map<String, EntryRemote>
     ) {
-        remoteEntries
-            .firstOrNull { entryRemote -> entryRemote.id == remoteEntryId }
-            ?.let { entryRemote ->
-                api.update(
-                    userId = userId,
-                    entryId = entryRemote.id,
-                    entryRevision = entryRemote.revision,
-                    keyId = keyId,
-                    encryptionKey = encryptionKey,
-                    entryModel = entryModel
-                )
-            }
-            ?: api.create(
-                userId = userId,
-                keyId = keyId,
-                encryptionKey = encryptionKey,
-                entryModel = entryModel
-            )
-    }
+        entryOperations
+            .map { entryOperation -> entryOperation.remoteId to entryOperation.entry }
+            .partition { (remoteEntryId, _) -> remoteEntryId == null }
+            .also { (createEntryIdsAndEntryModels, updateEntryIdsAndEntryModels) ->
+                coroutineScope {
+                    launch {
+                        createAll(
+                            userId = userId,
+                            keyId = keyId,
+                            encryptionKey = encryptionKey,
+                            remoteEntryIdsAndEntryModels = createEntryIdsAndEntryModels
+                        )
+                    }
 
-    private suspend fun upsert(
-        remoteEntryId: String?,
-        entryModel: AuthenticatorEntryModel,
-        remoteEntries: List<EntryRemote>
-    ) {
-        val localEntry = searchLocalEntry(entryModel)
-
-        withContext(appDispatchers.default) {
-            authenticatorClient.serializeEntry(entryModel)
-        }
-            .let { modelContent ->
-                encryptionContextProvider.withEncryptionContext {
-                    encrypt(modelContent, EncryptionTag.EntryContent)
+                    launch {
+                        updateAll(
+                            userId = userId,
+                            keyId = keyId,
+                            encryptionKey = encryptionKey,
+                            remoteEntryIdsAndEntryModels = updateEntryIdsAndEntryModels,
+                            remoteEntriesMap = remoteEntriesMap
+                        )
+                    }
                 }
             }
-            .let { encryptedModelContent ->
-                Entry(
-                    id = entryModel.id,
-                    content = encryptedModelContent,
-                    modifiedAt = remoteEntries.first { it.id == remoteEntryId }.modifiedAt,
-                    isDeleted = false,
-                    isSynced = true,
-                    position = localEntry?.position ?: repository.searchMaxPosition()
+    }
+
+    private suspend fun createAll(
+        userId: String,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        remoteEntryIdsAndEntryModels: List<Pair<String?, AuthenticatorEntryModel>>
+    ) {
+        remoteEntryIdsAndEntryModels
+            .takeIfNotEmpty()
+            ?.map(Pair<String?, AuthenticatorEntryModel>::second)
+            ?.also { entryModels ->
+                api.createAll(
+                    userId = userId,
+                    keyId = keyId,
+                    encryptionKey = encryptionKey,
+                    entryModels = entryModels
                 )
             }
-            .also { entry ->
-                repository.save(entry)
-            }
+    }
 
+    private suspend fun updateAll(
+        userId: String,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        remoteEntryIdsAndEntryModels: List<Pair<String?, AuthenticatorEntryModel>>,
+        remoteEntriesMap: Map<String, EntryRemote>
+    ) {
+        remoteEntryIdsAndEntryModels
+            .takeIfNotEmpty()
+            ?.unzip()
+            ?.also { (remoteEntryIds, entryModels) ->
+                api.updateAll(
+                    userId = userId,
+                    entryIds = remoteEntryIds.filterNotNull(),
+                    keyId = keyId,
+                    encryptionKey = encryptionKey,
+                    entryModels = entryModels,
+                    remoteEntriesMap = remoteEntriesMap
+                )
+            }
+    }
+
+    private suspend fun upsertAll(entryOperations: List<EntryOperation>, remoteEntriesMap: Map<String, EntryRemote>) {
+        coroutineScope {
+            entryOperations.map { entryOperation ->
+                with(entryOperation) {
+                    async {
+                        withContext(appDispatchers.default) {
+                            authenticatorClient.serializeEntry(entry)
+                        }.let { modelContent ->
+                            encryptionContextProvider.withEncryptionContext {
+                                encrypt(modelContent, EncryptionTag.EntryContent)
+                            }
+                        }.let { encryptedModelContent ->
+                            Entry(
+                                id = entry.id,
+                                content = encryptedModelContent,
+                                modifiedAt = remoteEntriesMap.getValue(remoteId!!).modifiedAt,
+                                isDeleted = false,
+                                isSynced = true,
+                                position = searchLocalEntry(entry)
+                                    ?.position
+                                    ?: repository.searchMaxPosition()
+                            )
+                        }
+                    }
+                }
+            }
+                .awaitAll()
+                .also { entries -> repository.saveAll(entries) }
+        }
     }
 
     private suspend fun searchLocalEntry(entryModel: AuthenticatorEntryModel) = try {

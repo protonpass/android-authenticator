@@ -32,6 +32,14 @@ internal class EntriesRepositoryImpl @Inject constructor(
 
     override fun find(id: String): Flow<Entry> = localDataSource.byId(id)
 
+    override suspend fun remove(entry: Entry) {
+        localDataSource.delete(entry)
+    }
+
+    override suspend fun removeAll(entries: List<Entry>) {
+        localDataSource.deleteAll(entries)
+    }
+
     override suspend fun save(entry: Entry) {
         localDataSource.insert(entry)
     }
@@ -41,9 +49,5 @@ internal class EntriesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchMaxPosition(): Double = localDataSource.searchMaxPosition() ?: 0.0
-
-    override suspend fun remove(entry: Entry) {
-        localDataSource.delete(entry)
-    }
 
 }

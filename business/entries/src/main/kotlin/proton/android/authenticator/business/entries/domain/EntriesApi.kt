@@ -41,6 +41,8 @@ internal abstract class EntriesApi {
 
     internal abstract suspend fun delete(userId: String, entryId: String)
 
+    internal abstract suspend fun deleteAll(userId: String, entryIds: List<String>)
+
     internal abstract suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<EntryRemote>
 
     @Suppress("LongParameterList")
@@ -51,6 +53,16 @@ internal abstract class EntriesApi {
         keyId: String,
         encryptionKey: EncryptionKey,
         entryModel: AuthenticatorEntryModel
+    )
+
+    @Suppress("LongParameterList")
+    internal abstract suspend fun updateAll(
+        userId: String,
+        entryIds: List<String>,
+        keyId: String,
+        encryptionKey: EncryptionKey,
+        entryModels: List<AuthenticatorEntryModel>,
+        remoteEntriesMap: Map<String, EntryRemote>
     )
 
     private companion object {

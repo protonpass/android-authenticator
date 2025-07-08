@@ -38,9 +38,23 @@ internal data class CreateEntryRequestDto(
 )
 
 @Serializable
+internal data class DeleteEntriesRequestDto(
+    @SerialName("EntryIDs")
+    internal val entryIds: List<String>
+)
+
+@Serializable
+internal data class UpdateEntriesRequestDto(
+    @SerialName("Entries")
+    internal val entries: List<UpdateEntryRequestDto>
+)
+
+@Serializable
 internal data class UpdateEntryRequestDto(
     @SerialName("AuthenticatorKeyID")
     internal val authenticatorKeyID: String,
+    @SerialName("EntryID")
+    internal val entryId: String,
     @SerialName("Content")
     internal val content: String,
     @SerialName("ContentFormatVersion")

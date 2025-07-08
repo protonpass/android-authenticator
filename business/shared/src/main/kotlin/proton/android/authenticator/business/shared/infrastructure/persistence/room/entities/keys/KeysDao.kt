@@ -36,6 +36,9 @@ interface KeysDao {
     @Delete
     suspend fun delete(keyEntity: KeyEntity)
 
+    @Delete
+    suspend fun deleteAll(keyEntities: List<KeyEntity>)
+
     @Upsert
     suspend fun upsert(keyEntity: KeyEntity)
 

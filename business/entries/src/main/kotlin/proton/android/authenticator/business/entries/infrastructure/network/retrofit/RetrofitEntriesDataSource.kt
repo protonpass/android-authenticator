@@ -22,7 +22,10 @@ import proton.android.authenticator.business.entries.infrastructure.network.Crea
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntriesResponseDto
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryResponseDto
+import proton.android.authenticator.business.entries.infrastructure.network.DeleteEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.FetchEntriesResponseDto
+import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesResponseDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryResponseDto
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource
@@ -30,6 +33,7 @@ import proton.android.authenticator.business.shared.domain.infrastructure.networ
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -46,6 +50,9 @@ internal interface RetrofitEntriesDataSource : NetworkDataSource {
     @DELETE("$ROOT_PATH/entry/{entryId}")
     suspend fun deleteEntry(@Path("entryId") entryId: String)
 
+    @HTTP(method = "DELETE", path = "$ROOT_PATH/entry/bulk", hasBody = true)
+    suspend fun deleteEntries(@Body request: DeleteEntriesRequestDto)
+
     @GET("$ROOT_PATH/entry")
     suspend fun getEntries(@Query("Since") lastId: String?): FetchEntriesResponseDto
 
@@ -54,5 +61,8 @@ internal interface RetrofitEntriesDataSource : NetworkDataSource {
         @Path("entryId") entryId: String,
         @Body request: UpdateEntryRequestDto
     ): UpdateEntryResponseDto
+
+    @PUT("$ROOT_PATH/entry/bulk")
+    suspend fun updateEntries(@Body request: UpdateEntriesRequestDto): UpdateEntriesResponseDto
 
 }

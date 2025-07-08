@@ -26,12 +26,14 @@ internal interface EntriesRepository {
 
     fun find(id: String): Flow<Entry>
 
+    suspend fun remove(entry: Entry)
+
+    suspend fun removeAll(entries: List<Entry>)
+
     suspend fun save(entry: Entry)
 
     suspend fun saveAll(entries: List<Entry>)
 
     suspend fun searchMaxPosition(): Double
-
-    suspend fun remove(entry: Entry)
 
 }

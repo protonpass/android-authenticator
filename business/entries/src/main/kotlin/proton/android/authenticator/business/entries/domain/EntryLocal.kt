@@ -28,6 +28,8 @@ internal data class EntryLocal(
     private val model: AuthenticatorEntryModel
 ) {
 
+    internal val id: String = model.id
+
     internal val operation: LocalEntry = LocalEntry(
         entry = model,
         state = state,

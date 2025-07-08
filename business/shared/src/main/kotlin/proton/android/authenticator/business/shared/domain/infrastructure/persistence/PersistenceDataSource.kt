@@ -28,6 +28,8 @@ interface PersistenceDataSource<T> {
 
     suspend fun delete(item: T)
 
+    suspend fun deleteAll(items: List<T>)
+
     suspend fun insert(item: T)
 
     suspend fun insertAll(items: List<T>)
