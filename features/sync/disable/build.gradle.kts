@@ -7,7 +7,9 @@ android {
 }
 
 dependencies {
+    implementation(projects.business.entries)
     implementation(projects.business.settings)
+    implementation(projects.business.users)
 
     implementation(projects.features.sync.shared)
 }

@@ -39,6 +39,8 @@ import proton.android.authenticator.business.entries.application.restore.Restore
 import proton.android.authenticator.business.entries.application.restore.RestoreEntryCommandHandler
 import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommand
 import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommandHandler
+import proton.android.authenticator.business.entries.application.unsyncall.UnsyncEntriesCommand
+import proton.android.authenticator.business.entries.application.unsyncall.UnsyncEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.update.UpdateEntryCommand
 import proton.android.authenticator.business.entries.application.update.UpdateEntryCommandHandler
 import proton.android.authenticator.business.entries.domain.EntriesApi
@@ -90,6 +92,11 @@ internal abstract class BusinessEntriesModule {
 
     @[Binds Singleton IntoMap CommandHandlerKey(SyncEntriesCommand::class)]
     internal abstract fun bindSyncEntriesCommandHandler(impl: SyncEntriesCommandHandler): CommandHandler<*, *, *>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(UnsyncEntriesCommand::class)]
+    internal abstract fun bindUnsyncEntriesFromSteamCommandHandler(
+        impl: UnsyncEntriesCommandHandler
+    ): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(UpdateEntryCommand.FromSteam::class)]
     internal abstract fun bindUpdateEntryFromSteamCommandHandler(
