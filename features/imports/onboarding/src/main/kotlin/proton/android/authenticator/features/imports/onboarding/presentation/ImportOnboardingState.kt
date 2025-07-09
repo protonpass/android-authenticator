@@ -76,13 +76,13 @@ internal data class ImportOnboardingState(
     }.let(UiText::Resource)
 
     internal val providerStepsResId: Int = when (importType) {
-        EntryImportType.Aegis -> R.array.imports_onboarding_aegis_steps
-        EntryImportType.Bitwarden -> R.array.imports_onboarding_bitwarden_steps
-        EntryImportType.Ente -> R.array.imports_onboarding_ente_steps
-        EntryImportType.Google -> R.array.imports_onboarding_google_steps
-        EntryImportType.LastPass -> R.array.imports_onboarding_lastpass_steps
-        EntryImportType.Proton -> R.array.imports_onboarding_proton_authenticator_steps
-        EntryImportType.TwoFas -> R.array.imports_onboarding_2fas_steps
+        EntryImportType.Aegis -> R.array.imports_onboarding_aegis_steps_v2
+        EntryImportType.Bitwarden -> R.array.imports_onboarding_bitwarden_steps_v2
+        EntryImportType.Ente -> R.array.imports_onboarding_ente_steps_v2
+        EntryImportType.Google -> R.array.imports_onboarding_google_steps_v2
+        EntryImportType.LastPass -> R.array.imports_onboarding_lastpass_steps_v2
+        EntryImportType.Proton -> R.array.imports_onboarding_proton_authenticator_steps_v2
+        EntryImportType.TwoFas -> R.array.imports_onboarding_2fas_steps_v2
         EntryImportType.Authy,
         EntryImportType.Microsoft -> R.array.imports_onboarding_unsupported_steps
     }
