@@ -72,11 +72,7 @@ internal class EntriesImporter @Inject constructor(
 
             else -> content = fileReader.readText(contentUri.toString())
         }
-        if (content.isEmpty()) {
-            assert(contentBinary.isNotEmpty()) { "Content binary must exist" }
-        } else {
-            assert(contentBinary.isEmpty()) { "Content binary must not exist" }
-        }
+
         getEntriesFromContent(importType, contentUri, content, contentBinary, password)
     }
 
