@@ -27,6 +27,7 @@ import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
 import java.io.FileNotFoundException
 import javax.inject.Inject
 
+@Suppress("LongMethod")
 internal class ImportEntriesCommandHandler @Inject constructor(
     private val importer: EntriesImporter
 ) : CommandHandler<ImportEntriesCommand, Int, ImportEntriesReason> {

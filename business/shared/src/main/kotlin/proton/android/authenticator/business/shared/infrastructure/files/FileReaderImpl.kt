@@ -41,9 +41,10 @@ internal class FileReaderImpl @Inject constructor(
                 .orEmpty()
         }
     }
-    override suspend fun readBinary(path: String, maxSize: Int): ByteArray? {
+
+    override suspend fun readBinary(path: String, maxSize: Int): ByteArray = withContext(appDispatchers.io) {
         path.toUri().let { pathUri ->
-            return contentResolver.openInputStream(pathUri)?.use { inputStream ->
+            contentResolver.openInputStream(pathUri)?.use { inputStream ->
                 if (inputStream.available() > maxSize) throw FileTooLargeException(maxSize)
                 val outputStream = ByteArrayOutputStream()
                 val buffer = ByteArray(1_024)
@@ -56,7 +57,7 @@ internal class FileReaderImpl @Inject constructor(
                     outputStream.write(buffer, 0, bytesRead)
                 }
                 outputStream.toByteArray()
-            }
+            } ?: byteArrayOf()
         }
     }
 

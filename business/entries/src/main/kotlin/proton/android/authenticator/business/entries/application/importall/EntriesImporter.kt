@@ -62,20 +62,20 @@ internal class EntriesImporter @Inject constructor(
         password: String?
     ): List<AuthenticatorEntryModel> = contentUris.flatMap { contentUri ->
         var content = ""
-        var contentBinary: ByteArray? = null
+        var contentBinary: ByteArray = byteArrayOf()
 
         when (importType) {
-            EntryImportType.ProtonPass -> contentBinary =
-                fileReader.readBinary(contentUri.toString(), MAX_ZIP_SIZE)
+            EntryImportType.ProtonPass ->
+                contentBinary = fileReader.readBinary(contentUri.toString(), MAX_ZIP_SIZE)
 
             EntryImportType.Google -> content = qrScanner.scan(contentUri).orEmpty()
 
             else -> content = fileReader.readText(contentUri.toString())
         }
         if (content.isEmpty()) {
-            assert(contentBinary != null) { "Content binary must exist" }
+            assert(contentBinary.isNotEmpty()) { "Content binary must exist" }
         } else {
-            assert(contentBinary == null) { "Content binary must not exist" }
+            assert(contentBinary.isEmpty()) { "Content binary must not exist" }
         }
         getEntriesFromContent(importType, contentUri, content, contentBinary, password)
     }
@@ -84,7 +84,7 @@ internal class EntriesImporter @Inject constructor(
         importType: EntryImportType,
         contentUri: Uri,
         content: String,
-        contentBinary: ByteArray?,
+        contentBinary: ByteArray,
         password: String?
     ) = withContext(appDispatchers.default) {
         when (importType) {
@@ -127,11 +127,7 @@ internal class EntriesImporter @Inject constructor(
             }
 
             EntryImportType.ProtonPass -> {
-                if (contentBinary != null) {
-                    authenticatorImporter.importFromPassZip(contentBinary)
-                } else {
-                    throw IllegalArgumentException("Expect byte array for importing from Proton Pass")
-                }
+                authenticatorImporter.importFromPassZip(contentBinary)
             }
 
             EntryImportType.TwoFas -> {

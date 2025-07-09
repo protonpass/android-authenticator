@@ -20,4 +20,4 @@ package proton.android.authenticator.business.shared.domain.errors
 
 import java.io.IOException
 
-class FileTooLargeException(maxSize: Int): IOException("File too large (> $maxSize bytes)")
+class FileTooLargeException(maxSize: Int) : IOException("File too large (> $maxSize bytes)")

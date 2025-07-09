@@ -22,6 +22,6 @@ interface FileReader {
 
     suspend fun readText(path: String): String
 
-    suspend fun readBinary(path: String, maxSize: Int): ByteArray?
+    suspend fun readBinary(path: String, maxSize: Int): ByteArray
 
 }
