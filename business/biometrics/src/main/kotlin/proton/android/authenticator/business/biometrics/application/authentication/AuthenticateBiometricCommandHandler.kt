@@ -37,9 +37,18 @@ internal class AuthenticateBiometricCommandHandler @Inject constructor(
                 title = command.title,
                 subtitle = command.subtitle,
                 context = command.context
-            ).first()
-            AuthenticatorLogger.i(TAG, "Successfully authenticated biometric")
-            Answer.Success(Unit)
+            )
+                .first()
+                .also { answer ->
+                    answer.fold(
+                        onFailure = { reason ->
+                            AuthenticatorLogger.w(TAG, "Biometric authentication failed: $reason")
+                        },
+                        onSuccess = {
+                            AuthenticatorLogger.i(TAG, "Successfully authenticated biometric")
+                        }
+                    )
+                }
         } catch (error: BiometricStatusError) {
             when (error.status) {
                 BiometricStatus.Available ->
@@ -81,7 +90,9 @@ internal class AuthenticateBiometricCommandHandler @Inject constructor(
         }
 
     private companion object {
+
         private const val TAG = "AuthenticateBiometricCommandHandler"
+
     }
 
 }
