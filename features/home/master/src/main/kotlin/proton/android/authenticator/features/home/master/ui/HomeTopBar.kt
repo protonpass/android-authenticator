@@ -45,7 +45,7 @@ internal fun HomeTopBar(modifier: Modifier = Modifier, onSettingsClick: () -> Un
         title = {
             BasicText(
                 modifier = Modifier.padding(end = ThemePadding.Medium),
-                text = stringResource(id = uiR.string.authenticator_proton),
+                text = stringResource(id = uiR.string.authenticator_proton_authenticator),
                 maxLines = 1,
                 autoSize = TextAutoSize.StepBased(
                     maxFontSize = Theme.typography.title.fontSize

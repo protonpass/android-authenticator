@@ -42,7 +42,8 @@
     <string name="authenticator_google" translatable="false">Google Authenticator</string>
     <string name="authenticator_last_pass" translatable="false">LastPass Authenticator</string>
     <string name="authenticator_microsoft" translatable="false">Microsoft Authenticator</string>
-    <string name="authenticator_proton" translatable="false">Proton Authenticator</string>
+    <string name="authenticator_proton_authenticator" translatable="false">Proton Authenticator</string>
+    <string name="authenticator_proton_pass" translatable="false">Proton Pass</string>
 
     <string name="date_format_today">Today, %1$s</string>
     <string name="date_format_yesterday">Yesterday, %1$s</string>

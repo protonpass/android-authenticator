@@ -55,6 +55,12 @@
         <item>This will create a Json file that you can use here.</item>
     </string-array>
 
+    <string-array name="imports_onboarding_proton_pass_steps">
+        <item>In Proton Pass extension, web or desktop app, go to \"Settings > Export\"</item>
+        <item>Make sure to choose the \"zip format without file attachments\".</item>
+        <item>This will create a zip file that you can use here.</item>
+    </string-array>
+
     <string-array name="imports_onboarding_unsupported_steps">
         <item>Unfortunately, %1$s doesn’t currently support exporting data from their app. Consider contacting %1$s to request this feature.</item>
         <item>Please import your data manually for now.</item>

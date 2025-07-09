@@ -61,18 +61,30 @@ internal class EntriesImporter @Inject constructor(
         importType: EntryImportType,
         password: String?
     ): List<AuthenticatorEntryModel> = contentUris.flatMap { contentUri ->
-        val content = if (importType == EntryImportType.Google) {
-            qrScanner.scan(contentUri).orEmpty()
-        } else {
-            fileReader.read(contentUri.toString())
+        var content = ""
+        var contentBinary: ByteArray? = null
+
+        when (importType) {
+            EntryImportType.ProtonPass -> contentBinary =
+                fileReader.readBinary(contentUri.toString(), MAX_ZIP_SIZE)
+
+            EntryImportType.Google -> content = qrScanner.scan(contentUri).orEmpty()
+
+            else -> content = fileReader.readText(contentUri.toString())
         }
-        getEntriesFromContent(importType, contentUri, content, password)
+        if (content.isEmpty()) {
+            assert(contentBinary != null) { "Content binary must exist" }
+        } else {
+            assert(contentBinary == null) { "Content binary must not exist" }
+        }
+        getEntriesFromContent(importType, contentUri, content, contentBinary, password)
     }
 
     private suspend fun getEntriesFromContent(
         importType: EntryImportType,
         contentUri: Uri,
         content: String,
+        contentBinary: ByteArray?,
         password: String?
     ) = withContext(appDispatchers.default) {
         when (importType) {
@@ -90,7 +102,8 @@ internal class EntriesImporter @Inject constructor(
                         MimeType.All,
                         MimeType.Binary,
                         MimeType.Image,
-                        MimeType.Text -> {
+                        MimeType.Text,
+                        MimeType.Zip -> {
                             throw IllegalArgumentException("Unsupported Bitwarden file type: $mimeType")
                         }
                     }
@@ -109,8 +122,16 @@ internal class EntriesImporter @Inject constructor(
                 authenticatorImporter.importFromLastpassJson(content)
             }
 
-            EntryImportType.Proton -> {
+            EntryImportType.ProtonAuthenticator -> {
                 authenticatorImporter.importFromProtonAuthenticator(content)
+            }
+
+            EntryImportType.ProtonPass -> {
+                if (contentBinary != null) {
+                    authenticatorImporter.importFromPassZip(contentBinary)
+                } else {
+                    throw IllegalArgumentException("Expect byte array for importing from Proton Pass")
+                }
             }
 
             EntryImportType.TwoFas -> {
@@ -153,4 +174,7 @@ internal class EntriesImporter @Inject constructor(
             .let(List<Entry>::size)
     }
 
+    private companion object {
+        const val MAX_ZIP_SIZE = 10 * 1_024 * 1_024
+    }
 }

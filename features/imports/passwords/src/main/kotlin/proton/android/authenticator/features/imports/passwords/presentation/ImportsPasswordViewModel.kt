@@ -105,6 +105,7 @@ internal class ImportsPasswordViewModel @Inject constructor(
 
             ImportEntriesReason.BadContent,
             ImportEntriesReason.DecryptionFailed,
+            ImportEntriesReason.FileTooLarge,
             ImportEntriesReason.MissingPassword -> {
                 eventFlow.update {
                     ImportsPasswordEvent.OnFileImportFailed(reason = answer.reason.ordinal)

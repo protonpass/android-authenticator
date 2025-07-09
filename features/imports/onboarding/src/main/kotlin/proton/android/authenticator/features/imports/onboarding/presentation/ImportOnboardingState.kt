@@ -43,7 +43,8 @@ internal data class ImportOnboardingState(
         EntryImportType.Ente,
         EntryImportType.LastPass,
         EntryImportType.Microsoft,
-        EntryImportType.Proton,
+        EntryImportType.ProtonAuthenticator,
+        EntryImportType.ProtonPass,
         EntryImportType.TwoFas -> false
     }
 
@@ -59,7 +60,8 @@ internal data class ImportOnboardingState(
         EntryImportType.Google -> uiR.drawable.ic_authenticator_google
         EntryImportType.LastPass -> uiR.drawable.ic_authenticator_lastpass
         EntryImportType.Microsoft -> uiR.drawable.ic_authenticator_microsoft
-        EntryImportType.Proton -> uiR.drawable.ic_authenticator_proton
+        EntryImportType.ProtonAuthenticator -> uiR.drawable.ic_authenticator_proton_authenticator
+        EntryImportType.ProtonPass -> uiR.drawable.ic_authenticator_proton_pass
         EntryImportType.TwoFas -> uiR.drawable.ic_authenticator_2fas
     }.let(UiIcon::Resource)
 
@@ -71,7 +73,8 @@ internal data class ImportOnboardingState(
         EntryImportType.Google -> uiR.string.authenticator_google
         EntryImportType.LastPass -> uiR.string.authenticator_last_pass
         EntryImportType.Microsoft -> uiR.string.authenticator_microsoft
-        EntryImportType.Proton -> uiR.string.authenticator_proton
+        EntryImportType.ProtonAuthenticator -> uiR.string.authenticator_proton_authenticator
+        EntryImportType.ProtonPass -> uiR.string.authenticator_proton_pass
         EntryImportType.TwoFas -> uiR.string.authenticator_2fas
     }.let(UiText::Resource)
 
@@ -81,7 +84,8 @@ internal data class ImportOnboardingState(
         EntryImportType.Ente -> R.array.imports_onboarding_ente_steps_v2
         EntryImportType.Google -> R.array.imports_onboarding_google_steps_v2
         EntryImportType.LastPass -> R.array.imports_onboarding_lastpass_steps_v2
-        EntryImportType.Proton -> R.array.imports_onboarding_proton_authenticator_steps_v2
+        EntryImportType.ProtonAuthenticator -> R.array.imports_onboarding_proton_authenticator_steps_v2
+        EntryImportType.ProtonPass -> R.array.imports_onboarding_proton_pass_steps
         EntryImportType.TwoFas -> R.array.imports_onboarding_2fas_steps_v2
         EntryImportType.Authy,
         EntryImportType.Microsoft -> R.array.imports_onboarding_unsupported_steps

@@ -72,7 +72,7 @@ internal fun ImportsOnboardingSupported(
             )
 
             ProviderIcon(
-                icon = UiIcon.Resource(id = uiR.drawable.ic_authenticator_proton),
+                icon = UiIcon.Resource(id = uiR.drawable.ic_authenticator_proton_authenticator),
                 size = ThemeSpacing.ExtraLarge
             )
         }

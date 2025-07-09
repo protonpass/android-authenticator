@@ -19,6 +19,7 @@
 package proton.android.authenticator.business.entries.application.importall
 
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
+import proton.android.authenticator.business.shared.domain.errors.FileTooLargeException
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -78,6 +79,13 @@ internal class ImportEntriesCommandHandler @Inject constructor(
             exception = e,
             message = "Could not import entries due to file not found",
             reason = ImportEntriesReason.BadContent,
+            tag = TAG
+        )
+    } catch (e: FileTooLargeException) {
+        ErrorLoggingUtils.logAndReturnFailure(
+            exception = e,
+            message = "Could not import entries due to file too large",
+            reason = ImportEntriesReason.FileTooLarge,
             tag = TAG
         )
     } catch (e: IllegalArgumentException) {

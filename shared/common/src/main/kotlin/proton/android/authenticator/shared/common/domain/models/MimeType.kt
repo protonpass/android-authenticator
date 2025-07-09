@@ -25,7 +25,8 @@ enum class MimeType(val value: String) {
     Csv(value = "text/csv"),
     Image(value = "image/*"),
     Json(value = "application/json"),
-    Text(value = "text/plain");
+    Text(value = "text/plain"),
+    Zip(value = "application/zip");
 
     companion object {
 
@@ -36,6 +37,7 @@ enum class MimeType(val value: String) {
             Csv.value -> Csv
             Json.value -> Json
             Text.value -> Text
+            Zip.value -> Zip
             else -> throw IllegalArgumentException("Unknown MimeType value: $value")
         }
 

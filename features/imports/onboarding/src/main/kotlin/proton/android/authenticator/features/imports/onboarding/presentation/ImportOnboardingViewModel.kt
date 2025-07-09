@@ -90,6 +90,7 @@ internal class ImportOnboardingViewModel @Inject constructor(
         when (answer.reason) {
             ImportEntriesReason.BadContent,
             ImportEntriesReason.BadPassword,
+            ImportEntriesReason.FileTooLarge,
             ImportEntriesReason.DecryptionFailed -> {
                 ImportOnboardingEvent.OnFileImportFailed(reason = answer.reason.ordinal)
             }

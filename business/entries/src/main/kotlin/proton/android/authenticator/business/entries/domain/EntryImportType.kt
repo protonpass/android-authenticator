@@ -52,9 +52,13 @@ enum class EntryImportType(
         isSupported = false,
         mimeTypes = emptyList()
     ),
-    Proton(
+    ProtonAuthenticator(
         isSupported = true,
         mimeTypes = listOf(MimeType.Json)
+    ),
+    ProtonPass(
+        isSupported = true,
+        mimeTypes = listOf(MimeType.Zip)
     ),
     TwoFas(
         isSupported = true,

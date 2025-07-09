@@ -41,7 +41,8 @@ internal data class ImportsOptionsModel(
         EntryImportType.Google -> R.drawable.ic_authenticator_google
         EntryImportType.LastPass -> R.drawable.ic_authenticator_lastpass
         EntryImportType.Microsoft -> R.drawable.ic_authenticator_microsoft
-        EntryImportType.Proton -> R.drawable.ic_authenticator_proton
+        EntryImportType.ProtonAuthenticator -> R.drawable.ic_authenticator_proton_authenticator
+        EntryImportType.ProtonPass -> R.drawable.ic_authenticator_proton_pass
         EntryImportType.TwoFas -> R.drawable.ic_authenticator_2fas
     }.let(UiIcon::Resource)
 

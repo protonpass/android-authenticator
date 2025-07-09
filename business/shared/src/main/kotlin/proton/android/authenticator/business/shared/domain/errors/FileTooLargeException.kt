@@ -16,12 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.files
+package proton.android.authenticator.business.shared.domain.errors
 
-interface FileReader {
+import java.io.IOException
 
-    suspend fun readText(path: String): String
-
-    suspend fun readBinary(path: String, maxSize: Int): ByteArray?
-
-}
+class FileTooLargeException(maxSize: Int): IOException("File too large (> $maxSize bytes)")

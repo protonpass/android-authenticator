@@ -59,8 +59,12 @@ internal data object ImportsOptionsState {
             nameResId = R.string.authenticator_microsoft
         ),
         ImportsOptionsModel(
-            type = EntryImportType.Proton,
-            nameResId = R.string.authenticator_proton
+            type = EntryImportType.ProtonAuthenticator,
+            nameResId = R.string.authenticator_proton_authenticator
+        ),
+        ImportsOptionsModel(
+            type = EntryImportType.ProtonPass,
+            nameResId = R.string.authenticator_proton_pass
         )
     )
 

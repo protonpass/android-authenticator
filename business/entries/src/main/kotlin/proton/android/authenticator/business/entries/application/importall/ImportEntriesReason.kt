@@ -24,5 +24,6 @@ enum class ImportEntriesReason : AnswerReason {
     BadContent,
     BadPassword,
     DecryptionFailed,
-    MissingPassword
+    MissingPassword,
+    FileTooLarge
 }

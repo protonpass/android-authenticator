@@ -21,9 +21,11 @@ package proton.android.authenticator.business.shared.infrastructure.files
 import android.content.ContentResolver
 import androidx.core.net.toUri
 import kotlinx.coroutines.withContext
+import proton.android.authenticator.business.shared.domain.errors.FileTooLargeException
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 internal class FileReaderImpl @Inject constructor(
@@ -31,7 +33,7 @@ internal class FileReaderImpl @Inject constructor(
     private val contentResolver: ContentResolver
 ) : FileReader {
 
-    override suspend fun read(path: String): String = withContext(appDispatchers.io) {
+    override suspend fun readText(path: String): String = withContext(appDispatchers.io) {
         path.toUri().let { pathUri ->
             contentResolver.openInputStream(pathUri)
                 ?.bufferedReader()
@@ -39,5 +41,24 @@ internal class FileReaderImpl @Inject constructor(
                 .orEmpty()
         }
     }
+    override suspend fun readBinary(path: String, maxSize: Int): ByteArray? {
+        path.toUri().let { pathUri ->
+            return contentResolver.openInputStream(pathUri)?.use { inputStream ->
+                if (inputStream.available() > maxSize) throw FileTooLargeException(maxSize)
+                val outputStream = ByteArrayOutputStream()
+                val buffer = ByteArray(1_024)
+                var bytesRead: Int
+                while (true) {
+                    bytesRead = inputStream.read(buffer)
+                    if (bytesRead == -1) {
+                        break
+                    }
+                    outputStream.write(buffer, 0, bytesRead)
+                }
+                outputStream.toByteArray()
+            }
+        }
+    }
+
 
 }
