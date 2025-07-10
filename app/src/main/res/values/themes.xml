@@ -17,7 +17,7 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Theme.ProtonAuthenticator" parent="ProtonTheme" >
         <item name="android:windowBackground">@drawable/background_gradient</item>
         <item name="proton_background_norm">@color/transparent</item>
@@ -27,6 +27,5 @@
         <item name="materialButtonStyle">@style/ProtonButton.Rounded</item>
         <item name="materialButtonOutlinedStyle">@style/ProtonButton.OutlinedButton.Rounded</item>
         <item name="outlinedButtonStyle">@style/ProtonButton.OutlinedButton.Rounded</item>
-        <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:targetApi="35">true</item>
     </style>
 </resources>
