@@ -1,7 +1,7 @@
 [versions]
 activityComposeVersion = "1.10.1"
 agpVersion = "8.7.3"
-authenticatorCommonVersion = "0.24.1"
+authenticatorCommonVersion = "0.24.2"
 biometricVersion = "1.4.0-alpha04"
 cameraVersion = "1.4.2"
 coilVersion = "2.7.0"
