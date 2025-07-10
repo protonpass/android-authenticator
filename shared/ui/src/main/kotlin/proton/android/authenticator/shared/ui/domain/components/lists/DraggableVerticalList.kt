@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,24 +54,15 @@ fun DraggableVerticalList(
     reverseLayout: Boolean = false,
     verticalArrangement: Arrangement.Vertical = if (!reverseLayout) Arrangement.Top else Arrangement.Bottom,
     highlightColor: Color = Theme.colorScheme.inputBorderFocused,
-    onMoved: (Int, String, Int, String) -> Unit
+    onSorted: (Map<String, Int>) -> Unit
 ) {
     var items by remember(key1 = draggableItems) { mutableStateOf(draggableItems) }
 
     var selectedItemId by remember { mutableStateOf<String?>(null) }
 
-    var selectedItemIndex by remember { mutableStateOf<Int?>(null) }
-
-    var fromItem by remember { mutableStateOf<LazyListItemInfo?>(null) }
-
-    var toItem by remember { mutableStateOf<LazyListItemInfo?>(null) }
-
     val reorderableLazyListState = rememberReorderableLazyListState(
         lazyListState = listState
     ) { from, to ->
-        fromItem = from
-        toItem = to
-
         items = items.toMutableList().apply {
             add(to.index, removeAt(from.index))
         }
@@ -106,32 +96,16 @@ fun DraggableVerticalList(
                         )
                         .longPressDraggableHandle(
                             onDragStarted = {
-                                fromItem = null
-                                toItem = null
-
                                 selectedItemId = item.id
-                                selectedItemIndex = index
                             },
                             onDragStopped = {
-                                fromItem?.let { from ->
-                                    toItem?.let { to ->
-                                        selectedItemIndex?.let { selectedIndex ->
-                                            if (selectedIndex == to.index) {
-                                                items = draggableItems
-                                            } else {
-                                                onMoved(
-                                                    selectedIndex,
-                                                    from.key.toString(),
-                                                    to.index,
-                                                    to.key.toString()
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-
                                 selectedItemId = null
-                                selectedItemIndex = null
+
+                                items.mapIndexed { index, uiDraggableItem ->
+                                    uiDraggableItem.id to index
+                                }
+                                    .toMap()
+                                    .also(onSorted)
                             }
                         )
                 ) {

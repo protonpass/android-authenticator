@@ -33,7 +33,7 @@ data class EntryModel(
     val algorithm: EntryAlgorithm,
     val digits: Int,
     val iconUrl: String?,
-    val position: Double,
+    val position: Int,
     val modifiedAt: Long,
     val isDeleted: Boolean,
     val isSynced: Boolean

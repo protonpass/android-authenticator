@@ -46,6 +46,6 @@ interface EntriesDao {
     suspend fun upsertAll(entryEntities: List<EntryEntity>)
 
     @Query("SELECT MAX(position) FROM ${EntryEntity.TABLE}")
-    suspend fun searchMaxPosition(): Double?
+    suspend fun searchMaxPosition(): Int?
 
 }

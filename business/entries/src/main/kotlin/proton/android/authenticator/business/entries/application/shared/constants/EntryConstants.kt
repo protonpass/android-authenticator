@@ -20,6 +20,6 @@ package proton.android.authenticator.business.entries.application.shared.constan
 
 object EntryConstants {
 
-    const val POSITION_INCREMENT: Double = 10.0
+    const val POSITION_INCREMENT: Int = 1
 
 }

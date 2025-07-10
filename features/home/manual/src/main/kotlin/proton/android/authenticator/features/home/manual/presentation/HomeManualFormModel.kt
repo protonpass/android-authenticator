@@ -30,7 +30,7 @@ internal data class HomeManualFormModel(
     internal val algorithm: EntryAlgorithm,
     internal val type: EntryType,
     internal val showAdvanceOptions: Boolean,
-    internal val position: Double,
+    internal val position: Int,
     internal val mode: HomeManualMode,
     private val isValidSecret: Boolean,
     private val isValidTitle: Boolean

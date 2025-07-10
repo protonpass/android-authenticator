@@ -48,6 +48,6 @@ internal class EntriesRepositoryImpl @Inject constructor(
         localDataSource.insertAll(entries)
     }
 
-    override suspend fun searchMaxPosition(): Double = localDataSource.searchMaxPosition() ?: 0.0
+    override suspend fun searchMaxPosition(): Int = localDataSource.searchMaxPosition() ?: 0
 
 }

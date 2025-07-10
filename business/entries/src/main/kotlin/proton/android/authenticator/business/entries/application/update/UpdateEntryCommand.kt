@@ -35,7 +35,7 @@ sealed class UpdateEntryCommand : Command {
 
     internal abstract val note: String?
 
-    internal abstract val position: Double
+    internal abstract val position: Int
 
     internal abstract fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel
 
@@ -44,7 +44,7 @@ sealed class UpdateEntryCommand : Command {
         override val name: String,
         override val secret: String,
         override val note: String? = null,
-        override val position: Double
+        override val position: Int
     ) : UpdateEntryCommand() {
 
         override fun toModel(authenticatorClient: AuthenticatorMobileClientInterface): AuthenticatorEntryModel =
@@ -62,7 +62,7 @@ sealed class UpdateEntryCommand : Command {
         override val name: String,
         override val secret: String,
         override val note: String? = null,
-        override val position: Double,
+        override val position: Int,
         internal val issuer: String,
         internal val period: Int,
         internal val digits: Int,

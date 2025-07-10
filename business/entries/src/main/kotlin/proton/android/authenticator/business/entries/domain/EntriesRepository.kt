@@ -34,6 +34,6 @@ internal interface EntriesRepository {
 
     suspend fun saveAll(entries: List<Entry>)
 
-    suspend fun searchMaxPosition(): Double
+    suspend fun searchMaxPosition(): Int
 
 }

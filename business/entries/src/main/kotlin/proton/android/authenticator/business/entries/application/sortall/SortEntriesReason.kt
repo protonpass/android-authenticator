@@ -16,14 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.business.entries.application.sortall
 
-internal sealed interface HomeMasterEvent {
+import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
-    data object Idle : HomeMasterEvent
-
-    data object OnEnableSync : HomeMasterEvent
-
-    data object OnEntriesSorted : HomeMasterEvent
-
+enum class SortEntriesReason : AnswerReason {
+    CannotSort
 }

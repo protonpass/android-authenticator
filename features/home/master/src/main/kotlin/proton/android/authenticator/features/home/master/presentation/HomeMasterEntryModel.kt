@@ -50,7 +50,7 @@ internal data class HomeMasterEntryModel(
 
     internal val type: EntryType = entryModel.type
 
-    internal val position: Double = entryModel.position
+    internal val position: Int = entryModel.position
 
     internal val iconUrl: String = entryModel.iconUrl.orEmpty()
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bd5397076d7566ee477eb7d5cc0bd0e2",
+    "identityHash": "a92e364cec27944326a80abc45d2e567",
     "entities": [
       {
         "tableName": "AccountEntity",
@@ -745,7 +745,7 @@
       },
       {
         "tableName": "EntryEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `encrypted_content` BLOB NOT NULL, `is_deleted` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL, `position` REAL NOT NULL, `modified_at` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `encrypted_content` BLOB NOT NULL, `is_deleted` INTEGER NOT NULL, `is_synced` INTEGER NOT NULL, `position` INTEGER NOT NULL, `modified_at` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -774,7 +774,7 @@
           {
             "fieldPath": "position",
             "columnName": "position",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -3022,7 +3022,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd5397076d7566ee477eb7d5cc0bd0e2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a92e364cec27944326a80abc45d2e567')"
     ]
   }
 }

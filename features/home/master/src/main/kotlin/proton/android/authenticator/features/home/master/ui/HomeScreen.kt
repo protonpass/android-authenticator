@@ -51,7 +51,7 @@ fun HomeScreen(
     onNewEntryClick: () -> Unit,
     onImportEntriesClick: () -> Unit,
     onEnableEntriesSync: () -> Unit,
-    onEntriesRearranged: () -> Unit
+    onEntriesSorted: () -> Unit
 ) = with(hiltViewModel<HomeMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -69,6 +69,7 @@ fun HomeScreen(
         when (state.event) {
             HomeMasterEvent.Idle -> Unit
             HomeMasterEvent.OnEnableSync -> onEnableEntriesSync()
+            HomeMasterEvent.OnEntriesSorted -> onEntriesSorted()
         }
 
         onConsumeEvent(event = state.event)
@@ -130,11 +131,7 @@ fun HomeScreen(
             onCopyEntryCodeClick = ::onCopyEntryCode,
             onDeleteEntryClick = ::onDeleteEntry,
             onRefreshEntries = ::onRefreshEntries,
-            onRearrangeEntry = { fromIndex, fromId, toIndex, toId, entryModels ->
-                onRearrangeEntry(fromIndex, fromId, toIndex, toId, entryModels) {
-                    onEntriesRearranged()
-                }
-            }
+            onEntriesSorted = ::onEntriesSorted
         )
     }
 }

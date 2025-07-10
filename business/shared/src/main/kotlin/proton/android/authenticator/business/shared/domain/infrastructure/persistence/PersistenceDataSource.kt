@@ -34,6 +34,6 @@ interface PersistenceDataSource<T> {
 
     suspend fun insertAll(items: List<T>)
 
-    suspend fun searchMaxPosition(): Double?
+    suspend fun searchMaxPosition(): Int?
 
 }

@@ -37,7 +37,7 @@ internal fun HomeEntries(
     onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    onEntryRearranged: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
+    onEntriesSorted: (Map<String, Int>, List<HomeMasterEntryModel>) -> Unit,
     onEntriesRefreshPull: (Boolean, List<HomeMasterEntryModel>) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -71,9 +71,7 @@ internal fun HomeEntries(
                     draggableItems = items,
                     listState = listState,
                     verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
-                    onMoved = { fromIndex, fromId, toIndex, toId ->
-                        onEntryRearranged(fromId, fromIndex, toId, toIndex, entryModelsMap)
-                    }
+                    onSorted = { sortingMap -> onEntriesSorted(sortingMap, entryModels) }
                 )
             }
         }

@@ -62,7 +62,7 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                         destination = HomeSyncNavigationDestination
                     ).also(onNavigate)
                 },
-                onEntriesRearranged = onEntriesRearranged
+                onEntriesSorted = onEntriesRearranged
             )
         }
 

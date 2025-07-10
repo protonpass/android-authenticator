@@ -26,5 +26,5 @@ data class Entry(
     val modifiedAt: Long,
     val isDeleted: Boolean,
     val isSynced: Boolean,
-    val position: Double
+    val position: Int
 )

@@ -118,7 +118,7 @@ internal class HomeManualViewModel @Inject constructor(
                 timeInterval = formInputs.timeInterval ?: DEFAULT_TIME_INTERVAL,
                 algorithm = formInputs.algorithm ?: DEFAULT_ALGORITHM,
                 type = formInputs.type ?: DEFAULT_TYPE,
-                position = 0.0,
+                position = 0,
                 showAdvanceOptions = showAdvanceOptions == true,
                 isValidSecret = isValidSecret,
                 isValidTitle = isValidTitle,

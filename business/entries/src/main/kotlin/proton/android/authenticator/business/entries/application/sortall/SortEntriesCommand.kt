@@ -16,14 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.business.entries.application.sortall
 
-internal sealed interface HomeMasterEvent {
+import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
 
-    data object Idle : HomeMasterEvent
-
-    data object OnEnableSync : HomeMasterEvent
-
-    data object OnEntriesSorted : HomeMasterEvent
-
-}
+data class SortEntriesCommand(internal val sortingMap: Map<String, Int>) : Command

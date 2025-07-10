@@ -44,8 +44,8 @@ import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
-import proton.android.authenticator.features.home.master.usecases.RearrangeEntryUseCase
 import proton.android.authenticator.features.home.master.usecases.RestoreEntryUseCase
+import proton.android.authenticator.features.home.master.usecases.SortEntriesUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.entries.usecases.SyncEntriesModelsUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
@@ -67,8 +67,8 @@ internal class HomeMasterViewModel @Inject constructor(
     private val copyToClipboardUseCase: CopyToClipboardUseCase,
     private val deleteEntryUseCase: DeleteEntryUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
-    private val rearrangeEntryUseCase: RearrangeEntryUseCase,
     private val restoreEntryUseCase: RestoreEntryUseCase,
+    private val sortEntriesUseCase: SortEntriesUseCase,
     private val syncEntriesModelsUseCase: SyncEntriesModelsUseCase,
     private val timeProvider: TimeProvider
 ) : ViewModel() {
@@ -240,34 +240,20 @@ internal class HomeMasterViewModel @Inject constructor(
         }
     }
 
-    @Suppress("LongParameterList")
-    internal fun onRearrangeEntry(
-        fromEntryId: String,
-        fromEntryIndex: Int,
-        toEntryId: String,
-        toEntryIndex: Int,
-        entryModelsMap: Map<String, HomeMasterEntryModel>,
-        onComplete: () -> Unit
-    ) {
+    internal fun onEntriesSorted(newSortingMap: Map<String, Int>, homeEntryModels: List<HomeMasterEntryModel>) {
         viewModelScope.launch {
-            rearrangeEntryUseCase(
-                fromEntryId = fromEntryId,
-                fromEntryIndex = fromEntryIndex,
-                toEntryId = toEntryId,
-                toEntryIndex = toEntryIndex,
-                entryModelsMap = entryModelsMap
-            ).also { answer ->
-                when (answer) {
-                    is Answer.Failure -> {
-                        SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_rearrange_failed)
-                    }
-
-                    is Answer.Success -> {
-                        onComplete()
-                        null
-                    }
-                }?.also { event -> dispatchSnackbarEventUseCase(event) }
-            }
+            sortEntriesUseCase(
+                entryModels = homeEntryModels.map(HomeMasterEntryModel::entryModel),
+                newSortingMap = newSortingMap
+            ).fold(
+                onFailure = {
+                    SnackbarEvent(messageResId = R.string.home_snackbar_message_entry_rearrange_failed)
+                        .also { event -> dispatchSnackbarEventUseCase(event) }
+                },
+                onSuccess = {
+                    eventFlow.update { HomeMasterEvent.OnEntriesSorted }
+                }
+            )
         }
     }
 

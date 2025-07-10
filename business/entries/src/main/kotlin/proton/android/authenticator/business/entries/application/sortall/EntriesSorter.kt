@@ -16,14 +16,23 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.master.presentation
+package proton.android.authenticator.business.entries.application.sortall
 
-internal sealed interface HomeMasterEvent {
+import kotlinx.coroutines.flow.first
+import proton.android.authenticator.business.entries.domain.EntriesRepository
+import javax.inject.Inject
 
-    data object Idle : HomeMasterEvent
+internal class EntriesSorter @Inject constructor(private val repository: EntriesRepository) {
 
-    data object OnEnableSync : HomeMasterEvent
-
-    data object OnEntriesSorted : HomeMasterEvent
+    internal suspend fun sort(sortingMap: Map<String, Int>) {
+        repository.findAll()
+            .first()
+            .mapNotNull { entry ->
+                sortingMap[entry.id]?.let { newPosition -> entry.copy(position = newPosition) }
+            }
+            .also { sortedEntries ->
+                repository.saveAll(entries = sortedEntries)
+            }
+    }
 
 }

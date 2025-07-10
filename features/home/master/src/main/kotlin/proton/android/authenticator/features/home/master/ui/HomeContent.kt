@@ -39,7 +39,7 @@ internal fun HomeContent(
     onCopyEntryCodeClick: (HomeMasterEntryModel, Boolean) -> Unit,
     onEditEntryClick: (HomeMasterEntryModel) -> Unit,
     onDeleteEntryClick: (HomeMasterEntryModel) -> Unit,
-    onRearrangeEntry: (String, Int, String, Int, Map<String, HomeMasterEntryModel>) -> Unit,
+    onEntriesSorted: (Map<String, Int>, List<HomeMasterEntryModel>) -> Unit,
     onRefreshEntries: (Boolean, List<HomeMasterEntryModel>) -> Unit
 ) {
     when (state) {
@@ -81,7 +81,7 @@ internal fun HomeContent(
                 onCopyEntryCodeClick = onCopyEntryCodeClick,
                 onEditEntryClick = onEditEntryClick,
                 onDeleteEntryClick = onDeleteEntryClick,
-                onEntryRearranged = onRearrangeEntry,
+                onEntriesSorted = onEntriesSorted,
                 onEntriesRefreshPull = onRefreshEntries
             )
         }

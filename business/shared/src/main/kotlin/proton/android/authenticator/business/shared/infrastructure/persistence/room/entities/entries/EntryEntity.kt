@@ -36,7 +36,7 @@ data class EntryEntity(
     @ColumnInfo(name = Columns.IS_SYNCED)
     val isSynced: Boolean,
     @ColumnInfo(name = Columns.POSITION)
-    val position: Double,
+    val position: Int,
     @ColumnInfo(name = Columns.MODIFIED_AT)
     val modifiedAt: Long
 ) {

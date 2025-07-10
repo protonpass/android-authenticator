@@ -54,7 +54,7 @@ internal class RoomEntriesPersistenceDataSource @Inject constructor(
             .also { entryEntities -> entriesDao.upsertAll(entryEntities) }
     }
 
-    override suspend fun searchMaxPosition(): Double? = entriesDao.searchMaxPosition()
+    override suspend fun searchMaxPosition(): Int = entriesDao.searchMaxPosition() ?: 0
 
 }
 

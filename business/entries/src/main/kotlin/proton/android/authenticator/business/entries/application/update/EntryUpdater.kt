@@ -36,7 +36,7 @@ internal class EntryUpdater @Inject constructor(
 
     internal suspend fun update(
         id: String,
-        position: Double,
+        position: Int,
         model: AuthenticatorEntryModel
     ) {
         authenticatorClient.serializeEntry(model)

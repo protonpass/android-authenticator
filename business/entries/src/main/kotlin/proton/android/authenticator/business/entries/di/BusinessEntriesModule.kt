@@ -37,6 +37,8 @@ import proton.android.authenticator.business.entries.application.importall.Impor
 import proton.android.authenticator.business.entries.application.importall.ImportEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.restore.RestoreEntryCommand
 import proton.android.authenticator.business.entries.application.restore.RestoreEntryCommandHandler
+import proton.android.authenticator.business.entries.application.sortall.SortEntriesCommand
+import proton.android.authenticator.business.entries.application.sortall.SortEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommand
 import proton.android.authenticator.business.entries.application.syncall.SyncEntriesCommandHandler
 import proton.android.authenticator.business.entries.application.unsyncall.UnsyncEntriesCommand
@@ -89,6 +91,9 @@ internal abstract class BusinessEntriesModule {
 
     @[Binds Singleton IntoMap CommandHandlerKey(RestoreEntryCommand::class)]
     internal abstract fun bindRestoreEntryCommandHandler(impl: RestoreEntryCommandHandler): CommandHandler<*, *, *>
+
+    @[Binds Singleton IntoMap CommandHandlerKey(SortEntriesCommand::class)]
+    internal abstract fun bindSortEntriesCommandHandler(impl: SortEntriesCommandHandler): CommandHandler<*, *, *>
 
     @[Binds Singleton IntoMap CommandHandlerKey(SyncEntriesCommand::class)]
     internal abstract fun bindSyncEntriesCommandHandler(impl: SyncEntriesCommandHandler): CommandHandler<*, *, *>
