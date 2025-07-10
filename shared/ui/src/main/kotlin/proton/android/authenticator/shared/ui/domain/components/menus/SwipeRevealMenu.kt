@@ -94,6 +94,8 @@ fun SwipeRevealMenu(
         mutableStateOf(null)
     }
 
+    var showMenuOption by remember { mutableStateOf(false) }
+
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = isRevealed, key2 = contentWidth) {
@@ -114,6 +116,9 @@ fun SwipeRevealMenu(
         modifier = modifier
             .fillMaxWidth()
             .height(intrinsicSize = IntrinsicSize.Min)
+            .onSizeChanged {
+                showMenuOption = true
+            }
     ) {
         Row(
             modifier = Modifier
@@ -123,20 +128,24 @@ fun SwipeRevealMenu(
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .offset(x = leadingMenuOffset.value.dp - gap)
-            ) {
-                leadingMenuContent()
+            if (showMenuOption) {
+                Box(
+                    modifier = Modifier
+                        .offset(x = leadingMenuOffset.value.dp - gap)
+                ) {
+                    leadingMenuContent()
+                }
             }
         }
 
-        Box(
-            modifier = Modifier
-                .offset(x = trailingMenuOffset.value.dp + gap)
-                .align(Alignment.CenterEnd)
-        ) {
-            trailingMenuContent()
+        if (showMenuOption) {
+            Box(
+                modifier = Modifier
+                    .offset(x = trailingMenuOffset.value.dp + gap)
+                    .align(Alignment.CenterEnd)
+            ) {
+                trailingMenuContent()
+            }
         }
 
         Surface(
