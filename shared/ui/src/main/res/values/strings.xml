@@ -25,6 +25,7 @@
     <string name="action_free">Free</string>
     <string name="action_get">Get</string>
     <string name="action_import">Import</string>
+    <string name="action_login">Log in</string>
     <string name="action_next">Next</string>
     <string name="action_ok">OK</string>
     <string name="action_required">Required</string>

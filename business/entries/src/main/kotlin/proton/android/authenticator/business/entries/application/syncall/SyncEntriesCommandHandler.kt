@@ -20,6 +20,7 @@ package proton.android.authenticator.business.entries.application.syncall
 
 import me.proton.core.network.domain.ApiException
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
+import proton.android.authenticator.business.shared.domain.infrastructure.network.getErrorCode
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
@@ -35,19 +36,34 @@ internal class SyncEntriesCommandHandler @Inject constructor(
             key = command.key,
             entries = command.entries
         )
-        AuthenticatorLogger.i(TAG, "Successfully synced ${command.entries.size} entries for user: ${command.userId}")
-        Answer.Success(Unit)
-    } catch (e: ApiException) {
-        ErrorLoggingUtils.logAndReturnFailure(
-            exception = e,
-            message = "Could not sync entries due to API exception",
-            reason = SyncEntriesReason.Unknown,
-            tag = TAG
-        )
+            .also {
+                AuthenticatorLogger.i(TAG, "Successfully synced entries for user: ${command.userId}")
+            }
+            .let(Answer<Unit, SyncEntriesReason>::Success)
+    } catch (exception: ApiException) {
+        if (exception.getErrorCode() == ERROR_CODE_UNAUTHORIZED) {
+            ErrorLoggingUtils.logAndReturnFailure(
+                tag = TAG,
+                exception = exception,
+                message = "Could not sync entries due to API unauthorized",
+                reason = SyncEntriesReason.Unauthorized
+            )
+        } else {
+            ErrorLoggingUtils.logAndReturnFailure(
+                tag = TAG,
+                exception = exception,
+                message = "Could not sync entries due to API exception",
+                reason = SyncEntriesReason.Unknown
+            )
+        }
     }
 
     private companion object {
+
         private const val TAG = "SyncEntriesCommandHandler"
+
+        private const val ERROR_CODE_UNAUTHORIZED = 401
+
     }
 
 }

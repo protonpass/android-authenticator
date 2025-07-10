@@ -22,6 +22,7 @@ import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
 enum class SyncEntriesReason : AnswerReason {
     KeyNotFound,
+    Unauthorized,
     Unknown,
     UserNotFound
 }

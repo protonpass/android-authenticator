@@ -77,6 +77,10 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
+                android:name="proton.android.authenticator.app.initializers.SessionExpiredWorkInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
                 android:name="proton.android.authenticator.app.initializers.SyncPeriodicWorkInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />

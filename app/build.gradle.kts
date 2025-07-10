@@ -127,6 +127,7 @@ dependencies {
     implementation(projects.business.entries)
     implementation(projects.business.keys)
     implementation(projects.business.settings)
+    implementation(projects.business.users)
     implementation(projects.features.shared)
     implementation(projects.navigation)
     implementation(projects.shared.common)

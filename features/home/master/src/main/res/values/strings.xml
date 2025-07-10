@@ -31,5 +31,6 @@
     <string name="home_snackbar_message_entry_rearrange_failed">There was an error rearranging the entry</string>
     <string name="home_snackbar_message_entry_restore_failed">There was an error restoring the entry</string>
     <string name="home_snackbar_message_entry_sync_disabled">Device sync is disabled</string>
+    <string name="home_snackbar_message_entry_sync_unauthorized">Syncing has been disabled. Please log in to your Proton account again.</string>
     <string name="home_snackbar_message_entry_sync_failed">There was an error syncing the entries</string>
 </resources>

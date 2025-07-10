@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.entries.application.syncall.SyncEntriesReason
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.usecases.DeleteEntryUseCase
@@ -298,9 +299,27 @@ internal class HomeMasterViewModel @Inject constructor(
                 .also { answer ->
                     when (answer) {
                         is Answer.Failure -> {
-                            SnackbarEvent(
-                                messageResId = R.string.home_snackbar_message_entry_sync_failed
-                            ).also { event -> dispatchSnackbarEventUseCase(event) }
+                            when (answer.reason) {
+                                SyncEntriesReason.Unauthorized -> {
+                                    SnackbarEvent(
+                                        messageResId = R.string.home_snackbar_message_entry_sync_unauthorized,
+                                        action = SnackbarEvent.Action(
+                                            nameResId = uiR.string.action_login,
+                                            onAction = {
+                                                eventFlow.update { HomeMasterEvent.OnEnableSync }
+                                            }
+                                        )
+                                    )
+                                }
+
+                                SyncEntriesReason.KeyNotFound,
+                                SyncEntriesReason.Unknown,
+                                SyncEntriesReason.UserNotFound -> {
+                                    SnackbarEvent(
+                                        messageResId = R.string.home_snackbar_message_entry_sync_failed
+                                    )
+                                }
+                            }.also { event -> dispatchSnackbarEventUseCase(event) }
                         }
 
                         is Answer.Success -> Unit
