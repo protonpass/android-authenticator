@@ -64,16 +64,20 @@ internal class SyncPeriodicWorkInitializer : Initializer<Unit> {
     }
 
     private fun schedulePeriodicSyncWork(workManager: WorkManager) {
-        PeriodicWorkRequestBuilder<SyncWorker>(SYNC_WORK_REPEAT_INTERVAL_DAYS, TimeUnit.DAYS)
+        PeriodicWorkRequestBuilder<SyncWorker>(SYNC_WORK_REPEAT_INTERVAL_MINS, TimeUnit.MINUTES)
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
-                SYNC_WORK_BACKOFF_DELAY_SECONDS,
-                TimeUnit.SECONDS
+                SYNC_WORK_BACKOFF_DELAY_MINS,
+                TimeUnit.MINUTES
             )
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build()
+            )
+            .setInitialDelay(
+                duration = SYNC_WORK_REPEAT_INTERVAL_MINS,
+                timeUnit = TimeUnit.MINUTES
             )
             .build()
             .also { request ->
@@ -107,9 +111,9 @@ internal class SyncPeriodicWorkInitializer : Initializer<Unit> {
 
         private const val SYNC_WORK_NAME = "periodic_sync_work"
 
-        private const val SYNC_WORK_REPEAT_INTERVAL_DAYS = 1L
+        private const val SYNC_WORK_REPEAT_INTERVAL_MINS = 30L
 
-        private const val SYNC_WORK_BACKOFF_DELAY_SECONDS = 60L
+        private const val SYNC_WORK_BACKOFF_DELAY_MINS = 1L
 
     }
 
