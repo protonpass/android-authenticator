@@ -20,7 +20,10 @@ package proton.android.authenticator.shared.common.domain.constants
 
 object CharacterConstants {
 
-    const val DOUBLE_QUOTES = "\""
     const val COLON = ":"
+
+    const val DASH = "-"
+
+    const val DOUBLE_QUOTES = "\""
 
 }

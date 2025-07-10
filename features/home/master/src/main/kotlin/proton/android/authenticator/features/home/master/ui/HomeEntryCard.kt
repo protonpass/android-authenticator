@@ -29,8 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
-import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.common.domain.constants.CharacterConstants
 import proton.android.authenticator.shared.ui.domain.components.codes.TotpCode
 import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
 import proton.android.authenticator.shared.ui.domain.components.icons.EntryIcon
@@ -42,6 +43,7 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
+import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
 internal fun HomeEntryCard(
@@ -68,7 +70,7 @@ internal fun HomeEntryCard(
         ) {
             EntryIcon(
                 url = entryModel.iconUrl,
-                issuer = entryModel.issuer,
+                issuer = entryModel.issuer.ifEmpty { CharacterConstants.DASH },
                 showIconBorder = showIconBorder
             )
 
@@ -78,7 +80,9 @@ internal fun HomeEntryCard(
                     .weight(weight = 1f, fill = true)
             ) {
                 HighlightText(
-                    text = entryModel.issuer,
+                    text = entryModel.issuer.ifEmpty {
+                        stringResource(id = R.string.home_entries_no_issuer)
+                    },
                     textColor = Theme.colorScheme.textNorm,
                     textStyle = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
@@ -143,7 +147,7 @@ internal fun HomeEntryCard(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = stringResource(id = R.string.action_next),
+                    text = stringResource(id = uiR.string.action_next),
                     color = Theme.colorScheme.textWeak,
                     style = if (showTextShadows) {
                         Theme.typography.body1Regular.copy(shadow = ThemeShadow.TextDefault)
