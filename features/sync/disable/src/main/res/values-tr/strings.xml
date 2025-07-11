@@ -18,6 +18,9 @@
   -->
 <resources>
   <string name="sync_disable_dialog_title">Emin misiniz?</string>
-  <string name="sync_disable_dialog_message">Bu cihazdaki veriler güncellenmeyecek ve değişiklikler diğer cihazlara yansımayacaktır.</string>
+  <string-array name="sync_disable_dialog_messages">
+    <item>Bu cihazdaki veriler güncellenmeyecek ve değişiklikler diğer cihazlara yansımayacaktır.</item>
+    <item>Proton hesabınızdan çıkış yapılacaktır.</item>
+  </string-array>
   <string name="sync_disable_dialog_stop_button">Senkronizasyonu durdur</string>
 </resources>

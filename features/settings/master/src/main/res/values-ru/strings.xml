@@ -22,6 +22,7 @@
   <string name="settings_security_section">Безопасность</string>
   <string name="settings_security_title_backups">Резервные копии</string>
   <string name="settings_security_title_sync">Синхронизация между устройствами</string>
+  <string name="settings_security_description_sync" comment="The placeholder will be replaced with either username or email. (e.g. Account: user@email.com)">Аккаунт: %1$s</string>
   <string name="settings_security_title_lock">Блокировка приложения</string>
   <string name="settings_security_title_lock_option_biometric">Биометрия</string>
   <string name="settings_security_title_lock_option_none">Нет</string>

@@ -19,33 +19,38 @@
 <resources>
   <string name="imports_onboarding_title_supported">Importer des codes depuis %1$s</string>
   <string name="imports_onboarding_title_unsupported">Aucune exportation disponible</string>
-  <string-array name="imports_onboarding_google_steps">
-    <item>Pour exporter des codes depuis Google Authenticator, vous devrez utiliser la fonction intégrée « Transférer vos comptes » de l\'application qui génère un QR code pour transférer des comptes vers un nouvel appareil.</item>
+  <string-array name="imports_onboarding_google_steps_v2">
+    <item>Accédez à « Paramètres, Transférer les comptes et Exporter les comptes ».</item>
+    <item>Vous créerez ainsi un ou plusieurs QR codes que vous pourrez utiliser ici.</item>
   </string-array>
-  <string-array name="imports_onboarding_2fas_steps">
-    <item>Ouvrez 2FAS Authenticator et dirigez-vous vers la section « Paramètres ».</item>
-    <item>Dirigez-vous ensuite vers la fonctionnalité « Sauvegarde A2F ».</item>
-    <item>Dans l\'outil d\'exportation, cliquez sur le bouton « Exporter vers un fichier ».</item>
+  <string-array name="imports_onboarding_2fas_steps_v2">
+    <item>Accédez à « Paramètres, Sauvegarde 2FA et Exporter ».</item>
+    <item>Cela créera un fichier 2fas que vous pourrez utiliser ici.</item>
   </string-array>
-  <string-array name="imports_onboarding_aegis_steps">
-    <item>Pour exporter des codes depuis Aegis Authenticator, accédez aux paramètres de l\'application, recherchez la section « Importer et exporter » et sélectionnez l\'option d\'exportation.</item>
-    <item>Vous pouvez choisir d\'exporter sous forme de base de données chiffrée ou sous forme de fichier texte brut.</item>
+  <string-array name="imports_onboarding_aegis_steps_v2">
+    <item>Accédez à « Paramètres, Importation et exportation et Exporter ».</item>
+    <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
-  <string-array name="imports_onboarding_bitwarden_steps">
-    <item>Pour exporter des données depuis Bitwarden Authenticator, ouvrez l\'onglet « Paramètres » et appuyez sur le bouton « Exporter ».</item>
-    <item>Vous pouvez choisir d\'exporter vos données en tant que fichier .json ou .csv.</item>
+  <string-array name="imports_onboarding_bitwarden_steps_v2">
+    <item>Accédez à « Paramètres et Exporter ».</item>
+    <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
-  <string-array name="imports_onboarding_ente_steps">
-    <item>Pour exporter des données depuis Ente Auth, ouvrez l\'onglet « Paramètres » et appuyez sur le bouton « Importer/Exporter ».</item>
-    <item>Appuyez sur « Exporter les codes », puis sur « Saisir l\'exportation chiffrée ».</item>
-    <item>Cela crée un fichier de sauvegarde chiffré (généralement au format .ente ou .json) contenant tous vos codes.</item>
+  <string-array name="imports_onboarding_ente_steps_v2">
+    <item>Accédez à « Paramètres, Données et Exporter les codes ».</item>
+    <item>Choisissez « Texte brut ». Vous créez ainsi un fichier txt que vous pourrez utiliser ici.</item>
   </string-array>
-  <string-array name="imports_onboarding_lastpass_steps">
-    <item>Pour exporter des codes A2F (TOTP) depuis LastPass, vous devrez exporter les données de votre coffre-fort sous forme de fichier CSV.</item>
-    <item>Ouvrez l\'extension de navigateur LastPass et connectez-vous. Accédez à Compte → Résoudre un problème vous-même → Exporter les éléments du coffre-fort → Exporter les données pour les utiliser n\'importe où.</item>
+  <string-array name="imports_onboarding_lastpass_steps_v2">
+    <item>Accédez à « Paramètres, Transférer les comptes et Exporter les comptes vers un fichier ».</item>
+    <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
-  <string-array name="imports_onboarding_proton_authenticator_steps">
-    <item>Pour exporter des codes depuis Proton Authenticator, accédez aux paramètres de l\'application, recherchez la section « Gérer vos données » et sélectionnez l\'option d\'exportation.</item>
+  <string-array name="imports_onboarding_proton_authenticator_steps_v2">
+    <item>Accédez à « Paramètres et Exporter ».</item>
+    <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_pass_steps">
+    <item>Dans l’extension Proton Pass, sur l’application web ou de bureau, accédez à « Paramètres et Exporter ».</item>
+    <item>Assurez-vous de choisir le « format ZIP sans pièces jointes ».</item>
+    <item>Cela créera un fichier ZIP que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Malheureusement, %1$s ne prend actuellement pas en charge l\'exportation de données depuis son application. Contactez %1$s pour demander cette fonctionnalité.</item>

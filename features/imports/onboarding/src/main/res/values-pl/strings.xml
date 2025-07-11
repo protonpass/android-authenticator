@@ -19,33 +19,38 @@
 <resources>
   <string name="imports_onboarding_title_supported">Importuj kody z %1$s</string>
   <string name="imports_onboarding_title_unsupported">Brak dostępnego eksportu</string>
-  <string-array name="imports_onboarding_google_steps">
-    <item>Aby wyeksportować kody z Google Authenticator, musisz użyć wbudowanej w aplikację funkcji \"Przenieś konta\", która generuje kod QR do przenoszenia kont na nowe urządzenie.</item>
+  <string-array name="imports_onboarding_google_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts\"</item>
+    <item>This will create one or more QR codes that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_2fas_steps">
-    <item>Otwórz 2FAS Authenticator i wejdź do sekcji \"Ustawienia\".</item>
-    <item>Następnie wejdź do funkcji \"2FAS Backup\".</item>
-    <item>Wejdź do narzędzia Eksport i kliknij przycisk \"Eksportuj do pliku\".</item>
+  <string-array name="imports_onboarding_2fas_steps_v2">
+    <item>Please go to \"Settings &gt; 2FAS Backup &gt; Export\"</item>
+    <item>This will create a 2fas file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_aegis_steps">
-    <item>Aby wyeksportować kody z Aegis Authenticator, przejdź do Ustawień aplikacji, znajdź sekcję \"Import &amp; Eksport\" i wybierz opcję eksportu.</item>
-    <item>Możesz wybrać eksport jako zaszyfrowana baza danych lub jako plik tekstowy.</item>
+  <string-array name="imports_onboarding_aegis_steps_v2">
+    <item>Please go to \"Settings &gt; Import &amp; Export &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_bitwarden_steps">
-    <item>Aby wyeksportować dane z Bitwarden Authenticator, otwórz zakładkę \"Ustawienia\" i dotknij przycisku \"Eksportuj\".</item>
-    <item>Możesz wybrać eksport danych jako plik .json lub .csv.</item>
+  <string-array name="imports_onboarding_bitwarden_steps_v2">
+    <item>Please go to \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_ente_steps">
-    <item>Aby wyeksportować dane z Ente Auth, otwórz zakładkę \"Ustawienia\" i poszukaj opcji \"Import/Eksport\".</item>
-    <item>Dotknij \"Eksportuj kody\", a następnie \"Zaszyfrowany eksport Ente\".</item>
-    <item>Tworzy to zaszyfrowany plik kopii zapasowej (zazwyczaj .ente lub .json) zawierający wszystkie Twoje kody.</item>
+  <string-array name="imports_onboarding_ente_steps_v2">
+    <item>Please go to \"Settings &gt; Data &gt; Export codes\"</item>
+    <item>Choose \"Plain text\", this will create a txt file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_lastpass_steps">
-    <item>Aby wyeksportować kody 2FA (TOTP) z LastPass, musisz wyeksportować dane ze swojego skarbca jako plik CSV.</item>
-    <item>Otwórz rozszerzenie przeglądarki LastPass i zaloguj się. Przejdź do Konto → Napraw problem samodzielnie → Eksportuj elementy skarbca → Eksportuj dane do użycia w dowolnym miejscu.</item>
+  <string-array name="imports_onboarding_lastpass_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts to file\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_proton_authenticator_steps">
-    <item>Aby wyeksportować kody z Proton Authenticator, przejdź do ustawień aplikacji, znajdź sekcję \"Zarządzaj swoimi danymi\" i wybierz opcję eksportu.</item>
+  <string-array name="imports_onboarding_proton_authenticator_steps_v2">
+    <item>Please go \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_pass_steps">
+    <item>In Proton Pass extension, web or desktop app, go to \"Settings &gt; Export\"</item>
+    <item>Make sure to choose the \"zip format without file attachments\".</item>
+    <item>This will create a zip file that you can use here.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Niestety, %1$s obecnie nie obsługuje eksportowania danych ze swojej aplikacji. Rozważ skontaktowanie się z %1$s, aby poprosić o tę funkcję.</item>

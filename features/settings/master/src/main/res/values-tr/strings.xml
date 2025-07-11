@@ -22,6 +22,7 @@
   <string name="settings_security_section">Güvenlik</string>
   <string name="settings_security_title_backups">Yedeklemeler</string>
   <string name="settings_security_title_sync">Cihazlar arasında senkronizasyon</string>
+  <string name="settings_security_description_sync" comment="The placeholder will be replaced with either username or email. (e.g. Account: user@email.com)">Hesap: %1$s</string>
   <string name="settings_security_title_lock">Uygulama kilidi</string>
   <string name="settings_security_title_lock_option_biometric">Biyometrik</string>
   <string name="settings_security_title_lock_option_none">Yok</string>

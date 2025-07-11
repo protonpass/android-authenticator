@@ -19,33 +19,38 @@
 <resources>
   <string name="imports_onboarding_title_supported">Codes importeren van %1$s</string>
   <string name="imports_onboarding_title_unsupported">Geen export beschikbaar</string>
-  <string-array name="imports_onboarding_google_steps">
-    <item>Om codes vanuit Google Authenticator te exporteren, moet u de ingebouwde functie \"Accounts overzetten\" van de app gebruiken, die een QR-code genereert voor het overzetten van accounts naar een nieuw apparaat.</item>
+  <string-array name="imports_onboarding_google_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts\"</item>
+    <item>This will create one or more QR codes that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_2fas_steps">
-    <item>Open 2FAS Authenticator en ga naar de sectie \"Instellingen\".</item>
-    <item>Ga vervolgens naar de functie \"2FAS Backup\".</item>
-    <item>Ga naar de exporttool en klik op de knop \"Exporteren naar bestand\".</item>
+  <string-array name="imports_onboarding_2fas_steps_v2">
+    <item>Please go to \"Settings &gt; 2FAS Backup &gt; Export\"</item>
+    <item>This will create a 2fas file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_aegis_steps">
-    <item>Om codes vanuit Aegis Authenticator te exporteren, gaat u naar de instellingen van de app, zoekt u de sectie \"Importeren &amp; Exporteren\" en selecteert u de exportoptie.</item>
-    <item>U kunt ervoor kiezen om te exporteren als een versleutelde database of als een platte tekstbestand.</item>
+  <string-array name="imports_onboarding_aegis_steps_v2">
+    <item>Please go to \"Settings &gt; Import &amp; Export &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_bitwarden_steps">
-    <item>Om gegevens vanuit Bitwarden Authenticator te exporteren, opent u het tabblad \"Instellingen\" en tikt u op de knop \"Exporteren\".</item>
-    <item>U kunt ervoor kiezen om uw gegevens te exporteren als een .json- of .csv-bestand.</item>
+  <string-array name="imports_onboarding_bitwarden_steps_v2">
+    <item>Please go to \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_ente_steps">
-    <item>Om gegevens vanuit Ente Auth te exporteren, opent u het tabblad \"Instellingen\" en zoekt u naar de opties \"Importeren/Exporteren\".</item>
-    <item>Tik op \"Codes exporteren\" en vervolgens op \"Ente Versleutelde export\".</item>
-    <item>Dit creëert een versleuteld back-upbestand (meestal .ente of .json) dat al uw codes bevat.</item>
+  <string-array name="imports_onboarding_ente_steps_v2">
+    <item>Please go to \"Settings &gt; Data &gt; Export codes\"</item>
+    <item>Choose \"Plain text\", this will create a txt file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_lastpass_steps">
-    <item>Om 2FA-codes (TOTP) vanuit LastPass te exporteren, moet u uw kluisgegevens als een CSV-bestand exporteren.</item>
-    <item>Open de LastPass browserextensie en log in. Ga naar Account → Los zelf een probleem op → Kluiselementen exporteren → Gegevens exporteren voor gebruik overal.</item>
+  <string-array name="imports_onboarding_lastpass_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts to file\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_proton_authenticator_steps">
-    <item>Om codes vanuit Proton Authenticator te exporteren, gaat u naar de instellingen van de app, zoekt u de sectie \"Uw gegevens beheren\" en selecteert u de exportoptie.</item>
+  <string-array name="imports_onboarding_proton_authenticator_steps_v2">
+    <item>Please go \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_pass_steps">
+    <item>In Proton Pass extension, web or desktop app, go to \"Settings &gt; Export\"</item>
+    <item>Make sure to choose the \"zip format without file attachments\".</item>
+    <item>This will create a zip file that you can use here.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Helaas ondersteunt %1$s momenteel geen gegevensexport vanuit hun app. Overweeg contact op te nemen met %1$s om deze functie aan te vragen.</item>

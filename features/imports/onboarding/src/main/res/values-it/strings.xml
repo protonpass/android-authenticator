@@ -19,33 +19,38 @@
 <resources>
   <string name="imports_onboarding_title_supported">Importa codici da %1$s</string>
   <string name="imports_onboarding_title_unsupported">Nessuna esportazione disponibile</string>
-  <string-array name="imports_onboarding_google_steps">
-    <item>Per esportare i codici da Google Authenticator, dovrai usare la funzione integrata dell\'app \"Trasferisci account\", che genera un codice QR per trasferire gli account su un nuovo dispositivo.</item>
+  <string-array name="imports_onboarding_google_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts\"</item>
+    <item>This will create one or more QR codes that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_2fas_steps">
-    <item>Apri 2FAS Authenticator e vai nella sezione \"Impostazioni\".</item>
-    <item>Poi vai nella funzione \"Backup 2FAS\".</item>
-    <item>Accedi allo strumento di esportazione e clicca sul pulsante \"Esporta su file\".</item>
+  <string-array name="imports_onboarding_2fas_steps_v2">
+    <item>Please go to \"Settings &gt; 2FAS Backup &gt; Export\"</item>
+    <item>This will create a 2fas file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_aegis_steps">
-    <item>Per esportare i codici da Aegis Authenticator, vai nelle Impostazioni dell\'app, trova la sezione \"Importa &amp; Esporta\" e seleziona l\'opzione di esportazione.</item>
-    <item>Puoi scegliere di esportare come database crittografato o come file di testo semplice.</item>
+  <string-array name="imports_onboarding_aegis_steps_v2">
+    <item>Please go to \"Settings &gt; Import &amp; Export &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_bitwarden_steps">
-    <item>Per esportare i dati da Bitwarden Authenticator, apri la scheda \"Impostazioni\" e tocca il pulsante \"Esporta\".</item>
-    <item>Puoi scegliere di esportare i tuoi dati come file .json o .csv.</item>
+  <string-array name="imports_onboarding_bitwarden_steps_v2">
+    <item>Please go to \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_ente_steps">
-    <item>Per esportare i dati da Ente Auth, apri la scheda \"Impostazioni\" e cerca le opzioni \"Importa/Esporta\".</item>
-    <item>Tocca \"Esporta codici\" e poi \"Esportazione crittografata Ente\".</item>
-    <item>Questo crea un file di backup crittografato (di solito .ente o .json) contenente tutti i tuoi codici.</item>
+  <string-array name="imports_onboarding_ente_steps_v2">
+    <item>Please go to \"Settings &gt; Data &gt; Export codes\"</item>
+    <item>Choose \"Plain text\", this will create a txt file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_lastpass_steps">
-    <item>Per esportare i codici 2FA (TOTP) da LastPass, dovrai esportare i dati del tuo vault come file CSV.</item>
-    <item>Apri l\'estensione del browser LastPass ed effettua il login. Vai su Account → Risolvi un problema autonomamente → Esporta elementi del vault → Esporta dati per l\'uso ovunque.</item>
+  <string-array name="imports_onboarding_lastpass_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts to file\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_proton_authenticator_steps">
-    <item>Per esportare i codici da Proton Authenticator, vai nelle impostazioni dell\'app, trova la sezione \"Gestisci i tuoi dati\" e seleziona l\'opzione di esportazione.</item>
+  <string-array name="imports_onboarding_proton_authenticator_steps_v2">
+    <item>Please go \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_pass_steps">
+    <item>In Proton Pass extension, web or desktop app, go to \"Settings &gt; Export\"</item>
+    <item>Make sure to choose the \"zip format without file attachments\".</item>
+    <item>This will create a zip file that you can use here.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Sfortunatamente, %1$s al momento non supporta l\'esportazione dei dati dalla loro app. Considera di contattare %1$s per richiedere questa funzionalità.</item>

@@ -18,6 +18,9 @@
   -->
 <resources>
   <string name="sync_disable_dialog_title">Êtes-vous sûr ?</string>
-  <string name="sync_disable_dialog_message">Les données de cet appareil ne seront pas mises à jour et les modifications ne seront pas répercutées sur les autres appareils.</string>
+  <string-array name="sync_disable_dialog_messages">
+    <item>Les données de cet appareil ne seront pas mises à jour et les modifications ne seront pas répercutées sur les autres appareils.</item>
+    <item>Vous serez déconnecté de votre compte Proton.</item>
+  </string-array>
   <string name="sync_disable_dialog_stop_button">Arrêter la synchronisation</string>
 </resources>

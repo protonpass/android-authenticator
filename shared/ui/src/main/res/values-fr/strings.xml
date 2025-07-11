@@ -21,9 +21,11 @@
   <string name="action_close">Fermer</string>
   <string name="action_delete">Supprimer</string>
   <string name="action_edit">Modifier</string>
+  <string name="action_enable">Activer</string>
   <string name="action_free">Gratuit</string>
   <string name="action_get">Obtenir</string>
   <string name="action_import">Importer</string>
+  <string name="action_login">Log in</string>
   <string name="action_next">Suivant</string>
   <string name="action_ok">OK</string>
   <string name="action_required">Requis</string>

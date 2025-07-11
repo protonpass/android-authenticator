@@ -20,4 +20,5 @@
   <string name="imports_error_dialog_title">L’importation n\'a pas abouti.</string>
   <string name="imports_error_dialog_message_bad_content">Le fichier sélectionné n\'a pas pu être importé.</string>
   <string name="imports_error_dialog_message_bad_encryption">Le fichier sélectionné n\'a pas pu être déchiffré.</string>
+  <string name="imports_error_dialog_message_file_too_large">La taille limite du fichier a été dépassée.</string>
 </resources>

@@ -18,6 +18,9 @@
   -->
 <resources>
   <string name="sync_disable_dialog_title">Weet u het zeker?</string>
-  <string name="sync_disable_dialog_message">Gegevens op dit apparaat worden niet bijgewerkt en wijzigingen worden niet op andere apparaten doorgevoerd.</string>
+  <string-array name="sync_disable_dialog_messages">
+    <item>Gegevens op dit apparaat worden niet bijgewerkt en wijzigingen worden niet op andere apparaten doorgevoerd.</item>
+    <item>U wordt uitgelogd bij uw Proton-account.</item>
+  </string-array>
   <string name="sync_disable_dialog_stop_button">Synchronisatie stoppen</string>
 </resources>

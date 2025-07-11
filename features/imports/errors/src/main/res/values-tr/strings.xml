@@ -20,4 +20,5 @@
   <string name="imports_error_dialog_title">İçe Aktarma Başarısız</string>
   <string name="imports_error_dialog_message_bad_content">Seçilen dosya içe aktarılamadı.</string>
   <string name="imports_error_dialog_message_bad_encryption">Seçilen dosyanın şifresi çözülemedi.</string>
+  <string name="imports_error_dialog_message_file_too_large">File size limit exceeded</string>
 </resources>

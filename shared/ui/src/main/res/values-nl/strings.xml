@@ -21,9 +21,11 @@
   <string name="action_close">Sluiten</string>
   <string name="action_delete">Verwijderen</string>
   <string name="action_edit">Bewerken</string>
+  <string name="action_enable">Inschakelen</string>
   <string name="action_free">Gratis</string>
   <string name="action_get">Ophalen</string>
   <string name="action_import">Importeren</string>
+  <string name="action_login">Log in</string>
   <string name="action_next">Volgende</string>
   <string name="action_ok">Oké</string>
   <string name="action_required">Verplicht</string>

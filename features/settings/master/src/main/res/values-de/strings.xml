@@ -22,6 +22,7 @@
   <string name="settings_security_section">Sicherheit</string>
   <string name="settings_security_title_backups">Sicherungen</string>
   <string name="settings_security_title_sync">Synchronisierung zwischen Geräten</string>
+  <string name="settings_security_description_sync" comment="The placeholder will be replaced with either username or email. (e.g. Account: user@email.com)">Konto: %1$s</string>
   <string name="settings_security_title_lock">App-Sperre</string>
   <string name="settings_security_title_lock_option_biometric">Biometrie</string>
   <string name="settings_security_title_lock_option_none">Keine</string>

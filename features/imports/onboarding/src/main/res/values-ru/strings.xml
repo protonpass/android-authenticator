@@ -19,33 +19,38 @@
 <resources>
   <string name="imports_onboarding_title_supported">Импортировать коды из %1$s</string>
   <string name="imports_onboarding_title_unsupported">Экспорт недоступен</string>
-  <string-array name="imports_onboarding_google_steps">
-    <item>Для экспорта кодов из Google Authenticator вам потребуется использовать встроенную функцию приложения \"Передача аккаунтов\", которая генерирует QR-код для переноса аккаунтов на новое устройство.</item>
+  <string-array name="imports_onboarding_google_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts\"</item>
+    <item>This will create one or more QR codes that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_2fas_steps">
-    <item>Откройте 2FAS Authenticator и перейдите в раздел \"Настройки\".</item>
-    <item>Затем перейдите к функции \"Резервное копирование 2FAS\".</item>
-    <item>Откройте инструмент экспорта и нажмите кнопку \"Экспортировать в файл\".</item>
+  <string-array name="imports_onboarding_2fas_steps_v2">
+    <item>Please go to \"Settings &gt; 2FAS Backup &gt; Export\"</item>
+    <item>This will create a 2fas file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_aegis_steps">
-    <item>Для экспорта кодов из Aegis Authenticator перейдите в настройки приложения, найдите раздел \"Импорт &amp; Экспорт\" и выберите опцию экспорта.</item>
-    <item>Вы можете экспортировать данные как зашифрованную базу данных или как простой текстовый файл.</item>
+  <string-array name="imports_onboarding_aegis_steps_v2">
+    <item>Please go to \"Settings &gt; Import &amp; Export &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_bitwarden_steps">
-    <item>Чтобы экспортировать данные из Bitwarden Authenticator, откройте вкладку \"Настройки\" и нажмите кнопку \"Экспорт\".</item>
-    <item>Вы можете экспортировать свои данные в формате .json или .csv.</item>
+  <string-array name="imports_onboarding_bitwarden_steps_v2">
+    <item>Please go to \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_ente_steps">
-    <item>Чтобы экспортировать данные из Ente Auth, откройте вкладку \"Настройки\" и найдите опции \"Импорт/Экспорт\".</item>
-    <item>Нажмите \"Экспортировать коды\", затем \"Зашифрованный экспорт Ente\".</item>
-    <item>Это создает зашифрованный файл резервной копии (обычно .ente или .json), содержащий все ваши коды.</item>
+  <string-array name="imports_onboarding_ente_steps_v2">
+    <item>Please go to \"Settings &gt; Data &gt; Export codes\"</item>
+    <item>Choose \"Plain text\", this will create a txt file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_lastpass_steps">
-    <item>Чтобы экспортировать коды 2FA (TOTP) из LastPass, вам потребуется экспортировать данные вашего хранилища в виде файла CSV.</item>
-    <item>Откройте расширение LastPass для браузера и войдите. Перейдите в Учетная запись → Исправить проблему самостоятельно → Экспорт элементов хранилища → Экспорт данных для использования где угодно.</item>
+  <string-array name="imports_onboarding_lastpass_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts to file\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_proton_authenticator_steps">
-    <item>Для экспорта кодов из Proton Authenticator перейдите в настройки приложения, найдите раздел \"Управление данными\" и выберите опцию экспорта.</item>
+  <string-array name="imports_onboarding_proton_authenticator_steps_v2">
+    <item>Please go \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_pass_steps">
+    <item>In Proton Pass extension, web or desktop app, go to \"Settings &gt; Export\"</item>
+    <item>Make sure to choose the \"zip format without file attachments\".</item>
+    <item>This will create a zip file that you can use here.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>К сожалению, %1$s в настоящее время не поддерживает экспорт данных из своего приложения. Рассмотрите возможность связаться с %1$s, чтобы запросить эту функцию.</item>

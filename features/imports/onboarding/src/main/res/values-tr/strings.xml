@@ -19,33 +19,38 @@
 <resources>
   <string name="imports_onboarding_title_supported">%1$s konumundan kodları içe aktarın</string>
   <string name="imports_onboarding_title_unsupported">Dışa aktarma yok</string>
-  <string-array name="imports_onboarding_google_steps">
-    <item>Google Authenticator\'dan kod dışa aktarmak için, uygulamanın yerleşik \"Hesapları aktar\" özelliğini kullanmanız gerekmektedir. Bu özellik, hesapları yeni bir cihaza aktarmak için bir QR kodu oluşturur.</item>
+  <string-array name="imports_onboarding_google_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts\"</item>
+    <item>This will create one or more QR codes that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_2fas_steps">
-    <item>2FAS Authenticator\'ı açın ve \"Ayarlar\" bölümüne girin.</item>
-    <item>Ardından \"2FAS Yedekleme\" özelliğine girin.</item>
-    <item>Dışa Aktarma aracına girin ve \"Dosyaya aktar\" düğmesine tıklayın.</item>
+  <string-array name="imports_onboarding_2fas_steps_v2">
+    <item>Please go to \"Settings &gt; 2FAS Backup &gt; Export\"</item>
+    <item>This will create a 2fas file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_aegis_steps">
-    <item>Aegis Authenticator\'dan kod dışa aktarmak için, uygulamanın Ayarlar bölümüne gidin, \"İçe &amp; Dışa Aktar\" bölümünü bulun ve dışa aktarma seçeneğini belirleyin.</item>
-    <item>Şifreli bir veritabanı olarak veya düz metin dosyası olarak dışa aktarmayı seçebilirsiniz.</item>
+  <string-array name="imports_onboarding_aegis_steps_v2">
+    <item>Please go to \"Settings &gt; Import &amp; Export &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_bitwarden_steps">
-    <item>Bitwarden Authenticator\'dan veri dışa aktarmak için, \"Ayarlar\" sekmesini açın ve \"Dışa Aktar\" düğmesine dokunun.</item>
-    <item>Verilerinizi .json veya .csv dosyası olarak dışa aktarmayı seçebilirsiniz.</item>
+  <string-array name="imports_onboarding_bitwarden_steps_v2">
+    <item>Please go to \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_ente_steps">
-    <item>Ente Auth\'dan veri dışa aktarmak için, \"Ayarlar\" sekmesini açın ve \"İçe/Dışa Aktar\" seçeneklerini arayın.</item>
-    <item>\"Kodları Dışa Aktar\"a ve ardından \"Ente Şifreli dışa aktarım\"a dokunun.</item>
-    <item>Bu, tüm kodlarınızı içeren şifreli bir yedekleme dosyası (genellikle .ente veya .json) oluşturur.</item>
+  <string-array name="imports_onboarding_ente_steps_v2">
+    <item>Please go to \"Settings &gt; Data &gt; Export codes\"</item>
+    <item>Choose \"Plain text\", this will create a txt file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_lastpass_steps">
-    <item>LastPass\'tan 2FA kodlarını (TOTP) dışa aktarmak için kasa verilerinizi bir CSV dosyası olarak dışa aktarmanız gerekecektir.</item>
-    <item>LastPass tarayıcı uzantısını açın ve oturum açın. Hesap → Sorunu kendiniz çözün → Kasa öğelerini dışa aktar → Her yerde kullanmak üzere verileri dışa aktar yolunu izleyin.</item>
+  <string-array name="imports_onboarding_lastpass_steps_v2">
+    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts to file\"</item>
+    <item>This will create a Json file that you can use here.</item>
   </string-array>
-  <string-array name="imports_onboarding_proton_authenticator_steps">
-    <item>Proton Authenticator\'dan kod dışa aktarmak için, uygulamanın ayarlarına gidin, \"Verilerinizi yönetin\" bölümünü bulun ve dışa aktarma seçeneğini belirleyin.</item>
+  <string-array name="imports_onboarding_proton_authenticator_steps_v2">
+    <item>Please go \"Settings &gt; Export\"</item>
+    <item>This will create a Json file that you can use here.</item>
+  </string-array>
+  <string-array name="imports_onboarding_proton_pass_steps">
+    <item>In Proton Pass extension, web or desktop app, go to \"Settings &gt; Export\"</item>
+    <item>Make sure to choose the \"zip format without file attachments\".</item>
+    <item>This will create a zip file that you can use here.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Maalesef, %1$s şu anda uygulamasından veri dışa aktarmayı desteklememektedir. Bu özelliği talep etmek için lütfen %1$s ile iletişime geçmeyi düşünebilirsiniz.</item>
