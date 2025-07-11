@@ -18,6 +18,8 @@
 
 package proton.android.authenticator.app.ui
 
+import android.app.ComponentCaller
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +38,7 @@ import kotlinx.coroutines.launch
 import proton.android.authenticator.app.handler.RequestReviewHandler
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.ui.domain.components.icons.CenteredLauncherIcon
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
@@ -48,6 +51,9 @@ internal class MainActivity : FragmentActivity() {
 
     @Inject
     internal lateinit var navigationNavigator: NavigationNavigator
+
+    @Inject
+    internal lateinit var updateAppLockStateUseCase: UpdateAppLockStateUseCase
 
     @Inject
     internal lateinit var requestReviewHandler: RequestReviewHandler
@@ -98,6 +104,18 @@ internal class MainActivity : FragmentActivity() {
                 }
             }
         }
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?,
+        caller: ComponentCaller
+    ) {
+        lifecycleScope.launch {
+            updateAppLockStateUseCase(AppLockState.AUTHENTICATED)
+        }
+        super.onActivityResult(requestCode, resultCode, data, caller)
     }
 
     private fun setStatusBarTheme(isDarkTheme: Boolean) {
