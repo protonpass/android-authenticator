@@ -75,13 +75,7 @@ internal class EntriesSyncer @Inject constructor(
         .let(::EncryptionKey)
 
     private fun getLocalEntriesMap(syncEntries: List<SyncEntry>) = syncEntries
-        .map { syncEntry ->
-            EntryLocal(
-                state = syncEntry.state,
-                modifiedAt = syncEntry.modifyTime,
-                model = syncEntry.model
-            )
-        }
+        .map(::EntryLocal)
         .associateBy(EntryLocal::id)
 
     private suspend fun getRemoteEntriesMap(userId: String, encryptionKey: EncryptionKey) = api
@@ -131,6 +125,7 @@ internal class EntriesSyncer @Inject constructor(
                                     userId = userId,
                                     keyId = keyId,
                                     encryptionKey = encryptionKey,
+                                    localEntriesMap = localEntriesMap,
                                     remoteEntriesMap = remoteEntriesMap
                                 )
                             }
@@ -171,11 +166,13 @@ internal class EntriesSyncer @Inject constructor(
             ?.also { entries -> repository.removeAll(entries) }
     }
 
+    @Suppress("LongParameterList")
     private suspend fun pushAll(
         entryOperations: List<EntryOperation>,
         userId: String,
         keyId: String,
         encryptionKey: EncryptionKey,
+        localEntriesMap: Map<String, EntryLocal>,
         remoteEntriesMap: Map<String, EntryRemote>
     ) {
         entryOperations
@@ -188,7 +185,8 @@ internal class EntriesSyncer @Inject constructor(
                             userId = userId,
                             keyId = keyId,
                             encryptionKey = encryptionKey,
-                            remoteEntryIdsAndEntryModels = createEntryIdsAndEntryModels
+                            remoteEntryIdsAndEntryModels = createEntryIdsAndEntryModels,
+                            localEntriesMap = localEntriesMap
                         )
                     }
 
@@ -209,11 +207,14 @@ internal class EntriesSyncer @Inject constructor(
         userId: String,
         keyId: String,
         encryptionKey: EncryptionKey,
-        remoteEntryIdsAndEntryModels: List<Pair<String?, AuthenticatorEntryModel>>
+        remoteEntryIdsAndEntryModels: List<Pair<String?, AuthenticatorEntryModel>>,
+        localEntriesMap: Map<String, EntryLocal>
     ) {
         remoteEntryIdsAndEntryModels
+            .mapNotNull { (_, entryModel) -> localEntriesMap[entryModel.id] }
             .takeIfNotEmpty()
-            ?.map(Pair<String?, AuthenticatorEntryModel>::second)
+            ?.sortedBy(EntryLocal::position)
+            ?.map(EntryLocal::model)
             ?.also { entryModels ->
                 api.createAll(
                     userId = userId,

@@ -144,11 +144,12 @@ internal class EntriesApiImpl @Inject constructor(
                 }
             }
             .let { (entriesDto, entryModels) ->
-                entriesDto.zip(entryModels) { entryDto, entryModel ->
+                entriesDto.withIndex().zip(entryModels) { indexedEntryDto, entryModel ->
                     EntryRemote(
-                        id = entryDto.entryId,
-                        revision = entryDto.revision,
-                        modifiedAt = entryDto.modifyTime,
+                        id = indexedEntryDto.value.entryId,
+                        revision = indexedEntryDto.value.revision,
+                        modifiedAt = indexedEntryDto.value.modifyTime,
+                        position = indexedEntryDto.index,
                         model = entryModel
                     )
                 }

@@ -32,8 +32,9 @@ data class SyncEntriesCommand(
 ) : Command
 
 data class SyncEntry(
+    internal val id: String,
+    internal val position: Int,
     internal val modifyTime: Long,
-    private val id: String,
     private val name: String,
     private val issuer: String,
     private val note: String?,

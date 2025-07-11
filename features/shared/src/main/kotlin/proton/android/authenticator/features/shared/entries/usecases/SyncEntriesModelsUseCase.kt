@@ -61,6 +61,7 @@ class SyncEntriesModelsUseCase @Inject constructor(
                     period = entryModel.period,
                     note = entryModel.note,
                     type = entryModel.type,
+                    position = entryModel.position,
                     modifyTime = entryModel.modifiedAt,
                     isDeleted = entryModel.isDeleted,
                     isSynced = entryModel.isSynced

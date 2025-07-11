@@ -24,6 +24,7 @@ import proton.android.authenticator.commonrust.RemoteEntry
 internal data class EntryRemote(
     internal val id: String,
     internal val revision: Int,
+    internal val position: Int,
     internal val modifiedAt: Long,
     internal val model: AuthenticatorEntryModel
 ) {

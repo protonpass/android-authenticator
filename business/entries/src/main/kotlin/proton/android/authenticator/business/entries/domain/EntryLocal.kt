@@ -18,23 +18,23 @@
 
 package proton.android.authenticator.business.entries.domain
 
+import proton.android.authenticator.business.entries.application.syncall.SyncEntry
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.LocalEntry
-import proton.android.authenticator.commonrust.LocalEntryState
 
-internal data class EntryLocal(
-    private val state: LocalEntryState,
-    private val modifiedAt: Long,
-    private val model: AuthenticatorEntryModel
-) {
+internal data class EntryLocal(private val syncEntry: SyncEntry) {
 
-    internal val id: String = model.id
+    internal val id: String = syncEntry.id
+
+    internal val model: AuthenticatorEntryModel = syncEntry.model
 
     internal val operation: LocalEntry = LocalEntry(
-        entry = model,
-        state = state,
-        modifyTime = modifiedAt,
-        localModifyTime = modifiedAt
+        entry = syncEntry.model,
+        state = syncEntry.state,
+        modifyTime = syncEntry.modifyTime,
+        localModifyTime = syncEntry.modifyTime
     )
+
+    internal val position: Int = syncEntry.position
 
 }
