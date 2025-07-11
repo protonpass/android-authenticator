@@ -50,6 +50,14 @@ internal data class UpdateEntriesRequestDto(
 )
 
 @Serializable
+internal data class SortEntriesRequestDto(
+    @SerialName("StartingPosition")
+    internal val startingPosition: Int,
+    @SerialName("Entries")
+    internal val entryIds: List<String>
+)
+
+@Serializable
 internal data class UpdateEntryRequestDto(
     @SerialName("AuthenticatorKeyID")
     internal val authenticatorKeyID: String,

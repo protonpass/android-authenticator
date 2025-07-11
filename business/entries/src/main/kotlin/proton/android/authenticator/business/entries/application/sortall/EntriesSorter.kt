@@ -20,15 +20,25 @@ package proton.android.authenticator.business.entries.application.sortall
 
 import kotlinx.coroutines.flow.first
 import proton.android.authenticator.business.entries.domain.EntriesRepository
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 
-internal class EntriesSorter @Inject constructor(private val repository: EntriesRepository) {
+internal class EntriesSorter @Inject constructor(
+    private val repository: EntriesRepository,
+    private val timeProvider: TimeProvider
+) {
 
     internal suspend fun sort(sortingMap: Map<String, Int>) {
         repository.findAll()
             .first()
             .mapNotNull { entry ->
-                sortingMap[entry.id]?.let { newPosition -> entry.copy(position = newPosition) }
+                sortingMap[entry.id]?.let { newPosition ->
+                    entry.copy(
+                        position = newPosition,
+                        isSynced = false,
+                        modifiedAt = timeProvider.currentSeconds()
+                    )
+                }
             }
             .also { sortedEntries ->
                 repository.saveAll(entries = sortedEntries)

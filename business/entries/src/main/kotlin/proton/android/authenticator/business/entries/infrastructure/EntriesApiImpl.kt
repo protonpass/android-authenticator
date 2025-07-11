@@ -26,6 +26,7 @@ import proton.android.authenticator.business.entries.domain.EntryRemote
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.DeleteEntriesRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.SortEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.retrofit.RetrofitEntriesDataSource
@@ -154,6 +155,22 @@ internal class EntriesApiImpl @Inject constructor(
                     )
                 }
             }
+    }
+
+    override suspend fun sortAll(
+        userId: String,
+        startingPosition: Int,
+        entryIds: List<String>
+    ) {
+        SortEntriesRequestDto(
+            startingPosition = startingPosition,
+            entryIds = entryIds
+        ).also { request ->
+            apiProvider
+                .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
+                .invoke { sortEntries(request = request) }
+                .valueOrThrow
+        }
     }
 
     override suspend fun update(

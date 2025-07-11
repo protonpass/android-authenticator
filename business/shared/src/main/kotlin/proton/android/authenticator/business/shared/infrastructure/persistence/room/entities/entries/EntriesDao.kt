@@ -45,7 +45,7 @@ interface EntriesDao {
     @Upsert
     suspend fun upsertAll(entryEntities: List<EntryEntity>)
 
-    @Query("SELECT MAX(position) FROM ${EntryEntity.TABLE}")
-    suspend fun searchMaxPosition(): Int?
+    @Query("SELECT COALESCE(MAX(position), -1) FROM ${EntryEntity.TABLE}")
+    suspend fun searchMaxPosition(): Int
 
 }

@@ -18,24 +18,9 @@
 
 package proton.android.authenticator.business.entries.domain
 
-import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.RemoteEntry
-
-internal data class EntryRemote(
-    internal val id: String,
-    internal val revision: Int,
+internal data class EntrySort(
+    internal val localId: String,
+    internal val remoteId: String,
     internal val position: Int,
-    internal val modifiedAt: Long,
-    internal val model: AuthenticatorEntryModel
-) {
-
-    internal val localId: String = model.id
-
-    internal val operation: RemoteEntry = RemoteEntry(
-        remoteId = id,
-        revision = revision.toUInt(),
-        modifyTime = modifiedAt,
-        entry = model
-    )
-
-}
+    internal val modifiedAt: Long
+)

@@ -24,6 +24,7 @@ import proton.android.authenticator.business.entries.infrastructure.network.Crea
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryResponseDto
 import proton.android.authenticator.business.entries.infrastructure.network.DeleteEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.FetchEntriesResponseDto
+import proton.android.authenticator.business.entries.infrastructure.network.SortEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesResponseDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryRequestDto
@@ -55,6 +56,9 @@ internal interface RetrofitEntriesDataSource : NetworkDataSource {
 
     @GET("$ROOT_PATH/entry")
     suspend fun getEntries(@Query("Since") lastId: String?): FetchEntriesResponseDto
+
+    @PUT("$ROOT_PATH/entry/order")
+    suspend fun sortEntries(@Body request: SortEntriesRequestDto)
 
     @PUT("$ROOT_PATH/entry/{entryId}")
     suspend fun updateEntry(

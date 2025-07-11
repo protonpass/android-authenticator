@@ -30,6 +30,7 @@ import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryLocal
 import proton.android.authenticator.business.entries.domain.EntryRemote
+import proton.android.authenticator.business.entries.domain.EntrySort
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.commonrust.EntryOperation
@@ -60,6 +61,12 @@ internal class EntriesSyncer @Inject constructor(
         val remoteEntriesMap = getRemoteEntriesMap(userId, encryptionKey)
 
         val localEntriesMap = getLocalEntriesMap(entries)
+
+        executeSyncSorting(
+            userId = userId,
+            remoteEntriesMap = remoteEntriesMap,
+            localEntriesMap = localEntriesMap
+        )
 
         executeSyncOperations(
             userId = userId,
@@ -276,6 +283,80 @@ internal class EntriesSyncer @Inject constructor(
                 .awaitAll()
                 .also { entries -> repository.saveAll(entries) }
         }
+    }
+
+    private suspend fun executeSyncSorting(
+        userId: String,
+        remoteEntriesMap: Map<String, EntryRemote>,
+        localEntriesMap: Map<String, EntryLocal>
+    ) {
+        remoteEntriesMap.mapNotNull { (remoteEntryId, remoteEntry) ->
+            localEntriesMap[remoteEntry.localId]?.let { localEntry ->
+                when {
+                    localEntry.position == remoteEntry.position -> {
+                        EntrySort(
+                            localId = localEntry.id,
+                            remoteId = remoteEntryId,
+                            position = localEntry.position,
+                            modifiedAt = localEntry.modifiedAt
+                        )
+                    }
+
+                    localEntry.modifiedAt > remoteEntry.modifiedAt -> {
+                        EntrySort(
+                            localId = localEntry.id,
+                            remoteId = remoteEntryId,
+                            position = localEntry.position,
+                            modifiedAt = localEntry.modifiedAt
+                        )
+                    }
+
+                    else -> {
+                        EntrySort(
+                            localId = localEntry.id,
+                            remoteId = remoteEntryId,
+                            position = remoteEntry.position,
+                            modifiedAt = remoteEntry.modifiedAt
+                        )
+                    }
+                }
+            }
+        }
+            .sortedBy(EntrySort::position)
+            .also { entriesSort -> sortEntriesRemotely(userId, entriesSort) }
+            .also { entriesSort -> sortEntriesLocally(entriesSort) }
+    }
+
+    private suspend fun sortEntriesRemotely(userId: String, entriesSort: List<EntrySort>) {
+        entriesSort
+            .takeIfNotEmpty()
+            ?.map(EntrySort::remoteId)
+            ?.also { entryIds ->
+                api.sortAll(
+                    userId = userId,
+                    startingPosition = entriesSort.first().position,
+                    entryIds = entryIds
+                )
+            }
+    }
+
+    private suspend fun sortEntriesLocally(entriesSort: List<EntrySort>) {
+        entriesSort
+            .takeIfNotEmpty()
+            ?.associateBy(EntrySort::localId)
+            ?.let { entriesSortMap ->
+                repository.findAll()
+                    .first()
+                    .mapNotNull { entry ->
+                        entriesSortMap[entry.id]?.let { entrySort ->
+                            entry.copy(
+                                position = entrySort.position,
+                                modifiedAt = entrySort.modifiedAt
+                            )
+                        }
+                    }
+            }
+            ?.also { sortedEntries -> repository.saveAll(entries = sortedEntries) }
     }
 
     private suspend fun searchLocalEntry(entryModel: AuthenticatorEntryModel) = try {

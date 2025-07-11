@@ -28,11 +28,13 @@ internal data class EntryLocal(private val syncEntry: SyncEntry) {
 
     internal val model: AuthenticatorEntryModel = syncEntry.model
 
+    internal val modifiedAt: Long = syncEntry.modifyTime
+
     internal val operation: LocalEntry = LocalEntry(
         entry = syncEntry.model,
         state = syncEntry.state,
         modifyTime = syncEntry.modifyTime,
-        localModifyTime = syncEntry.modifyTime
+        localModifyTime = null
     )
 
     internal val position: Int = syncEntry.position

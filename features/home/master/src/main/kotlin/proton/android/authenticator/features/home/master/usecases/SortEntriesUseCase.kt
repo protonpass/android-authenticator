@@ -32,7 +32,7 @@ internal class SortEntriesUseCase @Inject constructor(private val commandBus: Co
         newSortingMap: Map<String, Int>
     ): Answer<Unit, SortEntriesReason> = entryModels
         .filter { entryModel ->
-            newSortingMap[entryModel.id] != entryModel.position.minus(1)
+            newSortingMap[entryModel.id] != entryModel.position
         }
         .map { entryModel ->
             newSortingMap[entryModel.id]

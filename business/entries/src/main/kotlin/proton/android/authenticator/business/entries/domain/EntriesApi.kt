@@ -45,6 +45,12 @@ internal abstract class EntriesApi {
 
     internal abstract suspend fun fetchAll(userId: String, encryptionKey: EncryptionKey): List<EntryRemote>
 
+    internal abstract suspend fun sortAll(
+        userId: String,
+        startingPosition: Int,
+        entryIds: List<String>
+    )
+
     @Suppress("LongParameterList")
     internal abstract suspend fun update(
         userId: String,

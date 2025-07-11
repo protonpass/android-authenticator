@@ -54,7 +54,7 @@ internal class RoomKeysPersistenceDataSource @Inject constructor(
             .also { keyEntities -> keysDao.upsertAll(keyEntities) }
     }
 
-    override suspend fun searchMaxPosition(): Int? = null
+    override suspend fun searchMaxPosition(): Int = 0
 
 }
 
