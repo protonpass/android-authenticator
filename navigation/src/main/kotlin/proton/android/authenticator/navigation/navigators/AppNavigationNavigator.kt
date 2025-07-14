@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -59,6 +60,7 @@ internal class AppNavigationNavigator @Inject constructor(
                 val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
                 val context = LocalContext.current
+                val keyboardController = LocalSoftwareKeyboardController.current
 
                 LaunchedEffect(key1 = navController) {
                     onFinishLaunching()
@@ -67,6 +69,7 @@ internal class AppNavigationNavigator @Inject constructor(
                 DisposableEffect(key1 = navController) {
                     val observer = NavController.OnDestinationChangedListener { _, _, _ ->
                         snackbarHostState.currentSnackbarData?.dismiss()
+                        keyboardController?.hide()
                     }
 
                     navController.addOnDestinationChangedListener(observer)

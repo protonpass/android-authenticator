@@ -18,22 +18,41 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import proton.android.authenticator.features.home.scan.presentation.HomeScanState
 
 @Composable
 internal fun HomeScanContent(
     state: HomeScanState,
-    onAppSettingsClick: () -> Unit,
+    onPermissionRequested: (Boolean) -> Unit,
+    onPermissionRequired: () -> Unit,
     onCloseClick: () -> Unit,
     onQrCodeScanned: (String) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
-    HomeScanCamera(
-        modifier = modifier,
-        onQrCodeScanned = onQrCodeScanned,
-        onCameraError = onCloseClick,
-        onAppSettingsClick = onAppSettingsClick
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted -> onPermissionRequested(isGranted) }
     )
+
+    LaunchedEffect(key1 = true) {
+        launcher.launch(input = Manifest.permission.CAMERA)
+    }
+
+    hasCameraPermission?.let { hasPermission ->
+        if (hasPermission) {
+            HomeScanCamera(
+                modifier = modifier,
+                onQrCodeScanned = onQrCodeScanned,
+                onCameraError = onCloseClick
+            )
+        } else {
+            onPermissionRequired()
+        }
+    }
 }

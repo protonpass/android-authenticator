@@ -23,11 +23,10 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -47,19 +46,26 @@ internal class HomeScanViewModel @Inject constructor(
     private val scanEntryQrUseCase: ScanEntryQrUseCase
 ) : ViewModel() {
 
+    private val hasCameraPermissionFlow = MutableStateFlow<Boolean?>(value = null)
+
     private val eventFlow = MutableStateFlow<HomeScanEvent>(value = HomeScanEvent.Idle)
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    internal val stateFlow: StateFlow<HomeScanState> = eventFlow
-        .mapLatest(::HomeScanState)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = HomeScanState(event = HomeScanEvent.Idle)
-        )
+    internal val stateFlow: StateFlow<HomeScanState> = combine(
+        hasCameraPermissionFlow,
+        eventFlow,
+        ::HomeScanState
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = HomeScanState.Initial
+    )
 
     internal fun onConsumeEvent(event: HomeScanEvent) {
         eventFlow.compareAndSet(expect = event, update = HomeScanEvent.Idle)
+    }
+
+    internal fun onCameraPermissionRequested(isGranted: Boolean) {
+        hasCameraPermissionFlow.update { isGranted }
     }
 
     internal fun onCreateEntry(uri: String) {
@@ -79,6 +85,7 @@ internal class HomeScanViewModel @Inject constructor(
                             CreateEntryReason.InvalidEntryTitle -> {
                                 R.string.home_scan_snackbar_message_invalid_entry_title
                             }
+
                             CreateEntryReason.Unknown -> {
                                 R.string.home_scan_snackbar_message_invalid_entry_unknown
                             }

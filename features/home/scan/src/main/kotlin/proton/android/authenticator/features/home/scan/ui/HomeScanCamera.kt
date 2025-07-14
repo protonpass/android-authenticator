@@ -18,11 +18,7 @@
 
 package proton.android.authenticator.features.home.scan.ui
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.view.ViewGroup
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -48,7 +44,6 @@ import proton.android.authenticator.shared.ui.domain.analyzers.QrCodeAnalyzer
 internal fun HomeScanCamera(
     onQrCodeScanned: (String) -> Unit,
     onCameraError: () -> Unit,
-    onAppSettingsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -84,73 +79,51 @@ internal fun HomeScanCamera(
         mutableStateOf(Size.Zero)
     }
 
-    var hasCameraPermission by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        )
-    }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted -> hasCameraPermission = isGranted }
-    )
-
-    LaunchedEffect(key1 = true) {
-        launcher.launch(Manifest.permission.CAMERA)
-    }
-
     DisposableEffect(key1 = lifecycleOwner) {
         onDispose { cameraProvider.unbindAll() }
     }
 
-    if (hasCameraPermission) {
-        AndroidView(
-            modifier = modifier,
-            factory = { factoryContext ->
-                val previewView = PreviewView(factoryContext).apply {
-                    scaleType = PreviewView.ScaleType.FILL_CENTER
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
+    AndroidView(
+        modifier = modifier,
+        factory = { factoryContext ->
+            val previewView = PreviewView(factoryContext).apply {
+                scaleType = PreviewView.ScaleType.FILL_CENTER
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
+
+                post {
+                    previewViewSize = Size(
+                        width = width.toFloat(),
+                        height = height.toFloat()
                     )
-                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-
-                    post {
-                        previewViewSize = Size(
-                            width = width.toFloat(),
-                            height = height.toFloat()
-                        )
-                    }
                 }
-
-                preview.surfaceProvider = previewView.surfaceProvider
-
-                try {
-                    cameraProvider.bindToLifecycle(
-                        lifecycleOwner,
-                        cameraSelector,
-                        preview,
-                        imageAnalysis
-                    )
-                } catch (_: IllegalStateException) {
-                    onCameraError()
-                } catch (_: IllegalArgumentException) {
-                    onCameraError()
-                } catch (_: UnsupportedOperationException) {
-                    onCameraError()
-                }
-
-                previewView
             }
-        )
 
-        HomeScanCameraQrMask(cutoutRect = cutoutRect)
-    } else {
-        HomeScanPermission(onOpenAppSettings = onAppSettingsClick)
-    }
+            preview.surfaceProvider = previewView.surfaceProvider
+
+            try {
+                cameraProvider.bindToLifecycle(
+                    lifecycleOwner,
+                    cameraSelector,
+                    preview,
+                    imageAnalysis
+                )
+            } catch (_: IllegalStateException) {
+                onCameraError()
+            } catch (_: IllegalArgumentException) {
+                onCameraError()
+            } catch (_: UnsupportedOperationException) {
+                onCameraError()
+            }
+
+            previewView
+        }
+    )
+
+    HomeScanCameraQrMask(cutoutRect = cutoutRect)
 
     LaunchedEffect(previewViewSize) {
         if (previewViewSize == Size.Zero) return@LaunchedEffect

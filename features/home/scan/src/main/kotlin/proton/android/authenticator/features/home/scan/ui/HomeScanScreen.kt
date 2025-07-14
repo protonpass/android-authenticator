@@ -42,9 +42,9 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 fun HomeScanScreen(
     snackbarHostState: SnackbarHostState,
     onCloseClick: () -> Unit,
-    onAppSettingsClick: () -> Unit,
     onManualEntryClick: () -> Unit,
-    onEntryCreated: () -> Unit
+    onEntryCreated: () -> Unit,
+    onPermissionRequired: () -> Unit
 ) = with(hiltViewModel<HomeScanViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
 
@@ -65,29 +65,32 @@ fun HomeScanScreen(
     ScaffoldScreen(
         snackbarHostState = snackbarHostState,
         bottomBar = {
-            HomeScanBottomBar(
-                modifier = Modifier
-                    .imePadding()
-                    .systemBarsPadding()
-                    .fillMaxWidth()
-                    .padding(
-                        start = ThemePadding.Medium,
-                        end = ThemePadding.Medium,
-                        bottom = ThemePadding.Large
-                    ),
-                onCloseClick = onCloseClick,
-                onEnterManuallyClick = onManualEntryClick,
-                onOpenGalleryClick = {
-                    launcher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-                }
-            )
+            if (state.showBottomBar) {
+                HomeScanBottomBar(
+                    modifier = Modifier
+                        .imePadding()
+                        .systemBarsPadding()
+                        .fillMaxWidth()
+                        .padding(
+                            start = ThemePadding.Medium,
+                            end = ThemePadding.Medium,
+                            bottom = ThemePadding.Large
+                        ),
+                    onCloseClick = onCloseClick,
+                    onEnterManuallyClick = onManualEntryClick,
+                    onOpenGalleryClick = {
+                        launcher.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                    }
+                )
+            }
         }
     ) {
         HomeScanContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
             onCloseClick = onCloseClick,
-            onAppSettingsClick = onAppSettingsClick,
+            onPermissionRequested = ::onCameraPermissionRequested,
+            onPermissionRequired = onPermissionRequired,
             onQrCodeScanned = ::onCreateEntry
         )
     }

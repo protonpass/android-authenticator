@@ -21,4 +21,20 @@ package proton.android.authenticator.features.home.scan.presentation
 import androidx.compose.runtime.Stable
 
 @Stable
-internal data class HomeScanState(internal val event: HomeScanEvent)
+internal data class HomeScanState(
+    internal val hasCameraPermission: Boolean?,
+    internal val event: HomeScanEvent
+) {
+
+    internal val showBottomBar: Boolean = hasCameraPermission == true
+
+    internal companion object {
+
+        internal val Initial: HomeScanState = HomeScanState(
+            hasCameraPermission = null,
+            event = HomeScanEvent.Idle
+        )
+
+    }
+
+}

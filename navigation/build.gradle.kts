@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.features.exports.errors)
     implementation(projects.features.home.manual)
     implementation(projects.features.home.master)
+    implementation(projects.features.home.permissions)
     implementation(projects.features.home.scan)
     implementation(projects.features.imports.completion)
     implementation(projects.features.imports.errors)

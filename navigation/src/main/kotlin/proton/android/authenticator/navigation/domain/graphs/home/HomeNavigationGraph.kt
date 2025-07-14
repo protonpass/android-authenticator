@@ -8,6 +8,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
 import proton.android.authenticator.features.home.manual.ui.HomeManualScreen
 import proton.android.authenticator.features.home.master.ui.HomeScreen
+import proton.android.authenticator.features.home.permissions.ui.HomePermissionScreen
 import proton.android.authenticator.features.home.scan.ui.HomeScanScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
@@ -85,8 +86,6 @@ internal fun NavGraphBuilder.homeNavigationGraph(
         }
 
         composable<HomeScanNavigationDestination> {
-            val context = LocalContext.current
-
             HomeScanScreen(
                 snackbarHostState = snackbarHostState,
                 onCloseClick = {
@@ -105,8 +104,38 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                         inclusive = false
                     ).also(onNavigate)
                 },
-                onAppSettingsClick = {
-                    onNavigate(NavigationCommand.NavigateToAppSettings(context))
+                onPermissionRequired = {
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomePermissionsNavigationDestination,
+                        popDestination = HomeMasterNavigationDestination
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        composable<HomePermissionsNavigationDestination> {
+            val context = LocalContext.current
+
+            HomePermissionScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onOpenAppSettingsClick = {
+                    NavigationCommand.NavigateToAppSettings(
+                        context = context
+                    ).also(onNavigate)
+                },
+                onCreateManuallyClick = {
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeManualNavigationDestination(entryId = null),
+                        popDestination = HomeMasterNavigationDestination
+                    ).also(onNavigate)
+                },
+                onPermissionGranted = {
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = HomeScanNavigationDestination,
+                        popDestination = HomeMasterNavigationDestination
+                    ).also(onNavigate)
                 }
             )
         }
