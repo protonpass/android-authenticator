@@ -399,5 +399,5 @@ org.jspecify:jspecify:1.0.0
 org.minidns:minidns-core:1.0.4
 org.mobilenativefoundation.store:multicast:4.0.7
 org.mobilenativefoundation.store:store4:4.0.7
-sh.calvin.reorderable:reorderable-android:2.4.3
-sh.calvin.reorderable:reorderable:2.4.3
+sh.calvin.reorderable:reorderable-android:2.5.1
+sh.calvin.reorderable:reorderable:2.5.1
