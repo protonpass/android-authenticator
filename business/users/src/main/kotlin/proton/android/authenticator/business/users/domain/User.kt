@@ -24,6 +24,6 @@ data class User(private val account: Account) {
 
     val id: String = account.userId.id
 
-    val displayName: String = account.username ?: account.email.orEmpty()
+    val displayName: String = account.email ?: account.username.orEmpty()
 
 }
