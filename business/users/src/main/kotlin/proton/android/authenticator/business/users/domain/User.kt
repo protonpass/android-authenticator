@@ -18,12 +18,12 @@
 
 package proton.android.authenticator.business.users.domain
 
-import me.proton.core.account.domain.entity.Account
+data class User(
+    val id: String,
+    private val email: String?,
+    private val username: String?
+) {
 
-data class User(private val account: Account) {
-
-    val id: String = account.userId.id
-
-    val displayName: String = account.email ?: account.username.orEmpty()
+    val displayName: String = email ?: username.orEmpty()
 
 }

@@ -24,16 +24,27 @@ import me.proton.core.account.domain.entity.Account
 import me.proton.core.account.domain.entity.isReady
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.domain.getPrimaryAccount
+import me.proton.core.user.domain.repository.UserRepository
 import proton.android.authenticator.business.users.domain.User
 import javax.inject.Inject
 
-internal class UserFinder @Inject constructor(private val accountManager: AccountManager) {
+internal class UserFinder @Inject constructor(
+    private val accountManager: AccountManager,
+    private val userRepository: UserRepository
+) {
 
     internal fun find(): Flow<User?> = accountManager.getPrimaryAccount()
         .map { primaryAccount ->
             primaryAccount
                 ?.takeIf(Account::isReady)
-                ?.let(::User)
+                ?.let { account -> userRepository.getUser(sessionUserId = account.userId) }
+                ?.let { accountUsername ->
+                    User(
+                        id = accountUsername.userId.id,
+                        email = accountUsername.email,
+                        username = accountUsername.name
+                    )
+                }
         }
 
 }
