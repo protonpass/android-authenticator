@@ -46,11 +46,11 @@ internal data class FetchEntriesResponseDto(
 )
 
 @Serializable
-internal data class UpdateEntryResponseDto(
+internal data class SortEntriesResponseDto(
     @SerialName("Code")
     internal val code: Int,
-    @SerialName("Entry")
-    internal val entry: EntryDto
+    @SerialName("Result")
+    internal val result: SortDto
 )
 
 @Serializable
@@ -87,6 +87,12 @@ internal data class EntryDto(
     internal val flags: Int,
     @SerialName("CreateTime")
     internal val createTime: Long,
+    @SerialName("ModifyTime")
+    internal val modifyTime: Long
+)
+
+@Serializable
+internal data class SortDto(
     @SerialName("ModifyTime")
     internal val modifyTime: Long
 )

@@ -34,7 +34,7 @@ internal data class EntryLocal(private val syncEntry: SyncEntry) {
         entry = syncEntry.model,
         state = syncEntry.state,
         modifyTime = syncEntry.modifyTime,
-        localModifyTime = null
+        localModifyTime = syncEntry.modifyTime
     )
 
     internal val position: Int = syncEntry.position

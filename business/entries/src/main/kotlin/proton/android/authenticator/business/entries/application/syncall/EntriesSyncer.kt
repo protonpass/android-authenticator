@@ -222,7 +222,7 @@ internal class EntriesSyncer @Inject constructor(
             .takeIfNotEmpty()
             ?.sortedBy(EntryLocal::position)
             ?.map(EntryLocal::model)
-            ?.also { entryModels ->
+            ?.let { entryModels ->
                 api.createAll(
                     userId = userId,
                     keyId = keyId,
@@ -230,6 +230,7 @@ internal class EntriesSyncer @Inject constructor(
                     entryModels = entryModels
                 )
             }
+            ?.also { entriesRemote -> updateRemoteDataLocally(entriesRemote = entriesRemote) }
     }
 
     private suspend fun updateAll(
@@ -242,7 +243,7 @@ internal class EntriesSyncer @Inject constructor(
         remoteEntryIdsAndEntryModels
             .takeIfNotEmpty()
             ?.unzip()
-            ?.also { (remoteEntryIds, entryModels) ->
+            ?.let { (remoteEntryIds, entryModels) ->
                 api.updateAll(
                     userId = userId,
                     entryIds = remoteEntryIds.filterNotNull(),
@@ -252,6 +253,26 @@ internal class EntriesSyncer @Inject constructor(
                     remoteEntriesMap = remoteEntriesMap
                 )
             }
+            ?.also { entriesRemote -> updateRemoteDataLocally(entriesRemote = entriesRemote) }
+    }
+
+    private suspend fun updateRemoteDataLocally(entriesRemote: List<EntryRemote>) {
+        entriesRemote
+            .takeIfNotEmpty()
+            ?.associateBy(EntryRemote::localId)
+            ?.let { entriesRemoteMap ->
+                repository.findAll()
+                    .first()
+                    .mapNotNull { entry ->
+                        entriesRemoteMap[entry.id]?.let { entryRemote ->
+                            entry.copy(
+                                modifiedAt = entryRemote.modifiedAt,
+                                isSynced = true
+                            )
+                        }
+                    }
+            }
+            ?.also { updatedEntries -> repository.saveAll(entries = updatedEntries) }
     }
 
     private suspend fun upsertAll(entryOperations: List<EntryOperation>, remoteEntriesMap: Map<String, EntryRemote>) {
@@ -323,24 +344,22 @@ internal class EntriesSyncer @Inject constructor(
             }
         }
             .sortedBy(EntrySort::position)
-            .also { entriesSort -> sortEntriesRemotely(userId, entriesSort) }
-            .also { entriesSort -> sortEntriesLocally(entriesSort) }
+            .let { entriesSort -> entriesSort to sortEntriesRemotely(userId, entriesSort) }
+            .also { (entriesSort, modifyTime) -> sortEntriesLocally(entriesSort, modifyTime) }
     }
 
-    private suspend fun sortEntriesRemotely(userId: String, entriesSort: List<EntrySort>) {
-        entriesSort
-            .takeIfNotEmpty()
-            ?.map(EntrySort::remoteId)
-            ?.also { entryIds ->
-                api.sortAll(
-                    userId = userId,
-                    startingPosition = entriesSort.first().position,
-                    entryIds = entryIds
-                )
-            }
-    }
+    private suspend fun sortEntriesRemotely(userId: String, entriesSort: List<EntrySort>): Long? = entriesSort
+        .takeIfNotEmpty()
+        ?.map(EntrySort::remoteId)
+        ?.let { entryIds ->
+            api.sortAll(
+                userId = userId,
+                startingPosition = entriesSort.first().position,
+                entryIds = entryIds
+            )
+        }
 
-    private suspend fun sortEntriesLocally(entriesSort: List<EntrySort>) {
+    private suspend fun sortEntriesLocally(entriesSort: List<EntrySort>, modifyTime: Long?) {
         entriesSort
             .takeIfNotEmpty()
             ?.associateBy(EntrySort::localId)
@@ -351,7 +370,8 @@ internal class EntriesSyncer @Inject constructor(
                         entriesSortMap[entry.id]?.let { entrySort ->
                             entry.copy(
                                 position = entrySort.position,
-                                modifiedAt = entrySort.modifiedAt
+                                modifiedAt = modifyTime ?: entrySort.modifiedAt,
+                                isSynced = true
                             )
                         }
                     }

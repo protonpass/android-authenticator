@@ -25,19 +25,16 @@ import proton.android.authenticator.business.entries.infrastructure.network.Crea
 import proton.android.authenticator.business.entries.infrastructure.network.DeleteEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.FetchEntriesResponseDto
 import proton.android.authenticator.business.entries.infrastructure.network.SortEntriesRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.SortEntriesResponseDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesResponseDto
-import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryRequestDto
-import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryResponseDto
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource
 import proton.android.authenticator.business.shared.domain.infrastructure.network.NetworkDataSource.Companion.ROOT_PATH
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface RetrofitEntriesDataSource : NetworkDataSource {
@@ -48,9 +45,6 @@ internal interface RetrofitEntriesDataSource : NetworkDataSource {
     @POST("$ROOT_PATH/entry/bulk")
     suspend fun createEntries(@Body request: CreateEntriesRequestDto): CreateEntriesResponseDto
 
-    @DELETE("$ROOT_PATH/entry/{entryId}")
-    suspend fun deleteEntry(@Path("entryId") entryId: String)
-
     @HTTP(method = "DELETE", path = "$ROOT_PATH/entry/bulk", hasBody = true)
     suspend fun deleteEntries(@Body request: DeleteEntriesRequestDto)
 
@@ -58,13 +52,7 @@ internal interface RetrofitEntriesDataSource : NetworkDataSource {
     suspend fun getEntries(@Query("Since") lastId: String?): FetchEntriesResponseDto
 
     @PUT("$ROOT_PATH/entry/order")
-    suspend fun sortEntries(@Body request: SortEntriesRequestDto)
-
-    @PUT("$ROOT_PATH/entry/{entryId}")
-    suspend fun updateEntry(
-        @Path("entryId") entryId: String,
-        @Body request: UpdateEntryRequestDto
-    ): UpdateEntryResponseDto
+    suspend fun sortEntries(@Body request: SortEntriesRequestDto): SortEntriesResponseDto
 
     @PUT("$ROOT_PATH/entry/bulk")
     suspend fun updateEntries(@Body request: UpdateEntriesRequestDto): UpdateEntriesResponseDto

@@ -22,6 +22,7 @@ import android.content.Context
 import androidx.startup.Initializer
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -30,7 +31,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -38,6 +41,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import proton.android.authenticator.app.di.ApplicationCoroutineScope
 import proton.android.authenticator.app.workers.SyncWorker
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import java.util.concurrent.TimeUnit
@@ -52,25 +56,29 @@ internal class SyncWorkInitializer : Initializer<Unit> {
             )
         ) {
             combine(
+                observeIsSyncEnabled(getSettingsObserver()),
                 observeEntryModels(getEntryModelsObserver()),
-                observeIsSyncEnabled(getSettingsObserver())
-            ) { _, isSyncEnabled -> isSyncEnabled }
-                .filter { isSyncEnabled -> isSyncEnabled }
+                ::Pair
+            )
+                .filter { (isSyncEnabled, entryModels) -> isSyncEnabled && entryModels.needsSync() }
                 .onEach { executeSyncWork(getWorkManager()) }
                 .launchIn(getApplicationCoroutineScope())
         }
     }
 
-    private fun observeEntryModels(observer: ObserveEntryModelsUseCase) = observer()
-        .distinctUntilChanged()
-
     private fun observeIsSyncEnabled(observer: ObserveSettingsUseCase) = observer()
         .map { settings -> settings.isSyncEnabled }
         .distinctUntilChanged()
 
+    @OptIn(FlowPreview::class)
+    private fun observeEntryModels(observer: ObserveEntryModelsUseCase) = observer()
+        .distinctUntilChanged()
+        .debounce(timeoutMillis = SYNC_WORK_DEBOUNCE_MILLIS)
+
+    private fun List<EntryModel>.needsSync() = isEmpty() || any { !it.isSynced || it.isDeleted }
+
     private fun executeSyncWork(workManager: WorkManager) {
         OneTimeWorkRequest.Builder(SyncWorker::class.java)
-            .addTag(tag = SYNC_WORK_TAG)
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
                 SYNC_WORK_BACKOFF_DELAY_SECONDS,
@@ -82,6 +90,13 @@ internal class SyncWorkInitializer : Initializer<Unit> {
                     .build()
             )
             .build()
+            .also { request ->
+                workManager.enqueueUniqueWork(
+                    uniqueWorkName = SYNC_WORK_NAME,
+                    existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE,
+                    request = request
+                )
+            }
             .also(workManager::enqueue)
     }
 
@@ -103,9 +118,11 @@ internal class SyncWorkInitializer : Initializer<Unit> {
 
     private companion object {
 
-        private const val SYNC_WORK_TAG = "sync_work"
+        private const val SYNC_WORK_NAME = "sync_work"
 
         private const val SYNC_WORK_BACKOFF_DELAY_SECONDS = 1L
+
+        private const val SYNC_WORK_DEBOUNCE_MILLIS = 5_000L
 
     }
 

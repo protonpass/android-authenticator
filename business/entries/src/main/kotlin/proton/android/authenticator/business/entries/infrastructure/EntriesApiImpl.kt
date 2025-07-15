@@ -26,6 +26,7 @@ import proton.android.authenticator.business.entries.domain.EntryRemote
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.CreateEntryRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.DeleteEntriesRequestDto
+import proton.android.authenticator.business.entries.infrastructure.network.EntryDto
 import proton.android.authenticator.business.entries.infrastructure.network.SortEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntriesRequestDto
 import proton.android.authenticator.business.entries.infrastructure.network.UpdateEntryRequestDto
@@ -76,34 +77,27 @@ internal class EntriesApiImpl @Inject constructor(
         keyId: String,
         encryptionKey: EncryptionKey,
         entryModels: List<AuthenticatorEntryModel>
-    ) {
-        withContext(appDispatchers.default) {
-            authenticatorCrypto.encryptManyEntries(
-                key = encryptionKey.asByteArray(),
-                models = entryModels
-            ).map { encryptedEntryModel ->
-                CreateEntryRequestDto(
-                    authenticatorKeyID = keyId,
-                    content = Base64.encodeToByteArray(encryptedEntryModel).let(::String),
-                    contentFormatVersion = contentFormatVersion
-                )
-            }
+    ): List<EntryRemote> = withContext(appDispatchers.default) {
+        authenticatorCrypto.encryptManyEntries(
+            key = encryptionKey.asByteArray(),
+            models = entryModels
+        ).map { encryptedEntryModel ->
+            CreateEntryRequestDto(
+                authenticatorKeyID = keyId,
+                content = Base64.encodeToByteArray(encryptedEntryModel).let(::String),
+                contentFormatVersion = contentFormatVersion
+            )
         }
-            .let(::CreateEntriesRequestDto)
-            .also { request ->
-                apiProvider
-                    .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
-                    .invoke { createEntries(request = request) }
-                    .valueOrThrow
-            }
     }
-
-    override suspend fun delete(userId: String, entryId: String) {
-        apiProvider
-            .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
-            .invoke { deleteEntry(entryId = entryId) }
-            .valueOrThrow
-    }
+        .let(::CreateEntriesRequestDto)
+        .let { request ->
+            apiProvider
+                .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
+                .invoke { createEntries(request = request) }
+                .valueOrThrow
+                .entries
+                .toRemoteEntries(encryptionKey = encryptionKey)
+        }
 
     override suspend fun deleteAll(userId: String, entryIds: List<String>) {
         entryIds
@@ -129,78 +123,23 @@ internal class EntriesApiImpl @Inject constructor(
                     .also { fetchEntriesDto -> lastId = fetchEntriesDto.lastId }
                     .also { fetchEntriesDto -> addAll(fetchEntriesDto.entries) }
             } while (lastId != null)
-        }
-            .let { entriesDto ->
-                entriesDto to withContext(appDispatchers.default) {
-                    entriesDto
-                        .map { entryDto ->
-                            entryDto.content.let(Base64::decode)
-                        }
-                        .let { ciphertexts ->
-                            authenticatorCrypto.decryptManyEntries(
-                                key = encryptionKey.asByteArray(),
-                                ciphertexts = ciphertexts
-                            )
-                        }
-                }
-            }
-            .let { (entriesDto, entryModels) ->
-                entriesDto.withIndex().zip(entryModels) { indexedEntryDto, entryModel ->
-                    EntryRemote(
-                        id = indexedEntryDto.value.entryId,
-                        revision = indexedEntryDto.value.revision,
-                        modifiedAt = indexedEntryDto.value.modifyTime,
-                        position = indexedEntryDto.index,
-                        model = entryModel
-                    )
-                }
-            }
+        }.toRemoteEntries(encryptionKey = encryptionKey)
     }
 
     override suspend fun sortAll(
         userId: String,
         startingPosition: Int,
         entryIds: List<String>
-    ) {
-        SortEntriesRequestDto(
-            startingPosition = startingPosition,
-            entryIds = entryIds
-        ).also { request ->
-            apiProvider
-                .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
-                .invoke { sortEntries(request = request) }
-                .valueOrThrow
-        }
-    }
-
-    override suspend fun update(
-        userId: String,
-        entryId: String,
-        entryRevision: Int,
-        keyId: String,
-        encryptionKey: EncryptionKey,
-        entryModel: AuthenticatorEntryModel
-    ) {
-        withContext(appDispatchers.default) {
-            authenticatorCrypto.encryptEntry(
-                key = encryptionKey.asByteArray(),
-                model = entryModel
-            ).let { encryptedEntryModel ->
-                UpdateEntryRequestDto(
-                    authenticatorKeyID = keyId,
-                    entryId = entryId,
-                    content = Base64.encodeToByteArray(encryptedEntryModel).let(::String),
-                    contentFormatVersion = contentFormatVersion,
-                    lastRevision = entryRevision
-                )
-            }
-        }
-            .also { request ->
-                apiProvider
-                    .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
-                    .invoke { updateEntry(entryId = entryId, request = request) }
-                    .valueOrThrow
-            }
+    ): Long = SortEntriesRequestDto(
+        startingPosition = startingPosition,
+        entryIds = entryIds
+    ).let { request ->
+        apiProvider
+            .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
+            .invoke { sortEntries(request = request) }
+            .valueOrThrow
+            .result
+            .modifyTime
     }
 
     override suspend fun updateAll(
@@ -210,30 +149,52 @@ internal class EntriesApiImpl @Inject constructor(
         encryptionKey: EncryptionKey,
         entryModels: List<AuthenticatorEntryModel>,
         remoteEntriesMap: Map<String, EntryRemote>
-    ) {
-        withContext(appDispatchers.default) {
-            authenticatorCrypto.encryptManyEntries(
-                key = encryptionKey.asByteArray(),
-                models = entryModels
-            )
-                .zip(entryIds)
-                .map { (encryptedEntryModel, entryId) ->
-                    UpdateEntryRequestDto(
-                        authenticatorKeyID = keyId,
-                        entryId = entryId,
-                        content = Base64.encodeToByteArray(encryptedEntryModel).let(::String),
-                        contentFormatVersion = contentFormatVersion,
-                        lastRevision = remoteEntriesMap.getValue(entryId).revision
-                    )
-                }
-        }
-            .let(::UpdateEntriesRequestDto)
-            .also { request ->
-                apiProvider
-                    .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
-                    .invoke { updateEntries(request = request) }
-                    .valueOrThrow
+    ): List<EntryRemote> = withContext(appDispatchers.default) {
+        authenticatorCrypto.encryptManyEntries(
+            key = encryptionKey.asByteArray(),
+            models = entryModels
+        )
+            .zip(entryIds)
+            .map { (encryptedEntryModel, entryId) ->
+                UpdateEntryRequestDto(
+                    authenticatorKeyID = keyId,
+                    entryId = entryId,
+                    content = Base64.encodeToByteArray(encryptedEntryModel).let(::String),
+                    contentFormatVersion = contentFormatVersion,
+                    lastRevision = remoteEntriesMap.getValue(entryId).revision
+                )
             }
     }
+        .let(::UpdateEntriesRequestDto)
+        .let { request ->
+            apiProvider
+                .get<RetrofitEntriesDataSource>(userId = UserId(id = userId))
+                .invoke { updateEntries(request = request) }
+                .valueOrThrow
+                .entries
+                .toRemoteEntries(encryptionKey = encryptionKey)
+        }
+
+    private suspend fun List<EntryDto>.toRemoteEntries(encryptionKey: EncryptionKey) =
+        withContext(appDispatchers.default) {
+            map { entryDto -> entryDto.content.let(Base64::decode) }
+                .let { ciphertexts ->
+                    authenticatorCrypto.decryptManyEntries(
+                        key = encryptionKey.asByteArray(),
+                        ciphertexts = ciphertexts
+                    )
+                }
+                .let { entryModels ->
+                    withIndex().zip(entryModels) { indexedEntryDto, entryModel ->
+                        EntryRemote(
+                            id = indexedEntryDto.value.entryId,
+                            revision = indexedEntryDto.value.revision,
+                            modifiedAt = indexedEntryDto.value.modifyTime,
+                            position = indexedEntryDto.index,
+                            model = entryModel
+                        )
+                    }
+                }
+        }
 
 }
