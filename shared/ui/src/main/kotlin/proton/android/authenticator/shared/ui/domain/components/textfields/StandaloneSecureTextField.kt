@@ -1,5 +1,6 @@
 package proton.android.authenticator.shared.ui.domain.components.textfields
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -10,6 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import proton.android.authenticator.shared.ui.R
@@ -26,7 +29,11 @@ fun StandaloneSecureTextField(
     isError: Boolean = false,
     errorText: UiText? = null,
     isVisible: Boolean = false,
-    onVisibilityChange: (Boolean) -> Unit
+    onVisibilityChange: (Boolean) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(
+        capitalization = KeyboardCapitalization.None,
+        keyboardType = KeyboardType.Password
+    )
 ) {
     val trailingUiIcon = remember(key1 = isVisible) {
         if (isVisible) {
@@ -74,6 +81,7 @@ fun StandaloneSecureTextField(
                 )
             }
         },
+        keyboardOptions = keyboardOptions,
         singleLine = isSingleLine,
         isError = isError,
         colors = TextFieldDefaults.colors()
