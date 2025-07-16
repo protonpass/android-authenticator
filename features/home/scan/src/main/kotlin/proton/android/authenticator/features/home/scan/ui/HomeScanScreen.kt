@@ -43,7 +43,8 @@ fun HomeScanScreen(
     snackbarHostState: SnackbarHostState,
     onCloseClick: () -> Unit,
     onManualEntryClick: () -> Unit,
-    onEntryCreated: () -> Unit,
+    onCreateEntryError: () -> Unit,
+    onCreateEntrySuccess: () -> Unit,
     onPermissionRequired: () -> Unit
 ) = with(hiltViewModel<HomeScanViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
@@ -51,7 +52,8 @@ fun HomeScanScreen(
     LaunchedEffect(key1 = state.event) {
         when (state.event) {
             HomeScanEvent.Idle -> Unit
-            HomeScanEvent.OnEntryCreated -> onEntryCreated()
+            HomeScanEvent.OnEntryCreationFailed -> onCreateEntryError()
+            HomeScanEvent.OnEntryCreationSucceeded -> onCreateEntrySuccess()
         }
 
         onConsumeEvent(event = state.event)

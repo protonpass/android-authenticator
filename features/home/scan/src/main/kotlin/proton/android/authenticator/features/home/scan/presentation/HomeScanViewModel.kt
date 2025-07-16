@@ -30,12 +30,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import proton.android.authenticator.business.entries.application.create.CreateEntryReason
 import proton.android.authenticator.features.home.scan.R
 import proton.android.authenticator.features.home.scan.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.scan.usecases.ScanEntryQrUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
-import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
 
@@ -70,33 +68,12 @@ internal class HomeScanViewModel @Inject constructor(
 
     internal fun onCreateEntry(uri: String) {
         viewModelScope.launch {
-            createEntryUseCase(uri = uri).also { answer ->
-                when (answer) {
-                    is Answer.Failure -> {
-                        when (answer.reason) {
-                            CreateEntryReason.CannotSaveEntry -> {
-                                R.string.home_scan_snackbar_message_create_entry_code_error
-                            }
-
-                            CreateEntryReason.InvalidEntrySecret -> {
-                                R.string.home_scan_snackbar_message_invalid_entry_code
-                            }
-
-                            CreateEntryReason.InvalidEntryTitle -> {
-                                R.string.home_scan_snackbar_message_invalid_entry_title
-                            }
-
-                            CreateEntryReason.Unknown -> {
-                                R.string.home_scan_snackbar_message_invalid_entry_unknown
-                            }
-                        }.also { messageResId -> dispatchSnackbarEvent(messageResId) }
-                    }
-
-                    is Answer.Success -> {
-                        eventFlow.update { HomeScanEvent.OnEntryCreated }
-                    }
-                }
-            }
+            createEntryUseCase(uri = uri)
+                .fold(
+                    onFailure = { HomeScanEvent.OnEntryCreationFailed },
+                    onSuccess = { HomeScanEvent.OnEntryCreationSucceeded }
+                )
+                .also { event -> eventFlow.update { event } }
         }
     }
 

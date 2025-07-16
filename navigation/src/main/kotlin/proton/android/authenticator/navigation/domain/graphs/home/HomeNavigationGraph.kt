@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.home.errors.ui.HomeErrorsScreen
 import proton.android.authenticator.features.home.manual.ui.HomeManualScreen
 import proton.android.authenticator.features.home.master.ui.HomeScreen
 import proton.android.authenticator.features.home.permissions.ui.HomePermissionScreen
@@ -97,7 +98,12 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                         popDestination = HomeMasterNavigationDestination
                     ).also(onNavigate)
                 },
-                onEntryCreated = {
+                onCreateEntryError = {
+                    NavigationCommand.NavigateTo(
+                        destination = HomeErrorsNavigationDestination
+                    ).also(onNavigate)
+                },
+                onCreateEntrySuccess = {
                     onEntryCreated()
                     NavigationCommand.PopupTo(
                         destination = HomeMasterNavigationDestination,
@@ -109,6 +115,14 @@ internal fun NavGraphBuilder.homeNavigationGraph(
                         destination = HomePermissionsNavigationDestination,
                         popDestination = HomeMasterNavigationDestination
                     ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<HomeErrorsNavigationDestination> {
+            HomeErrorsScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.features.backups.master)
     implementation(projects.features.exports.completion)
     implementation(projects.features.exports.errors)
+    implementation(projects.features.home.errors)
     implementation(projects.features.home.manual)
     implementation(projects.features.home.master)
     implementation(projects.features.home.permissions)

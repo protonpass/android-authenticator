@@ -16,14 +16,21 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.home.scan.presentation
+package proton.android.authenticator.features.home.errors.ui
 
-internal sealed interface HomeScanEvent {
+import androidx.compose.runtime.Composable
+import proton.android.authenticator.features.home.errors.R
+import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.screens.AlertDialogScreen
+import proton.android.authenticator.shared.ui.R as uiR
 
-    data object Idle : HomeScanEvent
-
-    data object OnEntryCreationFailed : HomeScanEvent
-
-    data object OnEntryCreationSucceeded : HomeScanEvent
-
+@Composable
+fun HomeErrorsScreen(onDismissed: () -> Unit) {
+    AlertDialogScreen(
+        title = UiText.Resource(id = R.string.home_error_dialog_title),
+        message = UiText.Resource(id = R.string.home_error_dialog_message),
+        confirmText = UiText.Resource(id = uiR.string.action_ok),
+        onDismissRequest = onDismissed,
+        onConfirmation = onDismissed
+    )
 }
