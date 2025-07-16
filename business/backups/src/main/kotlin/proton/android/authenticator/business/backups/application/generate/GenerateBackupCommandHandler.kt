@@ -35,8 +35,10 @@ internal class GenerateBackupCommandHandler @Inject constructor(
 
     override suspend fun handle(command: GenerateBackupCommand): Answer<Unit, GenerateBackupReason> = try {
         generator.generate(backupEntries = command.backupEntries)
-        AuthenticatorLogger.i(TAG, "Successfully generated backup with ${command.backupEntries.size} entries")
-        Answer.Success(Unit)
+            .also {
+                AuthenticatorLogger.i(TAG, "Successfully generated backup with ${command.backupEntries.size} entries")
+            }
+            .let(Answer<Unit, GenerateBackupReason>::Success)
     } catch (e: BackupNoEntriesError) {
         ErrorLoggingUtils.logAndReturnFailure(
             exception = e,
@@ -75,7 +77,9 @@ internal class GenerateBackupCommandHandler @Inject constructor(
     }
 
     private companion object {
+
         private const val TAG = "GenerateBackupCommandHandler"
+
     }
 
 }

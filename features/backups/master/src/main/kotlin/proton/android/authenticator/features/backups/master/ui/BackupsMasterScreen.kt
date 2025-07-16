@@ -23,11 +23,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.backups.master.R
+import proton.android.authenticator.features.backups.master.presentation.BackupMasterEvent
 import proton.android.authenticator.features.backups.master.presentation.BackupsMasterViewModel
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
@@ -38,33 +40,45 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun BackupsMasterScreen(snackbarHostState: SnackbarHostState, onNavigationClick: () -> Unit) =
-    with(hiltViewModel<BackupsMasterViewModel>()) {
-        val state by stateFlow.collectAsStateWithLifecycle()
+fun BackupsMasterScreen(
+    snackbarHostState: SnackbarHostState,
+    onNavigationClick: () -> Unit,
+    onBackupError: (Int) -> Unit
+) = with(hiltViewModel<BackupsMasterViewModel>()) {
+    val state by stateFlow.collectAsStateWithLifecycle()
 
-        ScaffoldScreen(
-            modifier = Modifier
-                .fillMaxSize()
-                .backgroundScreenGradient(),
-            snackbarHostState = snackbarHostState,
-            topBar = {
-                SmallTopBar(
-                    title = UiText.Resource(id = R.string.backups_screen_title),
-                    navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
-                    onNavigationClick = onNavigationClick
-                )
-            }
-        ) { innerPaddingValues ->
-            BackupsMasterContent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues = innerPaddingValues)
-                    .padding(horizontal = ThemePadding.Medium),
-                state = state,
-                onDisableBackup = ::onDisableBackup,
-                onFolderPicked = ::onFolderPicked,
-                onFrequencyChange = ::onUpdateFrequencyType,
-                onBackupNowClick = ::onCreateBackup
+    LaunchedEffect(key1 = state.event) {
+        when (val event = state.event) {
+            BackupMasterEvent.Idle -> Unit
+            is BackupMasterEvent.OnBackupError -> onBackupError(event.reason.ordinal)
+        }
+
+        onConsumeEvent(event = state.event)
+    }
+
+    ScaffoldScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .backgroundScreenGradient(),
+        snackbarHostState = snackbarHostState,
+        topBar = {
+            SmallTopBar(
+                title = UiText.Resource(id = R.string.backups_screen_title),
+                navigationIcon = UiIcon.Resource(id = uiR.drawable.ic_arrow_left),
+                onNavigationClick = onNavigationClick
             )
         }
+    ) { innerPaddingValues ->
+        BackupsMasterContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues = innerPaddingValues)
+                .padding(horizontal = ThemePadding.Medium),
+            state = state,
+            onDisableBackup = ::onDisableBackup,
+            onFolderPicked = ::onFolderPicked,
+            onFrequencyChange = ::onUpdateFrequencyType,
+            onBackupNowClick = ::onCreateBackup
+        )
     }
+}

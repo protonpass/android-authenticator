@@ -62,17 +62,20 @@ internal fun BackupsMasterContent(
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
     ) {
         val context = LocalContext.current
+
         val folderLauncher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.OpenDocumentTree()
         ) { uri: Uri? ->
-            uri?.let {
-                context.contentResolver.takePersistableUriPermission(
-                    it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                )
-                onFolderPicked(it)
+            uri?.let { folderUri ->
+                context.contentResolver
+                    .takePersistableUriPermission(
+                        folderUri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    )
+                    .also { onFolderPicked(folderUri) }
             }
         }
+
         RowsContainer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,8 +86,8 @@ internal fun BackupsMasterContent(
                         ToggleRow(
                             titleText = UiText.Resource(id = R.string.backups_automatic_backups_title),
                             isChecked = backupModel.isEnabled,
-                            onCheckedChange = {
-                                if (it) {
+                            onCheckedChange = { isEnablingBackup ->
+                                if (isEnablingBackup) {
                                     folderLauncher.launch(backupModel.directoryUri)
                                 } else {
                                     onDisableBackup()
@@ -124,7 +127,7 @@ internal fun BackupsMasterContent(
         )
 
         if (backupModel.isEnabled) {
-            if (backupModel.canCreateBackup) {
+            if (canCreateBackup) {
                 SecondaryActionButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.backups_backup_now_button),
@@ -147,17 +150,16 @@ internal fun BackupsMasterContent(
                     color = Theme.colorScheme.textWeak
                 )
 
-                backupModel.lastBackupDate
-                    ?.let { date ->
-                        Text(
-                            text = stringResource(
-                                id = R.string.backups_last_backup_description,
-                                date.asString()
-                            ),
-                            style = Theme.typography.captionRegular,
-                            color = Theme.colorScheme.textWeak
-                        )
-                    }
+                backupModel.lastBackupDate?.let { date ->
+                    Text(
+                        text = stringResource(
+                            id = R.string.backups_last_backup_description,
+                            date.asString()
+                        ),
+                        style = Theme.typography.captionRegular,
+                        color = Theme.colorScheme.textWeak
+                    )
+                }
             }
         }
     }

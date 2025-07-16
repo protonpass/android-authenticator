@@ -37,6 +37,7 @@ import proton.android.authenticator.commonrust.AuthenticatorEntryModel
 import proton.android.authenticator.commonrust.AuthenticatorEntryType
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
+import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import javax.inject.Inject
 
@@ -73,6 +74,7 @@ internal class BackupGenerator @Inject constructor(
 
     private suspend fun cleanLastBackupIfLimitReached(backup: Backup) {
         if (!backup.isBackupLimitReached) return
+
         directoryReader.read(backup.directoryUri)
             .filter { file ->
                 Backup.BACKUP_FILE_REGEX.matches(file.name.orEmpty())
@@ -84,18 +86,19 @@ internal class BackupGenerator @Inject constructor(
     }
 
     private suspend fun generateBackup(backup: Backup, backupEntries: List<BackupEntry>) {
+        val fileName = backup.fileName ?: throw BackupMissingFileNameError()
+
+        val backupFile = DocumentFile.fromTreeUri(context, backup.directoryUri)
+            ?.createFile(MimeType.Json.value, fileName)
+            ?: throw BackupFileCreationError()
+
         backupEntries.map(BackupEntry::toModel)
             .let { entryModels ->
                 withContext(appDispatchers.default) {
                     authenticatorClient.exportEntries(entryModels)
                 }
             }
-            .also { backupContent: String ->
-                val fileName = backup.fileName ?: throw BackupMissingFileNameError()
-                val backupFile = DocumentFile.fromTreeUri(context, backup.directoryUri)
-                    ?.createFile("application/json", fileName)
-                    ?: throw BackupFileCreationError()
-
+            .also { backupContent ->
                 fileWriter.write(
                     uri = backupFile.uri,
                     content = backupContent

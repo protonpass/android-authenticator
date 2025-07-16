@@ -35,6 +35,9 @@ internal fun NavGraphBuilder.backupsNavigationGraph(
                 snackbarHostState = snackbarHostState,
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
+                },
+                onBackupError = { errorReason ->
+                    println("JIBIRI: errorReason = $errorReason")
                 }
             )
         }

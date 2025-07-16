@@ -20,10 +20,36 @@ package proton.android.authenticator.features.backups.master.presentation
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 
 @Immutable
 internal data class BackupsMasterState(
-    internal val backupModel: BackupMasterModel,
-    internal val entryModels: ImmutableList<EntryModel>
-)
+    internal val entryModels: ImmutableList<EntryModel>,
+    internal val event: BackupMasterEvent,
+    private val backup: Backup
+) {
+
+    internal val backupModel: BackupMasterModel = BackupMasterModel(
+        isEnabled = backup.isEnabled,
+        frequencyType = backup.frequencyType,
+        maxBackupCount = backup.maxBackupCount,
+        directoryUri = backup.directoryUri,
+        count = backup.count,
+        lastBackupMillis = backup.lastBackupMillis
+    )
+
+    internal val canCreateBackup: Boolean = entryModels.isNotEmpty()
+
+    internal companion object {
+
+        internal val Initial = BackupsMasterState(
+            entryModels = persistentListOf(),
+            event = BackupMasterEvent.Idle,
+            backup = Backup.Default
+        )
+
+    }
+
+}

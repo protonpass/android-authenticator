@@ -27,7 +27,6 @@ internal data class BackupMasterModel(
     internal val isEnabled: Boolean,
     internal val frequencyType: BackupFrequencyType,
     internal val maxBackupCount: Int,
-    internal val canCreateBackup: Boolean,
     internal val directoryUri: Uri,
     private val count: Int,
     private val lastBackupMillis: Long?
