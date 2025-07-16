@@ -17,6 +17,6 @@
   -->
 
 <resources>
-    <string name="home_error_dialog_title">An error occurred</string>
-    <string name="home_error_dialog_message">The QR code is not valid. Please try scanning a different one.</string>
+    <string name="home_error_dialog_title">Invalid QR code</string>
+    <string name="home_error_dialog_message">Please try scanning or selecting from gallery a different one.</string>
 </resources>
