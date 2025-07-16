@@ -19,9 +19,4 @@
 <resources>
     <string name="home_scan_qr_code_hint">Point your camera at the QR code.</string>
     <string name="home_scan_enter_manually">Enter manually</string>
-    <string name="home_scan_snackbar_message_create_entry_code_error">There was an error creating the entry code</string>
-    <string name="home_scan_snackbar_message_invalid_entry_code">Invalid entry code</string>
-    <string name="home_scan_snackbar_message_invalid_entry_title">Invalid entry title</string>
-    <string name="home_scan_snackbar_message_invalid_entry_unknown">Something went wrong</string>
-    <string name="home_scan_snackbar_message_invalid_qr_code">Invalid QR code</string>
 </resources>

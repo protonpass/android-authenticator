@@ -19,7 +19,6 @@
 package proton.android.authenticator.features.home.scan.presentation
 
 import android.net.Uri
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,17 +29,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import proton.android.authenticator.features.home.scan.R
 import proton.android.authenticator.features.home.scan.usecases.CreateEntryUseCase
 import proton.android.authenticator.features.home.scan.usecases.ScanEntryQrUseCase
-import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
-import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeScanViewModel @Inject constructor(
     private val createEntryUseCase: CreateEntryUseCase,
-    private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
     private val scanEntryQrUseCase: ScanEntryQrUseCase
 ) : ViewModel() {
 
@@ -84,16 +79,9 @@ internal class HomeScanViewModel @Inject constructor(
             scanEntryQrUseCase(uri = uri).also { entryUriCandidate ->
                 entryUriCandidate
                     ?.also(::onCreateEntry)
-                    ?: run {
-                        dispatchSnackbarEvent(R.string.home_scan_snackbar_message_invalid_qr_code)
-                    }
+                    ?: eventFlow.update { HomeScanEvent.OnEntryCreationFailed }
             }
         }
-    }
-
-    private suspend fun dispatchSnackbarEvent(@StringRes messageResId: Int) {
-        SnackbarEvent(messageResId = messageResId)
-            .also { snackbarEvent -> dispatchSnackbarEventUseCase(snackbarEvent) }
     }
 
 }

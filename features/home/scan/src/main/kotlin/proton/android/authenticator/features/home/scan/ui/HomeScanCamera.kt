@@ -37,6 +37,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import proton.android.authenticator.shared.ui.domain.analyzers.QrCodeAnalyzer
 
@@ -79,8 +81,30 @@ internal fun HomeScanCamera(
         mutableStateOf(Size.Zero)
     }
 
+    var canScanCode by remember {
+        mutableStateOf(true)
+    }
+
     DisposableEffect(key1 = lifecycleOwner) {
-        onDispose { cameraProvider.unbindAll() }
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME -> true
+                Lifecycle.Event.ON_PAUSE -> false
+                Lifecycle.Event.ON_CREATE,
+                Lifecycle.Event.ON_START,
+                Lifecycle.Event.ON_STOP,
+                Lifecycle.Event.ON_DESTROY,
+                Lifecycle.Event.ON_ANY -> null
+            }?.also { isScanAllowed -> canScanCode = isScanAllowed }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+
+            cameraProvider.unbindAll()
+        }
     }
 
     AndroidView(
@@ -125,7 +149,7 @@ internal fun HomeScanCamera(
 
     HomeScanCameraQrMask(cutoutRect = cutoutRect)
 
-    LaunchedEffect(previewViewSize) {
+    LaunchedEffect(key1 = previewViewSize) {
         if (previewViewSize == Size.Zero) return@LaunchedEffect
 
         val cutoutSize = previewViewSize.minDimension * 0.7f
@@ -142,8 +166,11 @@ internal fun HomeScanCamera(
             ContextCompat.getMainExecutor(context),
             QrCodeAnalyzer(
                 onQrCodeScanned = { qrCode ->
-                    cameraProvider.unbind(imageAnalysis)
-                    onQrCodeScanned(qrCode)
+                    if (canScanCode) {
+                        canScanCode = false
+
+                        onQrCodeScanned(qrCode)
+                    }
                 }
             )
         )
