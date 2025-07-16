@@ -16,21 +16,28 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.common
+package proton.android.authenticator.shared.common.rust
 
 import proton.android.authenticator.commonrust.AuthenticatorLogLevel
 import proton.android.authenticator.commonrust.AuthenticatorLogger
 import proton.android.authenticator.shared.common.logger.AuthenticatorLogger as RustLogger
 
-object RustLoggerImpl : AuthenticatorLogger {
-    private const val TAG = "RustLogger"
+internal class RustAuthenticatorLogger : AuthenticatorLogger {
+
     override fun log(level: AuthenticatorLogLevel, message: String) {
         when (level) {
-            AuthenticatorLogLevel.TRACE -> RustLogger.v(TAG, message)
             AuthenticatorLogLevel.DEBUG -> RustLogger.d(TAG, message)
-            AuthenticatorLogLevel.INFO -> RustLogger.i(TAG, message)
-            AuthenticatorLogLevel.WARN -> RustLogger.w(TAG, message)
             AuthenticatorLogLevel.ERROR -> RustLogger.w(TAG, message)
+            AuthenticatorLogLevel.INFO -> RustLogger.i(TAG, message)
+            AuthenticatorLogLevel.TRACE -> RustLogger.v(TAG, message)
+            AuthenticatorLogLevel.WARN -> RustLogger.w(TAG, message)
         }
     }
+
+    private companion object {
+
+        private const val TAG = "RustAuthenticatorLogger"
+
+    }
+
 }

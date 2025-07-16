@@ -19,28 +19,47 @@ package proton.android.authenticator.initializers
 
 import android.content.Context
 import androidx.startup.Initializer
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 import me.proton.core.util.android.sentry.TimberLogger
 import me.proton.core.util.kotlin.CoreLogger
 import proton.android.authenticator.BuildConfig
-import proton.android.authenticator.common.RustLoggerImpl
 import proton.android.authenticator.common.deviceInfo
+import proton.android.authenticator.commonrust.AuthenticatorLogger
 import proton.android.authenticator.commonrust.registerAuthenticatorLogger
 import timber.log.Timber
 
-class LoggerInitializer : Initializer<Unit> {
+internal class LoggerInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+        with(
+            receiver = EntryPointAccessors.fromApplication(
+                context.applicationContext,
+                LoggerInitializerDependencies::class.java
+            )
+        ) {
+            if (BuildConfig.DEBUG) {
+                Timber.plant(Timber.DebugTree())
+            }
+
+            // Forward Core Logs to Timber, using TimberLogger.
+            CoreLogger.set(TimberLogger)
+
+            registerAuthenticatorLogger(getAuthenticatorLogger())
+
+            deviceInfo(context)
         }
-
-        // Forward Core Logs to Timber, using TimberLogger.
-        CoreLogger.set(TimberLogger)
-
-        registerAuthenticatorLogger(RustLoggerImpl)
-
-        deviceInfo(context)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = listOf()
+
+    @[EntryPoint InstallIn(SingletonComponent::class)]
+    internal interface LoggerInitializerDependencies {
+
+        fun getAuthenticatorLogger(): AuthenticatorLogger
+
+    }
+
 }

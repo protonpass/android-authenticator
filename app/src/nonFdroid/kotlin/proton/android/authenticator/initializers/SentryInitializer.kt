@@ -24,21 +24,22 @@ import proton.android.authenticator.BuildConfig
 import proton.android.authenticator.common.BuildFlavor
 import proton.android.authenticator.common.BuildFlavor.Companion.toValue
 
-class SentryInitializer : Initializer<Unit> {
+internal class SentryInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        val isSentryEnabled = BuildConfig.SENTRY_DSN?.isNotBlank() == true && !BuildConfig.DEBUG
-        if (isSentryEnabled) {
-            SentryAndroid.init(context) { options ->
-                options.isDebug = BuildConfig.DEBUG
-                options.dsn = BuildConfig.SENTRY_DSN
-                options.release = BuildConfig.VERSION_NAME
-                options.environment = BuildFlavor.from(BuildConfig.FLAVOR).toValue()
-                options.isAttachAnrThreadDump = true
-            }
+        if (BuildConfig.DEBUG) return
+
+        if (BuildConfig.SENTRY_DSN.isNullOrBlank()) return
+
+        SentryAndroid.init(context) { options ->
+            options.isDebug = BuildConfig.DEBUG
+            options.dsn = BuildConfig.SENTRY_DSN
+            options.release = BuildConfig.VERSION_NAME
+            options.environment = BuildFlavor.from(BuildConfig.FLAVOR).toValue()
+            options.isAttachAnrThreadDump = true
         }
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
-}
 
+}

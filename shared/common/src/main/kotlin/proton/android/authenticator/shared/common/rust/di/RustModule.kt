@@ -16,19 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.rust.di
+package proton.android.authenticator.shared.common.rust.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.datetime.Clock
 import proton.android.authenticator.commonrust.AuthenticatorCrypto
 import proton.android.authenticator.commonrust.AuthenticatorCryptoInterface
 import proton.android.authenticator.commonrust.AuthenticatorImporter
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
 import proton.android.authenticator.commonrust.AuthenticatorIssuerMapper
 import proton.android.authenticator.commonrust.AuthenticatorIssuerMapperInterface
+import proton.android.authenticator.commonrust.AuthenticatorLogger
 import proton.android.authenticator.commonrust.AuthenticatorMobileClient
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.commonrust.MobileCurrentTimeProvider
@@ -36,13 +36,18 @@ import proton.android.authenticator.commonrust.MobileTotpGenerator
 import proton.android.authenticator.commonrust.MobileTotpGeneratorInterface
 import proton.android.authenticator.commonrust.SyncOperationChecker
 import proton.android.authenticator.commonrust.SyncOperationCheckerInterface
+import proton.android.authenticator.shared.common.domain.providers.TimeProvider
+import proton.android.authenticator.shared.common.rust.RustAuthenticatorLogger
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
 internal object RustModule {
 
     @[Provides Singleton]
-    internal fun provideAuthenticatorCrypt(): AuthenticatorCryptoInterface = AuthenticatorCrypto()
+    internal fun provideAuthenticatorCrypto(): AuthenticatorCryptoInterface = AuthenticatorCrypto()
+
+    @[Provides Singleton]
+    internal fun provideAuthenticatorLogger(): AuthenticatorLogger = RustAuthenticatorLogger()
 
     @[Provides Singleton]
     internal fun provideAuthenticatorImporter(): AuthenticatorImporterInterface = AuthenticatorImporter()
@@ -54,15 +59,16 @@ internal object RustModule {
     internal fun provideAuthenticatorMobileClient(): AuthenticatorMobileClientInterface = AuthenticatorMobileClient()
 
     @[Provides Singleton]
-    internal fun provideMobileTotpGenerator(clock: Clock): MobileTotpGeneratorInterface = MobileTotpGenerator(
-        periodMs = 500u,
-        onlyOnCodeChange = true,
-        currentTime = object : MobileCurrentTimeProvider {
-            override fun now(): ULong = clock.now()
-                .epochSeconds
-                .toULong()
-        }
-    )
+    internal fun provideMobileTotpGenerator(timeProvider: TimeProvider): MobileTotpGeneratorInterface =
+        MobileTotpGenerator(
+            periodMs = 500u,
+            onlyOnCodeChange = true,
+            currentTime = object : MobileCurrentTimeProvider {
+                override fun now(): ULong = timeProvider.currentInstant()
+                    .epochSeconds
+                    .toULong()
+            }
+        )
 
     @[Provides Singleton]
     internal fun provideSyncOperationChecker(): SyncOperationCheckerInterface = SyncOperationChecker()
