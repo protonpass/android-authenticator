@@ -27,13 +27,13 @@ import me.proton.core.crypto.common.keystore.EncryptedByteArray
     primaryKeys = [EntryEntity.Columns.ID]
 )
 data class EntryEntity(
-    @ColumnInfo(name = Columns.ID)
+    @ColumnInfo(name = Columns.ID, index = true)
     val id: String,
     @ColumnInfo(name = Columns.ENCRYPTED_CONTENT)
     val content: EncryptedByteArray,
-    @ColumnInfo(name = Columns.IS_DELETED)
+    @ColumnInfo(name = Columns.IS_DELETED, defaultValue = "0")
     val isDeleted: Boolean,
-    @ColumnInfo(name = Columns.IS_SYNCED)
+    @ColumnInfo(name = Columns.IS_SYNCED, defaultValue = "0")
     val isSynced: Boolean,
     @ColumnInfo(name = Columns.POSITION)
     val position: Int,

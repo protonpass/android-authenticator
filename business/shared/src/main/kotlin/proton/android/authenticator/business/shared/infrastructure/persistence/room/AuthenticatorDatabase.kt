@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.business.shared.infrastructure.persistence.room
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.TypeConverters
 import me.proton.core.account.data.db.AccountConverters
@@ -89,6 +90,9 @@ import proton.android.authenticator.business.shared.infrastructure.persistence.r
 import proton.android.authenticator.business.shared.infrastructure.persistence.room.entities.keys.KeysDao
 
 @Database(
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2)
+    ],
     entities = [
         AccountEntity::class,
         AccountMetadataEntity::class,
@@ -173,7 +177,7 @@ internal abstract class AuthenticatorDatabase :
 
         internal const val NAME = "authenticator.db"
 
-        internal const val VERSION = 1
+        internal const val VERSION = 2
 
     }
 
