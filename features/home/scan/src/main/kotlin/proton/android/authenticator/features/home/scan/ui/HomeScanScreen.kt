@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,7 +39,6 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 
 @Composable
 fun HomeScanScreen(
-    snackbarHostState: SnackbarHostState,
     onCloseClick: () -> Unit,
     onManualEntryClick: () -> Unit,
     onCreateEntryError: () -> Unit,
@@ -65,7 +63,6 @@ fun HomeScanScreen(
     )
 
     ScaffoldScreen(
-        snackbarHostState = snackbarHostState,
         bottomBar = {
             if (state.showBottomBar) {
                 HomeScanBottomBar(

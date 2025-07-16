@@ -88,7 +88,6 @@ internal fun NavGraphBuilder.homeNavigationGraph(
 
         composable<HomeScanNavigationDestination> {
             HomeScanScreen(
-                snackbarHostState = snackbarHostState,
                 onCloseClick = {
                     onNavigate(NavigationCommand.NavigateUp)
                 },
