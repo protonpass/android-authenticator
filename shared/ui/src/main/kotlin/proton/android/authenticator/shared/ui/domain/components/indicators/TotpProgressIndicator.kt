@@ -41,9 +41,9 @@ private const val PROGRESS_ANIMATION_DURATION_MILLIS = 1_000
 private const val PROGRESS_COLOR_ANIMATION_LABEL = "TOTP Progress Color Animation"
 private const val PROGRESS_COLOR_ANIMATION_DURATION_MILLIS = 500
 
-private const val PROGRESS_LIMIT_1 = 0f
-private const val PROGRESS_LIMIT_2 = 0.16f
-private const val PROGRESS_LIMIT_3 = 0.33f
+private const val PROGRESS_LIMIT_1 = 0
+private const val PROGRESS_LIMIT_2 = 5
+private const val PROGRESS_LIMIT_3 = 10
 
 @Composable
 fun TotpProgressIndicator(
@@ -65,7 +65,7 @@ fun TotpProgressIndicator(
 
     val animatedProgressColor by animateColorAsState(
         label = PROGRESS_COLOR_ANIMATION_LABEL,
-        targetValue = when (currentProgress) {
+        targetValue = when (remainingSeconds) {
             in PROGRESS_LIMIT_2..PROGRESS_LIMIT_3 -> Theme.colorScheme.signalWarning
             in PROGRESS_LIMIT_1..PROGRESS_LIMIT_2 -> Theme.colorScheme.signalDanger
             else -> Theme.colorScheme.inputBorderFocused
