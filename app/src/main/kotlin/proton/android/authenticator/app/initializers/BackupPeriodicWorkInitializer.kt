@@ -19,6 +19,8 @@
 package proton.android.authenticator.app.initializers
 
 import android.content.Context
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.flowWithLifecycle
 import androidx.startup.Initializer
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -30,10 +32,9 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import proton.android.authenticator.app.di.ApplicationCoroutineScope
+import me.proton.core.presentation.app.AppLifecycleProvider
 import proton.android.authenticator.app.workers.BackupWorker
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
@@ -45,7 +46,7 @@ internal class BackupPeriodicWorkInitializer : Initializer<Unit> {
         with(
             receiver = EntryPointAccessors.fromApplication(
                 context.applicationContext,
-                BackupPeriodicWorkManagerInitializer::class.java
+                BackupPeriodicWorkInitializerDependencies::class.java
             )
         ) {
             getBackupObserver().invoke()
@@ -56,13 +57,13 @@ internal class BackupPeriodicWorkInitializer : Initializer<Unit> {
                         cancelPeriodicBackupWork(getWorkManager())
                     }
                 }
-                .launchIn(getApplicationCoroutineScope())
+                .flowWithLifecycle(getAppLifecycleProvider().lifecycle)
+                .launchIn(getAppLifecycleProvider().lifecycle.coroutineScope)
         }
     }
 
     private fun schedulePeriodicBackupWork(backup: Backup, workManager: WorkManager) {
-        val interval = backup.repeatInterval
-        PeriodicWorkRequestBuilder<BackupWorker>(interval.value, interval.unit)
+        PeriodicWorkRequestBuilder<BackupWorker>(backup.repeatInterval.value, backup.repeatInterval.unit)
             .setBackoffCriteria(
                 BackoffPolicy.EXPONENTIAL,
                 BACKUP_WORK_BACKOFF_DELAY_SECONDS,
@@ -91,10 +92,9 @@ internal class BackupPeriodicWorkInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
-    internal interface BackupPeriodicWorkManagerInitializer {
+    internal interface BackupPeriodicWorkInitializerDependencies {
 
-        @ApplicationCoroutineScope
-        fun getApplicationCoroutineScope(): CoroutineScope
+        fun getAppLifecycleProvider(): AppLifecycleProvider
 
         fun getBackupObserver(): ObserveBackupUseCase
 

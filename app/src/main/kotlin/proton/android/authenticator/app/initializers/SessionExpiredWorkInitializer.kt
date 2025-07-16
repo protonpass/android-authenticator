@@ -46,7 +46,7 @@ internal class SessionExpiredWorkInitializer : Initializer<Unit> {
         with(
             receiver = EntryPointAccessors.fromApplication(
                 context.applicationContext,
-                AccountWorkManagerInitializer::class.java
+                SessionExpiredWorkInitializerDependencies::class.java
             )
         ) {
             getAccountManager()
@@ -85,7 +85,7 @@ internal class SessionExpiredWorkInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
-    internal interface AccountWorkManagerInitializer {
+    internal interface SessionExpiredWorkInitializerDependencies {
 
         fun getAccountManager(): AccountManager
 

@@ -30,8 +30,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.ElementsIntoSet
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.auth.domain.usecase.PostLoginAccountSetup
@@ -112,9 +110,6 @@ internal abstract class ApplicationModule {
             userEventListener,
             userSettingsEventListener
         )
-
-        @[Provides Singleton ApplicationCoroutineScope]
-        internal fun provideCoroutineScope(): CoroutineScope = MainScope()
 
         @[Provides Singleton]
         internal fun provideImageLoader(@ApplicationContext context: Context): ImageLoader =

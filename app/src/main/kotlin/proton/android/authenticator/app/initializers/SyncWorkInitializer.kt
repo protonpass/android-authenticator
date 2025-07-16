@@ -19,6 +19,8 @@
 package proton.android.authenticator.app.initializers
 
 import android.content.Context
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.flowWithLifecycle
 import androidx.startup.Initializer
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -30,7 +32,6 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
@@ -39,7 +40,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import proton.android.authenticator.app.di.ApplicationCoroutineScope
+import me.proton.core.presentation.app.AppLifecycleProvider
 import proton.android.authenticator.app.workers.SyncWorker
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
@@ -52,7 +53,7 @@ internal class SyncWorkInitializer : Initializer<Unit> {
         with(
             receiver = EntryPointAccessors.fromApplication(
                 context.applicationContext,
-                SyncWorkManagerInitializer::class.java
+                SyncWorkInitializerDependencies::class.java
             )
         ) {
             combine(
@@ -62,7 +63,8 @@ internal class SyncWorkInitializer : Initializer<Unit> {
             )
                 .filter { (isSyncEnabled, entryModels) -> isSyncEnabled && entryModels.needsSync() }
                 .onEach { executeSyncWork(getWorkManager()) }
-                .launchIn(getApplicationCoroutineScope())
+                .flowWithLifecycle(getAppLifecycleProvider().lifecycle)
+                .launchIn(getAppLifecycleProvider().lifecycle.coroutineScope)
         }
     }
 
@@ -103,10 +105,9 @@ internal class SyncWorkInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
-    internal interface SyncWorkManagerInitializer {
+    internal interface SyncWorkInitializerDependencies {
 
-        @ApplicationCoroutineScope
-        fun getApplicationCoroutineScope(): CoroutineScope
+        fun getAppLifecycleProvider(): AppLifecycleProvider
 
         fun getEntryModelsObserver(): ObserveEntryModelsUseCase
 

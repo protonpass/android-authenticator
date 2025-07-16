@@ -19,6 +19,8 @@
 package proton.android.authenticator.app.initializers
 
 import android.content.Context
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.flowWithLifecycle
 import androidx.startup.Initializer
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -30,12 +32,11 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import proton.android.authenticator.app.di.ApplicationCoroutineScope
+import me.proton.core.presentation.app.AppLifecycleProvider
 import proton.android.authenticator.app.workers.SyncWorker
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import java.util.concurrent.TimeUnit
@@ -46,7 +47,7 @@ internal class SyncPeriodicWorkInitializer : Initializer<Unit> {
         with(
             receiver = EntryPointAccessors.fromApplication(
                 context.applicationContext,
-                SyncPeriodicWorkManagerInitializer::class.java
+                SyncPeriodicWorkInitializerDependencies::class.java
             )
         ) {
             getSettingsObserver().invoke()
@@ -59,7 +60,8 @@ internal class SyncPeriodicWorkInitializer : Initializer<Unit> {
                         cancelPeriodicSyncWork(getWorkManager())
                     }
                 }
-                .launchIn(getApplicationCoroutineScope())
+                .flowWithLifecycle(getAppLifecycleProvider().lifecycle)
+                .launchIn(getAppLifecycleProvider().lifecycle.coroutineScope)
         }
     }
 
@@ -96,10 +98,9 @@ internal class SyncPeriodicWorkInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
-    internal interface SyncPeriodicWorkManagerInitializer {
+    internal interface SyncPeriodicWorkInitializerDependencies {
 
-        @ApplicationCoroutineScope
-        fun getApplicationCoroutineScope(): CoroutineScope
+        fun getAppLifecycleProvider(): AppLifecycleProvider
 
         fun getSettingsObserver(): ObserveSettingsUseCase
 

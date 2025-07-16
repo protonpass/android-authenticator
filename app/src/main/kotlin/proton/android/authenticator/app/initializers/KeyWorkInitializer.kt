@@ -19,6 +19,8 @@
 package proton.android.authenticator.app.initializers
 
 import android.content.Context
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.flowWithLifecycle
 import androidx.startup.Initializer
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
@@ -29,12 +31,11 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import proton.android.authenticator.app.di.ApplicationCoroutineScope
+import me.proton.core.presentation.app.AppLifecycleProvider
 import proton.android.authenticator.app.workers.KeyWorker
 import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
 import java.util.concurrent.TimeUnit
@@ -45,7 +46,7 @@ internal class KeyWorkInitializer : Initializer<Unit> {
         with(
             receiver = EntryPointAccessors.fromApplication(
                 context.applicationContext,
-                KeyWorkManagerInitializer::class.java
+                KeyWorkInitializerDependencies::class.java
             )
         ) {
             getIsUserAuthenticatedObserver()
@@ -53,7 +54,8 @@ internal class KeyWorkInitializer : Initializer<Unit> {
                 .distinctUntilChanged()
                 .filter { isAuthenticated -> isAuthenticated }
                 .onEach { executeKeyWork(getWorkManager()) }
-                .launchIn(getApplicationCoroutineScope())
+                .flowWithLifecycle(getAppLifecycleProvider().lifecycle)
+                .launchIn(getAppLifecycleProvider().lifecycle.coroutineScope)
         }
     }
 
@@ -77,10 +79,9 @@ internal class KeyWorkInitializer : Initializer<Unit> {
     override fun dependencies(): List<Class<out Initializer<*>?>?> = emptyList()
 
     @[EntryPoint InstallIn(SingletonComponent::class)]
-    internal interface KeyWorkManagerInitializer {
+    internal interface KeyWorkInitializerDependencies {
 
-        @ApplicationCoroutineScope
-        fun getApplicationCoroutineScope(): CoroutineScope
+        fun getAppLifecycleProvider(): AppLifecycleProvider
 
         fun getIsUserAuthenticatedObserver(): ObserveIsUserAuthenticatedUseCase
 
