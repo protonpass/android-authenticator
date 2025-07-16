@@ -295,7 +295,7 @@ internal class EntriesSyncer @Inject constructor(
                                 isSynced = true,
                                 position = searchLocalEntry(entry)
                                     ?.position
-                                    ?: repository.searchMaxPosition()
+                                    ?: remoteEntriesMap.getValue(remoteId!!).position
                             )
                         }
                     }
