@@ -38,11 +38,11 @@ internal class UserFinder @Inject constructor(
             primaryAccount
                 ?.takeIf(Account::isReady)
                 ?.let { account -> userRepository.getUser(sessionUserId = account.userId) }
-                ?.let { accountUsername ->
+                ?.let { accountUser ->
                     User(
-                        id = accountUsername.userId.id,
-                        email = accountUsername.email,
-                        username = accountUsername.name
+                        id = accountUser.userId.id,
+                        email = accountUser.email,
+                        username = accountUser.name
                     )
                 }
         }
