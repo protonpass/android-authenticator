@@ -82,8 +82,8 @@ android {
             applicationIdSuffix = ".black"
 
             protonEnvironment {
-                apiPrefix = "authenticator"
-                host = "proton.black/api"
+                apiPrefix = "authenticator-api"
+                host = "proton.black"
             }
         }
         create("prod") {
@@ -111,11 +111,14 @@ dependencies {
     implementation(libs.core.accountManager)
     implementation(libs.core.auth)
     implementation(libs.core.crypto)
+    implementation(libs.core.cryptoValidator)
     implementation(libs.core.data)
     implementation(libs.core.dataRoom)
+    implementation(libs.core.humanVerification)
     implementation(libs.core.notification)
     implementation(libs.core.push)
     implementation(libs.core.user)
+    implementation(libs.core.userRecovery)
     implementation(libs.core.userSettings)
     implementation(libs.kotlinx.datetime)
     implementation(libs.timber)

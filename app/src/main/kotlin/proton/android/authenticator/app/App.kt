@@ -28,6 +28,7 @@ import coil.ImageLoader
 import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
+import proton.android.authenticator.app.initializers.AccountCoreInitializer
 import proton.android.authenticator.app.initializers.SessionExpiredWorkInitializer
 import proton.android.authenticator.app.initializers.BackupPeriodicWorkInitializer
 import proton.android.authenticator.app.initializers.KeyWorkInitializer
@@ -78,6 +79,7 @@ internal class App : Application(), Configuration.Provider, ImageLoaderFactory {
 
     private fun initInitializerComponents() {
         with(AppInitializer.getInstance(applicationContext)) {
+            initializeComponent(AccountCoreInitializer::class.java)
             initializeComponent(BackupPeriodicWorkInitializer::class.java)
             initializeComponent(KeyWorkInitializer::class.java)
             initializeComponent(SessionExpiredWorkInitializer::class.java)
