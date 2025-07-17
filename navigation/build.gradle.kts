@@ -21,6 +21,7 @@ dependencies {
 
     implementation(projects.business.steps)
     implementation(projects.features.backups.master)
+    implementation(projects.features.backups.errors)
     implementation(projects.features.exports.completion)
     implementation(projects.features.exports.errors)
     implementation(projects.features.home.errors)

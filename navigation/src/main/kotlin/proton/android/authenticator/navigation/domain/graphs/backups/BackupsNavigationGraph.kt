@@ -21,7 +21,9 @@ package proton.android.authenticator.navigation.domain.graphs.backups
 import androidx.compose.material3.SnackbarHostState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.backups.errors.ui.BackupsErrorsScreen
 import proton.android.authenticator.features.backups.master.ui.BackupsMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 
@@ -37,7 +39,17 @@ internal fun NavGraphBuilder.backupsNavigationGraph(
                     onNavigate(NavigationCommand.NavigateUp)
                 },
                 onBackupError = { errorReason ->
-                    println("JIBIRI: errorReason = $errorReason")
+                    NavigationCommand.NavigateTo(
+                        destination = BackupsErrorsNavigationDestination(errorReason = errorReason)
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<BackupsErrorsNavigationDestination> {
+            BackupsErrorsScreen(
+                onDismissed = {
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }
