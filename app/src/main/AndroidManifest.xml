@@ -25,13 +25,14 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <queries>
-        <package android:name="ch.protonmail.android"/>
-        <package android:name="ch.protonvpn.android"/>
-        <package android:name="me.proton.android.calendar"/>
-        <package android:name="me.proton.android.drive"/>
-        <package android:name="proton.android.pass"/>
+        <package android:name="ch.protonmail.android" />
+        <package android:name="ch.protonvpn.android" />
+        <package android:name="me.proton.android.calendar" />
+        <package android:name="me.proton.android.drive" />
+        <package android:name="proton.android.pass" />
     </queries>
 
     <application
@@ -50,8 +51,8 @@
         <activity
             android:name=".app.ui.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.ProtonAuthenticator">
+            android:theme="@style/Theme.ProtonAuthenticator"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

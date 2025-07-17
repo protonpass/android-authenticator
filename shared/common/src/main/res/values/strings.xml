@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2025 Proton AG
   ~ This file is part of Proton AG and Proton Authenticator.
   ~
@@ -17,11 +17,5 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">Proton Authenticator</string>
-
-    <string name="biometric_prompt_title">App locked</string>
-    <string name="biometric_prompt_subtitle">Unlock using your device lock</string>
-
-    <string name="notification_automatic_backups_title">Automatic backups stopped</string>
-    <string name="notification_automatic_backups_message">The specified backup folder could not be found. Please check your settings to restart automatic backups.</string>
+    <string name="notification_channel_name_automatic_backups">Automatic backups</string>
 </resources>

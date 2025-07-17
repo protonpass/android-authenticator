@@ -22,6 +22,7 @@ import android.content.ClipboardManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
+import androidx.core.app.NotificationManagerCompat
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -30,9 +31,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import proton.android.authenticator.shared.common.checkers.AndroidAppInstalledChecker
 import proton.android.authenticator.shared.common.dispatchers.AppDispatchersImpl
+import proton.android.authenticator.shared.common.dispatchers.NotificationDispatcherImpl
 import proton.android.authenticator.shared.common.dispatchers.SnackbarDispatcherImpl
 import proton.android.authenticator.shared.common.domain.checkers.AppInstalledChecker
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
+import proton.android.authenticator.shared.common.domain.dispatchers.NotificationDispatcher
 import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
@@ -68,6 +71,9 @@ internal abstract class SharedCommonModule {
     internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus
 
     @[Binds Singleton]
+    internal abstract fun bindNotificationDispatcher(impl: NotificationDispatcherImpl): NotificationDispatcher
+
+    @[Binds Singleton]
     internal abstract fun bindSnackbarDispatcher(impl: SnackbarDispatcherImpl): SnackbarDispatcher
 
     @[Binds Singleton]
@@ -82,6 +88,10 @@ internal abstract class SharedCommonModule {
         @[Provides Singleton]
         internal fun provideContentResolver(@ApplicationContext context: Context): ContentResolver =
             context.contentResolver
+
+        @[Provides Singleton]
+        internal fun provideNotificationManagerCompat(@ApplicationContext context: Context): NotificationManagerCompat =
+            NotificationManagerCompat.from(context)
 
         @[Provides Singleton]
         internal fun providePackageManager(@ApplicationContext context: Context): PackageManager =

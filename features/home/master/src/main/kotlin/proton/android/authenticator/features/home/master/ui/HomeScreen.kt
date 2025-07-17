@@ -37,6 +37,7 @@ import proton.android.authenticator.features.home.master.presentation.HomeMaster
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.fabs.IconFloatingActionButton
 import proton.android.authenticator.shared.ui.domain.components.textfields.SearchTextField
+import proton.android.authenticator.shared.ui.domain.effects.NotificationPermissionLaunchedEffect
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundAppBar
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
@@ -60,6 +61,8 @@ fun HomeScreen(
     val isBlurred by remember {
         derivedStateOf { lazyListState.firstVisibleItemScrollOffset > 0 }
     }
+
+    NotificationPermissionLaunchedEffect()
 
     LaunchedEffect(key1 = state.searchQuery) {
         lazyListState.scrollToItem(index = 0)
