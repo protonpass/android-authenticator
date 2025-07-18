@@ -90,11 +90,9 @@ internal sealed interface SettingsMasterState {
         )
     }
 
-    companion object {
+    private companion object {
 
         private const val FILE_NAME = "proton_authenticator_backup.json"
-
-        private const val URL_HOW_TO = "https://proton.me/support/contact"
 
     }
 
