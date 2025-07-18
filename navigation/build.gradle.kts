@@ -34,6 +34,7 @@ dependencies {
     implementation(projects.features.imports.onboarding)
     implementation(projects.features.imports.options)
     implementation(projects.features.imports.passwords)
+    implementation(projects.features.logs.master)
     implementation(projects.features.onboarding.biometrics)
     implementation(projects.features.onboarding.imports)
     implementation(projects.features.onboarding.master)

@@ -55,6 +55,9 @@
     <string name="settings_support_title_how_to">How to use Proton Authenticator</string>
     <string name="settings_support_title_feedback">Feedback</string>
 
+    <string name="settings_application_section">Application</string>
+    <string name="settings_application_title_view_logs">View logs</string>
+
     <string name="settings_discover_section">Discover Proton</string>
     <string name="settings_discover_pass_title" translatable="false">Proton Pass</string>
     <string name="settings_discover_pass_description">Store strong, unique passwords to avoid identity theft and breaches.</string>

@@ -63,6 +63,7 @@ internal fun SettingsContent(
     onExportClick: (String) -> Unit,
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
+    onViewLogsClick: () -> Unit,
     onDiscoverAppClick: (String, String) -> Unit,
     onVersionNameClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -203,6 +204,19 @@ internal fun SettingsContent(
                     NavigationRow(
                         titleText = UiText.Resource(id = R.string.settings_support_title_feedback),
                         onClick = { onFeedbackClick(feedbackUrl) }
+                    )
+                }
+            )
+        )
+
+        SettingsSection(
+            title = stringResource(id = R.string.settings_application_section),
+            contents = listOf(
+                {
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_application_title_view_logs),
+                        showNavigationIcon = true,
+                        onClick = onViewLogsClick
                     )
                 }
             )

@@ -31,6 +31,7 @@ import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScree
 import proton.android.authenticator.features.imports.onboarding.ui.ImportsOnboardingScreen
 import proton.android.authenticator.features.imports.options.ui.ImportsOptionsScreen
 import proton.android.authenticator.features.imports.passwords.ui.ImportsPasswordScreen
+import proton.android.authenticator.features.logs.master.ui.LogsMasterScreen
 import proton.android.authenticator.features.qa.ui.QaMenuMasterScreen
 import proton.android.authenticator.features.settings.master.ui.SettingsMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
@@ -97,6 +98,11 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                     NavigationCommand.NavigateToUrl(
                         url = feedbackUrl,
                         context = context
+                    ).also(onNavigate)
+                },
+                onViewLogsClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = SettingsViewLogsNavigationDestination
                     ).also(onNavigate)
                 },
                 onDiscoverAppClick = { appPackageName, appUrl ->
@@ -226,6 +232,14 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                             errorReason = errorReason
                         )
                     ).also(onNavigate)
+                }
+            )
+        }
+
+        composable<SettingsViewLogsNavigationDestination> {
+            LogsMasterScreen(
+                onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
                 }
             )
         }

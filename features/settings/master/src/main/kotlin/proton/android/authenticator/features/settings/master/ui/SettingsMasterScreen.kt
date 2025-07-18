@@ -57,6 +57,7 @@ fun SettingsMasterScreen(
     onImportClick: () -> Unit,
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
+    onViewLogsClick: () -> Unit,
     onDiscoverAppClick: (String, String) -> Unit,
     onVersionNameClick: () -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
@@ -135,6 +136,7 @@ fun SettingsMasterScreen(
                     onHowToClick = onHowToClick,
                     onFeedbackClick = onFeedbackClick,
                     onDiscoverAppClick = onDiscoverAppClick,
+                    onViewLogsClick = onViewLogsClick,
                     onVersionNameClick = onVersionNameClick
                 )
             }
