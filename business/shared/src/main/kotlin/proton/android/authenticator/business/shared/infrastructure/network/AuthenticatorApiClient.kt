@@ -20,7 +20,7 @@ package proton.android.authenticator.business.shared.infrastructure.network
 
 import me.proton.core.network.domain.ApiClient
 import proton.android.authenticator.business.shared.domain.network.NetworkConfig
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class AuthenticatorApiClient @Inject constructor(private val config: NetworkConfig) : ApiClient {

@@ -42,7 +42,7 @@ import proton.android.authenticator.features.shared.usecases.backups.UpdateBacku
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 @HiltViewModel

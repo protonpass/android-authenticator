@@ -23,7 +23,7 @@ import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUt
 import proton.android.authenticator.business.shared.domain.infrastructure.network.getErrorCode
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class SyncEntriesCommandHandler @Inject constructor(

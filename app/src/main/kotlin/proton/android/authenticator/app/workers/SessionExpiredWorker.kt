@@ -32,7 +32,7 @@ import proton.android.authenticator.features.shared.entries.usecases.UnsyncEntri
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 
 @HiltWorker
 internal class SessionExpiredWorker @AssistedInject constructor(

@@ -28,6 +28,8 @@ interface AppConfig {
 
     val accountType: AccountType
 
+    val applicationId: String
+
     val appStore: AppStore
 
     val buildFlavor: BuildFlavor

@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.core.data)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.timber)
     implementation(libs.zxing.core)
 
     ksp(libs.hilt.compiler)

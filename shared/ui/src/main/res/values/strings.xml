@@ -31,6 +31,7 @@
     <string name="action_required">Required</string>
     <string name="action_save">Save</string>
     <string name="action_search">Search</string>
+    <string name="action_share">Share</string>
     <string name="action_skip">Skip</string>
     <string name="action_undo">Undo</string>
     <string name="action_unlock">Unlock</string>

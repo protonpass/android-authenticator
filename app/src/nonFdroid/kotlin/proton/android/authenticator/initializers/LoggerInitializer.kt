@@ -29,6 +29,7 @@ import proton.android.authenticator.BuildConfig
 import proton.android.authenticator.common.deviceInfo
 import proton.android.authenticator.commonrust.AuthenticatorLogger
 import proton.android.authenticator.commonrust.registerAuthenticatorLogger
+import proton.android.authenticator.shared.common.domain.logs.LogsFileTreeProvider
 import timber.log.Timber
 
 internal class LoggerInitializer : Initializer<Unit> {
@@ -43,6 +44,9 @@ internal class LoggerInitializer : Initializer<Unit> {
             if (BuildConfig.DEBUG) {
                 Timber.plant(Timber.DebugTree())
             }
+
+            // Write Authenticator Logs into logs file
+            Timber.plant(getLogsFileTreeProvider().provide())
 
             // Forward Core Logs to Timber, using TimberLogger.
             CoreLogger.set(TimberLogger)
@@ -59,6 +63,8 @@ internal class LoggerInitializer : Initializer<Unit> {
     internal interface LoggerInitializerDependencies {
 
         fun getAuthenticatorLogger(): AuthenticatorLogger
+
+        fun getLogsFileTreeProvider(): LogsFileTreeProvider
 
     }
 

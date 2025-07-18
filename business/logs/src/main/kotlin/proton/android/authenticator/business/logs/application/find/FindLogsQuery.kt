@@ -16,9 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.logger
+package proton.android.authenticator.business.logs.application.find
 
-import me.proton.core.util.kotlin.CoreLogger
-import me.proton.core.util.kotlin.Logger
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
 
-object AuthenticatorLogger : Logger by CoreLogger
+object FindLogsQuery : Query

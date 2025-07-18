@@ -61,6 +61,16 @@
         </activity>
 
         <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
@@ -79,6 +89,14 @@
                 tools:node="remove" />
             <meta-data
                 android:name="proton.android.authenticator.app.initializers.KeyWorkInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
+                android:name="proton.android.authenticator.initializers.LoggerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+            <meta-data
+                android:name="proton.android.authenticator.initializers.SentryInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
             <meta-data
@@ -121,12 +139,6 @@
                 android:name="me.proton.core.plan.presentation.UnredeemedPurchaseInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />
-            <meta-data
-                android:name="proton.android.authenticator.initializers.SentryInitializer"
-                android:value="androidx.startup" />
-            <meta-data
-                android:name="proton.android.authenticator.initializers.LoggerInitializer"
-                android:value="androidx.startup" />
         </provider>
 
         <meta-data

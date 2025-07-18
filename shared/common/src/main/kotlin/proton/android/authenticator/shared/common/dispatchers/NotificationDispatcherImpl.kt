@@ -32,7 +32,7 @@ import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import proton.android.authenticator.shared.common.domain.dispatchers.NotificationDispatcher
 import proton.android.authenticator.shared.common.domain.models.NotificationEvent
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class NotificationDispatcherImpl @Inject constructor(

@@ -22,7 +22,7 @@ import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUt
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import java.io.FileNotFoundException
 import java.io.IOException
 import javax.inject.Inject

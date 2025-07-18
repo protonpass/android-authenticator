@@ -27,7 +27,7 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.entries.usecases.SyncEntriesModelsUseCase
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 
 @HiltWorker
 internal class SyncWorker @AssistedInject constructor(

@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "proton.android.authenticator.features.logs.master"
 }
+
+dependencies {
+    implementation(projects.business.logs)
+}

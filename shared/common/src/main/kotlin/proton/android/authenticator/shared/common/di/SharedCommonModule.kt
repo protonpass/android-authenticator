@@ -39,11 +39,15 @@ import proton.android.authenticator.shared.common.domain.dispatchers.Notificatio
 import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandBus
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
+import proton.android.authenticator.shared.common.domain.logs.LogsFileProvider
+import proton.android.authenticator.shared.common.domain.logs.LogsFileTreeProvider
 import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.common.domain.scanners.QrScanner
 import proton.android.authenticator.shared.common.infrastructure.commands.InMemoryCommandBus
 import proton.android.authenticator.shared.common.infrastructure.queries.InMemoryQueryBus
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogsFileProvider
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogsFileTreeProvider
 import proton.android.authenticator.shared.common.providers.ClockTimeProvider
 import proton.android.authenticator.shared.common.providers.ContentResolverMimeTypeProvider
 import proton.android.authenticator.shared.common.scanners.ZxingQrScanner
@@ -63,6 +67,12 @@ internal abstract class SharedCommonModule {
 
     @[Binds Singleton]
     internal abstract fun bindMimeTypeProvider(impl: ContentResolverMimeTypeProvider): MimeTypeProvider
+
+    @[Binds Singleton]
+    internal abstract fun bindLogsFileProvider(impl: AuthenticatorLogsFileProvider): LogsFileProvider
+
+    @[Binds Singleton]
+    internal abstract fun bindLogsFileTreeProvider(impl: AuthenticatorLogsFileTreeProvider): LogsFileTreeProvider
 
     @[Binds Singleton]
     internal abstract fun bindQrScanner(impl: ZxingQrScanner): QrScanner

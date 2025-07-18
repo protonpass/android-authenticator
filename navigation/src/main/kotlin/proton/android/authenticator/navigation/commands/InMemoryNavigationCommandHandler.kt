@@ -3,20 +3,36 @@ package proton.android.authenticator.navigation.commands
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.provider.Settings
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class InMemoryNavigationCommandHandler @Inject constructor() : NavigationCommandHandler {
 
+    @Suppress("LongMethod")
     override fun handle(command: NavigationCommand, navController: NavHostController) {
         when (command) {
             is NavigationCommand.NavigateTo -> {
                 navController.navigate(route = command.destination)
+            }
+
+            is NavigationCommand.NavigateToAppSettings -> {
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts(URI_SCHEME_PACKAGE, command.context.packageName, null)
+                ).also { intent ->
+                    try {
+                        command.context.startActivity(intent)
+                    } catch (error: ActivityNotFoundException) {
+                        AuthenticatorLogger.w(TAG, "Cannot open app settings")
+                        AuthenticatorLogger.w(TAG, error)
+                    }
+                }
             }
 
             is NavigationCommand.NavigateToPlayStore -> {
@@ -27,7 +43,10 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
 
                 try {
                     command.context.startActivity(playStoreIntent)
-                } catch (_: ActivityNotFoundException) {
+                } catch (error: ActivityNotFoundException) {
+                    AuthenticatorLogger.w(TAG, "Cannot navigate to PlayStore: $playStoreUri")
+                    AuthenticatorLogger.w(TAG, error)
+
                     NavigationCommand.NavigateToUrl(
                         url = command.fallbackUrl ?: "$PLAY_STORE_WEB_URI${command.appPackageName}",
                         context = command.context
@@ -41,8 +60,9 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
                     .also { intent ->
                         try {
                             command.context.startActivity(intent)
-                        } catch (_: ActivityNotFoundException) {
-                            return
+                        } catch (error: ActivityNotFoundException) {
+                            AuthenticatorLogger.w(TAG, "Cannot navigate to URL: ${command.url}")
+                            AuthenticatorLogger.w(TAG, error)
                         }
                     }
             }
@@ -64,18 +84,29 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
                 )
             }
 
-            is NavigationCommand.NavigateToAppSettings -> {
-                try {
-                    command.context.startActivity(
-                        Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", command.context.packageName, null)
-                        )
-                    )
-                } catch (e: ActivityNotFoundException) {
-                    AuthenticatorLogger.w(TAG, "Cannot open app settings")
-                    AuthenticatorLogger.w(TAG, e)
-                }
+            is NavigationCommand.ShareFileViaEmail -> {
+                Bundle()
+                    .apply {
+                        putStringArray(Intent.EXTRA_EMAIL, arrayOf(command.emailReceiver))
+                        putString(Intent.EXTRA_SUBJECT, command.emailSubject)
+                        putParcelable(Intent.EXTRA_STREAM, command.fileUri)
+                    }
+                    .let { bundle ->
+                        Intent(Intent.ACTION_SEND).apply {
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            putExtras(bundle)
+                            type = command.mimeType
+                        }
+                    }
+                    .let { intent -> Intent.createChooser(intent, command.chooserTitle) }
+                    .also { chooserIntent ->
+                        try {
+                            command.context.startActivity(chooserIntent)
+                        } catch (error: ActivityNotFoundException) {
+                            AuthenticatorLogger.w(TAG, "Cannot share file via email")
+                            AuthenticatorLogger.w(TAG, error)
+                        }
+                    }
             }
         }
     }
@@ -89,6 +120,8 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
         private const val PLAY_STORE_WEB_URI = "https://play.google.com/store/apps/details?id="
 
         private const val PLAY_STORE_VENDOR_PACKAGE = "com.android.vending"
+
+        private const val URI_SCHEME_PACKAGE = "package"
 
     }
 

@@ -26,4 +26,6 @@ object CharacterConstants {
 
     const val DOUBLE_QUOTES = "\""
 
+    const val NEW_LINE = "\n"
+
 }

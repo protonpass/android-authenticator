@@ -57,7 +57,7 @@ import proton.android.authenticator.features.shared.usecases.settings.UpdateSett
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

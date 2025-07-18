@@ -20,7 +20,7 @@ package proton.android.authenticator.shared.common.rust
 
 import proton.android.authenticator.commonrust.AuthenticatorLogLevel
 import proton.android.authenticator.commonrust.AuthenticatorLogger
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger as RustLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger as RustLogger
 
 internal class RustAuthenticatorLogger : AuthenticatorLogger {
 

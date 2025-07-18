@@ -237,9 +237,17 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
         }
 
         composable<SettingsViewLogsNavigationDestination> {
+            val context = LocalContext.current
+
             LogsMasterScreen(
                 onNavigationClick = {
                     onNavigate(NavigationCommand.NavigateUp)
+                },
+                onShareLogsClick = { logsFileUri ->
+                    NavigationCommand.ShareFileViaEmail(
+                        fileUri = logsFileUri,
+                        context = context
+                    ).also(onNavigate)
                 }
             )
         }

@@ -34,7 +34,7 @@ import proton.android.authenticator.features.shared.usecases.backups.ObserveBack
 import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
 import proton.android.authenticator.features.shared.usecases.notifications.DispatchNotificationUseCase
 import proton.android.authenticator.shared.common.domain.models.NotificationEvent
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import proton.android.authenticator.shared.ui.R as uiR
 
 @HiltWorker

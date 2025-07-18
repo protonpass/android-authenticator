@@ -32,6 +32,8 @@ internal class AuthenticatorAppConfig @Inject constructor() : AppConfig {
 
     override val accountType: AccountType = AccountType.External
 
+    override val applicationId: String = BuildConfig.APPLICATION_ID
+
     override val buildFlavor: BuildFlavor = BuildFlavor.from(BuildConfig.FLAVOR)
 
     override val appStore: AppStore = when (buildFlavor) {

@@ -29,13 +29,15 @@ import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 import proton.android.authenticator.app.initializers.AccountCoreInitializer
-import proton.android.authenticator.app.initializers.SessionExpiredWorkInitializer
 import proton.android.authenticator.app.initializers.BackupPeriodicWorkInitializer
 import proton.android.authenticator.app.initializers.KeyWorkInitializer
+import proton.android.authenticator.app.initializers.SessionExpiredWorkInitializer
 import proton.android.authenticator.app.initializers.SyncPeriodicWorkInitializer
 import proton.android.authenticator.app.initializers.SyncWorkInitializer
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
+import proton.android.authenticator.initializers.LoggerInitializer
+import proton.android.authenticator.initializers.SentryInitializer
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -82,6 +84,8 @@ internal class App : Application(), Configuration.Provider, ImageLoaderFactory {
             initializeComponent(AccountCoreInitializer::class.java)
             initializeComponent(BackupPeriodicWorkInitializer::class.java)
             initializeComponent(KeyWorkInitializer::class.java)
+            initializeComponent(LoggerInitializer::class.java)
+            initializeComponent(SentryInitializer::class.java)
             initializeComponent(SessionExpiredWorkInitializer::class.java)
             initializeComponent(SyncPeriodicWorkInitializer::class.java)
             initializeComponent(SyncWorkInitializer::class.java)

@@ -26,7 +26,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import proton.android.authenticator.features.shared.keys.usecases.CreateKeyUseCase
 import proton.android.authenticator.features.shared.keys.usecases.GetKeyUseCase
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 
 @HiltWorker
 internal class KeyWorker @AssistedInject constructor(

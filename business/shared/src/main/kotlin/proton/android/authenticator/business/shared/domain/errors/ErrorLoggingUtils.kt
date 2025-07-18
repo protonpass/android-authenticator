@@ -20,7 +20,7 @@ package proton.android.authenticator.business.shared.domain.errors
 
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.answers.AnswerReason
-import proton.android.authenticator.shared.common.logger.AuthenticatorLogger
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 
 /**
  * Utility class for logging errors and returning failure answers.
