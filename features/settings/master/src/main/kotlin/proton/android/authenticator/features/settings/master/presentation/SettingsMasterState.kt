@@ -65,7 +65,7 @@ internal sealed interface SettingsMasterState {
 
         internal val feedbackUrl: String = UrlConstants.CUSTOMER_SUPPORT
 
-        internal val howToUrl: String = URL_HOW_TO
+        internal val howToUrl: String = UrlConstants.HOW_TO
 
         internal val settingsModel = SettingsMasterSettingsModel(
             isSyncEnabled = settings.isSyncEnabled,

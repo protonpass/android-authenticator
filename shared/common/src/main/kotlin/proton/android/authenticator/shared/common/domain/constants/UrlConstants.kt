@@ -22,4 +22,6 @@ object UrlConstants {
 
     const val CUSTOMER_SUPPORT = "https://proton.me/support/contact"
 
+    const val HOW_TO = "https://proton.me/support/get-started-proton-authenticator"
+
 }
