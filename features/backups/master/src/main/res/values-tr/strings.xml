@@ -31,6 +31,5 @@
     <item quantity="other">Yalnızca son %1$d yedekleme tutulur.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Yedekleme başarıyla oluşturuldu</string>
-  <string name="backups_snackbar_message_backup_error">Yedekleme oluşturulurken bir hata oluştu</string>
   <string name="backups_snackbar_message_update_error">Yedekleme yapılandırması güncellenirken bir hata oluştu</string>
 </resources>

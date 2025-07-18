@@ -31,6 +31,5 @@
     <item quantity="other">Solo se conservan las últimas %1$d copias de seguridad.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Copia de seguridad creada correctamente</string>
-  <string name="backups_snackbar_message_backup_error">Hubo un error al crear la copia de seguridad</string>
   <string name="backups_snackbar_message_update_error">Hubo un error al actualizar la configuración de la copia de seguridad</string>
 </resources>

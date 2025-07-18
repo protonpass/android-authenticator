@@ -19,11 +19,4 @@
 <resources>
   <string name="home_scan_qr_code_hint">Inquadra il codice QR con la fotocamera.</string>
   <string name="home_scan_enter_manually">Inserisci manualmente</string>
-  <string name="home_scan_snackbar_message_create_entry_code_error">Si è verificato un errore durante la creazione del codice di ingresso</string>
-  <string name="home_scan_snackbar_message_invalid_entry_code">Codice di ingresso non valido</string>
-  <string name="home_scan_snackbar_message_invalid_entry_title">Titolo di ingresso non valido</string>
-  <string name="home_scan_snackbar_message_invalid_entry_unknown">Qualcosa è andato storto</string>
-  <string name="home_scan_snackbar_message_invalid_qr_code">Codice QR non valido</string>
-  <string name="home_scan_permission_text">Autorizzazione fotocamera richiesta affinché questa funzione sia disponibile</string>
-  <string name="home_scan_permission_button">Apri impostazioni</string>
 </resources>

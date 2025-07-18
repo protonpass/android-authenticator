@@ -19,11 +19,4 @@
 <resources>
   <string name="home_scan_qr_code_hint">Skieruj aparat na kod QR.</string>
   <string name="home_scan_enter_manually">Wprowadź ręcznie</string>
-  <string name="home_scan_snackbar_message_create_entry_code_error">Wystąpił błąd podczas tworzenia kodu wpisu</string>
-  <string name="home_scan_snackbar_message_invalid_entry_code">Nieprawidłowy kod wpisu</string>
-  <string name="home_scan_snackbar_message_invalid_entry_title">Nieprawidłowy tytuł wpisu</string>
-  <string name="home_scan_snackbar_message_invalid_entry_unknown">Coś poszło nie tak</string>
-  <string name="home_scan_snackbar_message_invalid_qr_code">Nieprawidłowy kod QR</string>
-  <string name="home_scan_permission_text">Wymagane jest zezwolenie na aparat, aby ta funkcja była dostępna</string>
-  <string name="home_scan_permission_button">Otwórz ustawienia</string>
 </resources>

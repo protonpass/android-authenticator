@@ -31,6 +31,5 @@
     <item quantity="other">Es werden nur die letzten %1$d Sicherungen behalten.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Sicherung erfolgreich erstellt</string>
-  <string name="backups_snackbar_message_backup_error">Beim Erstellen der Sicherung ist ein Fehler aufgetreten</string>
   <string name="backups_snackbar_message_update_error">Beim Aktualisieren der Sicherungskonfiguration ist ein Fehler aufgetreten</string>
 </resources>

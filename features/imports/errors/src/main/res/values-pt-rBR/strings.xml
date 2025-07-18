@@ -20,5 +20,5 @@
   <string name="imports_error_dialog_title">Falha na importação</string>
   <string name="imports_error_dialog_message_bad_content">Não foi possível importar o arquivo selecionado.</string>
   <string name="imports_error_dialog_message_bad_encryption">Não foi possível descriptografar o arquivo selecionado.</string>
-  <string name="imports_error_dialog_message_file_too_large">File size limit exceeded</string>
+  <string name="imports_error_dialog_message_file_too_large">O limite de tamanho do arquivo foi excedido</string>
 </resources>

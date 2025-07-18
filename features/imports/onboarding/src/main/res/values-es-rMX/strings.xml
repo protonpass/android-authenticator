@@ -20,37 +20,37 @@
   <string name="imports_onboarding_title_supported">Importar códigos de %1$s</string>
   <string name="imports_onboarding_title_unsupported">No hay exportación disponible</string>
   <string-array name="imports_onboarding_google_steps_v2">
-    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts\"</item>
-    <item>This will create one or more QR codes that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Transferir cuentas &gt; Exportar cuentas\"</item>
+    <item>Esto creará uno o más códigos QR que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_2fas_steps_v2">
-    <item>Please go to \"Settings &gt; 2FAS Backup &gt; Export\"</item>
-    <item>This will create a 2fas file that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Copia de seguridad de 2FAS &gt; Exportar\"</item>
+    <item>Esto creará un archivo 2fas que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_aegis_steps_v2">
-    <item>Please go to \"Settings &gt; Import &amp; Export &gt; Export\"</item>
-    <item>This will create a Json file that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Importar y exportar &gt; Exportar\"</item>
+    <item>Esto creará un archivo Json que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_bitwarden_steps_v2">
-    <item>Please go to \"Settings &gt; Export\"</item>
-    <item>This will create a Json file that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Exportar\"</item>
+    <item>Esto creará un archivo Json que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_ente_steps_v2">
-    <item>Please go to \"Settings &gt; Data &gt; Export codes\"</item>
-    <item>Choose \"Plain text\", this will create a txt file that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Datos &gt; Exportar códigos\"</item>
+    <item>Elija \"Texto sin formato\", esto creará un archivo txt que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_lastpass_steps_v2">
-    <item>Please go to \"Settings &gt; Transfer accounts &gt; Export accounts to file\"</item>
-    <item>This will create a Json file that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Transferir cuentas &gt; Exportar cuentas a archivo\"</item>
+    <item>Esto creará un archivo Json que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_authenticator_steps_v2">
-    <item>Please go \"Settings &gt; Export\"</item>
-    <item>This will create a Json file that you can use here.</item>
+    <item>Vaya a \"Configuración &gt; Exportar\"</item>
+    <item>Esto creará un archivo Json que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_pass_steps">
-    <item>In Proton Pass extension, web or desktop app, go to \"Settings &gt; Export\"</item>
-    <item>Make sure to choose the \"zip format without file attachments\".</item>
-    <item>This will create a zip file that you can use here.</item>
+    <item>En la extensión, la aplicación web o de escritorio de Proton Pass, vaya a \"Configuración &gt; Exportar\"</item>
+    <item>Asegúrese de elegir el \"formato zip sin archivos adjuntos\".</item>
+    <item>Esto creará un archivo zip que puede usar aquí.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Lamentablemente, %1$s no admite actualmente la exportación de datos desde su aplicación. Considere contactar a %1$s para solicitar esta función.</item>

@@ -19,11 +19,4 @@
 <resources>
   <string name="home_scan_qr_code_hint">Kameranızı QR koduna doğrultun.</string>
   <string name="home_scan_enter_manually">Elle girin</string>
-  <string name="home_scan_snackbar_message_create_entry_code_error">Giriş kodu oluşturulurken bir hata oluştu</string>
-  <string name="home_scan_snackbar_message_invalid_entry_code">Geçersiz giriş kodu</string>
-  <string name="home_scan_snackbar_message_invalid_entry_title">Geçersiz giriş başlığı</string>
-  <string name="home_scan_snackbar_message_invalid_entry_unknown">Bir şeyler ters gitti</string>
-  <string name="home_scan_snackbar_message_invalid_qr_code">Geçersiz QR kodu</string>
-  <string name="home_scan_permission_text">Bu özelliğin kullanılabilmesi için kamera izni gereklidir</string>
-  <string name="home_scan_permission_button">Ayarları aç</string>
 </resources>

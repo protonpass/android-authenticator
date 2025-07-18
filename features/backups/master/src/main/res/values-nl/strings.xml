@@ -31,6 +31,5 @@
     <item quantity="other">Alleen de laatste %1$d back-ups worden bewaard.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Back-up succesvol aangemaakt</string>
-  <string name="backups_snackbar_message_backup_error">Er is een fout opgetreden bij het maken van de back-up</string>
   <string name="backups_snackbar_message_update_error">Er is een fout opgetreden bij het bijwerken van de back-upconfiguratie</string>
 </resources>

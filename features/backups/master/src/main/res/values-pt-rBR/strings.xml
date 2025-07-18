@@ -31,6 +31,5 @@
     <item quantity="other">Somente os últimos %1$d backups são mantidos.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Backup criado com sucesso</string>
-  <string name="backups_snackbar_message_backup_error">Ocorreu um erro ao criar o backup</string>
   <string name="backups_snackbar_message_update_error">Ocorreu um erro ao atualizar a configuração do backup</string>
 </resources>

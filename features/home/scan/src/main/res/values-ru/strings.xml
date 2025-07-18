@@ -19,11 +19,4 @@
 <resources>
   <string name="home_scan_qr_code_hint">Наведите камеру на QR-код.</string>
   <string name="home_scan_enter_manually">Ввести вручную</string>
-  <string name="home_scan_snackbar_message_create_entry_code_error">При создании кода входа произошла ошибка</string>
-  <string name="home_scan_snackbar_message_invalid_entry_code">Недействительный код входа</string>
-  <string name="home_scan_snackbar_message_invalid_entry_title">Недействительное название записи</string>
-  <string name="home_scan_snackbar_message_invalid_entry_unknown">Что-то пошло не так</string>
-  <string name="home_scan_snackbar_message_invalid_qr_code">Недействительный QR-код</string>
-  <string name="home_scan_permission_text">Для доступа к этой функции требуется разрешение на использование камеры</string>
-  <string name="home_scan_permission_button">Открыть настройки</string>
 </resources>

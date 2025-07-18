@@ -23,13 +23,13 @@
   <string name="home_empty_action_import_codes">Kodları İçe Aktar</string>
   <string name="home_empty_search_title">Sonuç bulunamadı</string>
   <string name="home_empty_search_subtitle">Farklı ifade veya anahtar sözcüklerle aramayı deneyin.</string>
-  <string name="home_entries_no_issuer">No issuer</string>
+  <string name="home_entries_no_issuer">Sağlayıcı yok</string>
   <string name="home_snackbar_message_entry_copied">Giriş kopyalandı</string>
   <string name="home_snackbar_message_entry_deleted">Giriş silindi</string>
   <string name="home_snackbar_message_entry_delete_failed">Giriş silinirken bir hata oluştu</string>
   <string name="home_snackbar_message_entry_rearrange_failed">Giriş yeniden düzenlenirken bir hata oluştu</string>
   <string name="home_snackbar_message_entry_restore_failed">Giriş geri yüklenirken bir hata oluştu</string>
   <string name="home_snackbar_message_entry_sync_disabled">Cihaz eşitlemesi devre dışı</string>
-  <string name="home_snackbar_message_entry_sync_unauthorized">Syncing has been disabled. Please log in to your Proton account again.</string>
+  <string name="home_snackbar_message_entry_sync_unauthorized">Eşitleme devre dışı bırakıldı. Lütfen Proton hesabınıza yeniden giriş yapın.</string>
   <string name="home_snackbar_message_entry_sync_failed">Girişler eşitlenirken bir hata oluştu</string>
 </resources>

@@ -23,13 +23,13 @@
   <string name="home_empty_action_import_codes">Импортировать коды</string>
   <string name="home_empty_search_title">Результатов не найдено</string>
   <string name="home_empty_search_subtitle">Попробуйте поискать, используя другое написание или ключевые слова.</string>
-  <string name="home_entries_no_issuer">No issuer</string>
+  <string name="home_entries_no_issuer">Эмитент не указан</string>
   <string name="home_snackbar_message_entry_copied">Запись скопирована</string>
   <string name="home_snackbar_message_entry_deleted">Запись удалена</string>
   <string name="home_snackbar_message_entry_delete_failed">Произошла ошибка при удалении записи</string>
   <string name="home_snackbar_message_entry_rearrange_failed">Произошла ошибка при изменении порядка записи</string>
   <string name="home_snackbar_message_entry_restore_failed">Произошла ошибка при восстановлении записи</string>
   <string name="home_snackbar_message_entry_sync_disabled">Синхронизация устройств отключена</string>
-  <string name="home_snackbar_message_entry_sync_unauthorized">Syncing has been disabled. Please log in to your Proton account again.</string>
+  <string name="home_snackbar_message_entry_sync_unauthorized">Синхронизация отключена. Пожалуйста, снова войдите в свой аккаунт Proton.</string>
   <string name="home_snackbar_message_entry_sync_failed">Произошла ошибка при синхронизации записей</string>
 </resources>

@@ -33,6 +33,5 @@
     <item quantity="other">Zachowywane są tylko ostatnie %1$d kopie zapasowe.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Kopia zapasowa została pomyślnie utworzona</string>
-  <string name="backups_snackbar_message_backup_error">Wystąpił błąd podczas tworzenia kopii zapasowej</string>
   <string name="backups_snackbar_message_update_error">Wystąpił błąd podczas aktualizowania konfiguracji kopii zapasowej</string>
 </resources>

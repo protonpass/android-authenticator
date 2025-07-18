@@ -31,6 +31,5 @@
     <item quantity="other">Seules les dernières %1$d sauvegarde sont conservées.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">La sauvegarde a été créée.</string>
-  <string name="backups_snackbar_message_backup_error">Une erreur s\'est produite lors de la création de la sauvegarde.</string>
   <string name="backups_snackbar_message_update_error">Une erreur s\'est produite lors de la mise à jour de la configuration de sauvegarde</string>
 </resources>

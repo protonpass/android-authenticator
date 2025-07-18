@@ -33,6 +33,5 @@
     <item quantity="other">Сохраняется только последние %1$d резервных копий.</item>
   </plurals>
   <string name="backups_snackbar_message_backup_success">Резервная копия успешно создана</string>
-  <string name="backups_snackbar_message_backup_error">Произошла ошибка при создании резервной копии</string>
   <string name="backups_snackbar_message_update_error">Произошла ошибка при обновлении конфигурации резервного копирования</string>
 </resources>

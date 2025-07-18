@@ -19,11 +19,4 @@
 <resources>
   <string name="home_scan_qr_code_hint">Richte deine Kamera auf den QR-Code.</string>
   <string name="home_scan_enter_manually">Manuell eingeben</string>
-  <string name="home_scan_snackbar_message_create_entry_code_error">Beim Erstellen des Zugangscodes ist ein Fehler aufgetreten</string>
-  <string name="home_scan_snackbar_message_invalid_entry_code">Ungültiger Zugangscode</string>
-  <string name="home_scan_snackbar_message_invalid_entry_title">Ungültiger Eintragsname</string>
-  <string name="home_scan_snackbar_message_invalid_entry_unknown">Etwas ist schiefgelaufen</string>
-  <string name="home_scan_snackbar_message_invalid_qr_code">Ungültiger QR-Code</string>
-  <string name="home_scan_permission_text">Kameraberechtigung erforderlich, damit diese Funktion verfügbar ist</string>
-  <string name="home_scan_permission_button">Einstellungen öffnen</string>
 </resources>

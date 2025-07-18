@@ -23,13 +23,13 @@
   <string name="home_empty_action_import_codes">Codes importeren</string>
   <string name="home_empty_search_title">Geen resultaten gevonden</string>
   <string name="home_empty_search_subtitle">Probeer te zoeken met een andere spelling of andere trefwoorden.</string>
-  <string name="home_entries_no_issuer">No issuer</string>
+  <string name="home_entries_no_issuer">Geen uitgever</string>
   <string name="home_snackbar_message_entry_copied">Vermelding gekopieerd</string>
   <string name="home_snackbar_message_entry_deleted">Vermelding verwijderd</string>
   <string name="home_snackbar_message_entry_delete_failed">Er is een fout opgetreden bij het verwijderen van de vermelding</string>
   <string name="home_snackbar_message_entry_rearrange_failed">Er is een fout opgetreden bij het herschikken van de vermelding</string>
   <string name="home_snackbar_message_entry_restore_failed">Er is een fout opgetreden bij het herstellen van de vermelding</string>
   <string name="home_snackbar_message_entry_sync_disabled">Apparaatsynchronisatie is uitgeschakeld</string>
-  <string name="home_snackbar_message_entry_sync_unauthorized">Syncing has been disabled. Please log in to your Proton account again.</string>
+  <string name="home_snackbar_message_entry_sync_unauthorized">De synchronisatie is uitgeschakeld. Meld u opnieuw aan bij uw Proton-account.</string>
   <string name="home_snackbar_message_entry_sync_failed">Er is een fout opgetreden bij het synchroniseren van de vermeldingen</string>
 </resources>

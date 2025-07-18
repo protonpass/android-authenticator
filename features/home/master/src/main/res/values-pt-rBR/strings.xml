@@ -23,13 +23,13 @@
   <string name="home_empty_action_import_codes">Importar códigos</string>
   <string name="home_empty_search_title">Nenhum resultado encontrado</string>
   <string name="home_empty_search_subtitle">Tente pesquisar com uma ortografia ou palavras-chave diferentes.</string>
-  <string name="home_entries_no_issuer">No issuer</string>
+  <string name="home_entries_no_issuer">Nenhum emissor</string>
   <string name="home_snackbar_message_entry_copied">Entrada copiada</string>
   <string name="home_snackbar_message_entry_deleted">Entrada excluída</string>
   <string name="home_snackbar_message_entry_delete_failed">Ocorreu um erro ao excluir a entrada</string>
   <string name="home_snackbar_message_entry_rearrange_failed">Ocorreu um erro ao rearranjar a entrada</string>
   <string name="home_snackbar_message_entry_restore_failed">Ocorreu um erro ao restaurar a entrada</string>
   <string name="home_snackbar_message_entry_sync_disabled">A sincronização do dispositivo está desativada</string>
-  <string name="home_snackbar_message_entry_sync_unauthorized">Syncing has been disabled. Please log in to your Proton account again.</string>
+  <string name="home_snackbar_message_entry_sync_unauthorized">A sincronização foi desativada. Faça login em sua conta Proton novamente.</string>
   <string name="home_snackbar_message_entry_sync_failed">Houve um erro ao sincronizar as entradas</string>
 </resources>

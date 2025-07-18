@@ -19,11 +19,4 @@
 <resources>
   <string name="home_scan_qr_code_hint">Pointez votre appareil photo vers le code QR.</string>
   <string name="home_scan_enter_manually">Saisir manuellement</string>
-  <string name="home_scan_snackbar_message_create_entry_code_error">Une erreur s\'est produite lors de la création du code d\'entrée</string>
-  <string name="home_scan_snackbar_message_invalid_entry_code">Le code de l\'entrée n\'est pas valide.</string>
-  <string name="home_scan_snackbar_message_invalid_entry_title">Le titre de l\'entrée n\'est pas valide.</string>
-  <string name="home_scan_snackbar_message_invalid_entry_unknown">Une erreur est survenue.</string>
-  <string name="home_scan_snackbar_message_invalid_qr_code">Le QR code n\'est pas valide.</string>
-  <string name="home_scan_permission_text">Vous devez autoriser l\'accès à la caméra pour que cette fonctionnalité soit disponible.</string>
-  <string name="home_scan_permission_button">Ouvrir les paramètres</string>
 </resources>
