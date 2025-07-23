@@ -16,16 +16,7 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <style name="Theme.ProtonAuthenticator" parent="ProtonTheme">
-        <item name="android:windowBackground">@drawable/background_gradient</item>
-        <item name="proton_background_norm">@color/transparent</item>
-        <item name="proton_background_secondary">@color/background_secondary</item>
-        <item name="proton_text_accent">@color/accent</item>
-        <item name="proton_text_weak">@color/text_weak</item>
-        <item name="materialAlertDialogTheme">@style/Theme.ProtonAuthenticator.Dialog</item>
-        <item name="materialButtonStyle">@style/ProtonButton.Rounded</item>
-        <item name="materialButtonOutlinedStyle">@style/ProtonButton.OutlinedButton.Rounded</item>
-        <item name="outlinedButtonStyle">@style/ProtonButton.OutlinedButton.Rounded</item>
-    </style>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/background_dialog" />
+    <corners android:radius="32dp" />
+</shape>

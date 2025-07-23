@@ -19,6 +19,9 @@
 
 <resources>
     <color name="accent">#FF6D4AFF</color>
+    <color name="background_dialog">#FFECE6F0</color>
     <color name="background_secondary">#06000000</color>
+    <color name="text_dialog_body">#FF49454F</color>
+    <color name="text_dialog_title">#FF1D1B20</color>
     <color name="text_weak">#FF78716C</color>
 </resources>
