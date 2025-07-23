@@ -18,8 +18,11 @@
 
 package proton.android.authenticator.features.backups.master.ui
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.provider.DocumentsContract
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,11 +31,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.backups.master.R
 import proton.android.authenticator.features.backups.master.presentation.BackupsMasterState
@@ -45,6 +53,7 @@ import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
+import proton.android.authenticator.shared.ui.domain.screens.AlertDialogScreen
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -57,25 +66,45 @@ internal fun BackupsMasterContent(
     onBackupNowClick: (List<EntryModel>) -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
+    var showNotificationsExplanationDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val folderLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree()
+    ) { uri: Uri? ->
+        uri?.let { folderUri ->
+            context.contentResolver
+                .takePersistableUriPermission(
+                    folderUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                .also { onFolderPicked(folderUri) }
+        }
+    }
+
+    var hasNotificationPermission by remember {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return@remember mutableStateOf(true)
+        } else {
+            val allowed = ContextCompat.checkSelfPermission(
+                context, Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+            return@remember mutableStateOf(allowed)
+        }
+    }
+
+    val permissionRequestLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            hasNotificationPermission = isGranted
+            folderLauncher.launch(backupModel.directoryUri)
+        }
+    )
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Large)
     ) {
-        val context = LocalContext.current
-
-        val folderLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.OpenDocumentTree()
-        ) { uri: Uri? ->
-            uri?.let { folderUri ->
-                context.contentResolver
-                    .takePersistableUriPermission(
-                        folderUri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    )
-                    .also { onFolderPicked(folderUri) }
-            }
-        }
-
         RowsContainer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,7 +117,11 @@ internal fun BackupsMasterContent(
                             isChecked = backupModel.isEnabled,
                             onCheckedChange = { isEnablingBackup ->
                                 if (isEnablingBackup) {
-                                    folderLauncher.launch(backupModel.directoryUri)
+                                    if (hasNotificationPermission) {
+                                        folderLauncher.launch(backupModel.directoryUri)
+                                    } else {
+                                        showNotificationsExplanationDialog = true
+                                    }
                                 } else {
                                     onDisableBackup()
                                 }
@@ -162,5 +195,22 @@ internal fun BackupsMasterContent(
                 }
             }
         }
+    }
+
+    if (showNotificationsExplanationDialog) {
+        AlertDialogScreen(
+            title = UiText.Resource(id = R.string.backups_notifications_permission_dialog_title),
+            message = UiText.Resource(id = R.string.backups_notifications_permission_dialog_explanation),
+            confirmText = UiText.Resource(id = R.string.backups_notifications_permission_dialog_allow),
+            cancelText = UiText.Resource(id = R.string.backups_notifications_permission_dialog_deny),
+            onCancellation = {
+                showNotificationsExplanationDialog = false
+                folderLauncher.launch(backupModel.directoryUri)
+            },
+            onConfirmation = {
+                showNotificationsExplanationDialog = false
+                permissionRequestLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        )
     }
 }

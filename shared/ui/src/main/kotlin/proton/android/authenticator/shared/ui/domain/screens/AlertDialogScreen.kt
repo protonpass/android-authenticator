@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.DialogProperties
 import proton.android.authenticator.shared.ui.domain.components.buttons.DialogActionTextButton
 import proton.android.authenticator.shared.ui.domain.components.indicators.DialogProgressIndicator
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -36,9 +37,9 @@ fun AlertDialogScreen(
     title: UiText,
     message: UiText,
     confirmText: UiText,
-    onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     modifier: Modifier = Modifier,
+    onDismissRequest: (() -> Unit)? = null, // null to disable dismiss on back press
     cancelText: UiText? = null,
     onCancellation: (() -> Unit)? = null,
     isLoading: Boolean = false
@@ -61,12 +62,13 @@ fun AlertDialogScreen(
     title: UiText,
     messages: List<UiText>,
     confirmText: UiText,
-    onDismissRequest: () -> Unit,
     onConfirmation: () -> Unit,
     modifier: Modifier = Modifier,
+    onDismissRequest: (() -> Unit)? = null,
     cancelText: UiText? = null,
     onCancellation: (() -> Unit)? = null,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
+    dismissOnBackPress: Boolean = true
 ) {
     val shouldShowActionButton = remember(key1 = isLoading) { !isLoading }
 
@@ -75,7 +77,7 @@ fun AlertDialogScreen(
         titleContentColor = Theme.colorScheme.surface,
         textContentColor = Theme.colorScheme.surfaceVariant,
         containerColor = Theme.colorScheme.surfaceContainerHigh,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = { onDismissRequest?.invoke() },
         title = {
             Text(
                 text = title.asString(),
@@ -111,10 +113,11 @@ fun AlertDialogScreen(
                     DialogActionTextButton(
                         text = text,
                         textColor = Theme.colorScheme.signalError,
-                        onClick = onCancellation ?: onDismissRequest
+                        onClick = onCancellation ?: onDismissRequest ?: {}
                     )
                 }
             }
-        }
+        },
+        properties = DialogProperties(dismissOnBackPress = onDismissRequest != null)
     )
 }
