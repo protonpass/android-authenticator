@@ -19,7 +19,6 @@
 package proton.android.authenticator.shared.common.scanners
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
@@ -38,6 +37,7 @@ import proton.android.authenticator.shared.common.domain.scanners.QrScanner
 import java.io.FileNotFoundException
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.math.min
 
 internal class ZxingQrScanner @Inject constructor(
     private val appDispatchers: AppDispatchers,
@@ -52,12 +52,22 @@ internal class ZxingQrScanner @Inject constructor(
         }
     }
 
-    override suspend fun scan(uri: Uri): String? = withContext(appDispatchers.default) {
+    override suspend fun scan(uri: Uri, maxDimension: Int): String? = withContext(appDispatchers.default) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ImageDecoder.decodeBitmap(
-                    ImageDecoder.createSource(context.contentResolver, uri)
-                ).copy(Bitmap.Config.ARGB_8888, false)
+                val src = ImageDecoder.createSource(context.contentResolver, uri)
+                ImageDecoder.decodeBitmap(src) { decoder, info, _ ->
+                    decoder.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE)
+                    val rawScale = min(
+                        maxDimension.toFloat() / info.size.width,
+                        maxDimension.toFloat() / info.size.height
+                    )
+                    val scale = min(1f, rawScale)
+                    decoder.setTargetSize(
+                        (info.size.width * scale).toInt(),
+                        (info.size.height * scale).toInt()
+                    )
+                }
             } else {
                 MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
             }.let { bitmap ->
