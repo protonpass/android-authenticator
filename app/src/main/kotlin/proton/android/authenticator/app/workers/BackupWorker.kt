@@ -20,6 +20,7 @@ package proton.android.authenticator.app.workers
 
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -33,6 +34,7 @@ import proton.android.authenticator.features.shared.usecases.backups.GenerateBac
 import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
 import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
 import proton.android.authenticator.features.shared.usecases.notifications.DispatchNotificationUseCase
+import proton.android.authenticator.shared.common.domain.constants.CharacterConstants
 import proton.android.authenticator.shared.common.domain.models.NotificationEvent
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import proton.android.authenticator.shared.ui.R as uiR
@@ -71,7 +73,12 @@ internal class BackupWorker @AssistedInject constructor(
                 }
             },
             onSuccess = {
-                AuthenticatorLogger.i(TAG, "Automatic backup successfully generated")
+                observeBackupUseCase()
+                    .first()
+                    .also { backup ->
+                        AuthenticatorLogger.i(TAG, "Automatic backup successfully generated")
+                            .also { notifyAutomaticBackupSuccess(backup.directoryUri) }
+                    }
                     .let { Result.success() }
             }
         )
@@ -81,6 +88,17 @@ internal class BackupWorker @AssistedInject constructor(
             .first()
             .copy(isEnabled = false, directoryUri = Uri.EMPTY)
             .also { disabledBackup -> updateBackupUseCase(newBackup = disabledBackup) }
+    }
+
+    private fun notifyAutomaticBackupSuccess(uri: Uri) {
+        val folderName = DocumentsContract.getTreeDocumentId(uri).substringAfter(CharacterConstants.COLON)
+        val text = applicationContext.getString(R.string.notification_automatic_backups_success_message, folderName)
+        NotificationEvent.Informative(
+            iconResId = uiR.drawable.ic_notification,
+            title = applicationContext.getString(R.string.notification_automatic_backups_success_title),
+            text = text,
+            topic = NotificationEvent.Topic.Backups
+        ).also(dispatchNotificationUseCase::invoke)
     }
 
     private fun notifyAutomaticBackupCancellation() {

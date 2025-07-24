@@ -24,4 +24,7 @@
 
     <string name="notification_automatic_backups_title">Automatic backups stopped</string>
     <string name="notification_automatic_backups_message">The specified backup folder could not be found. Please check your settings to restart automatic backups.</string>
+
+    <string name="notification_automatic_backups_success_title">Backup completed successfully</string>
+    <string name="notification_automatic_backups_success_message">Backup saved successfully to %s</string>
 </resources>
