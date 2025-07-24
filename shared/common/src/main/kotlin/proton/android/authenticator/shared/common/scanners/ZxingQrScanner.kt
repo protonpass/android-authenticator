@@ -57,6 +57,9 @@ internal class ZxingQrScanner @Inject constructor(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val src = ImageDecoder.createSource(context.contentResolver, uri)
                 ImageDecoder.decodeBitmap(src) { decoder, info, _ ->
+                    if (info.size.width == 0 || info.size.height == 0) {
+                        throw NotFoundException.getNotFoundInstance()
+                    }
                     decoder.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE)
                     val rawScale = min(
                         maxDimension.toFloat() / info.size.width,
