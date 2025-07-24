@@ -20,9 +20,9 @@
     <string name="backups_screen_title">Backups</string>
     <string name="backups_automatic_backups_title">Automatic backups</string>
     <string name="backups_notifications_permission_dialog_title">Backup notifications</string>
-    <string name="backups_notifications_permission_dialog_explanation">Allow notifications to receive notifications when backups fail</string>
-    <string name="backups_notifications_permission_dialog_allow">Notify backup failures</string>
-    <string name="backups_notifications_permission_dialog_deny">Ignore backup failures</string>
+    <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
+    <string name="backups_notifications_permission_dialog_allow">Allow</string>
+    <string name="backups_notifications_permission_dialog_deny">Skip (not recommended)</string>
     <string name="backups_automatic_backups_location_title">Folder location</string>
     <string name="backups_frequency_title">Frequency</string>
     <string name="backups_frequency_option_daily">Daily</string>
