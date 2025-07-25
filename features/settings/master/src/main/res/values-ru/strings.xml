@@ -49,6 +49,8 @@
   <string name="settings_support_section">Поддержка</string>
   <string name="settings_support_title_how_to">Как пользоваться Proton Authenticator</string>
   <string name="settings_support_title_feedback">Обратная связь</string>
+  <string name="settings_application_section">Приложение</string>
+  <string name="settings_application_title_view_logs">Просмотр журналов</string>
   <string name="settings_discover_section">Узнайте о Proton</string>
   <string name="settings_discover_pass_description">Храните надёжные уникальные пароли, чтобы избежать кражи личности и утечек данных.</string>
   <string name="settings_discover_vpn_description">Просматривайте без отслеживания и получайте доступ к заблокированному содержимому.</string>

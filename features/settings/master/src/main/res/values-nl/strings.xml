@@ -49,6 +49,8 @@
   <string name="settings_support_section">Ondersteuning</string>
   <string name="settings_support_title_how_to">Proton Authenticator gebruiken</string>
   <string name="settings_support_title_feedback">Feedback</string>
+  <string name="settings_application_section">Applicatie</string>
+  <string name="settings_application_title_view_logs">Logboeken weergeven</string>
   <string name="settings_discover_section">Ontdek Proton</string>
   <string name="settings_discover_pass_description">Bewaar sterke, unieke wachtwoorden om identiteitsdiefstal en datalekken te voorkomen.</string>
   <string name="settings_discover_vpn_description">Browse zonder gevolgd te worden en krijg toegang tot geblokkeerde inhoud.</string>

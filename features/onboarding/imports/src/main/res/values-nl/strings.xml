@@ -18,5 +18,5 @@
   -->
 <resources>
   <string name="onboarding_import_title">Codes importeren</string>
-  <string name="onboarding_import_subtitle">Neem uw beveiliging mee. Breng uw gegevens over om beschermd te blijven.</string>
+  <string name="onboarding_import_subtitle">Neem uw beveiliging mee. Zet uw gegevens over om beschermd te blijven.</string>
 </resources>

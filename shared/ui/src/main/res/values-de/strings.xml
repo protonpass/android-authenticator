@@ -30,7 +30,8 @@
   <string name="action_ok">OK</string>
   <string name="action_required">Erforderlich</string>
   <string name="action_save">Speichern</string>
-  <string name="action_search">Suche</string>
+  <string name="action_search">Suchen</string>
+  <string name="action_share">Teilen</string>
   <string name="action_skip">Überspringen</string>
   <string name="action_undo">Rückgängig machen</string>
   <string name="action_unlock">Entsperren</string>

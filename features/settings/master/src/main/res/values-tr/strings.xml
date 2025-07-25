@@ -49,6 +49,8 @@
   <string name="settings_support_section">Destek</string>
   <string name="settings_support_title_how_to">Proton Authenticator nasıl kullanılır</string>
   <string name="settings_support_title_feedback">Geri bildirim</string>
+  <string name="settings_application_section">Uygulama</string>
+  <string name="settings_application_title_view_logs">Günlükleri görüntüle</string>
   <string name="settings_discover_section">Proton\'u Keşfedin</string>
   <string name="settings_discover_pass_description">Kimlik hırsızlığı ve sızıntılarını önlemek için güçlü, benzersiz parolalar saklayın.</string>
   <string name="settings_discover_vpn_description">İzlenmeden gezin ve engellenmiş içeriğe erişin.</string>

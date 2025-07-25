@@ -17,5 +17,5 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="notification_channel_name_automatic_backups">Automatic backups</string>
+  <string name="notification_channel_name_automatic_backups">Copias de seguridad automáticas</string>
 </resources>

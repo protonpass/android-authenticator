@@ -31,6 +31,7 @@
   <string name="action_required">Necesario</string>
   <string name="action_save">Guardar</string>
   <string name="action_search">Buscar</string>
+  <string name="action_share">Compartir</string>
   <string name="action_skip">Omitir</string>
   <string name="action_undo">Deshacer</string>
   <string name="action_unlock">Desbloquear</string>
@@ -38,8 +39,8 @@
   <string name="date_format_yesterday">Ayer, %1$s</string>
   <string name="date_format_full_compact_month" comment="This format outputs the date in the format: 09 Jun 10:30. Do not add any extra characters, just change the order if needed of grouped characters to match local date format order">dd LLL HH:mm</string>
   <plurals name="unit_items">
-    <item quantity="one">%1$d artículo</item>
-    <item quantity="other">%1$d artículos</item>
+    <item quantity="one">%1$d elemento</item>
+    <item quantity="other">%1$d elementos</item>
   </plurals>
   <plurals name="unit_seconds">
     <item quantity="one">%1$d segundo</item>

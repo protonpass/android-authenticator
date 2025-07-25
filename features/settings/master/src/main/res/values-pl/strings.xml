@@ -35,7 +35,7 @@
   <string name="settings_appearance_title_theme">Motyw</string>
   <string name="settings_appearance_title_theme_option_dark">Ciemny</string>
   <string name="settings_appearance_title_theme_option_light">Jasny</string>
-  <string name="settings_appearance_title_theme_option_system">System</string>
+  <string name="settings_appearance_title_theme_option_system">Systemowy</string>
   <string name="settings_appearance_title_search_bar_position">Pozycja paska wyszukiwania</string>
   <string name="settings_appearance_title_search_bar_position_option_bottom">Dół</string>
   <string name="settings_appearance_title_search_bar_position_option_top">Góra</string>
@@ -45,10 +45,12 @@
   <string name="settings_appearance_title_animate_code_change">Animuj zmianę kodu</string>
   <string name="settings_data_management_section">Zarządzaj swoimi danymi</string>
   <string name="settings_data_management_title_import">Importuj</string>
-  <string name="settings_data_management_title_export">Eksportowanie</string>
+  <string name="settings_data_management_title_export">Eksportuj</string>
   <string name="settings_support_section">Pomoc</string>
   <string name="settings_support_title_how_to">Jak używać Proton Authenticator</string>
   <string name="settings_support_title_feedback">Opinia</string>
+  <string name="settings_application_section">Aplikacja</string>
+  <string name="settings_application_title_view_logs">Wyświetl logi</string>
   <string name="settings_discover_section">Odkryj Proton</string>
   <string name="settings_discover_pass_description">Przechowuj silne, unikatowe hasła, aby uniknąć kradzieży tożsamości i naruszeń.</string>
   <string name="settings_discover_vpn_description">Przeglądaj bez śledzenia i uzyskaj dostęp do zablokowanych treści.</string>

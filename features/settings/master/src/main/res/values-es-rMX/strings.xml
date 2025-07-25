@@ -27,10 +27,10 @@
   <string name="settings_security_title_lock_option_biometric">Biometría</string>
   <string name="settings_security_title_lock_option_none">Ninguna</string>
   <string name="settings_security_title_hide_codes">Ocultar códigos</string>
-  <string name="settings_security_lock_enable_title">Habilitar Desbloqueo</string>
-  <string name="settings_security_lock_enable_subtitle">La seguridad de acceso a la aplicación se habilitará</string>
-  <string name="settings_security_lock_disable_title">Deshabilitar Desbloqueo</string>
-  <string name="settings_security_lock_disable_subtitle">La seguridad de acceso a la aplicación se deshabilitará</string>
+  <string name="settings_security_lock_enable_title">Activar desbloqueo</string>
+  <string name="settings_security_lock_enable_subtitle">Se activará la seguridad de acceso a la aplicación</string>
+  <string name="settings_security_lock_disable_title">Desactivar desbloqueo</string>
+  <string name="settings_security_lock_disable_subtitle">Se desactivará la seguridad de acceso a la aplicación</string>
   <string name="settings_appearance_section">Apariencia</string>
   <string name="settings_appearance_title_theme">Tema</string>
   <string name="settings_appearance_title_theme_option_dark">Oscuro</string>
@@ -43,12 +43,14 @@
   <string name="settings_appearance_title_digit_style_option_plain">Sin formato</string>
   <string name="settings_appearance_title_digit_style_option_boxes">Cajas</string>
   <string name="settings_appearance_title_animate_code_change">Animar el cambio de código</string>
-  <string name="settings_data_management_section">Administrar sus datos</string>
+  <string name="settings_data_management_section">Gestionar sus datos</string>
   <string name="settings_data_management_title_import">Importar</string>
   <string name="settings_data_management_title_export">Exportar</string>
   <string name="settings_support_section">Soporte</string>
   <string name="settings_support_title_how_to">Cómo usar Proton Authenticator</string>
   <string name="settings_support_title_feedback">Comentarios</string>
+  <string name="settings_application_section">Aplicación</string>
+  <string name="settings_application_title_view_logs">Ver registros</string>
   <string name="settings_discover_section">Descubra Proton</string>
   <string name="settings_discover_pass_description">Almacene contraseñas fuertes y únicas para evitar el robo de identidad y las vulneraciones de seguridad.</string>
   <string name="settings_discover_vpn_description">Navegue sin que le rastreen y acceda a contenidos bloqueados.</string>
@@ -56,6 +58,6 @@
   <string name="settings_discover_calendar_description">Organice su agenda y mantenga sus planes para usted.</string>
   <string name="settings_discover_drive_description">Brinde a sus preciadas fotos y archivos el hogar seguro que se merecen.</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Versión %1$s</string>
-  <string name="settings_snackbar_message_biometric_error">Hubo un error al autenticar la biometría</string>
-  <string name="settings_snackbar_message_update_error">Hubo un error al actualizar la configuración</string>
+  <string name="settings_snackbar_message_biometric_error">Hubo un error al autenticar la biometría.</string>
+  <string name="settings_snackbar_message_update_error">Hubo un error al actualizar la configuración.</string>
 </resources>

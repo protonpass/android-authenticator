@@ -49,12 +49,14 @@
   <string name="settings_support_section">Suporte</string>
   <string name="settings_support_title_how_to">Como usar o Proton Authenticator</string>
   <string name="settings_support_title_feedback">Feedback</string>
+  <string name="settings_application_section">Aplicativo</string>
+  <string name="settings_application_title_view_logs">Visualizar logs</string>
   <string name="settings_discover_section">Descobrir o Proton</string>
   <string name="settings_discover_pass_description">Armazene senhas fortes e únicas para evitar roubo de identidade e violações.</string>
   <string name="settings_discover_vpn_description">Navegue livre de rastreamento e acesse conteúdo bloqueado.</string>
   <string name="settings_discover_mail_description">Proteja sua caixa de entrada contra spam, rastreamento e anúncios direcionados.</string>
   <string name="settings_discover_calendar_description">Organize sua agenda e mantenha seus planos privados.</string>
-  <string name="settings_discover_drive_description">Guarde suas fotos e arquivos preciosos em um lugar seguro e adequado.</string>
+  <string name="settings_discover_drive_description">Guarde suas fotos e arquivos preciosos em um lugar seguro.</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Versão %1$s</string>
   <string name="settings_snackbar_message_biometric_error">Ocorreu um erro ao autenticar a biometria</string>
   <string name="settings_snackbar_message_update_error">Ocorreu um erro ao atualizar as configurações</string>

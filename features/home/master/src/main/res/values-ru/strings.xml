@@ -30,6 +30,6 @@
   <string name="home_snackbar_message_entry_rearrange_failed">Произошла ошибка при изменении порядка записи</string>
   <string name="home_snackbar_message_entry_restore_failed">Произошла ошибка при восстановлении записи</string>
   <string name="home_snackbar_message_entry_sync_disabled">Синхронизация устройств отключена</string>
-  <string name="home_snackbar_message_entry_sync_unauthorized">Синхронизация отключена. Пожалуйста, снова войдите в свой аккаунт Proton.</string>
+  <string name="home_snackbar_message_entry_sync_unauthorized">Синхронизация отключена. Снова войдите в свой аккаунт Proton.</string>
   <string name="home_snackbar_message_entry_sync_failed">Произошла ошибка при синхронизации записей</string>
 </resources>

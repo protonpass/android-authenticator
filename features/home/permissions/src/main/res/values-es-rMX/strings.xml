@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="home_permissions_title">Se requiere permiso</string>
-  <string name="home_permissions_description">Habilite el permiso para la cámara para usar el escáner de códigos QR. Esto le permite a la aplicación leer códigos QR y generar su código único.</string>
-  <string name="home_permissions_action_primary">Abrir configuración</string>
+  <string name="home_permissions_description">Active el permiso para la cámara a fin de usar el escáner de códigos QR. Esto le permite a la aplicación leer códigos QR y generar su código único.</string>
+  <string name="home_permissions_action_primary">Abrir los ajustes</string>
   <string name="home_permissions_action_secondary">Crear manualmente</string>
 </resources>

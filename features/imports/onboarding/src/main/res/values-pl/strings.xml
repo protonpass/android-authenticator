@@ -20,41 +20,41 @@
   <string name="imports_onboarding_title_supported">Importuj kody z %1$s</string>
   <string name="imports_onboarding_title_unsupported">Brak dostępnego eksportu</string>
   <string-array name="imports_onboarding_google_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Przenieś konta &gt; Eksportuj konta\"</item>
-    <item>Spowoduje to utworzenie jednego lub więcej kodów QR, których możesz tutaj użyć.</item>
+    <item>Przejdź do „Ustawienia &gt; Przenieś konta &gt; Eksportuj konta”</item>
+    <item>Spowoduje to utworzenie jednego lub większej liczby kodów QR, których możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_2fas_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Kopia zapasowa 2FAS &gt; Eksportuj\"</item>
+    <item>Przejdź do „Ustawienia &gt; Kopia zapasowa 2FAS &gt; Eksportuj”</item>
     <item>Spowoduje to utworzenie pliku 2fas, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_aegis_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Import i eksport &gt; Eksportuj\"</item>
-    <item>Spowoduje to utworzenie pliku JSON, którego możesz tutaj użyć.</item>
+    <item>Przejdź do „Ustawienia &gt; Import i eksport &gt; Eksportuj”</item>
+    <item>Spowoduje to utworzenie pliku Json, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_bitwarden_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Eksportuj\"</item>
-    <item>Spowoduje to utworzenie pliku JSON, którego możesz tutaj użyć.</item>
+    <item>Przejdź do „Ustawienia &gt; Eksportuj”</item>
+    <item>Spowoduje to utworzenie pliku Json, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_ente_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Dane &gt; Eksportuj kody\"</item>
-    <item>Wybierz \"Zwykły tekst\", co spowoduje utworzenie pliku txt, którego możesz tutaj użyć.</item>
+    <item>Przejdź do „Ustawienia &gt; Dane &gt; Eksportuj kody”</item>
+    <item>Wybierz „Zwykły tekst”, co spowoduje utworzenie pliku txt, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_lastpass_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Przenieś konta &gt; Eksportuj konta do pliku\"</item>
-    <item>Spowoduje to utworzenie pliku JSON, którego możesz tutaj użyć.</item>
+    <item>Przejdź do „Ustawienia &gt; Przenieś konta &gt; Eksportuj konta do pliku”</item>
+    <item>Spowoduje to utworzenie pliku Json, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_authenticator_steps_v2">
-    <item>Przejdź do \"Ustawienia &gt; Eksportuj\"</item>
-    <item>Spowoduje to utworzenie pliku JSON, którego możesz tutaj użyć.</item>
+    <item>Przejdź do „Ustawienia &gt; Eksportuj”</item>
+    <item>Spowoduje to utworzenie pliku Json, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_pass_steps">
-    <item>W rozszerzeniu, aplikacji internetowej lub komputerowej Proton Pass przejdź do \"Ustawienia &gt; Eksportuj\"</item>
-    <item>Upewnij się, że wybierzesz \"format zip bez załączników\".</item>
+    <item>W rozszerzeniu, aplikacji internetowej lub komputerowej Proton Pass przejdź do „Ustawienia &gt; Eksportuj”</item>
+    <item>Upewnij się, że wybierzesz „format zip bez załączników”.</item>
     <item>Spowoduje to utworzenie pliku zip, którego możesz tutaj użyć.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
     <item>Niestety, %1$s obecnie nie obsługuje eksportowania danych ze swojej aplikacji. Rozważ skontaktowanie się z %1$s, aby poprosić o tę funkcję.</item>
-    <item>Na razie prosimy o ręczny import danych.</item>
+    <item>Na razie zaimportuj dane ręcznie.</item>
   </string-array>
   <string name="imports_onboarding_help_link">Potrzebujesz więcej pomocy?</string>
 </resources>

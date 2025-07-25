@@ -18,6 +18,6 @@
   -->
 <resources>
   <string name="sync_error_dialog_title">Erro de sincronização</string>
-  <string name="sync_error_text_disable">Ocorreu um erro ao desativar a sincronização do dispositivo, e ela ainda está ativada. Tente desativá-la novamente nas opções de configurações.</string>
-  <string name="sync_error_text_enable">Ocorreu um erro ao ativar a sincronização do dispositivo, e ela ainda está desativada. Tente ativá-la novamente nas opções de configurações.</string>
+  <string name="sync_error_text_disable">Ocorreu um erro ao desativar a sincronização do dispositivo, e ela ainda está ativada. Tente desativá-la novamente nas opções de configuração.</string>
+  <string name="sync_error_text_enable">Ocorreu um erro ao ativar a sincronização do dispositivo, e ela ainda está desativada. Tente ativá-la novamente nas opções de configuração.</string>
 </resources>

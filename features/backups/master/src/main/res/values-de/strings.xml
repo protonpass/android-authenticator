@@ -19,7 +19,11 @@
 <resources>
   <string name="backups_screen_title">Sicherungen</string>
   <string name="backups_automatic_backups_title">Automatische Sicherungen</string>
-  <string name="backups_automatic_backups_location_title">Speicherort</string>
+  <string name="backups_notifications_permission_dialog_title">Backup notifications</string>
+  <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
+  <string name="backups_notifications_permission_dialog_allow">Allow</string>
+  <string name="backups_notifications_permission_dialog_deny">Skip (not recommended)</string>
+  <string name="backups_automatic_backups_location_title">Order-Speicherort</string>
   <string name="backups_frequency_title">Häufigkeit</string>
   <string name="backups_frequency_option_daily">Täglich</string>
   <string name="backups_frequency_option_weekly">Wöchentlich</string>

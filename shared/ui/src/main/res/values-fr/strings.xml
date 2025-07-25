@@ -31,6 +31,7 @@
   <string name="action_required">Requis</string>
   <string name="action_save">Sauvegarder</string>
   <string name="action_search">Rechercher</string>
+  <string name="action_share">Partager</string>
   <string name="action_skip">Ignorer</string>
   <string name="action_undo">Annuler</string>
   <string name="action_unlock">Déverrouiller</string>

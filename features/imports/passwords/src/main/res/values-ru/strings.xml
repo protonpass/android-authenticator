@@ -18,6 +18,6 @@
   -->
 <resources>
   <string name="imports_password_title">Защищенный файл</string>
-  <string name="imports_password_subtitle">Ваш файл импорта защищен паролем. Пожалуйста, введите пароль, чтобы продолжить.</string>
+  <string name="imports_password_subtitle">Ваш файл импорта защищен паролем. Введите пароль, чтобы продолжить.</string>
   <string name="imports_password_incorrect_password">Неверный пароль</string>
 </resources>

@@ -41,7 +41,7 @@
   </string-array>
   <string-array name="imports_onboarding_lastpass_steps_v2">
     <item>Перейдите в «Настройки &gt; Перенос аккаунтов &gt; Экспорт аккаунтов в файл»</item>
-    <item>Будет создан файл Json, который можно использовать здесь.</item>
+    <item>Будет создан Json-файл, который можно использовать здесь.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_authenticator_steps_v2">
     <item>Перейдите в «Настройки &gt; Экспорт»</item>
@@ -49,11 +49,11 @@
   </string-array>
   <string-array name="imports_onboarding_proton_pass_steps">
     <item>В расширении, веб- или компьютерном приложении Proton Pass перейдите в «Настройки &gt; Экспорт»</item>
-    <item>Обязательно выберите «формат zip без вложенных файлов».</item>
+    <item>Выберите «формат zip без вложенных файлов».</item>
     <item>Будет создан ZIP-файл, который можно использовать здесь.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
-    <item>К сожалению, %1$s в настоящее время не поддерживает экспорт данных из своего приложения. Рассмотрите возможность связаться с %1$s, чтобы запросить эту функцию.</item>
+    <item>%1$s в настоящее время не поддерживает экспорт данных из своего приложения. Свяжитесь с %1$s, чтобы запросить эту функцию.</item>
     <item>Пожалуйста, импортируйте данные вручную пока что.</item>
   </string-array>
   <string name="imports_onboarding_help_link">Нужна дополнительная помощь?</string>

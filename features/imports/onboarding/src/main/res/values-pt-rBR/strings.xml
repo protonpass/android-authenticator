@@ -53,8 +53,8 @@
     <item>Isso criará um arquivo zip que você pode usar aqui.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">
-    <item>Infelizmente, %1$s não suporta atualmente a exportação de dados de seu aplicativo. Considere entrar em contato com %1$s para solicitar este recurso.</item>
-    <item>Por favor, importe seus dados manualmente por enquanto.</item>
+    <item>No momento, %1$s não é compatível com a exportação de dados do aplicativo. Entre em contato com %1$s para solicitar este recurso.</item>
+    <item>Importe seus dados manualmente por enquanto.</item>
   </string-array>
   <string name="imports_onboarding_help_link">Precisa de mais ajuda?</string>
 </resources>

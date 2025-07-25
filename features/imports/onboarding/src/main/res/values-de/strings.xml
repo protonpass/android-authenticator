@@ -20,36 +20,36 @@
   <string name="imports_onboarding_title_supported">Codes importieren von %1$s</string>
   <string name="imports_onboarding_title_unsupported">Kein Export verfügbar</string>
   <string-array name="imports_onboarding_google_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; Konten übertragen &gt; Konten exportieren\"</item>
+    <item>Gehe zu „Einstellungen &gt; Konten übertragen &gt; Konten exportieren“</item>
     <item>Dadurch werden ein oder mehrere QR-Codes erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_2fas_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; 2FAS-Backup &gt; Exportieren\"</item>
+    <item>Gehe zu „Einstellungen &gt; 2FAS-Backup &gt; Exportieren“</item>
     <item>Dadurch wird eine 2fas-Datei erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_aegis_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; Import &amp; Export &gt; Exportieren\"</item>
+    <item>Gehe zu „Einstellungen &gt; Import &amp; Export &gt; Exportieren“</item>
     <item>Dadurch wird eine JSON-Datei erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_bitwarden_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; Exportieren\"</item>
+    <item>Gehe zu „Einstellungen &gt; Exportieren“</item>
     <item>Dadurch wird eine JSON-Datei erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_ente_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; Daten &gt; Codes exportieren\"</item>
-    <item>Wähle \"Klartext\", wodurch eine TXT-Datei erstellt wird, die du hier verwenden kannst.</item>
+    <item>Gehe zu „Einstellungen &gt; Daten &gt; Codes exportieren“</item>
+    <item>Wähle „Klartext“, wodurch eine TXT-Datei erstellt wird, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_lastpass_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; Konten übertragen &gt; Konten in Datei exportieren\"</item>
+    <item>Gehe zu „Einstellungen &gt; Konten übertragen &gt; Konten in Datei exportieren“</item>
     <item>Dadurch wird eine JSON-Datei erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_authenticator_steps_v2">
-    <item>Gehe zu \"Einstellungen &gt; Exportieren\"</item>
+    <item>Gehe zu „Einstellungen &gt; Exportieren“</item>
     <item>Dadurch wird eine JSON-Datei erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_pass_steps">
-    <item>Gehe in der Proton Pass-Erweiterung, Web- oder Desktop-App zu \"Einstellungen &gt; Exportieren\"</item>
-    <item>Stelle sicher, dass du das \"ZIP-Format ohne Dateianhänge\" auswählst.</item>
+    <item>Gehe in der Proton Pass-Erweiterung, Web- oder Desktop-App zu „Einstellungen &gt; Exportieren“</item>
+    <item>Stelle sicher, dass du das „ZIP-Format ohne Dateianhänge“ auswählst.</item>
     <item>Dadurch wird eine ZIP-Datei erstellt, die du hier verwenden kannst.</item>
   </string-array>
   <string-array name="imports_onboarding_unsupported_steps">

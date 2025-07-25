@@ -19,11 +19,15 @@
 <resources>
   <string name="backups_screen_title">Sauvegardes</string>
   <string name="backups_automatic_backups_title">Sauvegardes automatiques</string>
+  <string name="backups_notifications_permission_dialog_title">Backup notifications</string>
+  <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
+  <string name="backups_notifications_permission_dialog_allow">Allow</string>
+  <string name="backups_notifications_permission_dialog_deny">Skip (not recommended)</string>
   <string name="backups_automatic_backups_location_title">Emplacement du dossier</string>
   <string name="backups_frequency_title">Fréquence</string>
-  <string name="backups_frequency_option_daily">Quotidien</string>
+  <string name="backups_frequency_option_daily">Quotidienne</string>
   <string name="backups_frequency_option_weekly">Hebdomadaire</string>
-  <string name="backups_frequency_option_monthly">Mensuel</string>
+  <string name="backups_frequency_option_monthly">Mensuelle</string>
   <string name="backups_backup_now_button">Effectuer une sauvegarde maintenant</string>
   <string name="backups_last_backup_description" comment="Placeholder will be replaced with the date of the last backup (e.g. Last backup: Today, 11:42)">Dernière sauvegarde : %1$s</string>
   <plurals name="backups_backup_count_description">

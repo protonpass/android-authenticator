@@ -19,6 +19,8 @@
 <resources>
   <string name="biometric_prompt_title">Uygulama kilitli</string>
   <string name="biometric_prompt_subtitle">Cihaz kilidinizi kullanarak kilidi açın</string>
-  <string name="notification_automatic_backups_title">Automatic backups stopped</string>
-  <string name="notification_automatic_backups_message">The specified backup folder could not be found. Please check your settings to restart automatic backups.</string>
+  <string name="notification_automatic_backups_title">Otomatik yedeklemeler durduruldu</string>
+  <string name="notification_automatic_backups_message">Belirtilen yedekleme klasörü bulunamadı. Otomatik yedeklemeleri yeniden başlatmak için lütfen ayarlarınızı denetleyin.</string>
+  <string name="notification_automatic_backups_success_title">Backup completed successfully</string>
+  <string name="notification_automatic_backups_success_message">Backup saved successfully to %s</string>
 </resources>

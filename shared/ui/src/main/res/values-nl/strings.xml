@@ -31,6 +31,7 @@
   <string name="action_required">Verplicht</string>
   <string name="action_save">Opslaan</string>
   <string name="action_search">Zoeken</string>
+  <string name="action_share">Delen</string>
   <string name="action_skip">Overslaan</string>
   <string name="action_undo">Ongedaan maken</string>
   <string name="action_unlock">Ontgrendelen</string>

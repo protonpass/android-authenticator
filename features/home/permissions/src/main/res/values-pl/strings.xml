@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="home_permissions_title">Wymagane uprawnienie</string>
-  <string name="home_permissions_description">Włącz uprawnienie do aparatu, aby używać skanera kodów QR. Pozwoli to aplikacji na odczytywanie kodów QR i generowanie dla Ciebie unikalnego kodu.</string>
+  <string name="home_permissions_description">Włącz uprawnienie do aparatu, aby używać skanera kodów QR. Pozwoli to aplikacji na odczytywanie kodów QR i generowanie dla Ciebie unikatowego kodu.</string>
   <string name="home_permissions_action_primary">Otwórz ustawienia</string>
   <string name="home_permissions_action_secondary">Utwórz ręcznie</string>
 </resources>

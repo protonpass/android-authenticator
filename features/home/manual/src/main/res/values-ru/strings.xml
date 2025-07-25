@@ -20,7 +20,7 @@
   <string name="home_manual_screen_title_create">Новая запись</string>
   <string name="home_manual_screen_title_edit">Редактировать запись</string>
   <string name="home_manual_form_title_label">Заголовок</string>
-  <string name="home_manual_form_title_placeholder">Название, учетная запись или метка</string>
+  <string name="home_manual_form_title_placeholder">Название, учётная запись или метка</string>
   <string name="home_manual_form_secret_label">Секрет</string>
   <string name="home_manual_form_issuer_label">Издатель</string>
   <string name="home_manual_form_advanced_options_title">Дополнительные параметры</string>

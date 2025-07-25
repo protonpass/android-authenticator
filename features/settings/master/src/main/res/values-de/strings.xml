@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="settings_screen_title">Einstellungen</string>
-  <string name="settings_pass_banner_description">Speichere starke, eindeutige Passwörter, um Identitätsdiebstahl und Datenlecks zu vermeiden.</string>
+  <string name="settings_pass_banner_description">Speichere sichere, eindeutige Passwörter, um Identitätsdiebstahl und Datenlecks zu vermeiden.</string>
   <string name="settings_security_section">Sicherheit</string>
   <string name="settings_security_title_backups">Sicherungen</string>
   <string name="settings_security_title_sync">Synchronisierung zwischen Geräten</string>
@@ -28,9 +28,9 @@
   <string name="settings_security_title_lock_option_none">Keine</string>
   <string name="settings_security_title_hide_codes">Codes ausblenden</string>
   <string name="settings_security_lock_enable_title">Entsperren aktivieren</string>
-  <string name="settings_security_lock_enable_subtitle">Der App-Zugriffsschutz wird aktiviert.</string>
+  <string name="settings_security_lock_enable_subtitle">Der App-Zugriffsschutz wird aktiviert</string>
   <string name="settings_security_lock_disable_title">Entsperren deaktivieren</string>
-  <string name="settings_security_lock_disable_subtitle">Der App-Zugriffsschutz wird deaktiviert.</string>
+  <string name="settings_security_lock_disable_subtitle">Der App-Zugriffsschutz wird deaktiviert</string>
   <string name="settings_appearance_section">Erscheinungsbild</string>
   <string name="settings_appearance_title_theme">Farbschema</string>
   <string name="settings_appearance_title_theme_option_dark">Dunkel</string>
@@ -49,13 +49,15 @@
   <string name="settings_support_section">Support</string>
   <string name="settings_support_title_how_to">So verwendest du den Proton Authenticator</string>
   <string name="settings_support_title_feedback">Feedback</string>
+  <string name="settings_application_section">Anwendung</string>
+  <string name="settings_application_title_view_logs">Protokolle anzeigen</string>
   <string name="settings_discover_section">Proton entdecken</string>
-  <string name="settings_discover_pass_description">Speichere starke, eindeutige Passwörter, um Identitätsdiebstahl und Datenlecks zu vermeiden.</string>
-  <string name="settings_discover_vpn_description">Surfe, ohne nachverfolgt zu werden, und greife auf blockierte Inhalte zu.</string>
+  <string name="settings_discover_pass_description">Speichere sichere, eindeutige Passwörter, um Identitätsdiebstahl und Datenlecks zu vermeiden.</string>
+  <string name="settings_discover_vpn_description">Surfe, ohne dass dein digitales Verhalten verfolgt wird, und greife auf blockierte Inhalte zu.</string>
   <string name="settings_discover_mail_description">Schütze deinen Posteingang vor Spam, Tracking und gezielter Werbung.</string>
   <string name="settings_discover_calendar_description">Organisiere deinen Zeitplan und behalte deine Pläne für dich.</string>
   <string name="settings_discover_drive_description">Gib deinen wertvollen Fotos und Dateien das sichere Zuhause, das sie verdienen.</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Version %1$s</string>
-  <string name="settings_snackbar_message_biometric_error">Es gab einen Fehler bei der biometrischen Authentifizierung.</string>
-  <string name="settings_snackbar_message_update_error">Es gab einen Fehler beim Aktualisieren der Einstellungen.</string>
+  <string name="settings_snackbar_message_biometric_error">Bei der biometrischen Authentifizierung ist ein Fehler aufgetreten.</string>
+  <string name="settings_snackbar_message_update_error">Beim Aktualisieren der Einstellungen ist ein Fehler aufgetreten.</string>
 </resources>

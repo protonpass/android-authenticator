@@ -17,7 +17,7 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="sync_disable_dialog_title">¿Estás seguro?</string>
+  <string name="sync_disable_dialog_title">¿Estás seguro/a?</string>
   <string-array name="sync_disable_dialog_messages">
     <item>Los datos en este dispositivo no se actualizarán y los cambios no se reflejarán en otros dispositivos.</item>
     <item>Se cerrará la sesión de tu cuenta de Proton.</item>

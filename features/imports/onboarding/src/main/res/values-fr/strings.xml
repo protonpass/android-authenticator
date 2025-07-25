@@ -20,35 +20,35 @@
   <string name="imports_onboarding_title_supported">Importer des codes depuis %1$s</string>
   <string name="imports_onboarding_title_unsupported">Aucune exportation disponible</string>
   <string-array name="imports_onboarding_google_steps_v2">
-    <item>Accédez à « Paramètres, Transférer les comptes et Exporter les comptes ».</item>
+    <item>Accédez à « Paramètres, Transférer les comptes, Exporter les comptes ».</item>
     <item>Vous créerez ainsi un ou plusieurs QR codes que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_2fas_steps_v2">
-    <item>Accédez à « Paramètres, Sauvegarde 2FA et Exporter ».</item>
+    <item>Accédez à « Paramètres, Sauvegarde 2FA, Exporter ».</item>
     <item>Cela créera un fichier 2fas que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_aegis_steps_v2">
-    <item>Accédez à « Paramètres, Importation et exportation et Exporter ».</item>
+    <item>Accédez à « Paramètres, Importation et exportation, Exporter ».</item>
     <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_bitwarden_steps_v2">
-    <item>Accédez à « Paramètres et Exporter ».</item>
+    <item>Accédez à « Paramètres, Exporter ».</item>
     <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_ente_steps_v2">
-    <item>Accédez à « Paramètres, Données et Exporter les codes ».</item>
+    <item>Accédez à « Paramètres, Données, Exporter les codes ».</item>
     <item>Choisissez « Texte brut ». Vous créez ainsi un fichier txt que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_lastpass_steps_v2">
-    <item>Accédez à « Paramètres, Transférer les comptes et Exporter les comptes vers un fichier ».</item>
+    <item>Accédez à « Paramètres, Transférer les comptes, Exporter les comptes vers un fichier ».</item>
     <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_authenticator_steps_v2">
-    <item>Accédez à « Paramètres et Exporter ».</item>
+    <item>Accédez à « Paramètres, Exporter ».</item>
     <item>Cela créera un fichier JSON que vous pourrez utiliser ici.</item>
   </string-array>
   <string-array name="imports_onboarding_proton_pass_steps">
-    <item>Dans l’extension Proton Pass, sur l’application web ou de bureau, accédez à « Paramètres et Exporter ».</item>
+    <item>Dans l’extension Proton Pass, sur l’application web ou de bureau, accédez à « Paramètres, Exporter ».</item>
     <item>Assurez-vous de choisir le « format ZIP sans pièces jointes ».</item>
     <item>Cela créera un fichier ZIP que vous pourrez utiliser ici.</item>
   </string-array>

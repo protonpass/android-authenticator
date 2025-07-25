@@ -19,8 +19,8 @@
 <resources>
   <string name="sync_disable_dialog_title">Vuoi davvero eseguire questa azione?</string>
   <string-array name="sync_disable_dialog_messages">
-    <item>I dati su questo dispositivo non verranno aggiornati e le modifiche non saranno riflesse sugli altri dispositivi.</item>
-    <item>Verrai disconnesso dal tuo account Proton.</item>
+    <item>I dati su questo dispositivo non verranno aggiornati e le modifiche non verranno applicate ad altri dispositivi.</item>
+    <item>Ti disconnetterai dal tuo account Proton.</item>
   </string-array>
   <string name="sync_disable_dialog_stop_button">Interrompi sincronizzazione</string>
 </resources>

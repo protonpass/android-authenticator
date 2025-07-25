@@ -21,13 +21,13 @@
   <string name="home_manual_screen_title_edit">Editar entrada</string>
   <string name="home_manual_form_title_label">Título</string>
   <string name="home_manual_form_title_placeholder">Título, cuenta o etiqueta</string>
-  <string name="home_manual_form_secret_label">Código secreto</string>
+  <string name="home_manual_form_secret_label">Secreto</string>
   <string name="home_manual_form_issuer_label">Emisor</string>
   <string name="home_manual_form_advanced_options_title">Opciones avanzadas</string>
-  <string name="home_manual_form_digits_title">Cifras</string>
+  <string name="home_manual_form_digits_title">Dígitos</string>
   <string name="home_manual_form_time_interval_title">Intervalo de tiempo</string>
   <string name="home_manual_form_time_algorithm_title">Algoritmo</string>
   <string name="home_manual_form_time_type_title">Tipo</string>
-  <string name="home_manual_snackbar_message_create_error">Hubo un error al crear la entrada</string>
-  <string name="home_manual_snackbar_message_update_error">Hubo un error al actualizar la entrada</string>
+  <string name="home_manual_snackbar_message_create_error">Hubo un error al crear la entrada.</string>
+  <string name="home_manual_snackbar_message_update_error">Hubo un error al actualizar la entrada.</string>
 </resources>

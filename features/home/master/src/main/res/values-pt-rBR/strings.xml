@@ -27,7 +27,7 @@
   <string name="home_snackbar_message_entry_copied">Entrada copiada</string>
   <string name="home_snackbar_message_entry_deleted">Entrada excluída</string>
   <string name="home_snackbar_message_entry_delete_failed">Ocorreu um erro ao excluir a entrada</string>
-  <string name="home_snackbar_message_entry_rearrange_failed">Ocorreu um erro ao rearranjar a entrada</string>
+  <string name="home_snackbar_message_entry_rearrange_failed">Ocorreu um erro ao reorganizar a entrada</string>
   <string name="home_snackbar_message_entry_restore_failed">Ocorreu um erro ao restaurar a entrada</string>
   <string name="home_snackbar_message_entry_sync_disabled">A sincronização do dispositivo está desativada</string>
   <string name="home_snackbar_message_entry_sync_unauthorized">A sincronização foi desativada. Faça login em sua conta Proton novamente.</string>

@@ -18,5 +18,5 @@
   -->
 <resources>
   <string name="imports_options_title">Importuj kody</string>
-  <string name="imports_options_subtitle">Wybierz swojego obecnego dostawcę 2FA.</string>
+  <string name="imports_options_subtitle">Wybierz swojego obecnego dostawcę uwierzytelniania dwustopniowego.</string>
 </resources>

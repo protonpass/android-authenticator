@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="sync_master_title">Sincronização de dispositivos</string>
-  <string name="sync_master_description">Uma conta Proton é necessária para ativar a sincronização entre dispositivos com criptografia de ponta a ponta.</string>
+  <string name="sync_master_description">Uma conta da Proton é necessária para ativar a sincronização entre dispositivos com criptografia de ponta a ponta.</string>
   <string name="sync_master_sign_in_button">Iniciar sessão</string>
   <string name="sync_master_sign_up_button">Criar uma conta gratuita</string>
 </resources>

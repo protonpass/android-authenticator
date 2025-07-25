@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="home_empty_title">Brak kodów</string>
-  <string name="home_empty_description">Chroń swoje konta dodatkową warstwą bezpieczeństwa.</string>
+  <string name="home_empty_description">Chroń swoje konta dodatkową warstwą zabezpieczeń.</string>
   <string name="home_empty_action_primary">Utwórz nowy kod</string>
   <string name="home_empty_action_import_codes">Importuj kody</string>
   <string name="home_empty_search_title">Brak wyników</string>

@@ -17,8 +17,8 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="backup_error_dialog_title">Backup failed</string>
-  <string name="backup_error_dialog_message_error_folder">The specified backup folder could not be found.</string>
-  <string name="backup_error_dialog_message_error_unknown">Backup cannot be saved in the specified folder.</string>
-  <string name="backup_error_dialog_message_error_suggestion">Please, enable backup, select the desired folder and try again.</string>
+  <string name="backup_error_dialog_title">Yedekleme başarısız oldu</string>
+  <string name="backup_error_dialog_message_error_folder">Belirtilen yedekleme klasörü bulunamadı.</string>
+  <string name="backup_error_dialog_message_error_unknown">Yedekleme belirtilen klasöre kaydedilemiyor.</string>
+  <string name="backup_error_dialog_message_error_suggestion">Lütfen yedeklemeyi etkinleştirin, istediğiniz klasörü seçin ve yeniden deneyin.</string>
 </resources>

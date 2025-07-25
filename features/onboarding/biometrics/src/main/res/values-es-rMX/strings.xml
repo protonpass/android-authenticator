@@ -19,5 +19,5 @@
 <resources>
   <string name="onboarding_biometrics_title">Proteja sus datos</string>
   <string name="onboarding_biometrics_subtitle">Agregue una capa adicional de seguridad con el desbloqueo biométrico.</string>
-  <string name="onboarding_biometrics_action_enable_biometrics">Habilitar desbloqueo biométrico</string>
+  <string name="onboarding_biometrics_action_enable_biometrics">Activar desbloqueo biométrico</string>
 </resources>

@@ -19,6 +19,8 @@
 <resources>
   <string name="biometric_prompt_title">Aplicación bloqueada</string>
   <string name="biometric_prompt_subtitle">Desbloquee usando el bloqueo de su dispositivo</string>
-  <string name="notification_automatic_backups_title">Automatic backups stopped</string>
-  <string name="notification_automatic_backups_message">The specified backup folder could not be found. Please check your settings to restart automatic backups.</string>
+  <string name="notification_automatic_backups_title">Copias de seguridad automáticas detenidas</string>
+  <string name="notification_automatic_backups_message">No se encontró la carpeta de copia de seguridad especificada. Revise su configuración para reiniciar las copias de seguridad automáticas.</string>
+  <string name="notification_automatic_backups_success_title">Backup completed successfully</string>
+  <string name="notification_automatic_backups_success_message">Backup saved successfully to %s</string>
 </resources>

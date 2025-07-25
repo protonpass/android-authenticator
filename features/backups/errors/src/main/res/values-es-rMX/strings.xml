@@ -17,8 +17,8 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="backup_error_dialog_title">Backup failed</string>
-  <string name="backup_error_dialog_message_error_folder">The specified backup folder could not be found.</string>
-  <string name="backup_error_dialog_message_error_unknown">Backup cannot be saved in the specified folder.</string>
-  <string name="backup_error_dialog_message_error_suggestion">Please, enable backup, select the desired folder and try again.</string>
+  <string name="backup_error_dialog_title">Error en la copia de seguridad</string>
+  <string name="backup_error_dialog_message_error_folder">No se encontró la carpeta de copia de seguridad especificada.</string>
+  <string name="backup_error_dialog_message_error_unknown">La copia de seguridad no se puede guardar en la carpeta especificada.</string>
+  <string name="backup_error_dialog_message_error_suggestion">Por favor, active la copia de seguridad, seleccione la carpeta deseada y vuelva a intentarlo.</string>
 </resources>

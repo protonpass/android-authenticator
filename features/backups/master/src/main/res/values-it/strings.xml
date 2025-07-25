@@ -19,6 +19,10 @@
 <resources>
   <string name="backups_screen_title">Backup</string>
   <string name="backups_automatic_backups_title">Backup automatici</string>
+  <string name="backups_notifications_permission_dialog_title">Backup notifications</string>
+  <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
+  <string name="backups_notifications_permission_dialog_allow">Allow</string>
+  <string name="backups_notifications_permission_dialog_deny">Skip (not recommended)</string>
   <string name="backups_automatic_backups_location_title">Posizione della cartella</string>
   <string name="backups_frequency_title">Frequenza</string>
   <string name="backups_frequency_option_daily">Giornaliera</string>
@@ -30,6 +34,6 @@
     <item quantity="one">Viene conservato solo l\'ultimo backup.</item>
     <item quantity="other">Vengono conservati solo gli ultimi %1$d backup.</item>
   </plurals>
-  <string name="backups_snackbar_message_backup_success">Backup creato con successo</string>
+  <string name="backups_snackbar_message_backup_success">Backup creato correttamente</string>
   <string name="backups_snackbar_message_update_error">Si è verificato un errore durante l\'aggiornamento della configurazione del backup</string>
 </resources>

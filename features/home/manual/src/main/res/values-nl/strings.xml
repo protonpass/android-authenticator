@@ -25,7 +25,7 @@
   <string name="home_manual_form_issuer_label">Uitgever</string>
   <string name="home_manual_form_advanced_options_title">Geavanceerde opties</string>
   <string name="home_manual_form_digits_title">Cijfers</string>
-  <string name="home_manual_form_time_interval_title">Tijdinterval</string>
+  <string name="home_manual_form_time_interval_title">Tijdsinterval</string>
   <string name="home_manual_form_time_algorithm_title">Algoritme</string>
   <string name="home_manual_form_time_type_title">Type</string>
   <string name="home_manual_snackbar_message_create_error">Er is een fout opgetreden bij het aanmaken van de vermelding</string>

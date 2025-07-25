@@ -20,5 +20,5 @@
   <string name="sync_master_title">Sincronización de dispositivos</string>
   <string name="sync_master_description">Se requiere una cuenta de Proton para activar la sincronización cifrada de extremo a extremo entre dispositivos.</string>
   <string name="sync_master_sign_in_button">Iniciar sesión</string>
-  <string name="sync_master_sign_up_button">Cree una cuenta gratuita</string>
+  <string name="sync_master_sign_up_button">Crear una cuenta gratuita</string>
 </resources>

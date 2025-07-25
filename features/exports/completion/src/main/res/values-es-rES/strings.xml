@@ -18,5 +18,5 @@
   -->
 <resources>
   <string name="exports_completion_dialog_title">Códigos exportados</string>
-  <string name="exports_completion_dialog_message" comment="Placeholder will be replaced with the number of exported items. (e.g. Successfully exported 2 items.)">Exportado con éxito %1$s.</string>
+  <string name="exports_completion_dialog_message" comment="Placeholder will be replaced with the number of exported items. (e.g. Successfully exported 2 items.)">Se exportó correctamente %1$s.</string>
 </resources>

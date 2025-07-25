@@ -49,6 +49,8 @@
   <string name="settings_support_section">Support</string>
   <string name="settings_support_title_how_to">Comment utiliser Proton Authenticator</string>
   <string name="settings_support_title_feedback">Votre avis</string>
+  <string name="settings_application_section">Application</string>
+  <string name="settings_application_title_view_logs">Afficher les journaux</string>
   <string name="settings_discover_section">Découvrez Proton</string>
   <string name="settings_discover_pass_description">Stockez des mots de passe forts et uniques pour éviter le vol d\'identité et les violations de données.</string>
   <string name="settings_discover_vpn_description">Naviguez sans suivi et accédez aux contenus bloqués.</string>

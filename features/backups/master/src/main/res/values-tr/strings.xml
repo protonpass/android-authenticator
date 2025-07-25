@@ -19,6 +19,10 @@
 <resources>
   <string name="backups_screen_title">Yedeklemeler</string>
   <string name="backups_automatic_backups_title">Otomatik yedeklemeler</string>
+  <string name="backups_notifications_permission_dialog_title">Backup notifications</string>
+  <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
+  <string name="backups_notifications_permission_dialog_allow">Allow</string>
+  <string name="backups_notifications_permission_dialog_deny">Skip (not recommended)</string>
   <string name="backups_automatic_backups_location_title">Klasör konumu</string>
   <string name="backups_frequency_title">Sıklık</string>
   <string name="backups_frequency_option_daily">Günlük</string>
