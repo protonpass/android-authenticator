@@ -8,11 +8,11 @@ import proton.android.authenticator.shared.ui.R
 
 internal sealed interface NavigationCommand {
 
+    data class FinishAffinity(internal val context: Context) : NavigationCommand
+
     data class NavigateTo(internal val destination: NavigationDestination) : NavigationCommand
 
-    data class NavigateToAppSettings(
-        internal val context: Context
-    ) : NavigationCommand
+    data class NavigateToAppSettings(internal val context: Context) : NavigationCommand
 
     data class NavigateToPlayStore(
         internal val appPackageName: String,

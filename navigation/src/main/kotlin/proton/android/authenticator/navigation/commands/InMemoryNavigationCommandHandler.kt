@@ -1,5 +1,6 @@
 package proton.android.authenticator.navigation.commands
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -17,6 +18,12 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
     @Suppress("LongMethod")
     override fun handle(command: NavigationCommand, navController: NavHostController) {
         when (command) {
+            is NavigationCommand.FinishAffinity -> {
+                (command.context as? Activity)
+                    ?.also { activity -> activity.finishAffinity() }
+                    ?: AuthenticatorLogger.w(TAG, "Cannot finish affinity: provided context is not an Activity")
+            }
+
             is NavigationCommand.NavigateTo -> {
                 navController.navigate(route = command.destination)
             }

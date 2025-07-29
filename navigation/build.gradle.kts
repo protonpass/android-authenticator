@@ -45,6 +45,7 @@ dependencies {
     implementation(projects.features.sync.errors)
     implementation(projects.features.sync.master)
     implementation(projects.features.sync.shared)
+    implementation(projects.features.unlock.master)
     implementation(projects.shared.common)
     implementation(projects.shared.ui)
 

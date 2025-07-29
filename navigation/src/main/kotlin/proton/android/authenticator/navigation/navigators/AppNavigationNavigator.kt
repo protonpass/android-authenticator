@@ -27,6 +27,7 @@ import proton.android.authenticator.navigation.domain.graphs.onboarding.Onboardi
 import proton.android.authenticator.navigation.domain.graphs.onboarding.onboardingNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.settings.settingsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.sync.syncNavigationGraph
+import proton.android.authenticator.navigation.domain.graphs.unlock.unlockNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
 import proton.android.authenticator.shared.ui.domain.events.ObserveAsUiEvents
@@ -125,6 +126,10 @@ internal class AppNavigationNavigator @Inject constructor(
                     }
 
                     syncNavigationGraph(onLaunchNavigationFlow = onLaunchNavigationFlow) { navCommand ->
+                        navigationCommandHandler.handle(navCommand, navController)
+                    }
+
+                    unlockNavigationGraph { navCommand ->
                         navigationCommandHandler.handle(navCommand, navController)
                     }
                 }
