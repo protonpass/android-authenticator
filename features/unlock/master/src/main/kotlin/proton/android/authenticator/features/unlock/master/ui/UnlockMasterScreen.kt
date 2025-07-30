@@ -82,7 +82,7 @@ fun UnlockMasterScreen(onUnlockClosed: () -> Unit, onUnlockSucceeded: () -> Unit
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues = innerPaddingValues)
-                    .padding(horizontal = ThemePadding.Large)
+                    .padding(horizontal = ThemePadding.MediumLarge)
             )
         }
     }

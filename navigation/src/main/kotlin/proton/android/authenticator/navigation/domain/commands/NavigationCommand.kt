@@ -10,7 +10,10 @@ internal sealed interface NavigationCommand {
 
     data class FinishAffinity(internal val context: Context) : NavigationCommand
 
-    data class NavigateTo(internal val destination: NavigationDestination) : NavigationCommand
+    data class NavigateTo(
+        internal val destination: NavigationDestination,
+        internal val isSingleTop: Boolean = false
+    ) : NavigationCommand
 
     data class NavigateToAppSettings(internal val context: Context) : NavigationCommand
 

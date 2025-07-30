@@ -25,7 +25,9 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
             }
 
             is NavigationCommand.NavigateTo -> {
-                navController.navigate(route = command.destination)
+                navController.navigate(route = command.destination) {
+                    launchSingleTop = command.isSingleTop
+                }
             }
 
             is NavigationCommand.NavigateToAppSettings -> {

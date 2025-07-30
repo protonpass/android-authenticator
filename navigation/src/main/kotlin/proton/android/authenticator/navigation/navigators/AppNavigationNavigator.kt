@@ -102,7 +102,8 @@ internal class AppNavigationNavigator @Inject constructor(
                     when (appLockState) {
                         AppLockState.AuthRequired -> {
                             NavigationCommand.NavigateTo(
-                                destination = UnlockNavigationDestination
+                                destination = UnlockNavigationDestination,
+                                isSingleTop = true
                             ).also { navCommand ->
                                 navigationCommandHandler.handle(navCommand, navController)
                             }

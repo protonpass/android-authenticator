@@ -34,7 +34,6 @@ import proton.android.authenticator.features.shared.usecases.biometrics.Authenti
 import proton.android.authenticator.features.unlock.master.R
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
-import proton.android.authenticator.shared.ui.R as uiR
 
 @HiltViewModel
 internal class UnlockMasterViewModel @Inject constructor(
@@ -59,11 +58,8 @@ internal class UnlockMasterViewModel @Inject constructor(
     internal fun onRequestBiometricAuthentication(context: Context) {
         viewModelScope.launch {
             authenticateBiometricUseCase(
-                title = context.getString(
-                    R.string.unlock_screen_title,
-                    context.getString(uiR.string.authenticator_proton_authenticator)
-                ),
-                subtitle = context.getString(R.string.unlock_screen_description),
+                title = context.getString(R.string.unlock_screen_promtp_title),
+                subtitle = context.getString(R.string.unlock_screen_promtp_subtitle),
                 context = context
             ).fold(
                 onFailure = { reason ->
