@@ -85,7 +85,8 @@ internal class OnboardingBiometricsViewModel @Inject constructor(
                     }
 
                     is Answer.Success -> {
-                        updateAppLockStateUseCase(state = AppLockState.AUTHENTICATED)
+                        updateAppLockStateUseCase(state = AppLockState.AuthNotRequired)
+
                         observeSettingsUseCase()
                             .first()
                             .copy(appLockType = SettingsAppLockType.Biometric)

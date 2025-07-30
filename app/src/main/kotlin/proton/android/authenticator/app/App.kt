@@ -63,20 +63,26 @@ internal class App : Application(), Configuration.Provider, ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
 
-        val observer = AppLifecycleObserver(
+        initAppLockObserver()
+
+        initInitializerComponents()
+    }
+
+    private fun initAppLockObserver() {
+        AppLifecycleObserver(
             onForeground = {
                 ProcessLifecycleOwner.get().lifecycleScope.launch {
-                    updateAppLockStateUseCase(AppLockState.AUTHENTICATING)
+                    updateAppLockStateUseCase(state = AppLockState.AuthRequired)
                 }
             },
             onBackground = {
                 ProcessLifecycleOwner.get().lifecycleScope.launch {
-                    updateAppLockStateUseCase(AppLockState.LOCKED)
+                    updateAppLockStateUseCase(state = AppLockState.AuthNotRequired)
                 }
             }
-        )
-        ProcessLifecycleOwner.get().lifecycle.addObserver(observer)
-        initInitializerComponents()
+        ).also { observer ->
+            ProcessLifecycleOwner.get().lifecycle.addObserver(observer)
+        }
     }
 
     private fun initInitializerComponents() {

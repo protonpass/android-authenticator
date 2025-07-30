@@ -203,7 +203,7 @@ internal class SettingsMasterViewModel @Inject constructor(
                 },
                 onSuccess = {
                     if (appLockType == SettingsAppLockType.Biometric) {
-                        updateAppLockStateUseCase(state = AppLockState.AUTHENTICATED)
+                        updateAppLockStateUseCase(state = AppLockState.AuthNotRequired)
                     }
 
                     settingsModel.copy(appLockType = appLockType)

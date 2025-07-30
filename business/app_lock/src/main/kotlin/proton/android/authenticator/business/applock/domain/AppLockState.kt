@@ -18,4 +18,7 @@
 
 package proton.android.authenticator.business.applock.domain
 
-enum class AppLockState { LOCKED, AUTHENTICATING, AUTHENTICATED, NOT_STARTED }
+enum class AppLockState {
+    AuthNotRequired,
+    AuthRequired
+}

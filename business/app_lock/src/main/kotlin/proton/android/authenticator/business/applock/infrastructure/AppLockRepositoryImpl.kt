@@ -27,11 +27,13 @@ import proton.android.authenticator.business.applock.domain.AppLockState
 import javax.inject.Inject
 
 internal class AppLockRepositoryImpl @Inject constructor() : AppLockRepository {
-    private val mutableAppLockState: MutableStateFlow<AppLockState> = MutableStateFlow(AppLockState.LOCKED)
+
+    private val mutableAppLockState = MutableStateFlow(value = AppLockState.AuthNotRequired)
 
     override fun find(): Flow<AppLockState> = mutableAppLockState.asStateFlow()
 
     override fun update(state: AppLockState) {
         mutableAppLockState.update { state }
     }
+
 }

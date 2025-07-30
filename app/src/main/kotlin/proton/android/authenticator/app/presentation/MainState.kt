@@ -19,17 +19,16 @@
 package proton.android.authenticator.app.presentation
 
 import androidx.compose.runtime.Immutable
-import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
 @Immutable
 internal data class MainState(
     private val settingsThemeType: SettingsThemeType,
-    val isFirstRun: Boolean,
-    val installationTime: Long?,
-    val numberOfEntries: Int,
-    val appLockState: AppLockState
+    internal val isFirstRun: Boolean,
+    internal val installationTime: Long?,
+    internal val numberOfEntries: Int
 ) {
 
     internal val themeType: ThemeType = when (settingsThemeType) {
@@ -37,4 +36,18 @@ internal data class MainState(
         SettingsThemeType.Light -> ThemeType.Light
         SettingsThemeType.System -> ThemeType.System
     }
+
+    internal companion object {
+
+        private const val DEFAULT_NUM_OF_ENTRIES = 0
+
+        internal val Initial: MainState = MainState(
+            settingsThemeType = SettingsThemeType.System,
+            isFirstRun = Settings.Default.isFirstRun,
+            installationTime = Settings.Default.installationTime,
+            numberOfEntries = DEFAULT_NUM_OF_ENTRIES
+        )
+
+    }
+
 }

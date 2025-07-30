@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.serialization.json)
 
+    implementation(projects.business.appLock)
+    implementation(projects.business.settings)
     implementation(projects.business.steps)
     implementation(projects.features.backups.master)
     implementation(projects.features.backups.errors)

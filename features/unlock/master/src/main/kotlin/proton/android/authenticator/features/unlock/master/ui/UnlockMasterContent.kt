@@ -47,7 +47,7 @@ internal fun UnlockMasterContent(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ) {
         Column(
-            modifier = Modifier.offset(y = -ThemeSpacing.ExtraLarge),
+            modifier = Modifier.offset(y = -ThemeSpacing.ExtraLarge.times(2)),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small)
         ) {

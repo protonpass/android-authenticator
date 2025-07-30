@@ -15,9 +15,17 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.steps.domain.StepDestination
+import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
+import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.steps.ObserveStepUseCase
+import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.navigation.domain.graphs.backups.backupsNavigationGraph
@@ -27,6 +35,7 @@ import proton.android.authenticator.navigation.domain.graphs.onboarding.Onboardi
 import proton.android.authenticator.navigation.domain.graphs.onboarding.onboardingNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.settings.settingsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.sync.syncNavigationGraph
+import proton.android.authenticator.navigation.domain.graphs.unlock.UnlockNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.unlock.unlockNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
@@ -35,12 +44,15 @@ import proton.android.authenticator.shared.ui.domain.theme.Theme
 import javax.inject.Inject
 
 internal class AppNavigationNavigator @Inject constructor(
+    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase,
+    private val observeSettingsUseCase: ObserveSettingsUseCase,
     private val observeStepUseCase: ObserveStepUseCase,
     private val navigationCommandHandler: NavigationCommandHandler,
     private val snackbarDispatcher: SnackbarDispatcher
 ) : NavigationNavigator {
 
-    @Composable
+
+    @[Composable OptIn(ExperimentalCoroutinesApi::class)]
     override fun NavGraphs(
         isDarkTheme: Boolean,
         onFinishLaunching: () -> Unit,
@@ -77,6 +89,26 @@ internal class AppNavigationNavigator @Inject constructor(
 
                     onDispose {
                         navController.removeOnDestinationChangedListener(observer)
+                    }
+                }
+
+                val appLockStateFlow = remember {
+                    observeSettingsUseCase()
+                        .filter { settings -> settings.appLockType == SettingsAppLockType.Biometric }
+                        .flatMapLatest { observeAppLockStateUseCase() }
+                }
+
+                ObserveAsUiEvents(flow = appLockStateFlow) { appLockState ->
+                    when (appLockState) {
+                        AppLockState.AuthRequired -> {
+                            NavigationCommand.NavigateTo(
+                                destination = UnlockNavigationDestination
+                            ).also { navCommand ->
+                                navigationCommandHandler.handle(navCommand, navController)
+                            }
+                        }
+
+                        AppLockState.AuthNotRequired -> Unit
                     }
                 }
 

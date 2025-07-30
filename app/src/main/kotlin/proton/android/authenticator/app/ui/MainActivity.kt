@@ -24,8 +24,6 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -40,7 +38,6 @@ import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
-import proton.android.authenticator.shared.ui.domain.components.icons.CenteredLauncherIcon
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import javax.inject.Inject
 
@@ -75,31 +72,16 @@ internal class MainActivity : FragmentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collectLatest { state ->
                     setContent {
-                        when (state.appLockState) {
-                            AppLockState.LOCKED -> {
-                                finishAffinity()
+                        isDarkTheme(state.themeType)
+                            .also(::setStatusBarTheme)
+                            .also { isDarkTheme ->
+                                navigationNavigator.NavGraphs(
+                                    isDarkTheme = isDarkTheme,
+                                    onFinishLaunching = viewModel::setInstallationTimeIfFirstRun,
+                                    onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow,
+                                    onAskForReview = viewModel::askForReviewIfApplicable
+                                )
                             }
-
-                            AppLockState.NOT_STARTED -> Unit
-                            AppLockState.AUTHENTICATING -> {
-                                val context = LocalContext.current
-                                LaunchedEffect(state.appLockState) {
-                                    viewModel.requestReauthentication(context)
-                                }
-                                CenteredLauncherIcon()
-                            }
-
-                            AppLockState.AUTHENTICATED -> isDarkTheme(state.themeType)
-                                .also(::setStatusBarTheme)
-                                .also { isDarkTheme ->
-                                    navigationNavigator.NavGraphs(
-                                        isDarkTheme = isDarkTheme,
-                                        onFinishLaunching = viewModel::setInstallationTimeIfFirstRun,
-                                        onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow,
-                                        onAskForReview = viewModel::askForReviewIfApplicable
-                                    )
-                                }
-                        }
                     }
                 }
             }
@@ -113,13 +95,15 @@ internal class MainActivity : FragmentActivity() {
         caller: ComponentCaller
     ) {
         lifecycleScope.launch {
-            updateAppLockStateUseCase(AppLockState.AUTHENTICATED)
+            updateAppLockStateUseCase(state = AppLockState.AuthNotRequired)
+
+            super.onActivityResult(requestCode, resultCode, data, caller)
         }
-        super.onActivityResult(requestCode, resultCode, data, caller)
     }
 
     private fun setStatusBarTheme(isDarkTheme: Boolean) {
         WindowCompat.getInsetsController(window, window.decorView)
             .also { controller -> controller.isAppearanceLightStatusBars = !isDarkTheme }
     }
+
 }
