@@ -19,11 +19,11 @@
 package proton.android.authenticator.app.handler
 
 import android.app.Activity
+import com.google.android.play.core.review.ReviewManagerFactory
 import javax.inject.Inject
 
 class RequestReviewHandlerImpl @Inject constructor() : RequestReviewHandler {
     override fun request(activity: Activity) {
-        /*
         val reviewManager = ReviewManagerFactory.create(activity)
         val request = reviewManager.requestReviewFlow()
         request.addOnCompleteListener { task ->
@@ -31,6 +31,5 @@ class RequestReviewHandlerImpl @Inject constructor() : RequestReviewHandler {
                 reviewManager.launchReviewFlow(activity, task.result)
             }
         }
-         */
     }
 }
