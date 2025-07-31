@@ -17,8 +17,6 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="biometric_prompt_title">Приложение заблокировано</string>
-  <string name="biometric_prompt_subtitle">Разблокируйте, используя блокировку вашего устройства</string>
   <string name="notification_automatic_backups_title">Автоматическое резервное копирование остановлено</string>
   <string name="notification_automatic_backups_message">Не удалось найти указанную папку для резервного копирования. Проверьте настройки, чтобы возобновить автоматическое резервное копирование.</string>
   <string name="notification_automatic_backups_success_title">Backup completed successfully</string>

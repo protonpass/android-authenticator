@@ -17,8 +17,6 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="biometric_prompt_title">App bloccata</string>
-  <string name="biometric_prompt_subtitle">Sblocca usando il blocco del tuo dispositivo</string>
   <string name="notification_automatic_backups_title">Backup automatici interrotti</string>
   <string name="notification_automatic_backups_message">La cartella di backup specificata non è stata trovata. Controlla le tue impostazioni per riavviare i backup automatici.</string>
   <string name="notification_automatic_backups_success_title">Backup completed successfully</string>

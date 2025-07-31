@@ -17,8 +17,6 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="biometric_prompt_title">App gesperrt</string>
-  <string name="biometric_prompt_subtitle">Mit deiner Gerätesperre entsperren</string>
   <string name="notification_automatic_backups_title">Automatische Sicherungen gestoppt</string>
   <string name="notification_automatic_backups_message">Der angegebene Sicherungsordner konnte nicht gefunden werden. Bitte überprüfe deine Einstellungen, um automatische Sicherungen neu zu starten.</string>
   <string name="notification_automatic_backups_success_title">Backup completed successfully</string>
