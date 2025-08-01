@@ -34,6 +34,8 @@ import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterfac
 import proton.android.authenticator.commonrust.MobileCurrentTimeProvider
 import proton.android.authenticator.commonrust.MobileTotpGenerator
 import proton.android.authenticator.commonrust.MobileTotpGeneratorInterface
+import proton.android.authenticator.commonrust.QrCodeScanner
+import proton.android.authenticator.commonrust.QrCodeScannerInterface
 import proton.android.authenticator.commonrust.SyncOperationChecker
 import proton.android.authenticator.commonrust.SyncOperationCheckerInterface
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
@@ -69,6 +71,9 @@ internal object RustModule {
                     .toULong()
             }
         )
+
+    @[Provides Singleton]
+    internal fun provideQrCodeScanner(): QrCodeScannerInterface = QrCodeScanner()
 
     @[Provides Singleton]
     internal fun provideSyncOperationChecker(): SyncOperationCheckerInterface = SyncOperationChecker()

@@ -50,7 +50,7 @@ import proton.android.authenticator.shared.common.logs.AuthenticatorLogsFileProv
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogsFileTreeProvider
 import proton.android.authenticator.shared.common.providers.ClockTimeProvider
 import proton.android.authenticator.shared.common.providers.ContentResolverMimeTypeProvider
-import proton.android.authenticator.shared.common.scanners.ZxingQrScanner
+import proton.android.authenticator.shared.common.scanners.RustQrScanner
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -75,7 +75,7 @@ internal abstract class SharedCommonModule {
     internal abstract fun bindLogsFileTreeProvider(impl: AuthenticatorLogsFileTreeProvider): LogsFileTreeProvider
 
     @[Binds Singleton]
-    internal abstract fun bindQrScanner(impl: ZxingQrScanner): QrScanner
+    internal abstract fun bindQrScanner(impl: RustQrScanner): QrScanner
 
     @[Binds Singleton]
     internal abstract fun bindQueryBus(impl: InMemoryQueryBus): QueryBus

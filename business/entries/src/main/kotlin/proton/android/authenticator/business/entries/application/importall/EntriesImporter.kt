@@ -167,6 +167,9 @@ internal class EntriesImporter @Inject constructor(
     }
 
     private companion object {
-        const val MAX_ZIP_SIZE = 10 * 1_024 * 1_024
+
+        private const val MAX_ZIP_SIZE = 10 * 1_024 * 1_024
+
     }
+
 }

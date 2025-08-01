@@ -22,6 +22,6 @@ import android.net.Uri
 
 interface QrScanner {
 
-    suspend fun scan(uri: Uri, maxDimension: Int = 800): String?
+    suspend fun scan(uri: Uri): String?
 
 }
