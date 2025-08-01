@@ -17,8 +17,8 @@
   ~ along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="notification_automatic_backups_title">Les sauvegardes automatiques ont été arrêtées.</string>
-  <string name="notification_automatic_backups_message">Le dossier de sauvegarde spécifié est introuvable. Veuillez vérifier vos paramètres pour relancer les sauvegardes automatiques.</string>
-  <string name="notification_automatic_backups_success_title">La sauvegarde est terminée.</string>
-  <string name="notification_automatic_backups_success_message">La sauvegarde est enregistrée sous %s.</string>
+  <string name="unlock_screen_title" comment="The placeholder will be replaced by app name. (e.g. Unlock Proton Authenticator)">Unlock %1$s</string>
+  <string name="unlock_screen_description">Verify your identity with your registered biometrics to continue.</string>
+  <string name="unlock_screen_promtp_title">App locked</string>
+  <string name="unlock_screen_promtp_subtitle">Unlock using your device lock</string>
 </resources>

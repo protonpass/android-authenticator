@@ -19,10 +19,10 @@
 <resources>
   <string name="backups_screen_title">Sauvegardes</string>
   <string name="backups_automatic_backups_title">Sauvegardes automatiques</string>
-  <string name="backups_notifications_permission_dialog_title">Backup notifications</string>
-  <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
-  <string name="backups_notifications_permission_dialog_allow">Allow</string>
-  <string name="backups_notifications_permission_dialog_deny">Skip (not recommended)</string>
+  <string name="backups_notifications_permission_dialog_title">Notifications de sauvegarde</string>
+  <string name="backups_notifications_permission_dialog_explanation">L\'application a besoin de votre autorisation pour vous avertir lorsque vos données sont sauvegardées.</string>
+  <string name="backups_notifications_permission_dialog_allow">Autoriser</string>
+  <string name="backups_notifications_permission_dialog_deny">Ignorer (non recommandé)</string>
   <string name="backups_automatic_backups_location_title">Emplacement du dossier</string>
   <string name="backups_frequency_title">Fréquence</string>
   <string name="backups_frequency_option_daily">Quotidienne</string>
