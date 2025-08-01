@@ -42,7 +42,6 @@ import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
-import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
@@ -53,7 +52,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    observeAppLockStateUseCase: ObserveAppLockStateUseCase,
     observeEntryModelsUseCase: ObserveEntryModelsUseCase,
     private val getBuildFlavorUseCase: GetBuildFlavorUseCase,
     private val observeSettingsUseCase: ObserveSettingsUseCase,
@@ -66,18 +64,11 @@ internal class MainViewModel @Inject constructor(
     internal val stateFlow: StateFlow<MainState> = combine(
         observeSettingsUseCase(),
         observeEntryModelsUseCase(),
-        observeAppLockStateUseCase()
-    ) { settings, entries, appLockState ->
-        MainState(
-            settingsThemeType = settings.themeType,
-            isFirstRun = settings.isFirstRun,
-            installationTime = settings.installationTime,
-            numberOfEntries = entries.size
-        )
-    }.stateIn(
+        MainState::Ready
+    ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-        initialValue = MainState.Initial
+        initialValue = MainState.Loading
     )
 
     internal val requestReview = MutableStateFlow<Unit?>(null)
@@ -118,9 +109,9 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun setInstallationTimeIfFirstRun() {
+    internal fun setInstallationTimeIfFirstRun(state: MainState.Ready) {
         viewModelScope.launch {
-            if (stateFlow.value.isFirstRun) {
+            if (state.isFirstRun) {
                 observeSettingsUseCase()
                     .first()
                     .copy(
@@ -132,10 +123,10 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun askForReviewIfApplicable() {
-        if (stateFlow.value.numberOfEntries < MIN_NUM_OF_ENTRIES) return
+    internal fun askForReviewIfApplicable(state: MainState.Ready) {
+        if (state.numberOfEntries < MIN_NUM_OF_ENTRIES) return
 
-        val installationTime = stateFlow.value.installationTime ?: return
+        val installationTime = state.installationTime ?: return
         val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
         val distanceInMillis = timeProvider.currentMillis().minus(installationTime)
         if (distanceInMillis < sevenDaysInMillis) return

@@ -20,33 +20,39 @@ package proton.android.authenticator.app.presentation
 
 import androidx.compose.runtime.Immutable
 import proton.android.authenticator.business.settings.domain.Settings
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
+import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
 
 @Immutable
-internal data class MainState(
-    private val settingsThemeType: SettingsThemeType,
-    internal val isFirstRun: Boolean,
-    internal val installationTime: Long?,
-    internal val numberOfEntries: Int
-) {
+internal sealed interface MainState {
 
-    internal val themeType: ThemeType = when (settingsThemeType) {
-        SettingsThemeType.Dark -> ThemeType.Dark
-        SettingsThemeType.Light -> ThemeType.Light
-        SettingsThemeType.System -> ThemeType.System
-    }
+    @Immutable
+    data object Loading : MainState
 
-    internal companion object {
+    @Immutable
+    data class Ready(
+        private val settings: Settings,
+        private val entryModels: List<EntryModel>
+    ) : MainState {
 
-        private const val DEFAULT_NUM_OF_ENTRIES = 0
+        internal val isBiometricLockEnabled: Boolean = when (settings.appLockType) {
+            SettingsAppLockType.None -> false
+            SettingsAppLockType.Biometric -> true
+        }
 
-        internal val Initial: MainState = MainState(
-            settingsThemeType = SettingsThemeType.System,
-            isFirstRun = Settings.Default.isFirstRun,
-            installationTime = Settings.Default.installationTime,
-            numberOfEntries = DEFAULT_NUM_OF_ENTRIES
-        )
+        internal val isFirstRun: Boolean = settings.isFirstRun
+
+        internal val installationTime: Long? = settings.installationTime
+
+        internal val numberOfEntries: Int = entryModels.size
+
+        internal val themeType: ThemeType = when (settings.themeType) {
+            SettingsThemeType.Dark -> ThemeType.Dark
+            SettingsThemeType.Light -> ThemeType.Light
+            SettingsThemeType.System -> ThemeType.System
+        }
 
     }
 

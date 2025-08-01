@@ -20,6 +20,7 @@ package proton.android.authenticator.app.ui
 
 import android.app.ComponentCaller
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import proton.android.authenticator.app.handler.RequestReviewHandler
+import proton.android.authenticator.app.presentation.MainState
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
@@ -71,17 +73,28 @@ internal class MainActivity : FragmentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stateFlow.collectLatest { state ->
-                    setContent {
-                        isDarkTheme(state.themeType)
-                            .also(::setStatusBarTheme)
-                            .also { isDarkTheme ->
-                                navigationNavigator.NavGraphs(
-                                    isDarkTheme = isDarkTheme,
-                                    onFinishLaunching = viewModel::setInstallationTimeIfFirstRun,
-                                    onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow,
-                                    onAskForReview = viewModel::askForReviewIfApplicable
-                                )
+                    when (state) {
+                        MainState.Loading -> Unit
+                        is MainState.Ready -> {
+                            setContent {
+                                setSecureMode(isSecure = state.isBiometricLockEnabled)
+
+                                isDarkTheme(state.themeType)
+                                    .also(::setStatusBarTheme)
+                                    .also { isDarkTheme ->
+                                        navigationNavigator.NavGraphs(
+                                            isDarkTheme = isDarkTheme,
+                                            onAskForReview = {
+                                                viewModel.askForReviewIfApplicable(state)
+                                            },
+                                            onFinishLaunching = {
+                                                viewModel.setInstallationTimeIfFirstRun(state)
+                                            },
+                                            onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow
+                                        )
+                                    }
                             }
+                        }
                     }
                 }
             }
@@ -98,6 +111,12 @@ internal class MainActivity : FragmentActivity() {
             updateAppLockStateUseCase(state = AppLockState.AuthNotRequired)
 
             super.onActivityResult(requestCode, resultCode, data, caller)
+        }
+    }
+
+    private fun setSecureMode(isSecure: Boolean) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setRecentsScreenshotEnabled(!isSecure)
         }
     }
 
