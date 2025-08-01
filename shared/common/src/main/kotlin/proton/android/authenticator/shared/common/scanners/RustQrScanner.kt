@@ -24,6 +24,9 @@ import kotlinx.coroutines.withContext
 import proton.android.authenticator.commonrust.QrCodeScannerInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
 import proton.android.authenticator.shared.common.domain.scanners.QrScanner
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -34,13 +37,31 @@ internal class RustQrScanner @Inject constructor(
 ) : QrScanner {
 
     override suspend fun scan(uri: Uri): String? = withContext(appDispatchers.io) {
-        contentResolver.openInputStream(uri)
-            ?.use(InputStream::readBytes)
-            ?.let { imageByteArray ->
-                withContext(appDispatchers.default) {
-                    qrCodeScanner.scanQrCode(image = imageByteArray)
+        try {
+            contentResolver.openInputStream(uri)
+                ?.use(InputStream::readBytes)
+                ?.let { imageByteArray ->
+                    withContext(appDispatchers.default) {
+                        qrCodeScanner.scanQrCode(image = imageByteArray)
+                    }
                 }
-            }
+        } catch (error: FileNotFoundException) {
+            AuthenticatorLogger.w(TAG, "There was an error while scanning the QR code: FileNotFoundException")
+            AuthenticatorLogger.w(TAG, error)
+
+            null
+        } catch (error: IOException) {
+            AuthenticatorLogger.w(TAG, "There was an error while scanning the QR code: IOException")
+            AuthenticatorLogger.w(TAG, error)
+
+            null
+        }
+    }
+
+    private companion object {
+
+        private const val TAG = "RustQrScanner"
+
     }
 
 }
