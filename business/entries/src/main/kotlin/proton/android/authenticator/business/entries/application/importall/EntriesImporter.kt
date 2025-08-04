@@ -26,7 +26,6 @@ import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileReader
 import proton.android.authenticator.commonrust.AuthenticatorEntryModel
-import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.commonrust.AuthenticatorImporterInterface
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
@@ -34,6 +33,7 @@ import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.common.domain.providers.MimeTypeProvider
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import proton.android.authenticator.shared.common.domain.scanners.QrScanner
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import proton.android.authenticator.shared.crypto.domain.contexts.EncryptionContextProvider
 import proton.android.authenticator.shared.crypto.domain.tags.EncryptionTag
 import javax.inject.Inject
@@ -136,7 +136,10 @@ internal class EntriesImporter @Inject constructor(
             }
         }.let { result ->
             if (result.errors.isNotEmpty()) {
-                throw AuthenticatorImportException.BadContent(result.errors.first().message)
+                AuthenticatorLogger.w(TAG, "Found ${result.errors.size} errors on import from $importType")
+                for (error in result.errors) {
+                    AuthenticatorLogger.w(TAG, "Import error: [context=${error.context}] [message=${error.message}]")
+                }
             }
             result.entries
         }
@@ -169,6 +172,7 @@ internal class EntriesImporter @Inject constructor(
     private companion object {
 
         private const val MAX_ZIP_SIZE = 10 * 1_024 * 1_024
+        private const val TAG = "EntriesImporter"
 
     }
 
