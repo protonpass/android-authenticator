@@ -42,6 +42,7 @@ import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
 import proton.android.authenticator.features.shared.app.usecases.GetAppVersionNameUseCase
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
+import proton.android.authenticator.features.shared.entries.usecases.ObserveHasEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.biometrics.AuthenticateBiometricUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
@@ -57,6 +58,7 @@ import javax.inject.Inject
 internal class SettingsMasterViewModel @Inject constructor(
     getBuildFlavorUseCase: GetBuildFlavorUseCase,
     getAppVersionNameUseCase: GetAppVersionNameUseCase,
+    observeHasEntryModelsUseCase: ObserveHasEntryModelsUseCase,
     observeSettingsUseCase: ObserveSettingsUseCase,
     observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     observeUserUseCase: ObserveUserUseCase,
@@ -72,6 +74,7 @@ internal class SettingsMasterViewModel @Inject constructor(
     private val configModelFlow = combine(
         getAppVersionNameUseCase().let(::flowOf),
         getBuildFlavorUseCase().let(::flowOf),
+        observeHasEntryModelsUseCase(),
         ::SettingsMasterConfigModel
     )
 

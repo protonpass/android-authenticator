@@ -16,17 +16,22 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.findall
+package proton.android.authenticator.features.shared.entries.usecases
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import proton.android.authenticator.business.entries.domain.EntriesRepository
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.mapLatest
+import proton.android.authenticator.business.entries.application.findall.FindAllEntriesQuery
 import proton.android.authenticator.business.entries.domain.Entry
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryBus
 import javax.inject.Inject
 
-internal class AllEntriesFinder @Inject constructor(private val repository: EntriesRepository) {
+@OptIn(ExperimentalCoroutinesApi::class)
+class ObserveHasEntryModelsUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    internal fun findAll(): Flow<List<Entry>> = repository.findAll()
-        .map { entries -> entries.filterNot(Entry::isDeleted) }
+    operator fun invoke(): Flow<Boolean> = queryBus.ask<List<Entry>>(FindAllEntriesQuery)
+        .distinctUntilChanged()
+        .mapLatest { entries -> entries.isNotEmpty() }
 
 }

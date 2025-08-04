@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -95,13 +94,8 @@ internal class HomeMasterViewModel @Inject constructor(
             else SEARCH_QUERY_DEBOUNCE_MILLIS
         }
 
-    private val entryModelsFlow = observeEntryModelsUseCase()
-        .mapLatest { entryModels ->
-            entryModels.filter { entryModel -> !entryModel.isDeleted }
-        }
-
     private val entriesFlow = combine(
-        entryModelsFlow,
+        observeEntryModelsUseCase(),
         entrySearchQueryDebouncedFlow
     ) { entryModels, searchQuery ->
         entryModels.filter { entryModel ->

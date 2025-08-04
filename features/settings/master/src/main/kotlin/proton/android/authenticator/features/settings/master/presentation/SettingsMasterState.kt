@@ -44,6 +44,8 @@ internal sealed interface SettingsMasterState {
 
         internal val accountDisplayName: String? = user?.displayName
 
+        internal val showExportOption: Boolean = configModel.canExportEntries
+
         internal val isVersionClickable: Boolean = when (configModel.buildFlavor.type) {
             BuildFlavorType.Alpha,
             BuildFlavorType.Dev -> true

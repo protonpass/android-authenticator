@@ -175,20 +175,25 @@ internal fun SettingsContent(
 
         SettingsSection(
             title = stringResource(id = R.string.settings_data_management_section),
-            contents = listOf(
-                {
+            contents = buildList {
+                add({
                     NavigationRow(
                         titleText = UiText.Resource(id = R.string.settings_data_management_title_import),
                         onClick = onImportClick
                     )
-                },
-                {
-                    NavigationRow(
-                        titleText = UiText.Resource(id = R.string.settings_data_management_title_export),
-                        onClick = onExportClick
+                })
+
+                if (showExportOption) {
+                    add(
+                        {
+                            NavigationRow(
+                                titleText = UiText.Resource(id = R.string.settings_data_management_title_export),
+                                onClick = onExportClick
+                            )
+                        }
                     )
                 }
-            )
+            }
         )
 
         SettingsSection(

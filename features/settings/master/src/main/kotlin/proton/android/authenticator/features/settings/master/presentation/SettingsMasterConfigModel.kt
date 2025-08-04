@@ -22,5 +22,6 @@ import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
 
 internal data class SettingsMasterConfigModel(
     internal val appVersionName: String,
-    internal val buildFlavor: BuildFlavor
+    internal val buildFlavor: BuildFlavor,
+    internal val canExportEntries: Boolean
 )
