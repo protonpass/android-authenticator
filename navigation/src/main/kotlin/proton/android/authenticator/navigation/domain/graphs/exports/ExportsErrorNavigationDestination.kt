@@ -16,14 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.navigation.domain.graphs.exports
 
-internal sealed interface SettingsMasterEvent {
+import kotlinx.serialization.Serializable
+import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 
-    data object Idle : SettingsMasterEvent
-
-    data object OnSyncDisabled : SettingsMasterEvent
-
-    data object OnSyncEnabled : SettingsMasterEvent
-
-}
+@Serializable
+internal data class ExportsErrorNavigationDestination(
+    internal val errorReason: Int
+) : NavigationDestination

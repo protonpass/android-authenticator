@@ -23,17 +23,12 @@ import proton.android.authenticator.business.users.domain.User
 import proton.android.authenticator.protonapps.domain.ProtonApp
 import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.constants.UrlConstants
-import proton.android.authenticator.shared.common.domain.models.MimeType
 
 internal sealed interface SettingsMasterState {
 
     val event: SettingsMasterEvent
 
-    val exportFileMimeType: String
-
     data object Loading : SettingsMasterState {
-
-        override val exportFileMimeType: String = MimeType.Json.value
 
         override val event: SettingsMasterEvent = SettingsMasterEvent.Idle
 
@@ -58,10 +53,6 @@ internal sealed interface SettingsMasterState {
         }
 
         internal val versionName: String = configModel.appVersionName
-
-        override val exportFileMimeType: String = MimeType.Json.value
-
-        internal val exportFileName: String = FILE_NAME
 
         internal val feedbackUrl: String = UrlConstants.CUSTOMER_SUPPORT
 
@@ -88,12 +79,6 @@ internal sealed interface SettingsMasterState {
             isPassBannerDismissed = settings.isPassBannerDismissed,
             uninstalledProtonApps = uninstalledProtonApps
         )
-    }
-
-    private companion object {
-
-        private const val FILE_NAME = "proton_authenticator_backup.json"
-
     }
 
 }

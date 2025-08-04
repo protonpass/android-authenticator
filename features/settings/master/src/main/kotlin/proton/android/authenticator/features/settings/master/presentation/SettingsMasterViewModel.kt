@@ -19,7 +19,6 @@
 package proton.android.authenticator.features.settings.master.presentation
 
 import android.content.Context
-import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,7 +39,6 @@ import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
-import proton.android.authenticator.features.settings.master.usecases.ExportEntriesUseCase
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
 import proton.android.authenticator.features.shared.app.usecases.GetAppVersionNameUseCase
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
@@ -65,7 +63,6 @@ internal class SettingsMasterViewModel @Inject constructor(
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
-    private val exportEntriesUseCase: ExportEntriesUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
     private val observeIsUserAuthenticatedUseCase: ObserveIsUserAuthenticatedUseCase
 ) : ViewModel() {
@@ -93,24 +90,6 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     internal fun onConsumeEvent(event: SettingsMasterEvent) {
         eventFlow.compareAndSet(expect = event, update = SettingsMasterEvent.Idle)
-    }
-
-    internal fun onExportEntries(uri: Uri?) {
-        if (uri == null) return
-
-        viewModelScope.launch {
-            exportEntriesUseCase(uri = uri, password = null).also { answer ->
-                when (answer) {
-                    is Answer.Failure -> {
-                        SettingsMasterEvent.OnEntriesExportError(errorReason = answer.reason.ordinal)
-                    }
-
-                    is Answer.Success -> {
-                        SettingsMasterEvent.OnEntriesExportSuccess(exportedEntriesCount = answer.data)
-                    }
-                }.also { event -> eventFlow.update { event } }
-            }
-        }
     }
 
     internal fun onUpdateIsPassBannerDismissed(settingsModel: SettingsMasterSettingsModel) {

@@ -18,8 +18,6 @@
 
 package proton.android.authenticator.features.settings.master.ui
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -52,8 +50,6 @@ fun SettingsMasterScreen(
     onBackupsClick: () -> Unit,
     onSyncEnabled: () -> Unit,
     onSyncDisabled: () -> Unit,
-    onExportCompleted: (Int) -> Unit,
-    onExportFailed: (Int) -> Unit,
     onImportClick: () -> Unit,
     onExportClick: () -> Unit,
     onHowToClick: (String) -> Unit,
@@ -70,22 +66,9 @@ fun SettingsMasterScreen(
         derivedStateOf { scrollState.value > 0 }
     }
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument(state.exportFileMimeType),
-        onResult = ::onExportEntries
-    )
-
     LaunchedEffect(key1 = state.event) {
-        when (val event = state.event) {
+        when (state.event) {
             SettingsMasterEvent.Idle -> Unit
-
-            is SettingsMasterEvent.OnEntriesExportError -> {
-                onExportFailed(event.errorReason)
-            }
-
-            is SettingsMasterEvent.OnEntriesExportSuccess -> {
-                onExportCompleted(event.exportedEntriesCount)
-            }
 
             SettingsMasterEvent.OnSyncDisabled -> {
                 onSyncDisabled()

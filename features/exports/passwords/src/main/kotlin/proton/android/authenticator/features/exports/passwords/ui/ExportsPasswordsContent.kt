@@ -33,6 +33,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import proton.android.authenticator.features.exports.passwords.R
+import proton.android.authenticator.features.exports.passwords.presentation.ExportsPasswordsState
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.components.textfields.StandaloneSecureTextField
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -41,11 +42,13 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
 internal fun ExportsPasswordsContent(
+    state: ExportsPasswordsState,
     onPasswordChange: (String) -> Unit,
     onVisibilityChange: (Boolean) -> Unit,
-    onSubmitPassword: (String?) -> Unit,
+    onExportWithPassword: () -> Unit,
+    onExportWithoutPassword: () -> Unit,
     modifier: Modifier = Modifier
-) {
+) = with(state) {
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(key1 = Unit) {
@@ -83,21 +86,19 @@ internal fun ExportsPasswordsContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(focusRequester),
-            value = "",
+            value = password,
             onValueChange = onPasswordChange,
-            isError = false,
-            errorText = null,
-            isVisible = false,
+            isVisible = isPasswordVisible,
             onVisibilityChange = onVisibilityChange
         )
 
         VerticalActionsButtons(
             modifier = Modifier.fillMaxWidth(),
             primaryActionText = stringResource(id = R.string.exports_password_action_primary),
-            onPrimaryActionClick = { onSubmitPassword("jibiri") },
-            isPrimaryActionEnabled = false,
+            onPrimaryActionClick = onExportWithPassword,
+            isPrimaryActionEnabled = isValidPassword,
             secondaryActionText = stringResource(id = R.string.exports_password_action_secondary),
-            onSecondaryActionClick = { onSubmitPassword(null) }
+            onSecondaryActionClick = onExportWithoutPassword
         )
     }
 }

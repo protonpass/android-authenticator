@@ -16,14 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.features.exports.passwords.presentation
 
-internal sealed interface SettingsMasterEvent {
+internal sealed interface ExportsPasswordsEvent {
 
-    data object Idle : SettingsMasterEvent
+    data object Idle : ExportsPasswordsEvent
 
-    data object OnSyncDisabled : SettingsMasterEvent
+    data class OnEntriesExportStarted(internal val fileName: String) : ExportsPasswordsEvent
 
-    data object OnSyncEnabled : SettingsMasterEvent
+    data class OnEntriesExportError(internal val errorReason: Int) : ExportsPasswordsEvent
+
+    data class OnEntriesExportSuccess(internal val exportedEntriesCount: Int) : ExportsPasswordsEvent
 
 }

@@ -16,7 +16,7 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.usecases
+package proton.android.authenticator.features.exports.passwords.usecases
 
 import android.net.Uri
 import proton.android.authenticator.business.entries.application.exportall.ExportEntriesCommand

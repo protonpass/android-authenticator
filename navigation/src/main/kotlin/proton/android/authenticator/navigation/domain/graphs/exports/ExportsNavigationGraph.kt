@@ -20,15 +20,53 @@ package proton.android.authenticator.navigation.domain.graphs.exports
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
+import proton.android.authenticator.features.exports.completion.ui.ExportsCompletionScreen
+import proton.android.authenticator.features.exports.errors.ui.ExportsErrorsScreen
 import proton.android.authenticator.features.exports.passwords.ui.ExportsPasswordsScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.graphs.settings.SettingsMasterNavigationDestination
 
 internal fun NavGraphBuilder.exportsNavigationGraph(onNavigate: (NavigationCommand) -> Unit) {
     navigation<ExportsNavigationDestination>(startDestination = ExportsPasswordsNavigationDestination) {
         composable<ExportsPasswordsNavigationDestination> {
             ExportsPasswordsScreen(
                 onNavigationClick = {
+                    onNavigate(NavigationCommand.NavigateUp)
+                },
+                onExportCompleted = { exportedEntriesCount ->
+                    NavigationCommand.NavigateToWithPopup(
+                        destination = ExportsCompletionNavigationDestination(
+                            exportedEntriesCount = exportedEntriesCount
+                        ),
+                        popDestination = SettingsMasterNavigationDestination
+                    ).also(onNavigate)
+                },
+                onExportFailed = { errorReason ->
+                    NavigationCommand.NavigateTo(
+                        destination = ExportsErrorNavigationDestination(
+                            errorReason = errorReason
+                        )
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<ExportsCompletionNavigationDestination> {
+            ExportsCompletionScreen(
+                onDismissed = {
+                    NavigationCommand.PopupTo(
+                        destination = SettingsMasterNavigationDestination,
+                        inclusive = false
+                    ).also(onNavigate)
+                }
+            )
+        }
+
+        dialog<ExportsErrorNavigationDestination> {
+            ExportsErrorsScreen(
+                onDismissed = {
                     onNavigate(NavigationCommand.NavigateUp)
                 }
             )

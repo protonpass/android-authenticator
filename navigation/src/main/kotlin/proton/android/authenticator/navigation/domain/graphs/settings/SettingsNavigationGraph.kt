@@ -24,8 +24,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
-import proton.android.authenticator.features.exports.completion.ui.ExportsCompletionScreen
-import proton.android.authenticator.features.exports.errors.ui.ExportsErrorsScreen
 import proton.android.authenticator.features.imports.completion.ui.ImportsCompletionScreen
 import proton.android.authenticator.features.imports.errors.ui.ImportsErrorScreen
 import proton.android.authenticator.features.imports.onboarding.ui.ImportsOnboardingScreen
@@ -70,20 +68,6 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                         destination = SyncDisableNavigationDestination
                     ).also(onNavigate)
                 },
-                onExportCompleted = { exportedEntriesCount ->
-                    NavigationCommand.NavigateTo(
-                        destination = SettingsExportCompletionNavigationDestination(
-                            exportedEntriesCount = exportedEntriesCount
-                        )
-                    ).also(onNavigate)
-                },
-                onExportFailed = { errorReason ->
-                    NavigationCommand.NavigateTo(
-                        destination = SettingsExportErrorNavigationDestination(
-                            errorReason = errorReason
-                        )
-                    ).also(onNavigate)
-                },
                 onImportClick = {
                     NavigationCommand.NavigateTo(
                         destination = SettingsImportOptionsNavigationDestination
@@ -121,28 +105,6 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                 onVersionNameClick = {
                     NavigationCommand.NavigateTo(
                         destination = QaMenuNavigationDestination
-                    ).also(onNavigate)
-                }
-            )
-        }
-
-        dialog<SettingsExportCompletionNavigationDestination> {
-            ExportsCompletionScreen(
-                onDismissed = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
-                    ).also(onNavigate)
-                }
-            )
-        }
-
-        dialog<SettingsExportErrorNavigationDestination> {
-            ExportsErrorsScreen(
-                onDismissed = {
-                    NavigationCommand.PopupTo(
-                        destination = SettingsMasterNavigationDestination,
-                        inclusive = false
                     ).also(onNavigate)
                 }
             )

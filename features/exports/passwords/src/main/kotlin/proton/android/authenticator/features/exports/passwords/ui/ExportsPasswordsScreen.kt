@@ -18,10 +18,18 @@
 
 package proton.android.authenticator.features.exports.passwords.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import proton.android.authenticator.features.exports.passwords.presentation.ExportsPasswordsEvent
+import proton.android.authenticator.features.exports.passwords.presentation.ExportsPasswordsViewModel
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
@@ -30,7 +38,38 @@ import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
-fun ExportsPasswordsScreen(onNavigationClick: () -> Unit) {
+fun ExportsPasswordsScreen(
+    onNavigationClick: () -> Unit,
+    onExportCompleted: (Int) -> Unit,
+    onExportFailed: (Int) -> Unit
+) = with(hiltViewModel<ExportsPasswordsViewModel>()) {
+    val state by stateFlow.collectAsStateWithLifecycle()
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument(state.exportFileMimeType),
+        onResult = { uri -> onExportEntries(uri = uri, password = state.password) }
+    )
+
+    LaunchedEffect(key1 = state.event) {
+        when (val event = state.event) {
+            ExportsPasswordsEvent.Idle -> Unit
+
+            is ExportsPasswordsEvent.OnEntriesExportStarted -> {
+                launcher.launch(event.fileName)
+            }
+
+            is ExportsPasswordsEvent.OnEntriesExportError -> {
+                onExportFailed(event.errorReason)
+            }
+
+            is ExportsPasswordsEvent.OnEntriesExportSuccess -> {
+                onExportCompleted(event.exportedEntriesCount)
+            }
+        }
+
+        onConsumeEvent(event = state.event)
+    }
+
     ScaffoldScreen(
         modifier = Modifier
             .fillMaxSize()
@@ -51,9 +90,11 @@ fun ExportsPasswordsScreen(onNavigationClick: () -> Unit) {
                     top = ThemePadding.MediumLarge,
                     end = ThemePadding.Large
                 ),
-            onPasswordChange = { },
-            onVisibilityChange = { },
-            onSubmitPassword = { }
+            state = state,
+            onPasswordChange = ::onPasswordChange,
+            onVisibilityChange = ::onPasswordVisibilityChange,
+            onExportWithPassword = ::onExportEntriesWithPassword,
+            onExportWithoutPassword = ::onExportEntriesWithoutPassword
         )
     }
 }
