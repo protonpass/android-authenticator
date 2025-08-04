@@ -36,6 +36,7 @@ import proton.android.authenticator.features.qa.ui.QaMenuMasterScreen
 import proton.android.authenticator.features.settings.master.ui.SettingsMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.graphs.backups.BackupsNavigationDestination
+import proton.android.authenticator.navigation.domain.graphs.exports.ExportsNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.qa.QaMenuNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncDisableNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncNavigationDestination
@@ -86,6 +87,11 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                 onImportClick = {
                     NavigationCommand.NavigateTo(
                         destination = SettingsImportOptionsNavigationDestination
+                    ).also(onNavigate)
+                },
+                onExportClick = {
+                    NavigationCommand.NavigateTo(
+                        destination = ExportsNavigationDestination
                     ).also(onNavigate)
                 },
                 onHowToClick = { howToUrl ->

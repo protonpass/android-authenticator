@@ -32,34 +32,38 @@ internal class ExportEntriesCommandHandler @Inject constructor(
 ) : CommandHandler<ExportEntriesCommand, Int, ExportEntriesReason> {
 
     override suspend fun handle(command: ExportEntriesCommand): Answer<Int, ExportEntriesReason> = try {
-        val result = entriesExporter.export(destinationUri = command.destinationUri)
-        AuthenticatorLogger.i(TAG, "Successfully exported $result entries")
-        Answer.Success(result)
-    } catch (e: AuthenticatorException) {
+        entriesExporter.export(destinationUri = command.destinationUri, password = command.password)
+            .also { exportedEntriesCount ->
+                AuthenticatorLogger.i(TAG, "Successfully exported $exportedEntriesCount entries")
+            }
+            .let(Answer<Int, ExportEntriesReason>::Success)
+    } catch (error: AuthenticatorException) {
         ErrorLoggingUtils.logAndReturnFailure(
-            exception = e,
+            tag = TAG,
             message = "Could not export entries due to authenticator exception",
-            reason = ExportEntriesReason.InvalidEntries,
-            tag = TAG
+            exception = error,
+            reason = ExportEntriesReason.InvalidEntries
         )
-    } catch (e: FileNotFoundException) {
+    } catch (error: FileNotFoundException) {
         ErrorLoggingUtils.logAndReturnFailure(
-            exception = e,
+            tag = TAG,
             message = "Could not export entries due to file not found",
-            reason = ExportEntriesReason.InvalidEntries,
-            tag = TAG
+            exception = error,
+            reason = ExportEntriesReason.InvalidEntries
         )
-    } catch (e: IOException) {
+    } catch (error: IOException) {
         ErrorLoggingUtils.logAndReturnFailure(
-            exception = e,
+            tag = TAG,
             message = "Could not export entries due to IO exception",
-            reason = ExportEntriesReason.InvalidEntries,
-            tag = TAG
+            exception = error,
+            reason = ExportEntriesReason.InvalidEntries
         )
     }
 
     private companion object {
+
         private const val TAG = "ExportEntriesCommandHandler"
+
     }
 
 }

@@ -31,7 +31,8 @@ fun VerticalActionsButtons(
     onPrimaryActionClick: () -> Unit,
     secondaryActionText: String,
     onSecondaryActionClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isPrimaryActionEnabled: Boolean = true
 ) {
     Column(
         modifier = modifier,
@@ -40,6 +41,7 @@ fun VerticalActionsButtons(
         PrimaryActionButton(
             modifier = Modifier.fillMaxWidth(),
             text = primaryActionText,
+            isEnabled = isPrimaryActionEnabled,
             onClick = onPrimaryActionClick
         )
 

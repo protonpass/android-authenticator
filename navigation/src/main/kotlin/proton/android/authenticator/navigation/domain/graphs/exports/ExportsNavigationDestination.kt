@@ -16,12 +16,10 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.application.exportall
+package proton.android.authenticator.navigation.domain.graphs.exports
 
-import android.net.Uri
-import proton.android.authenticator.shared.common.domain.infrastructure.commands.Command
+import kotlinx.serialization.Serializable
+import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 
-data class ExportEntriesCommand(
-    internal val destinationUri: Uri,
-    internal val password: String?
-) : Command
+@Serializable
+internal object ExportsNavigationDestination : NavigationDestination

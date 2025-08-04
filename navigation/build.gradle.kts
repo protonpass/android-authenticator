@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.features.backups.errors)
     implementation(projects.features.exports.completion)
     implementation(projects.features.exports.errors)
+    implementation(projects.features.exports.passwords)
     implementation(projects.features.home.errors)
     implementation(projects.features.home.manual)
     implementation(projects.features.home.master)

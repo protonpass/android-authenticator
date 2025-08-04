@@ -60,7 +60,7 @@ internal fun SettingsContent(
     onDigitTypeChange: (SettingsMasterSettingsModel, SettingsDigitType) -> Unit,
     onCodeChangeAnimationChange: (SettingsMasterSettingsModel, Boolean) -> Unit,
     onImportClick: () -> Unit,
-    onExportClick: (String) -> Unit,
+    onExportClick: () -> Unit,
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
     onViewLogsClick: () -> Unit,
@@ -185,7 +185,7 @@ internal fun SettingsContent(
                 {
                     NavigationRow(
                         titleText = UiText.Resource(id = R.string.settings_data_management_title_export),
-                        onClick = { onExportClick(exportFileName) }
+                        onClick = onExportClick
                     )
                 }
             )

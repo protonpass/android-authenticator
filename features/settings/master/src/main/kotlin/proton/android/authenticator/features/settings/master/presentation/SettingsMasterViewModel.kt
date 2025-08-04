@@ -99,7 +99,7 @@ internal class SettingsMasterViewModel @Inject constructor(
         if (uri == null) return
 
         viewModelScope.launch {
-            exportEntriesUseCase(uri = uri).also { answer ->
+            exportEntriesUseCase(uri = uri, password = null).also { answer ->
                 when (answer) {
                     is Answer.Failure -> {
                         SettingsMasterEvent.OnEntriesExportError(errorReason = answer.reason.ordinal)

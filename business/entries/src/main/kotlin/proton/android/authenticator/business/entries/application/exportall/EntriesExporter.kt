@@ -37,7 +37,7 @@ internal class EntriesExporter @Inject constructor(
     private val repository: EntriesRepository
 ) {
 
-    suspend fun export(destinationUri: Uri): Int = repository.findAll()
+    suspend fun export(destinationUri: Uri, password: String?): Int = repository.findAll()
         .first()
         .let { entries ->
             encryptionContextProvider.withEncryptionContext {
@@ -48,9 +48,13 @@ internal class EntriesExporter @Inject constructor(
                 }
             }
         }
-        .let { models ->
-            models.size to withContext(appDispatchers.default) {
-                authenticatorClient.exportEntries(models)
+        .let { entryModels ->
+            entryModels.size to withContext(appDispatchers.default) {
+                if (password == null) {
+                    authenticatorClient.exportEntries(entryModels)
+                } else {
+                    authenticatorClient.exportEntriesWithPassword(entryModels, password)
+                }
             }
         }
         .let { (modelsCount, content) ->

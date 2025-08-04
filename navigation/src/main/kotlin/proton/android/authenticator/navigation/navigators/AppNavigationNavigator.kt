@@ -29,6 +29,7 @@ import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.navigation.domain.graphs.backups.backupsNavigationGraph
+import proton.android.authenticator.navigation.domain.graphs.exports.exportsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.home.homeNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.onboarding.OnboardingNavigationDestination
@@ -137,6 +138,10 @@ internal class AppNavigationNavigator @Inject constructor(
                     startDestination = startDestination
                 ) {
                     backupsNavigationGraph(snackbarHostState = snackbarHostState) { navCommand ->
+                        navigationCommandHandler.handle(navCommand, navController)
+                    }
+
+                    exportsNavigationGraph { navCommand ->
                         navigationCommandHandler.handle(navCommand, navController)
                     }
 
