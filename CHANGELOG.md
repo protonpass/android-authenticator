@@ -6,6 +6,12 @@
 
 ### Other
 
+## 1.1.1 (2025-08-05)
+
+### Fix :bug:
+
+- Improved importers for 2FAS, Ente and Google Authenticator. 
+
 ## 1.1.0 (2025-07-31)
 
 ### Features :tada:
