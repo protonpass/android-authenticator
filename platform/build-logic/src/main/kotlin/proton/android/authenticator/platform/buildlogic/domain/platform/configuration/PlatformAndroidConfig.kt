@@ -25,7 +25,7 @@ internal object PlatformAndroidConfig {
 
     internal const val USES_COMPOSE: Boolean = true
 
-    internal const val VERSION_NAME: String = "1.1.0"
+    internal const val VERSION_NAME: String = "1.1.1"
 
     internal val VERSION_CODE: Int = VERSION_NAME.split('.')
         .map(String::toInt)
