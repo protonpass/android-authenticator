@@ -119,8 +119,11 @@ internal class EntriesImporter @Inject constructor(
             }
 
             EntryImportType.ProtonAuthenticator -> {
-                authenticatorImporter.importFromProtonAuthenticator(content)
-//                authenticatorImporter.importFromProtonAuthenticatorWithPassword(content, "password")
+                if (password == null) {
+                    authenticatorImporter.importFromProtonAuthenticator(content)
+                } else {
+                    authenticatorImporter.importFromProtonAuthenticatorWithPassword(content, password)
+                }
             }
 
             EntryImportType.ProtonPass -> {

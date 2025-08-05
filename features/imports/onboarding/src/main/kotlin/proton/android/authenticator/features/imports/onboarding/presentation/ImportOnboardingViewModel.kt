@@ -87,6 +87,7 @@ internal class ImportOnboardingViewModel @Inject constructor(
         uris: List<Uri>,
         importType: EntryImportType
     ) {
+        println("JIBIRI: handleImportEntriesFailure: $answer")
         when (answer.reason) {
             ImportEntriesReason.BadContent,
             ImportEntriesReason.BadPassword,
