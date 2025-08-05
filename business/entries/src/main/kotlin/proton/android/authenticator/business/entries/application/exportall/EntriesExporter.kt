@@ -22,6 +22,7 @@ import android.net.Uri
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import proton.android.authenticator.business.entries.domain.EntriesRepository
+import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.shared.domain.infrastructure.files.FileWriter
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.dispatchers.AppDispatchers
@@ -39,6 +40,7 @@ internal class EntriesExporter @Inject constructor(
 
     suspend fun export(destinationUri: Uri, password: String?): Int = repository.findAll()
         .first()
+        .filterNot(Entry::isDeleted)
         .let { entries ->
             encryptionContextProvider.withEncryptionContext {
                 entries.map { entry ->
