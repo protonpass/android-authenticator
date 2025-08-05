@@ -46,8 +46,7 @@ internal class ImportOnboardingViewModel @Inject constructor(
     private val importType = requireNotNull<Int>(savedStateHandle[ARGS_IMPORT_TYPE])
         .let(enumValues<EntryImportType>()::get)
 
-    private val eventFlow =
-        MutableStateFlow<ImportOnboardingEvent>(value = ImportOnboardingEvent.Idle)
+    private val eventFlow = MutableStateFlow<ImportOnboardingEvent>(value = ImportOnboardingEvent.Idle)
 
     internal val stateFlow: StateFlow<ImportOnboardingState> = eventFlow
         .mapLatest { event ->
@@ -87,7 +86,6 @@ internal class ImportOnboardingViewModel @Inject constructor(
         uris: List<Uri>,
         importType: EntryImportType
     ) {
-        println("JIBIRI: handleImportEntriesFailure: $answer")
         when (answer.reason) {
             ImportEntriesReason.BadContent,
             ImportEntriesReason.BadPassword,
