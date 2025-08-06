@@ -114,6 +114,7 @@ dependencies {
     implementation(libs.core.cryptoValidator)
     implementation(libs.core.data)
     implementation(libs.core.dataRoom)
+    implementation(libs.core.featureFlag)
     implementation(libs.core.humanVerification)
     implementation(libs.core.notification)
     implementation(libs.core.push)
