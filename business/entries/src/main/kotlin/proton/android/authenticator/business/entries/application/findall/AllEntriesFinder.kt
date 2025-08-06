@@ -26,7 +26,10 @@ import javax.inject.Inject
 
 internal class AllEntriesFinder @Inject constructor(private val repository: EntriesRepository) {
 
-    internal fun findAll(): Flow<List<Entry>> = repository.findAll()
-        .map { entries -> entries.filterNot(Entry::isDeleted) }
+    internal fun findAll(includeDeleted: Boolean): Flow<List<Entry>> = repository.findAll()
+        .map { entries ->
+            if (includeDeleted) entries
+            else entries.filterNot(Entry::isDeleted)
+        }
 
 }

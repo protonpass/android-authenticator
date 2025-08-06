@@ -30,8 +30,10 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 class ObserveHasEntryModelsUseCase @Inject constructor(private val queryBus: QueryBus) {
 
-    operator fun invoke(): Flow<Boolean> = queryBus.ask<List<Entry>>(FindAllEntriesQuery)
-        .distinctUntilChanged()
-        .mapLatest { entries -> entries.isNotEmpty() }
+    operator fun invoke(includeDeletedEntries: Boolean = false): Flow<Boolean> =
+        FindAllEntriesQuery(includeDeleted = includeDeletedEntries)
+            .let { query -> queryBus.ask<List<Entry>>(query) }
+            .distinctUntilChanged()
+            .mapLatest { entries -> entries.isNotEmpty() }
 
 }

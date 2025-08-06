@@ -20,4 +20,4 @@ package proton.android.authenticator.business.entries.application.findall
 
 import proton.android.authenticator.shared.common.domain.infrastructure.queries.Query
 
-object FindAllEntriesQuery : Query
+data class FindAllEntriesQuery(internal val includeDeleted: Boolean) : Query

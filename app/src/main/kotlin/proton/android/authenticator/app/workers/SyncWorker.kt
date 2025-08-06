@@ -37,7 +37,7 @@ internal class SyncWorker @AssistedInject constructor(
     private val syncEntriesUseCase: SyncEntriesModelsUseCase
 ) : CoroutineWorker(context, workerParameters) {
 
-    override suspend fun doWork(): Result = observeEntryModelsUseCase()
+    override suspend fun doWork(): Result = observeEntryModelsUseCase(includeDeletedEntries = true)
         .first()
         .let { entryModels -> syncEntriesUseCase(entryModels) }
         .fold(

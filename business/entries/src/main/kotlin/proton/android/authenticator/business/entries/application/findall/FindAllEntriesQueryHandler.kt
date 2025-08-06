@@ -27,6 +27,8 @@ internal class FindAllEntriesQueryHandler @Inject constructor(
     private val finder: AllEntriesFinder
 ) : QueryHandler<FindAllEntriesQuery, List<Entry>> {
 
-    override fun handle(query: FindAllEntriesQuery): Flow<List<Entry>> = finder.findAll()
+    override fun handle(query: FindAllEntriesQuery): Flow<List<Entry>> = finder.findAll(
+        includeDeleted = query.includeDeleted
+    )
 
 }
