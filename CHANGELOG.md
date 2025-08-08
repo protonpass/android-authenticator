@@ -6,6 +6,12 @@
 
 ### Other
 
+## 1.1.2 (2025-08-09)
+
+### Fix :bug:
+
+- More importer improvements.
+
 ## 1.1.1 (2025-08-05)
 
 ### Fix :bug:
