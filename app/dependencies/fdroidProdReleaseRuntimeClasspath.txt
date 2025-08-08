@@ -200,7 +200,7 @@ io.matthewnelson.encoding:core-jvm:2.3.1
 io.matthewnelson.encoding:core:2.3.1
 io.swagger.core.v3:swagger-annotations:2.2.7
 javax.inject:javax.inject:1
-me.proton.authenticator.common:lib:0.25.6
+me.proton.authenticator.common:lib:0.25.8
 me.proton.core:account-dagger:34.0.0
 me.proton.core:account-data:34.0.0
 me.proton.core:account-domain:34.0.0
