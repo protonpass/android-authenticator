@@ -41,4 +41,8 @@ internal class DirectoryReaderImpl @Inject constructor(
             emptyList()
         }
     }
+
+    override suspend fun canWrite(uri: Uri): Boolean = withContext(appDispatchers.io) {
+        DocumentFile.fromTreeUri(context, uri)?.canWrite() == true
+    }
 }

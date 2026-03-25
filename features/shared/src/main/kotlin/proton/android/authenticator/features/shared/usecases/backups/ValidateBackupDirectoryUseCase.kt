@@ -16,15 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.shared.domain.infrastructure.directories
+package proton.android.authenticator.features.shared.usecases.backups
 
 import android.net.Uri
-import androidx.documentfile.provider.DocumentFile
+import proton.android.authenticator.business.shared.domain.infrastructure.directories.DirectoryReader
+import javax.inject.Inject
 
-interface DirectoryReader {
+class ValidateBackupDirectoryUseCase @Inject constructor(
+    private val directoryReader: DirectoryReader
+) {
 
-    suspend fun read(uri: Uri): List<DocumentFile>
-
-    suspend fun canWrite(uri: Uri): Boolean
+    suspend operator fun invoke(uri: Uri): Boolean = directoryReader.canWrite(uri)
 
 }

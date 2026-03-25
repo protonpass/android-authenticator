@@ -39,6 +39,7 @@ import proton.android.authenticator.features.shared.entries.usecases.ObserveEntr
 import proton.android.authenticator.features.shared.usecases.backups.GenerateBackupUseCase
 import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
 import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
+import proton.android.authenticator.features.shared.usecases.backups.ValidateBackupDirectoryUseCase
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
@@ -51,6 +52,7 @@ internal class BackupsMasterViewModel @Inject constructor(
     observeEntryModelsUseCase: ObserveEntryModelsUseCase,
     private val generateBackupUseCase: GenerateBackupUseCase,
     private val updateBackupUseCase: UpdateBackupUseCase,
+    private val validateBackupDirectoryUseCase: ValidateBackupDirectoryUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase
 ) : ViewModel() {
 
@@ -93,7 +95,15 @@ internal class BackupsMasterViewModel @Inject constructor(
             return
         }
 
-        eventFlow.update { BackupMasterEvent.OnBackupPassword(uri = uri.toString()) }
+        viewModelScope.launch {
+            if (!validateBackupDirectoryUseCase(uri)) {
+                AuthenticatorLogger.w(TAG, "Selected backup folder does not support file creation: $uri")
+                dispatchSnackbarMessage(messageResId = R.string.backups_snackbar_message_folder_not_supported)
+                return@launch
+            }
+
+            eventFlow.update { BackupMasterEvent.OnBackupPassword(uri = uri.toString()) }
+        }
     }
 
     internal fun onUpdateFrequencyType(newFrequencyType: BackupFrequencyType) {
