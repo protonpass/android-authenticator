@@ -97,7 +97,7 @@ internal class BackupsMasterViewModel @Inject constructor(
 
         viewModelScope.launch {
             if (!validateBackupDirectoryUseCase(uri)) {
-                AuthenticatorLogger.w(TAG, "Selected backup folder does not support file creation: $uri")
+                AuthenticatorLogger.w(TAG, "Selected backup folder does not support file creation")
                 dispatchSnackbarMessage(messageResId = R.string.backups_snackbar_message_folder_not_supported)
                 return@launch
             }
