@@ -16,4 +16,8 @@ dependencies {
     implementation(libs.core.accountManager)
     implementation(libs.core.network)
     implementation(libs.kotlinx.datetime)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }

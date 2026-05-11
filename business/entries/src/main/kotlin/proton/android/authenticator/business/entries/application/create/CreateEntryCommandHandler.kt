@@ -19,6 +19,8 @@
 package proton.android.authenticator.business.entries.application.create
 
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.commonrust.AuthenticatorMobileClientInterface
 import proton.android.authenticator.shared.common.domain.answers.Answer
@@ -28,13 +30,23 @@ import javax.inject.Inject
 
 internal class CreateEntryCommandHandler @Inject constructor(
     private val authenticatorClient: AuthenticatorMobileClientInterface,
-    private val creator: EntryCreator
+    private val creator: EntryCreator,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : CommandHandler<CreateEntryCommand, Unit, CreateEntryReason> {
 
     override suspend fun handle(command: CreateEntryCommand): Answer<Unit, CreateEntryReason> = try {
         command.toModel(authenticatorClient)
             .let { model -> creator.create(model = model) }
         AuthenticatorLogger.i(TAG, "Successfully created entry")
+        telemetryManager.sendEvent(
+            AuthenticatorTelemetryEvent.CreateEntry(
+                source = when (command) {
+                    is CreateEntryCommand.FromUri -> AuthenticatorTelemetryEvent.CreateEntry.Source.ReadFromExternal
+                    is CreateEntryCommand.FromSteam,
+                    is CreateEntryCommand.FromTotp -> AuthenticatorTelemetryEvent.CreateEntry.Source.Manual
+                }
+            )
+        )
         Answer.Success(Unit)
     } catch (e: AuthenticatorException.InvalidName) {
         ErrorLoggingUtils.logAndReturnFailure(

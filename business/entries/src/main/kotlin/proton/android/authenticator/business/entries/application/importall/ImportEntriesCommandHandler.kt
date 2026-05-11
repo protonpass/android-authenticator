@@ -18,8 +18,11 @@
 
 package proton.android.authenticator.business.entries.application.importall
 
+import proton.android.authenticator.business.entries.domain.EntryImportType
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
 import proton.android.authenticator.business.shared.domain.errors.FileTooLargeException
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.commonrust.AuthenticatorImportException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -30,7 +33,8 @@ import javax.inject.Inject
 
 @Suppress("LongMethod")
 internal class ImportEntriesCommandHandler @Inject constructor(
-    private val importer: EntriesImporter
+    private val importer: EntriesImporter,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : CommandHandler<ImportEntriesCommand, Int, ImportEntriesReason> {
 
     override suspend fun handle(command: ImportEntriesCommand): Answer<Int, ImportEntriesReason> = try {
@@ -51,6 +55,11 @@ internal class ImportEntriesCommandHandler @Inject constructor(
             }
         }.also { entriesCount ->
             AuthenticatorLogger.i(TAG, "Successfully imported $entriesCount entries")
+            importSourceFrom(command.importType)?.let { source ->
+                telemetryManager.sendEvent(
+                    AuthenticatorTelemetryEvent.Import(source = source, entriesCount = entriesCount)
+                )
+            }
         }.let(Answer<Int, ImportEntriesReason>::Success)
     } catch (e: AuthenticatorImportException.BadContent) {
         ErrorLoggingUtils.logAndReturnFailure(
@@ -116,6 +125,19 @@ internal class ImportEntriesCommandHandler @Inject constructor(
             tag = TAG
         )
     }
+
+    private fun importSourceFrom(importType: EntryImportType): AuthenticatorTelemetryEvent.Import.Source? =
+        when (importType) {
+            EntryImportType.Aegis -> AuthenticatorTelemetryEvent.Import.Source.Aegis
+            EntryImportType.Bitwarden -> AuthenticatorTelemetryEvent.Import.Source.Bitwarden
+            EntryImportType.Ente -> AuthenticatorTelemetryEvent.Import.Source.Ente
+            EntryImportType.Google -> AuthenticatorTelemetryEvent.Import.Source.Google
+            EntryImportType.LastPass -> AuthenticatorTelemetryEvent.Import.Source.LastPass
+            EntryImportType.ProtonAuthenticator -> AuthenticatorTelemetryEvent.Import.Source.ProtonAuthenticator
+            EntryImportType.ProtonPass -> AuthenticatorTelemetryEvent.Import.Source.ProtonPass
+            EntryImportType.TwoFas -> AuthenticatorTelemetryEvent.Import.Source.TwoFas
+            EntryImportType.Authy, EntryImportType.Microsoft -> null
+        }
 
     private companion object {
 

@@ -20,18 +20,22 @@ package proton.android.authenticator.business.entries.application.delete
 
 import proton.android.authenticator.business.entries.domain.Entry
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class DeleteEntryCommandHandler @Inject constructor(
-    private val deleter: EntryDeleter
+    private val deleter: EntryDeleter,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : CommandHandler<DeleteEntryCommand, Entry, DeleteEntryReason> {
 
     override suspend fun handle(command: DeleteEntryCommand): Answer<Entry, DeleteEntryReason> = try {
         val result = deleter.delete(id = command.id)
         AuthenticatorLogger.i(TAG, "Successfully deleted entry with id: ${command.id}")
+        telemetryManager.sendEvent(AuthenticatorTelemetryEvent.RemoveEntry)
         Answer.Success(result)
     } catch (e: IllegalStateException) {
         ErrorLoggingUtils.logAndReturnFailure(

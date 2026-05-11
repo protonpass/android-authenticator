@@ -18,6 +18,7 @@
 
 package proton.android.authenticator.features.home.master.presentation
 
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +37,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.business.entries.domain.EntryAlgorithm
 import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.business.entrycodes.domain.EntryCode
@@ -63,6 +66,7 @@ internal class HomeMasterViewModelTest {
     private val timeProvider: TimeProvider = mockk()
     private val observeBackupUseCase: ObserveBackupUseCase = mockk()
     private val observeAppLockStateUseCase: ObserveAppLockStateUseCase = mockk()
+    private val telemetryManager: AuthenticatorTelemetryManager = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeMasterViewModel
 
@@ -85,14 +89,16 @@ internal class HomeMasterViewModelTest {
             observeEntryModelsUseCase = observeEntryModelsUseCase,
             observeEntryCodesUseCase = observeEntryCodesUseCase,
             observeSettingsUseCase = observeSettingsUseCase,
-            copyToClipboardUseCase = mockk(),
+            copyToClipboardUseCase = mockk(relaxed = true),
             dispatchSnackbarEventUseCase = mockk(relaxed = true),
             sortEntriesUseCase = mockk(),
             syncEntriesModelsUseCase = mockk(),
             timeProvider = timeProvider,
             observeBackupUseCase = observeBackupUseCase,
             updateBackupUseCase = mockk(relaxed = true),
-            observeAppLockStateUseCase = observeAppLockStateUseCase
+            updateSettingsUseCase = mockk(relaxed = true),
+            observeAppLockStateUseCase = observeAppLockStateUseCase,
+            telemetryManager = telemetryManager
         )
     }
 
@@ -220,6 +226,59 @@ internal class HomeMasterViewModelTest {
             state.entryModels.map { it.id },
             state.draggableItems.map { it.id }
         )
+    }
+
+    @Test
+    fun `does not send copy_code event when state is not ready`() = runTest {
+        backgroundScope.launch(testDispatcher) { viewModel.stateFlow.collect {} }
+        // Do NOT emit entries — state stays Loading/not-Ready
+        testScheduler.runCurrent()
+
+        viewModel.onCopyEntryCode("any-id")
+        testScheduler.runCurrent()
+
+        coVerify(exactly = 0) { telemetryManager.sendEvent(any()) }
+    }
+
+    @Test
+    fun `does not send copy_code event when entry not found in ready state`() = runTest {
+        backgroundScope.launch(testDispatcher) { viewModel.stateFlow.collect {} }
+        // Emit entries + codes to put state into Ready
+        val entries = listOf(createEntryModel("1"))
+        entryModelsFlow.emit(entries)
+        emitCodesFor(entries, listOf(createEntryCode("code1")))
+        testScheduler.advanceTimeBy(2_000)
+        testScheduler.runCurrent()
+
+        // Call with an ID that doesn't exist in the Ready state
+        viewModel.onCopyEntryCode("unknown-id")
+        testScheduler.runCurrent()
+
+        coVerify(exactly = 0) { telemetryManager.sendEvent(any()) }
+    }
+
+    @Test
+    fun `sends copy_code event when entry code is copied`() = runTest {
+        backgroundScope.launch(testDispatcher) { viewModel.stateFlow.collect {} }
+
+        val entries = listOf(createEntryModel("1"))
+        val codes = listOf(createEntryCode("code1"))
+
+        entryModelsFlow.emit(entries)
+        emitCodesFor(entries, codes)
+        testScheduler.advanceTimeBy(2_000)
+        testScheduler.runCurrent()
+
+        assertTrue(
+            "State should be Ready before testing copy",
+            viewModel.stateFlow.value is HomeMasterState.Ready
+        )
+
+        viewModel.onCopyEntryCode("1")
+        testScheduler.advanceTimeBy(1_000)
+        testScheduler.runCurrent()
+
+        coVerify { telemetryManager.sendEvent(AuthenticatorTelemetryEvent.CopyCode) }
     }
 
     private fun emitCodesFor(entries: List<EntryModel>, codes: List<EntryCode>) {

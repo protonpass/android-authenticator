@@ -19,19 +19,23 @@
 package proton.android.authenticator.business.entries.application.sortall
 
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 internal class SortEntriesCommandHandler @Inject constructor(
-    private val sorter: EntriesSorter
+    private val sorter: EntriesSorter,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : CommandHandler<SortEntriesCommand, Unit, SortEntriesReason> {
 
     override suspend fun handle(command: SortEntriesCommand): Answer<Unit, SortEntriesReason> = try {
         sorter.sort(command.sortingMap)
             .also { AuthenticatorLogger.i(TAG, "Entries successfully sorted") }
-            .let(Answer<Unit, SortEntriesReason>::Success)
+        telemetryManager.sendEvent(AuthenticatorTelemetryEvent.ReorderEntry)
+        Answer.Success(Unit)
     } catch (exception: IllegalStateException) {
         ErrorLoggingUtils.logAndReturnFailure(
             tag = TAG,

@@ -30,6 +30,8 @@ import me.proton.core.telemetry.domain.TelemetryWorkerManager
 import me.proton.core.telemetry.domain.repository.TelemetryLocalDataSource
 import me.proton.core.telemetry.domain.repository.TelemetryRemoteDataSource
 import me.proton.core.telemetry.domain.repository.TelemetryRepository
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManagerImpl
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -46,4 +48,9 @@ internal abstract class BusinessSharedAccountModule {
 
     @[Binds Singleton]
     internal abstract fun bindTelemetryWorkerManager(impl: TelemetryWorkerManagerImpl): TelemetryWorkerManager
+
+    @[Binds Singleton]
+    internal abstract fun bindAuthenticatorTelemetryManager(
+        impl: AuthenticatorTelemetryManagerImpl
+    ): AuthenticatorTelemetryManager
 }

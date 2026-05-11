@@ -68,6 +68,8 @@ import proton.android.authenticator.features.shared.usecases.settings.UpdateSett
 import proton.android.authenticator.features.shared.usecases.snackbars.DispatchSnackbarEventUseCase
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
@@ -87,7 +89,8 @@ internal class HomeMasterViewModel @Inject constructor(
     private val observeBackupUseCase: ObserveBackupUseCase,
     private val updateBackupUseCase: UpdateBackupUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
-    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase
+    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : ViewModel() {
 
     private val entrySearchQueryState = mutableStateOf(value = SEARCH_QUERY_DEFAULT_VALUE)
@@ -311,6 +314,7 @@ internal class HomeMasterViewModel @Inject constructor(
                     dispatchSnackbarEventUseCase(event)
                 }
             }
+        viewModelScope.launch { telemetryManager.sendEvent(AuthenticatorTelemetryEvent.CopyCode) }
     }
 
     internal fun onEntriesSorted(newSortingMap: Map<String, Int>) {

@@ -19,6 +19,8 @@
 package proton.android.authenticator.business.entries.application.exportall
 
 import proton.android.authenticator.business.shared.domain.errors.ErrorLoggingUtils
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.commonrust.AuthenticatorException
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -28,13 +30,15 @@ import java.io.IOException
 import javax.inject.Inject
 
 internal class ExportEntriesCommandHandler @Inject constructor(
-    private val entriesExporter: EntriesExporter
+    private val entriesExporter: EntriesExporter,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : CommandHandler<ExportEntriesCommand, Int, ExportEntriesReason> {
 
     override suspend fun handle(command: ExportEntriesCommand): Answer<Int, ExportEntriesReason> = try {
         entriesExporter.export(destinationUri = command.destinationUri, password = command.password)
             .also { exportedEntriesCount ->
                 AuthenticatorLogger.i(TAG, "Successfully exported $exportedEntriesCount entries")
+                telemetryManager.sendEvent(AuthenticatorTelemetryEvent.Export)
             }
             .let(Answer<Int, ExportEntriesReason>::Success)
     } catch (error: AuthenticatorException) {

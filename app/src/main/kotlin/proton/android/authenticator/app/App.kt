@@ -39,6 +39,8 @@ import proton.android.authenticator.app.initializers.SyncPeriodicWorkInitializer
 import proton.android.authenticator.app.initializers.SyncWorkInitializer
 import proton.android.authenticator.app.logging.AuthenticatorExceptionHandler
 import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.initializers.LoggerInitializer
 import proton.android.authenticator.initializers.SentryInitializer
@@ -56,6 +58,9 @@ internal class App : Application(), Configuration.Provider, ImageLoaderFactory {
 
     @Inject
     internal lateinit var updateAppLockStateUseCase: UpdateAppLockStateUseCase
+
+    @Inject
+    internal lateinit var telemetryManager: AuthenticatorTelemetryManager
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
@@ -85,6 +90,8 @@ internal class App : Application(), Configuration.Provider, ImageLoaderFactory {
             onForeground = {
                 ProcessLifecycleOwner.get().lifecycleScope.launch {
                     updateAppLockStateUseCase(state = AppLockState.AuthRequired)
+                    // spec: open_app counts both cold launches and background returns
+                    telemetryManager.sendEvent(AuthenticatorTelemetryEvent.OpenApp)
                 }
             },
             onBackground = {

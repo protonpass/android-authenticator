@@ -23,6 +23,7 @@ dependencies {
 
     implementation(projects.business.backups)
     implementation(projects.business.appLock)
+    implementation(projects.business.shared)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
