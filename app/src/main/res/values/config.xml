@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Show system Notification permission request dialog after login. -->
+    <bool name="core_feature_notifications_permission_request_enabled">false</bool>
+</resources>
