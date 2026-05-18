@@ -1,10 +1,8 @@
 import com.google.protobuf.gradle.id
 import org.gradle.internal.extensions.stdlib.capitalized
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("proton.android.authenticator.plugins.libraries.android")
-    id("org.jetbrains.kotlin.kapt")
 
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -23,10 +21,8 @@ android {
     }
 }
 
-kapt {
-    arguments {
-        arg("room.schemaLocation", "$projectDir/schemas")
-    }
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 protobuf {
@@ -54,8 +50,8 @@ androidComponents {
         afterEvaluate {
             val capName = variant.name.capitalized()
 
-            tasks.getByName<KotlinCompile>("ksp${capName}Kotlin") {
-                setSource(tasks.getByName("generate${capName}Proto").outputs)
+            tasks.named("ksp${capName}Kotlin").configure {
+                dependsOn("generate${capName}Proto")
             }
         }
     }
@@ -107,7 +103,7 @@ dependencies {
     implementation(libs.protobuf.lite)
     implementation(projects.shared.common)
 
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.compiler)
 
     // Test dependencies
