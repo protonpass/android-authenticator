@@ -34,12 +34,14 @@ platform/build-logic/build
 # Shared module
 shared/*/build
 
+# Screenshot tests module
+screenshot-tests/build
+
 # Ignore everything in .idea
 .idea/*
 
 # Allow code styles and inspections
 !.idea/codeStyles/
-!.idea/inspectionProfiles/
 !.idea/runConfigurations/
 
 .claude/settings.local.json

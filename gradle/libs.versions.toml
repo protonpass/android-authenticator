@@ -27,6 +27,9 @@ mockkVersion = "1.13.13"
 kotlinxSerializationVersion = "1.9.0"
 kotlixDatetimeVersion = "0.6.2"
 kspVersion = "2.3.6"
+paparazziVersion = "2.0.0-alpha02"
+showkaseVersion = "1.0.5"
+testParameterInjectorVersion = "1.22"
 lifecycleRuntimeVersion = "2.9.1"
 materialVersion = "1.8.2"
 playReviewVersion = "2.0.1"
@@ -52,6 +55,7 @@ androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", 
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraVersion" }
 androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraVersion" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBomVersion" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastoreVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
@@ -144,6 +148,9 @@ protobuf-lite = { module = "com.google.protobuf:protobuf-kotlin-lite", version.r
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobufVersion" }
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderableVersion" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+showkase = { module = "com.airbnb.android:showkase", version.ref = "showkaseVersion" }
+showkase-processor = { module = "com.airbnb.android:showkase-processor", version.ref = "showkaseVersion" }
+test-parameter-injector = { module = "com.google.testparameterinjector:test-parameter-injector", version.ref = "testParameterInjectorVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 zxing-core = { module = "com.google.zxing:core", version.ref = "zxingVersion" }
 play-review = { module = "com.google.android.play:review", version.ref = "playReviewVersion" }
@@ -197,9 +204,13 @@ feature-library-implementation = [
 ]
 feature-library-debug-implementation = [
     "androidx-ui-tooling",
+    "showkase",
 ]
 feature-library-ksp = [
     "hilt-compiler",
+]
+feature-library-ksp-debug = [
+    "showkase-processor",
 ]
 
 [plugins]
@@ -210,6 +221,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVer
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazziVersion" }
 play = { id = "com.github.triplet.play", version.ref = "playVersion" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPluginVersion" }
 proton-detekt = { id = "me.proton.core.gradle-plugins.detekt", version.ref = "protonDetektVersion" }

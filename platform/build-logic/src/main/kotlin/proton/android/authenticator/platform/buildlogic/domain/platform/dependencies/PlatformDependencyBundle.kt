@@ -8,4 +8,5 @@ internal enum class PlatformDependencyBundle(val value: String) {
     FeatureLibraryDebugImplementation(value = "feature-library-debug-implementation"),
     FeatureLibraryImplementation(value = "feature-library-implementation"),
     FeatureLibraryKsp(value = "feature-library-ksp"),
+    FeatureLibraryKspDebug(value = "feature-library-ksp-debug"),
 }

@@ -5,4 +5,5 @@ internal enum class PlatformDependencyConfigurationName(val value: String) {
     DebugImplementation(value = "debugImplementation"),
     Implementation(value = "implementation"),
     Ksp(value = "ksp"),
+    KspDebug(value = "kspDebug"),
 }

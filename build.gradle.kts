@@ -16,6 +16,8 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import org.gradle.api.attributes.java.TargetJvmEnvironment
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.dependency.guard) apply false
@@ -24,6 +26,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.play) apply false
     alias(libs.plugins.sentry) apply false
     alias(libs.plugins.proton.detekt)
@@ -57,6 +60,26 @@ subprojects {
                         } else {
                             add(authenticatorCommon)
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    // Paparazzi workaround: LayoutLib and sdk-common depend on Guava's -jre published variant.
+    // See https://github.com/cashapp/paparazzi/issues/906.
+    plugins.withId("app.cash.paparazzi") {
+        afterEvaluate {
+            dependencies.constraints {
+                add("testImplementation", "com.google.guava:guava") {
+                    attributes {
+                        attribute(
+                            TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
+                            objects.named(
+                                TargetJvmEnvironment::class.java,
+                                TargetJvmEnvironment.STANDARD_JVM
+                            )
+                        )
                     }
                 }
             }

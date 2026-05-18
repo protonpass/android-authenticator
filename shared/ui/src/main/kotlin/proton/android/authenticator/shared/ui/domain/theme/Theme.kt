@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import me.proton.core.compose.theme.ProtonColors
 import me.proton.core.compose.theme.ProtonShapes
@@ -86,3 +87,5 @@ object Theme {
         get() = LocalThemeTypographyScheme.current
 
 }
+
+val LocalIsScreenshotTest = staticCompositionLocalOf { false }

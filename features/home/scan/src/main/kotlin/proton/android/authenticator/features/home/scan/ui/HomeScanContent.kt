@@ -69,7 +69,9 @@ fun HomeScanContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark
     Theme(isDarkTheme = isDark) {
         Surface {
             HomeScanContent(
-                state = HomeScanState.Initial,
+                state = HomeScanState.Initial.copy(
+                    hasCameraPermission = true
+                ),
                 onPermissionRequested = {},
                 onPermissionRequired = {},
                 onCloseClick = {},
