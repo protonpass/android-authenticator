@@ -23,16 +23,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import proton.android.authenticator.features.home.permissions.R
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
@@ -78,6 +82,19 @@ internal fun HomePermissionContent(
                 onPrimaryActionClick = onOpenAppSettingsClick,
                 secondaryActionText = stringResource(id = R.string.home_permissions_action_secondary),
                 onSecondaryActionClick = onCreateManuallyClick
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun HomePermissionContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            HomePermissionContent(
+                onOpenAppSettingsClick = {},
+                onCreateManuallyClick = {}
             )
         }
     }

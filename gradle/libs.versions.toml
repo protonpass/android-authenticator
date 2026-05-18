@@ -191,8 +191,12 @@ feature-library-implementation = [
     "androidx-material-icons-core",
     "androidx-material3",
     "androidx-ui",
+    "androidx-ui-tooling-preview",
     "hilt-android",
     "kotlinx-collections",
+]
+feature-library-debug-implementation = [
+    "androidx-ui-tooling",
 ]
 feature-library-ksp = [
     "hilt-compiler",

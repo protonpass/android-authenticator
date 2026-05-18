@@ -19,6 +19,7 @@
 package proton.android.authenticator.features.backups.passwords.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.backups.passwords.R
@@ -37,6 +39,7 @@ import proton.android.authenticator.shared.ui.domain.components.textfields.Stand
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.screens.CustomDialogScreen
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.R as uiR
 
 @Composable
@@ -123,19 +126,21 @@ private fun InternalBackupsPasswordScreen(
 
 @Composable
 @Preview
-private fun BackupsPasswordScreenPreview() {
-    Theme {
-        InternalBackupsPasswordScreen(
-            state = BackupsPasswordState.Initial,
-            onDismissed = { },
-            onBackupEnableError = { },
-            onBackupEnableSuccess = { },
-            onConsumeEvent = { },
-            onEnableBackupWithPassword = { },
-            onPasswordChange = { },
-            onPasswordVisibilityChange = { },
-            onCheckPasswordChange = { },
-            onCheckPasswordVisibilityChange = { }
-        )
+fun BackupsPasswordScreenPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            InternalBackupsPasswordScreen(
+                state = BackupsPasswordState.Initial,
+                onDismissed = { },
+                onBackupEnableError = { },
+                onBackupEnableSuccess = { },
+                onConsumeEvent = { },
+                onEnableBackupWithPassword = { },
+                onPasswordChange = { },
+                onPasswordVisibilityChange = { },
+                onCheckPasswordChange = { },
+                onCheckPasswordVisibilityChange = { }
+            )
+        }
     }
 }

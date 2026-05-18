@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,12 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.features.home.master.R
+import proton.android.authenticator.features.home.master.presentation.HomeMasterEvent
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.components.refresh.PullToRefresh
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
@@ -101,6 +107,25 @@ internal fun HomeEmpty(
                     onSecondaryActionClick = onImportEntriesClick
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun HomeEmptyPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            HomeEmpty(
+                state = HomeMasterState.Empty(
+                    event = HomeMasterEvent.Idle,
+                    isRefreshing = false,
+                    settings = Settings.Default
+                ),
+                onNewEntryClick = {},
+                onImportEntriesClick = {},
+                onEntriesRefreshPull = {}
+            )
         }
     }
 }

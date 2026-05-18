@@ -43,6 +43,11 @@ internal class FeatureLibraryConventionPlugin : LibraryConventionPlugin() {
         )
 
         addBundleDependency(
+            bundle = PlatformDependencyBundle.FeatureLibraryDebugImplementation,
+            configurationName = PlatformDependencyConfigurationName.DebugImplementation,
+        )
+
+        addBundleDependency(
             bundle = PlatformDependencyBundle.FeatureLibraryKsp,
             configurationName = PlatformDependencyConfigurationName.Ksp,
         )

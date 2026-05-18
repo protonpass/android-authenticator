@@ -21,11 +21,18 @@ package proton.android.authenticator.features.imports.scan.ui
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import proton.android.authenticator.business.entries.domain.EntryImportType
+import proton.android.authenticator.features.imports.scan.presentation.ImportsScanEvent
 import proton.android.authenticator.features.imports.scan.presentation.ImportsScanState
 import proton.android.authenticator.shared.ui.domain.components.camera.CameraQrScan
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 
 @Composable
 internal fun ImportsScanContent(
@@ -54,6 +61,26 @@ internal fun ImportsScanContent(
             )
         } else {
             onPermissionRequired(importType.ordinal)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ImportsScanContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            ImportsScanContent(
+                state = ImportsScanState(
+                    hasCameraPermission = true,
+                    event = ImportsScanEvent.Idle,
+                    importType = EntryImportType.Google
+                ),
+                onQrCodeScanned = {},
+                onCameraError = {},
+                onPermissionRequested = {},
+                onPermissionRequired = {}
+            )
         }
     }
 }

@@ -21,11 +21,16 @@ package proton.android.authenticator.features.home.scan.ui
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import proton.android.authenticator.features.home.scan.presentation.HomeScanState
 import proton.android.authenticator.shared.ui.domain.components.camera.CameraQrScan
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 
 @Composable
 internal fun HomeScanContent(
@@ -54,6 +59,22 @@ internal fun HomeScanContent(
             )
         } else {
             onPermissionRequired()
+        }
+    }
+}
+
+@Preview
+@Composable
+fun HomeScanContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            HomeScanContent(
+                state = HomeScanState.Initial,
+                onPermissionRequested = {},
+                onPermissionRequired = {},
+                onCloseClick = {},
+                onQrCodeScanned = {}
+            )
         }
     }
 }

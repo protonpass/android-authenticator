@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalInspectionMode
 import proton.android.authenticator.shared.ui.domain.components.buttons.DialogActionTextButton
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.theme.Theme
@@ -52,10 +53,7 @@ fun CustomDialogScreen(
     onCancelClick: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    BasicAlertDialog(
-        modifier = modifier,
-        onDismissRequest = onDismissed
-    ) {
+    val dialogContent: @Composable () -> Unit = {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,6 +99,17 @@ fun CustomDialogScreen(
                     onClick = onConfirmClick
                 )
             }
+        }
+    }
+
+    if (LocalInspectionMode.current) {
+        dialogContent()
+    } else {
+        BasicAlertDialog(
+            modifier = modifier,
+            onDismissRequest = onDismissed
+        ) {
+            dialogContent()
         }
     }
 }

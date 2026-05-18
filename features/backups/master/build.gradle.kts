@@ -18,7 +18,4 @@ dependencies {
 
     implementation(projects.business.backups)
     implementation(projects.business.entries)
-
-    debugImplementation(libs.androidx.ui.tooling)
-    implementation(libs.androidx.ui.tooling.preview)
 }

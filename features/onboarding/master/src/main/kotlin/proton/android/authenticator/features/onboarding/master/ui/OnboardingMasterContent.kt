@@ -24,18 +24,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.features.onboarding.master.R
 import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundOnboarding
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
 @Composable
@@ -86,6 +90,16 @@ internal fun OnboardingMasterContent(onGetStartedClick: () -> Unit, modifier: Mo
                 text = stringResource(id = R.string.onboarding_master_action),
                 onClick = onGetStartedClick
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun OnboardingMasterContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            OnboardingMasterContent(onGetStartedClick = {})
         }
     }
 }

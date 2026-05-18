@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,12 +34,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.features.sync.master.R
+import proton.android.authenticator.features.sync.master.presentation.SyncMasterEvent
 import proton.android.authenticator.features.sync.master.presentation.SyncMasterState
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import proton.android.authenticator.shared.ui.R as uiR
@@ -98,6 +104,23 @@ internal fun SyncMasterContent(
                 onPrimaryActionClick = onSignUpClick,
                 secondaryActionText = stringResource(id = R.string.sync_master_sign_in_button),
                 onSecondaryActionClick = onSignInClick
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SyncMasterContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            SyncMasterContent(
+                state = SyncMasterState.Ready(
+                    event = SyncMasterEvent.Idle,
+                    settings = Settings.Default
+                ),
+                onSignInClick = {},
+                onSignUpClick = {}
             )
         }
     }

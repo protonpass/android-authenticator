@@ -18,9 +18,16 @@
 
 package proton.android.authenticator.features.imports.onboarding.ui
 
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import proton.android.authenticator.business.entries.domain.EntryImportType
+import proton.android.authenticator.features.imports.onboarding.presentation.ImportOnboardingEvent
 import proton.android.authenticator.features.imports.onboarding.presentation.ImportOnboardingState
+import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 
 @Composable
 internal fun ImportsOnboardingContent(
@@ -44,5 +51,21 @@ internal fun ImportsOnboardingContent(
             providerNameText = providerNameText,
             providerStepsResId = providerStepsResId
         )
+    }
+}
+
+@Preview
+@Composable
+fun ImportsOnboardingContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            ImportsOnboardingContent(
+                state = ImportOnboardingState(
+                    event = ImportOnboardingEvent.Idle,
+                    importType = EntryImportType.Google
+                ),
+                onHelpClick = {}
+            )
+        }
     }
 }

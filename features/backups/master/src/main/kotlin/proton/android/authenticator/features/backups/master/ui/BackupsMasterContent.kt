@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,6 +42,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.core.content.ContextCompat
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.backups.master.R
@@ -56,6 +58,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
 import proton.android.authenticator.shared.ui.domain.screens.AlertDialogScreen
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 
@@ -228,15 +231,17 @@ internal fun BackupsMasterContent(
 
 @Preview
 @Composable
-private fun BackupsMasterContentPreview() {
-    Theme {
-        BackupsMasterContent(
-            state = BackupsMasterState.Initial,
-            onDisableBackup = {},
-            onFolderPicked = {},
-            onFrequencyChange = {},
-            onBackupNowClick = {}
-        )
+fun BackupsMasterContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            BackupsMasterContent(
+                state = BackupsMasterState.Initial,
+                onDisableBackup = {},
+                onFolderPicked = {},
+                onFrequencyChange = {},
+                onBackupNowClick = {}
+            )
+        }
     }
 }
 

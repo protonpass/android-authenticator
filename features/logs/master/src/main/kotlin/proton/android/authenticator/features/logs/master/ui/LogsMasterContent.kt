@@ -19,11 +19,15 @@
 package proton.android.authenticator.features.logs.master.ui
 
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import proton.android.authenticator.features.logs.master.presentation.LogsMasterState
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 
 @Composable
 internal fun LogsMasterContent(state: LogsMasterState, modifier: Modifier = Modifier) = with(state) {
@@ -35,5 +39,15 @@ internal fun LogsMasterContent(state: LogsMasterState, modifier: Modifier = Modi
             style = Theme.typography.captionRegular,
             color = Theme.colorScheme.textNorm
         )
+    }
+}
+
+@Preview
+@Composable
+fun LogsMasterContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            LogsMasterContent(state = LogsMasterState.Initial)
+        }
     }
 }

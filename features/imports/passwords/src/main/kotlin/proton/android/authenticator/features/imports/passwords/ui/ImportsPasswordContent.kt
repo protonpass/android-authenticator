@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,12 +33,15 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import proton.android.authenticator.features.imports.passwords.R
 import proton.android.authenticator.features.imports.passwords.presentation.ImportsPasswordState
 import proton.android.authenticator.shared.ui.domain.components.buttons.PrimaryActionButton
 import proton.android.authenticator.shared.ui.domain.components.textfields.StandaloneSecureTextField
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
 
@@ -100,5 +104,20 @@ internal fun ImportsPasswordContent(
             isEnabled = isValidPassword,
             onClick = { onSubmitPassword(password) }
         )
+    }
+}
+
+@Preview
+@Composable
+fun ImportsPasswordContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    Theme(isDarkTheme = isDark) {
+        Surface {
+            ImportsPasswordContent(
+                state = ImportsPasswordState.Initial,
+                onPasswordChange = {},
+                onVisibilityChange = {},
+                onSubmitPassword = {}
+            )
+        }
     }
 }
