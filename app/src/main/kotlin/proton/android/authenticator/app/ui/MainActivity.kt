@@ -133,12 +133,7 @@ internal class MainActivity : FragmentActivity() {
                                                     navigationCommandHandler.handle(it, navController)
                                                 }
                                             },
-                                            onUnlockSucceeded = {
-                                                navigationCommandHandler.handle(
-                                                    NavigationCommand.NavigateUp,
-                                                    navController
-                                                )
-                                            }
+                                            onUnlockSucceeded = {}
                                         )
                                     }
                                 }
