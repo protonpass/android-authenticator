@@ -20,13 +20,12 @@ package proton.android.authenticator.features.home.master.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
-import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -45,9 +44,7 @@ internal fun HomeLoading(state: HomeMasterState.Loading, modifier: Modifier = Mo
 @Preview
 @Composable
 fun HomeLoadingPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            HomeLoading(state = HomeMasterState.Loading)
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        HomeLoading(state = HomeMasterState.Loading)
     }
 }

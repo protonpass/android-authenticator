@@ -29,7 +29,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,6 +57,7 @@ import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
 import proton.android.authenticator.shared.ui.domain.screens.AlertDialogScreen
 import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
@@ -232,16 +232,14 @@ internal fun BackupsMasterContent(
 @Preview
 @Composable
 fun BackupsMasterContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            BackupsMasterContent(
-                state = BackupsMasterState.Initial,
-                onDisableBackup = {},
-                onFolderPicked = {},
-                onFrequencyChange = {},
-                onBackupNowClick = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        BackupsMasterContent(
+            state = BackupsMasterState.Initial,
+            onDisableBackup = {},
+            onFolderPicked = {},
+            onFrequencyChange = {},
+            onBackupNowClick = {}
+        )
     }
 }
 

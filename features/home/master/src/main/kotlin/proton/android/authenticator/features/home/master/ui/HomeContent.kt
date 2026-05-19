@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,8 +31,8 @@ import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEvent
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
-import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 
 @Composable
@@ -98,50 +97,46 @@ internal fun HomeContent(
 @Preview
 @Composable
 fun HomeContentEmptyPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            HomeContent(
-                state = HomeMasterState.Empty(
-                    event = HomeMasterEvent.Idle,
-                    isRefreshing = false,
-                    settings = Settings.Default
-                ),
-                listState = rememberLazyListState(),
-                onNewEntryClick = {},
-                onImportEntriesClick = {},
-                onCopyEntryCodeClick = {},
-                onEditEntryClick = {},
-                onDeleteEntryClick = {},
-                onEntriesSorted = {},
-                onRefreshEntries = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        HomeContent(
+            state = HomeMasterState.Empty(
+                event = HomeMasterEvent.Idle,
+                isRefreshing = false,
+                settings = Settings.Default
+            ),
+            listState = rememberLazyListState(),
+            onNewEntryClick = {},
+            onImportEntriesClick = {},
+            onCopyEntryCodeClick = {},
+            onEditEntryClick = {},
+            onDeleteEntryClick = {},
+            onEntriesSorted = {},
+            onRefreshEntries = {}
+        )
     }
 }
 
 @Preview
 @Composable
 fun HomeContentReadyPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            HomeContent(
-                state = HomeMasterState.Ready(
-                    event = HomeMasterEvent.Idle,
-                    searchQuery = "",
-                    isRefreshing = false,
-                    entryModelsMap = HomeMasterEntryModelPreviewProvider.sampleEntries,
-                    entryCodesRemainingTimes = HomeMasterEntryModelPreviewProvider.sampleRemainingTimes,
-                    settings = Settings.Default
-                ),
-                listState = rememberLazyListState(),
-                onNewEntryClick = {},
-                onImportEntriesClick = {},
-                onCopyEntryCodeClick = {},
-                onEditEntryClick = {},
-                onDeleteEntryClick = {},
-                onEntriesSorted = {},
-                onRefreshEntries = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        HomeContent(
+            state = HomeMasterState.Ready(
+                event = HomeMasterEvent.Idle,
+                searchQuery = "",
+                isRefreshing = false,
+                entryModelsMap = HomeMasterEntryModelPreviewProvider.sampleEntries,
+                entryCodesRemainingTimes = HomeMasterEntryModelPreviewProvider.sampleRemainingTimes,
+                settings = Settings.Default
+            ),
+            listState = rememberLazyListState(),
+            onNewEntryClick = {},
+            onImportEntriesClick = {},
+            onCopyEntryCodeClick = {},
+            onEditEntryClick = {},
+            onDeleteEntryClick = {},
+            onEntriesSorted = {},
+            onRefreshEntries = {}
+        )
     }
 }

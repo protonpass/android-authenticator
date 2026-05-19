@@ -24,10 +24,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,6 +46,7 @@ import proton.android.authenticator.features.onboarding.biometrics.presentation.
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.R as uiR
@@ -124,20 +125,20 @@ internal fun OnboardingBiometricsContent(
 @Preview
 @Composable
 fun OnboardingBiometricsContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            OnboardingBiometricsContent(
-                state = OnboardingBiometricsState.Ready(
-                    event = OnboardingBiometricsEvent.Idle,
-                    biometric = Biometric(
-                        status = BiometricStatus.Available,
-                        allowedAuthenticators = 0
-                    )
-                ),
-                onBiometricsNotAvailable = {},
-                onEnableBiometricsClick = {},
-                onSkipClick = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        OnboardingBiometricsContent(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = OnboardingBiometricsState.Ready(
+                event = OnboardingBiometricsEvent.Idle,
+                biometric = Biometric(
+                    status = BiometricStatus.Available,
+                    allowedAuthenticators = 0
+                )
+            ),
+            onBiometricsNotAvailable = {},
+            onEnableBiometricsClick = {},
+            onSkipClick = {}
+        )
     }
 }

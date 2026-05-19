@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton AG
+ * Copyright (c) 2026 Proton AG
  * This file is part of Proton AG and Proton Authenticator.
  *
  * Proton Authenticator is free software: you can redistribute it and/or modify
@@ -16,24 +16,23 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.logs.master.ui
+package proton.android.authenticator.shared.ui.domain.theme
 
-import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import proton.android.authenticator.features.logs.master.presentation.LogsMasterState
-import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 
 @Composable
-internal fun LogsMasterContent(state: LogsMasterState, modifier: Modifier = Modifier) = with(state) {
-    SelectionContainer(
-        modifier = modifier
-    ) {
-        Text(
-            text = logsContent,
-            style = Theme.typography.captionRegular,
-            color = Theme.colorScheme.textNorm
-        )
+fun ThemePreviewContainer(isDark: Boolean, content: @Composable () -> Unit) {
+    Theme(isDarkTheme = isDark) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .backgroundScreenGradient()
+        ) {
+            content()
+        }
     }
 }

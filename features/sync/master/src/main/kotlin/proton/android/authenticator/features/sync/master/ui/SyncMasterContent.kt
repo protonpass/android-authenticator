@@ -22,11 +22,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,6 +44,7 @@ import proton.android.authenticator.features.sync.master.presentation.SyncMaster
 import proton.android.authenticator.shared.ui.domain.components.buttons.VerticalActionsButtons
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
@@ -112,16 +113,15 @@ internal fun SyncMasterContent(
 @Preview
 @Composable
 fun SyncMasterContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            SyncMasterContent(
-                state = SyncMasterState.Ready(
-                    event = SyncMasterEvent.Idle,
-                    settings = Settings.Default
-                ),
-                onSignInClick = {},
-                onSignUpClick = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        SyncMasterContent(
+            modifier = Modifier.fillMaxSize(),
+            state = SyncMasterState.Ready(
+                event = SyncMasterEvent.Idle,
+                settings = Settings.Default
+            ),
+            onSignInClick = {},
+            onSignUpClick = {}
+        )
     }
 }

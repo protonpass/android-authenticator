@@ -19,7 +19,6 @@
 package proton.android.authenticator.features.backups.passwords.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,7 +37,7 @@ import proton.android.authenticator.features.backups.passwords.presentation.Back
 import proton.android.authenticator.shared.ui.domain.components.textfields.StandaloneSecureTextField
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.screens.CustomDialogScreen
-import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.R as uiR
 
@@ -127,20 +126,18 @@ private fun InternalBackupsPasswordScreen(
 @Composable
 @Preview
 fun BackupsPasswordScreenPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            InternalBackupsPasswordScreen(
-                state = BackupsPasswordState.Initial,
-                onDismissed = { },
-                onBackupEnableError = { },
-                onBackupEnableSuccess = { },
-                onConsumeEvent = { },
-                onEnableBackupWithPassword = { },
-                onPasswordChange = { },
-                onPasswordVisibilityChange = { },
-                onCheckPasswordChange = { },
-                onCheckPasswordVisibilityChange = { }
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        InternalBackupsPasswordScreen(
+            state = BackupsPasswordState.Initial,
+            onDismissed = { },
+            onBackupEnableError = { },
+            onBackupEnableSuccess = { },
+            onConsumeEvent = { },
+            onEnableBackupWithPassword = { },
+            onPasswordChange = { },
+            onPasswordVisibilityChange = { },
+            onCheckPasswordChange = { },
+            onCheckPasswordVisibilityChange = { }
+        )
     }
 }

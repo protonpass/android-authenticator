@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +40,7 @@ import proton.android.authenticator.shared.ui.domain.components.buttons.Vertical
 import proton.android.authenticator.shared.ui.domain.components.textfields.StandaloneSecureTextField
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -110,15 +110,13 @@ internal fun ExportsPasswordsContent(
 @Preview
 @Composable
 fun ExportsPasswordsContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            ExportsPasswordsContent(
-                state = ExportsPasswordsState.Initial,
-                onPasswordChange = {},
-                onVisibilityChange = {},
-                onExportWithPassword = {},
-                onExportWithoutPassword = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        ExportsPasswordsContent(
+            state = ExportsPasswordsState.Initial,
+            onPasswordChange = {},
+            onVisibilityChange = {},
+            onExportWithPassword = {},
+            onExportWithoutPassword = {}
+        )
     }
 }

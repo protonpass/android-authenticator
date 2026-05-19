@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +31,7 @@ import proton.android.authenticator.features.home.master.presentation.HomeMaster
 import proton.android.authenticator.features.home.master.presentation.HomeMasterState
 import proton.android.authenticator.shared.ui.domain.components.lists.DraggableVerticalList
 import proton.android.authenticator.shared.ui.domain.components.refresh.PullToRefresh
-import proton.android.authenticator.shared.ui.domain.theme.Theme
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -83,25 +82,47 @@ internal fun HomeEntries(
 
 @Preview
 @Composable
-fun HomeEntriesPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            HomeEntries(
-                state = HomeMasterState.Ready(
-                    event = HomeMasterEvent.Idle,
-                    searchQuery = "",
-                    isRefreshing = false,
-                    entryModelsMap = emptyMap(),
-                    entryCodesRemainingTimes = emptyMap(),
-                    settings = Settings.Default
-                ),
-                listState = rememberLazyListState(),
-                onCopyEntryCodeClick = {},
-                onEditEntryClick = {},
-                onDeleteEntryClick = {},
-                onEntriesSorted = {},
-                onEntriesRefreshPull = {}
-            )
-        }
+fun HomeEntriesReadyPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    ThemePreviewContainer(isDark = isDark) {
+        HomeEntries(
+            state = HomeMasterState.Ready(
+                event = HomeMasterEvent.Idle,
+                searchQuery = "",
+                isRefreshing = false,
+                entryModelsMap = HomeMasterEntryModelPreviewProvider.sampleEntries,
+                entryCodesRemainingTimes = HomeMasterEntryModelPreviewProvider.sampleRemainingTimes,
+                settings = Settings.Default
+            ),
+            listState = rememberLazyListState(),
+            onCopyEntryCodeClick = {},
+            onEditEntryClick = {},
+            onDeleteEntryClick = {},
+            onEntriesSorted = {},
+            onEntriesRefreshPull = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun HomeEntriesSearchPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
+    ThemePreviewContainer(isDark = isDark) {
+        HomeEntries(
+            state = HomeMasterState.Ready(
+                event = HomeMasterEvent.Idle,
+                searchQuery = "Proton",
+                isRefreshing = false,
+                entryModelsMap = HomeMasterEntryModelPreviewProvider.sampleEntries
+                    .filterValues { it.issuer == "Proton Mail" },
+                entryCodesRemainingTimes = HomeMasterEntryModelPreviewProvider.sampleRemainingTimes,
+                settings = Settings.Default
+            ),
+            listState = rememberLazyListState(),
+            onCopyEntryCodeClick = {},
+            onEditEntryClick = {},
+            onDeleteEntryClick = {},
+            onEntriesSorted = {},
+            onEntriesRefreshPull = {}
+        )
     }
 }

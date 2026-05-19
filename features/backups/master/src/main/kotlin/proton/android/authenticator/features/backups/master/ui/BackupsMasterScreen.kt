@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,8 +43,8 @@ import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
 import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
-import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.R as uiR
 import androidx.core.net.toUri
@@ -126,21 +125,19 @@ private fun InternalBackupsMasterScreen(
 @Composable
 @Preview
 fun BackupsMasterScreenPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            InternalBackupsMasterScreen(
-                state = BackupsMasterState.Initial,
-                snackbarHostState = SnackbarHostState(),
-                onNavigationClick = {},
-                onBackupError = {},
-                onBackupPassword = {},
-                onConsumeEvent = {},
-                onDisableBackup = {},
-                onFolderPicked = {},
-                onUpdateFrequencyType = {},
-                onCreateBackup = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        InternalBackupsMasterScreen(
+            state = BackupsMasterState.Initial,
+            snackbarHostState = SnackbarHostState(),
+            onNavigationClick = {},
+            onBackupError = {},
+            onBackupPassword = {},
+            onConsumeEvent = {},
+            onDisableBackup = {},
+            onFolderPicked = {},
+            onUpdateFrequencyType = {},
+            onCreateBackup = {}
+        )
     }
 }
 
@@ -148,30 +145,28 @@ fun BackupsMasterScreenPreview(@PreviewParameter(ThemePreviewProvider::class) is
 @Composable
 @Preview
 fun BackupsMasterScreenPreviewToggleOn(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            InternalBackupsMasterScreen(
-                state = BackupsMasterState.Initial.copy(
-                    backup = Backup(
-                        isEnabled = true,
-                        frequencyType = BackupFrequencyType.Daily,
-                        count = 1,
-                        lastBackupMillis = 1,
-                        directoryUri = "content://com.android.externalstorage.documents/tree/example".toUri(),
-                        encryptedPassword = "encryptedPassword"
-                    )
-                ),
-                snackbarHostState = SnackbarHostState(),
-                onNavigationClick = {},
-                onBackupError = {},
-                onBackupPassword = {},
-                onConsumeEvent = {},
-                onDisableBackup = {},
-                onFolderPicked = {},
-                onUpdateFrequencyType = {},
-                onCreateBackup = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        InternalBackupsMasterScreen(
+            state = BackupsMasterState.Initial.copy(
+                backup = Backup(
+                    isEnabled = true,
+                    frequencyType = BackupFrequencyType.Daily,
+                    count = 1,
+                    lastBackupMillis = 1,
+                    directoryUri = "content://com.android.externalstorage.documents/tree/example".toUri(),
+                    encryptedPassword = "encryptedPassword"
+                )
+            ),
+            snackbarHostState = SnackbarHostState(),
+            onNavigationClick = {},
+            onBackupError = {},
+            onBackupPassword = {},
+            onConsumeEvent = {},
+            onDisableBackup = {},
+            onFolderPicked = {},
+            onUpdateFrequencyType = {},
+            onCreateBackup = {}
+        )
     }
 }
 

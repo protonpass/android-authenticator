@@ -18,17 +18,15 @@
 
 package proton.android.authenticator.screenshottests
 
+import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.compose.LocalActivityResultRegistryOwner
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.app.ActivityOptionsCompat
 import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
-import proton.android.authenticator.shared.ui.domain.theme.LocalIsScreenshotTest
 import com.airbnb.android.showkase.models.Showkase
 import com.airbnb.android.showkase.models.ShowkaseBrowserComponent
 import com.google.testing.junit.testparameterinjector.TestParameter
@@ -37,6 +35,7 @@ import com.google.testing.junit.testparameterinjector.TestParameterValuesProvide
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import proton.android.authenticator.shared.ui.domain.theme.LocalIsScreenshotTest
 
 data class ComponentPreview(
     private val showkaseBrowserComponent: ShowkaseBrowserComponent
@@ -66,9 +65,7 @@ class PreviewScreenshotTests {
                 LocalActivityResultRegistryOwner provides NoOpActivityResultRegistryOwner,
                 LocalIsScreenshotTest provides true
             ) {
-                Box {
-                    componentPreview.content()
-                }
+                componentPreview.content()
             }
         }
     }

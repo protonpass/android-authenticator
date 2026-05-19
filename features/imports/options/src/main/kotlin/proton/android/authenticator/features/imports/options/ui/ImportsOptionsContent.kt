@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -39,6 +38,7 @@ import proton.android.authenticator.features.imports.options.presentation.Import
 import proton.android.authenticator.shared.ui.domain.components.dividers.DoubleHorizontalDivider
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
@@ -98,12 +98,10 @@ internal fun ImportsOptionsContent(
 @Preview
 @Composable
 fun ImportsOptionsContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            ImportsOptionsContent(
-                state = ImportsOptionsState,
-                onOptionSelected = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        ImportsOptionsContent(
+            state = ImportsOptionsState,
+            onOptionSelected = {}
+        )
     }
 }

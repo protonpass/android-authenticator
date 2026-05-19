@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,6 +37,7 @@ import proton.android.authenticator.features.imports.menus.presentation.ImportsM
 import proton.android.authenticator.features.imports.menus.presentation.ImportsMenuState
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
+import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewContainer
 import proton.android.authenticator.shared.ui.domain.theme.ThemePreviewProvider
 
 @Composable
@@ -77,15 +77,13 @@ internal fun ImportsMenuContent(
 @Preview
 @Composable
 fun ImportsMenuContentPreview(@PreviewParameter(ThemePreviewProvider::class) isDark: Boolean) {
-    Theme(isDarkTheme = isDark) {
-        Surface {
-            ImportsMenuContent(
-                state = ImportsMenuState(
-                    event = ImportsMenuEvent.Idle,
-                    importType = EntryImportType.Google
-                ),
-                onOptionSelected = {}
-            )
-        }
+    ThemePreviewContainer(isDark = isDark) {
+        ImportsMenuContent(
+            state = ImportsMenuState(
+                event = ImportsMenuEvent.Idle,
+                importType = EntryImportType.Google
+            ),
+            onOptionSelected = {}
+        )
     }
 }
