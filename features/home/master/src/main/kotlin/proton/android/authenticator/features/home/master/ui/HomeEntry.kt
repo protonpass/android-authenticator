@@ -25,6 +25,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import proton.android.authenticator.features.home.master.presentation.HomeMasterEntryModel
 import proton.android.authenticator.shared.ui.R
 import proton.android.authenticator.shared.ui.domain.components.menus.SwipeRevealMenu
@@ -51,6 +56,8 @@ internal fun HomeEntry(
     modifier: Modifier = Modifier
 ) {
     val isDarkTheme = isDarkTheme(themeType = themeType)
+    val editLabel = stringResource(id = R.string.action_edit)
+    val deleteLabel = stringResource(id = R.string.action_delete)
 
     SwipeRevealMenu(
         modifier = modifier,
@@ -59,6 +66,7 @@ internal fun HomeEntry(
         leadingMenuContent = {
             HomeEntryAction(
                 modifier = Modifier
+                    .clearAndSetSemantics {}
                     .background(color = Theme.colorScheme.orangeAlpha20)
                     .clickable(onClick = onEditClick),
                 iconResId = R.drawable.ic_pencil,
@@ -68,6 +76,7 @@ internal fun HomeEntry(
         trailingMenuContent = {
             HomeEntryAction(
                 modifier = Modifier
+                    .clearAndSetSemantics {}
                     .background(color = Theme.colorScheme.redAlpha20)
                     .clickable(onClick = onDeleteClick),
                 iconResId = R.drawable.ic_trash,
@@ -80,7 +89,19 @@ internal fun HomeEntry(
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(size = ThemeRadius.Medium))
                 .backgroundSection(applyShadow = true)
-                .clickable(onClick = onCopyCodeClick),
+                .clickable(onClick = onCopyCodeClick)
+                .semantics {
+                    customActions = listOf(
+                        CustomAccessibilityAction(label = editLabel) {
+                            onEditClick()
+                            true
+                        },
+                        CustomAccessibilityAction(label = deleteLabel) {
+                            onDeleteClick()
+                            true
+                        }
+                    )
+                },
             entryModel = entryModel,
             searchQuery = searchQuery,
             entryCodeMasks = entryCodeMasks,

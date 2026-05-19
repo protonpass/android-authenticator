@@ -29,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -51,6 +52,7 @@ fun EntryIcon(
         modifier = Modifier
             .size(size = size)
             .clip(shape = RoundedCornerShape(size = ThemeRadius.Small))
+            .clearAndSetSemantics {}
     ) {
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)

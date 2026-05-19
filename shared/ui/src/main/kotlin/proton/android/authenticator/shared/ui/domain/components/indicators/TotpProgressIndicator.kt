@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeShadow
@@ -77,7 +78,7 @@ fun TotpProgressIndicator(
     )
 
     Box(
-        modifier = modifier,
+        modifier = modifier.clearAndSetSemantics {},
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
