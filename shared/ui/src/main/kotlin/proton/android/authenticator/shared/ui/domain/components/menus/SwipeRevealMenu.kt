@@ -42,10 +42,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import proton.android.authenticator.shared.ui.domain.theme.LocalIsScreenshotTest
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import kotlin.math.roundToInt
 
@@ -64,6 +66,11 @@ fun SwipeRevealMenu(
     trailingMenuContent: @Composable () -> Unit,
     content: @Composable () -> Unit
 ) {
+    if (LocalInspectionMode.current || LocalIsScreenshotTest.current) {
+        Box(modifier = modifier.fillMaxWidth()) { content() }
+        return
+    }
+
     val density = LocalDensity.current.density
 
     var contentWidth by remember {
