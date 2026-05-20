@@ -47,6 +47,8 @@ import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
+import proton.android.authenticator.features.shared.usecases.featureflag.FeatureFlag
+import proton.android.authenticator.features.shared.usecases.featureflag.ObserveFeatureFlagUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
@@ -64,8 +66,16 @@ internal class MainViewModel @Inject constructor(
     private val authOrchestrator: AuthOrchestrator,
     private val timeProvider: TimeProvider,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
-    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase
+    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase,
+    observeFeatureFlagUseCase: ObserveFeatureFlagUseCase
 ) : ViewModel() {
+
+    private val isNewReviewTriggersEnabled: StateFlow<Boolean> =
+        observeFeatureFlagUseCase(FeatureFlag.NewReviewTriggers).stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = FeatureFlag.NewReviewTriggers.isEnabledDefault
+        )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     internal val settingsStateFlow: StateFlow<SettingsState> = combine(
@@ -147,12 +157,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     internal fun askForReviewIfApplicable(state: MainState.Ready) {
-        if (state.numberOfEntries < MIN_NUM_OF_ENTRIES) return
-
-        val installationTime = state.installationTime ?: return
-        val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
-        val distanceInMillis = timeProvider.currentMillis().minus(installationTime)
-        if (distanceInMillis < sevenDaysInMillis) return
+        if (!shouldRequestReview(state)) return
 
         when (getBuildFlavorUseCase().type) {
             BuildFlavorType.Fdroid -> Unit
@@ -162,9 +167,21 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
+    private fun shouldRequestReview(state: MainState.Ready): Boolean {
+        if (isNewReviewTriggersEnabled.value) {
+            return state.numberOfEntries >= MIN_NUM_OF_ENTRIES_NEW_TRIGGERS
+        }
+        val installationTime = state.installationTime ?: return false
+        val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
+        val distanceInMillis = timeProvider.currentMillis().minus(installationTime)
+        return state.numberOfEntries >= MIN_NUM_OF_ENTRIES && distanceInMillis >= sevenDaysInMillis
+    }
+
     private companion object {
 
         private const val MIN_NUM_OF_ENTRIES = 4
+
+        private const val MIN_NUM_OF_ENTRIES_NEW_TRIGGERS = 1
 
     }
 

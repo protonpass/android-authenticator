@@ -25,39 +25,39 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
 import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
-import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
-import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import proton.android.authenticator.features.shared.usecases.featureflag.FeatureFlag
+import proton.android.authenticator.features.shared.usecases.featureflag.ObserveFeatureFlagUseCase
+import proton.android.authenticator.features.shared.usecases.featureflag.SetFeatureFlagOverrideUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 internal class QaMenuViewModel @Inject constructor(
-    private val observeSettingsUseCase: ObserveSettingsUseCase,
-    private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val observeBackupUseCase: ObserveBackupUseCase,
-    private val updateBackupUseCase: UpdateBackupUseCase
+    private val updateBackupUseCase: UpdateBackupUseCase,
+    observeFeatureFlagUseCase: ObserveFeatureFlagUseCase,
+    private val setFeatureFlagOverrideUseCase: SetFeatureFlagOverrideUseCase
 ) : ViewModel() {
-    private val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    private val featureFlagsFlow = combine(
+        FeatureFlag.entries.map { flag ->
+            observeFeatureFlagUseCase(flag).map { value -> flag to value }
+        }
+    ) { pairs -> pairs.toMap() }
 
     internal val stateFlow: StateFlow<QaMasterState> = combine(
-        observeSettingsUseCase(),
-        observeBackupUseCase()
-    ) { settings, backup ->
-        val installationTime = settings.installationTime
-        val formattedInstallationTime = installationTime?.let {
-            dateFormatter.format(Date(it))
-        }
+        observeBackupUseCase(),
+        featureFlagsFlow
+    ) { backup, featureFlags ->
         QaMasterState(
-            installationTime = installationTime,
-            formattedInstallationTime = formattedInstallationTime,
             backUpEnabled = backup.isEnabled,
-            backUpFrequency = backup.frequencyType
+            backUpFrequency = backup.frequencyType,
+            featureFlags = featureFlags
         )
     }.stateIn(
         scope = viewModelScope,
@@ -65,18 +65,17 @@ internal class QaMenuViewModel @Inject constructor(
         initialValue = QaMasterState.Default
     )
 
-    suspend fun updateInstallationTime(newValue: Long) {
-        observeSettingsUseCase()
-            .first()
-            .copy(installationTime = newValue)
-            .let { updateSettingsUseCase(it) }
+    fun forceQaFrequency(force: Boolean) {
+        viewModelScope.launch {
+            val type = if (force) BackupFrequencyType.QA else BackupFrequencyType.Daily
+            observeBackupUseCase()
+                .first()
+                .copy(frequencyType = type)
+                .let { updateBackupUseCase(it) }
+        }
     }
 
-    suspend fun forceQaFrequency(force: Boolean) {
-        val type = if (force) BackupFrequencyType.QA else BackupFrequencyType.Daily
-        observeBackupUseCase()
-            .first()
-            .copy(frequencyType = type)
-            .let { updateBackupUseCase(it) }
+    fun setFeatureFlagOverride(flag: FeatureFlag, value: Boolean) {
+        setFeatureFlagOverrideUseCase(flag = flag, value = value)
     }
 }

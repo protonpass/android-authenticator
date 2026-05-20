@@ -20,44 +20,43 @@ package proton.android.authenticator.features.qa.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import proton.android.authenticator.features.qa.presentation.QaMenuViewModel
+import proton.android.authenticator.shared.ui.R
+import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
+import proton.android.authenticator.shared.ui.domain.models.UiText
+import proton.android.authenticator.shared.ui.domain.modifiers.backgroundScreenGradient
+import proton.android.authenticator.shared.ui.domain.screens.ScaffoldScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QaMenuMasterScreen(onDismissed: () -> Unit) = with(hiltViewModel<QaMenuViewModel>()) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
+fun QaMenuMasterScreen(onDismissed: () -> Unit) {
+    val viewModel = hiltViewModel<QaMenuViewModel>()
+    val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+
+    ScaffoldScreen(
+        modifier = Modifier
+            .fillMaxSize()
+            .backgroundScreenGradient(),
         topBar = {
-            TopAppBar(
-                title = { Text(text = "QA menu") },
-                navigationIcon = {
-                    IconButton(onClick = onDismissed) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
-                }
-            )
-        },
-        content = { innerPadding ->
-            QaMenuContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                viewModel = this
+            SmallTopBar(
+                title = UiText.Dynamic(value = "Features Flags"),
+                navigationIcon = UiIcon.Resource(id = R.drawable.ic_arrow_left),
+                onNavigationClick = onDismissed
             )
         }
-    )
+    ) { innerPadding ->
+        QaMenuContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            state = state,
+            onForceQaFrequency = viewModel::forceQaFrequency,
+            onSetFeatureFlagOverride = viewModel::setFeatureFlagOverride
+        )
+    }
 }

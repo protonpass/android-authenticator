@@ -22,7 +22,6 @@ import proton.android.authenticator.business.anonymous.data.domain.AnonymousData
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.users.domain.User
 import proton.android.authenticator.protonapps.domain.ProtonApp
-import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.configs.AppConfig
 import proton.android.authenticator.shared.common.domain.constants.UrlConstants
 
@@ -49,13 +48,7 @@ internal sealed interface SettingsMasterState {
 
         internal val showExportOption: Boolean = configModel.canExportEntries
 
-        internal val isVersionClickable: Boolean = when (configModel.buildFlavor.type) {
-            BuildFlavorType.Alpha,
-            BuildFlavorType.Dev -> true
-
-            BuildFlavorType.Fdroid,
-            BuildFlavorType.PlayStore -> false
-        }
+        internal val isVersionClickable: Boolean = configModel.buildFlavor.type.canDisplayDebugScreen
 
         internal val versionName: String = configModel.appVersionName
 

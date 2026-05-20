@@ -18,125 +18,87 @@
 
 package proton.android.authenticator.features.qa.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
-import proton.android.authenticator.features.qa.presentation.QaMenuViewModel
+import proton.android.authenticator.features.qa.presentation.QaMasterState
+import proton.android.authenticator.features.shared.usecases.featureflag.FeatureFlag
 import proton.android.authenticator.shared.ui.domain.theme.Theme
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun QaMenuContent(modifier: Modifier, viewModel: QaMenuViewModel) = with(viewModel) {
-    val state by viewModel.stateFlow.collectAsStateWithLifecycle()
-    var showDatePicker by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
-
+internal fun QaMenuContent(
+    state: QaMasterState,
+    onForceQaFrequency: (Boolean) -> Unit,
+    onSetFeatureFlagOverride: (FeatureFlag, Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
             .padding(horizontal = 24.dp),
         contentAlignment = Alignment.Center
     ) {
         Column {
-            InstallationTimeRow(
-                formattedInstallationTime = state.formattedInstallationTime,
-                onClick = { showDatePicker = true }
-            )
-
             BackUpRow(
                 isEnabled = state.backUpEnabled,
                 frequencyType = state.backUpFrequency,
-                onForceQaFrequency = { force ->
-                    scope.launch {
-                        viewModel.forceQaFrequency(force)
-                    }
-                }
+                onForceQaFrequency = onForceQaFrequency
             )
+
+            Spacer(modifier = Modifier.padding(top = 16.dp))
+
+
+            state.featureFlags.forEach { (flag, isEnabled) ->
+                FeatureFlagRow(
+                    flag = flag,
+                    isEnabled = isEnabled,
+                    onToggle = { newValue -> onSetFeatureFlagOverride(flag, newValue) }
+                )
+            }
 
             Spacer(modifier = Modifier.weight(1f))
-        }
-    }
-
-    if (showDatePicker) {
-        val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = state.installationTime,
-            selectableDates = object : SelectableDates {
-                override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                    val selectedLocalDate = Instant.ofEpochMilli(utcTimeMillis)
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate()
-                    val today = LocalDate.now(ZoneId.systemDefault())
-                    return !selectedLocalDate.isAfter(today)
-                }
-            }
-        )
-
-        DatePickerDialog(
-            onDismissRequest = { showDatePicker = false },
-            confirmButton = {
-                TextButton(onClick = {
-                    showDatePicker = false
-                    scope.launch {
-                        datePickerState.selectedDateMillis?.let {
-                            updateInstallationTime(it)
-                        }
-                    }
-                }) {
-                    Text(text = "Save")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) {
-                    Text(text = "Cancel")
-                }
-            }
-        ) {
-            DatePicker(
-                state = datePickerState,
-                showModeToggle = false
-            )
         }
     }
 }
 
 @Composable
-private fun InstallationTimeRow(formattedInstallationTime: String?, onClick: () -> Unit) {
+private fun FeatureFlagRow(
+    flag: FeatureFlag,
+    isEnabled: Boolean,
+    onToggle: (Boolean) -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Installation time")
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        formattedInstallationTime?.let {
-            TextButton(onClick = onClick) {
-                Text(text = it)
-            }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+        ) {
+            Text(
+                text = flag.title,
+                color = Theme.colorScheme.textNorm,
+                style = Theme.typography.body1Medium
+            )
+            Text(
+                text = flag.description,
+                color = Theme.colorScheme.textWeak,
+                style = Theme.typography.captionRegular
+            )
         }
+
+        Switch(
+            checked = isEnabled,
+            onCheckedChange = onToggle
+        )
     }
 }
 
@@ -159,10 +121,5 @@ private fun BackUpRow(
                 onCheckedChange = onForceQaFrequency
             )
         }
-    } else {
-        Text(
-            text = "Back up is not enabled",
-            color = Theme.colorScheme.textWeak
-        )
     }
 }

@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.authenticator.common)
     implementation(libs.core.auth)
     implementation(libs.core.crypto)
+    implementation(libs.core.featureFlag.domain)
     implementation(libs.hilt.android)
 
     implementation(projects.business.shared)

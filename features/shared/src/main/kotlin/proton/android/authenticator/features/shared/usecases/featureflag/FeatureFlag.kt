@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton AG
+ * Copyright (c) 2026 Proton AG
  * This file is part of Proton AG and Proton Authenticator.
  *
  * Proton Authenticator is free software: you can redistribute it and/or modify
@@ -16,17 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.builds
+package proton.android.authenticator.features.shared.usecases.featureflag
 
-enum class BuildFlavorType {
-    Alpha,
-    Dev,
-    Fdroid,
-    PlayStore;
-
-    val canDisplayDebugScreen: Boolean
-        get() = when (this) {
-            Alpha, Dev -> true
-            Fdroid, PlayStore -> false
-        }
+enum class FeatureFlag(
+    val title: String,
+    val description: String,
+    val key: String,
+    val isEnabledDefault: Boolean
+) {
+    NewReviewTriggers(
+        title = "New review triggers",
+        description = "Ask for review on first entry/settings/move after 1 entry is created",
+        key = "AuthAndroidNewReviewTriggers",
+        isEnabledDefault = false
+    )
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Proton AG
+ * Copyright (c) 2026 Proton AG
  * This file is part of Proton AG and Proton Authenticator.
  *
  * Proton Authenticator is free software: you can redistribute it and/or modify
@@ -16,17 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.shared.common.domain.builds
+package proton.android.authenticator.features.shared.usecases.featureflag
 
-enum class BuildFlavorType {
-    Alpha,
-    Dev,
-    Fdroid,
-    PlayStore;
+import javax.inject.Inject
 
-    val canDisplayDebugScreen: Boolean
-        get() = when (this) {
-            Alpha, Dev -> true
-            Fdroid, PlayStore -> false
-        }
+class SetFeatureFlagOverrideUseCase @Inject constructor(
+    private val overridesRepository: FeatureFlagOverridesRepository
+) {
+
+    operator fun invoke(flag: FeatureFlag, value: Boolean) {
+        overridesRepository.set(flag = flag, value = value)
+    }
+
 }

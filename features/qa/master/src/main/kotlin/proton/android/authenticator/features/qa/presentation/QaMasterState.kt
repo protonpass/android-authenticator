@@ -19,19 +19,18 @@
 package proton.android.authenticator.features.qa.presentation
 
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
+import proton.android.authenticator.features.shared.usecases.featureflag.FeatureFlag
 
 internal data class QaMasterState(
-    val installationTime: Long?,
-    val formattedInstallationTime: String?,
     val backUpEnabled: Boolean,
-    val backUpFrequency: BackupFrequencyType
+    val backUpFrequency: BackupFrequencyType,
+    val featureFlags: Map<FeatureFlag, Boolean>
 ) {
     companion object {
         val Default = QaMasterState(
-            installationTime = null,
-            formattedInstallationTime = null,
             backUpEnabled = false,
-            backUpFrequency = BackupFrequencyType.Daily
+            backUpFrequency = BackupFrequencyType.Daily,
+            featureFlags = emptyMap()
         )
     }
 }

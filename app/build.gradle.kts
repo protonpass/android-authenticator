@@ -131,6 +131,7 @@ dependencies {
     implementation(libs.core.data)
     implementation(libs.core.dataRoom)
     implementation(libs.core.featureFlag)
+    implementation(libs.core.featureFlag.domain)
     implementation(libs.core.humanVerification)
     implementation(libs.core.notification)
     implementation(libs.core.push)
