@@ -25,7 +25,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -45,6 +44,7 @@ import me.proton.core.auth.presentation.AuthOrchestrator
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
@@ -69,8 +69,11 @@ internal class MainViewModel @Inject constructor(
     private val timeProvider: TimeProvider,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val observeAppLockStateUseCase: ObserveAppLockStateUseCase,
-    observeFeatureFlagUseCase: ObserveFeatureFlagUseCase
+    observeFeatureFlagUseCase: ObserveFeatureFlagUseCase,
+    private val telemetryManager: AuthenticatorTelemetryManager
 ) : ViewModel() {
+
+    private var reviewAlreadyAsked = false
 
     private val isNewReviewTriggersEnabled: StateFlow<Boolean> =
         observeFeatureFlagUseCase(FeatureFlag.NewReviewTriggers).stateIn(
@@ -105,8 +108,6 @@ internal class MainViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = MainState.Loading
     )
-
-    internal val requestReview = MutableStateFlow<AuthenticatorTelemetryEvent.RateAppRequested.Source?>(null)
 
     internal fun onRegisterOrchestrators(context: ComponentActivity) {
         authOrchestrator.register(context as ActivityResultCaller)
@@ -158,15 +159,46 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun askForReviewIfApplicable(state: MainState.Ready, reason: RateAppReviewReason) {
-        if (!shouldRequestReview(state)) return
+    internal fun askForReviewIfApplicable(
+        state: MainState.Ready,
+        reason: RateAppReviewReason,
+        displayRating: () -> Unit
+    ) {
+        if (shouldRequestReview(state)) {
+            viewModelScope.launch {
+                telemetryManager.sendEvent(
+                    AuthenticatorTelemetryEvent.RateAppRequested(
+                        source = reason.toTelemetrySource()
+                    )
+                )
+            }
 
-        when (getBuildFlavorUseCase().type) {
-            BuildFlavorType.Fdroid -> Unit
-            BuildFlavorType.Alpha,
-            BuildFlavorType.Dev,
-            BuildFlavorType.PlayStore -> requestReview.value = reason.toTelemetrySource()
+            displayRating()
+
+            reviewAlreadyAsked = true
         }
+    }
+
+    private fun shouldRequestReview(state: MainState.Ready): Boolean {
+        if (reviewAlreadyAsked) return false
+
+        if (!isReviewSupportedFlavor()) return false
+
+        if (isNewReviewTriggersEnabled.value) {
+            return state.numberOfEntries >= MIN_NUM_OF_ENTRIES_NEW_TRIGGERS
+        }
+
+        val installationTime = state.installationTime ?: return false
+        val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
+        val distanceInMillis = timeProvider.currentMillis().minus(installationTime)
+        return state.numberOfEntries >= MIN_NUM_OF_ENTRIES && distanceInMillis >= sevenDaysInMillis
+    }
+
+    private fun isReviewSupportedFlavor(): Boolean = when (getBuildFlavorUseCase().type) {
+        BuildFlavorType.Fdroid -> false
+        BuildFlavorType.Alpha,
+        BuildFlavorType.Dev,
+        BuildFlavorType.PlayStore -> true
     }
 
     private fun RateAppReviewReason.toTelemetrySource(): AuthenticatorTelemetryEvent.RateAppRequested.Source =
@@ -176,15 +208,6 @@ internal class MainViewModel @Inject constructor(
             RateAppReviewReason.MoveItem -> AuthenticatorTelemetryEvent.RateAppRequested.Source.MoveItem
         }
 
-    private fun shouldRequestReview(state: MainState.Ready): Boolean {
-        if (isNewReviewTriggersEnabled.value) {
-            return state.numberOfEntries >= MIN_NUM_OF_ENTRIES_NEW_TRIGGERS
-        }
-        val installationTime = state.installationTime ?: return false
-        val sevenDaysInMillis = TimeUnit.DAYS.toMillis(7)
-        val distanceInMillis = timeProvider.currentMillis().minus(installationTime)
-        return state.numberOfEntries >= MIN_NUM_OF_ENTRIES && distanceInMillis >= sevenDaysInMillis
-    }
 
     private companion object {
 

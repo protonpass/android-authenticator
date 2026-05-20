@@ -41,15 +41,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import proton.android.authenticator.app.handler.RequestReviewHandler
 import proton.android.authenticator.app.presentation.MainState
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
-import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
-import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.unlock.master.ui.UnlockMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
@@ -79,9 +76,6 @@ internal class MainActivity : FragmentActivity() {
     internal lateinit var navigationCommandHandler: NavigationCommandHandler
 
     @Inject
-    internal lateinit var telemetryManager: AuthenticatorTelemetryManager
-
-    @Inject
     internal lateinit var appConfig: AppConfig
 
     @SuppressWarnings("LongMethod")
@@ -91,14 +85,6 @@ internal class MainActivity : FragmentActivity() {
         viewModel.onRegisterOrchestrators(context = this)
 
         enableEdgeToEdge()
-
-        lifecycleScope.launch {
-            viewModel.requestReview.filterNotNull().collectLatest { source ->
-                telemetryManager.sendEvent(AuthenticatorTelemetryEvent.RateAppRequested(source))
-                showRateRequestDebugToast()
-                requestReviewHandler.request(this@MainActivity)
-            }
-        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -121,7 +107,14 @@ internal class MainActivity : FragmentActivity() {
                                     bottomSheetNavigator = bottomSheetNavigator,
                                     navController = navController,
                                     onAskForReview = { reason ->
-                                        viewModel.askForReviewIfApplicable(state, reason)
+                                        viewModel.askForReviewIfApplicable(
+                                            state = state,
+                                            reason = reason,
+                                            displayRating = {
+                                                showRateRequestDebugToast()
+                                                requestReviewHandler.request(this@MainActivity)
+                                            }
+                                        )
                                     },
                                     onFinishLaunching = {
                                         viewModel.setInstallationTimeIfFirstRun(state)
@@ -143,7 +136,10 @@ internal class MainActivity : FragmentActivity() {
                                                 NavigationCommand.FinishAffinity(
                                                     context = context
                                                 ).also {
-                                                    navigationCommandHandler.handle(it, navController)
+                                                    navigationCommandHandler.handle(
+                                                        it,
+                                                        navController
+                                                    )
                                                 }
                                             },
                                             onUnlockSucceeded = {}
@@ -192,5 +188,4 @@ internal class MainActivity : FragmentActivity() {
         WindowCompat.getInsetsController(window, window.decorView)
             .also { controller -> controller.isAppearanceLightStatusBars = !isDarkTheme }
     }
-
 }
