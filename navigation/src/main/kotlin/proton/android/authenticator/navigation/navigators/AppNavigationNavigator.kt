@@ -25,6 +25,7 @@ import proton.android.authenticator.features.shared.usecases.settings.ObserveSet
 import proton.android.authenticator.features.shared.usecases.steps.ObserveStepUseCase
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
+import proton.android.authenticator.navigation.domain.flows.RateAppReviewReason
 import proton.android.authenticator.navigation.domain.graphs.backups.backupsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.exports.exportsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.home.HomeNavigationDestination
@@ -55,7 +56,7 @@ internal class AppNavigationNavigator @Inject constructor(
         navController: NavHostController,
         onFinishLaunching: () -> Unit,
         onLaunchNavigationFlow: (NavigationFlow) -> Unit,
-        onAskForReview: () -> Unit
+        onAskForReview: (RateAppReviewReason) -> Unit
     ) {
         Theme(isDarkTheme = isDarkTheme) {
             val step by observeStepUseCase().collectAsState(initial = null)
@@ -127,9 +128,9 @@ internal class AppNavigationNavigator @Inject constructor(
                         homeNavigationGraph(
                             snackbarHostState = snackbarHostState,
                             onLaunchNavigationFlow = onLaunchNavigationFlow,
-                            onEntryCreated = onAskForReview,
-                            onOpenSettings = onAskForReview,
-                            onEntriesRearranged = onAskForReview
+                            onEntryCreated = { onAskForReview(RateAppReviewReason.CreateItems) },
+                            onOpenSettings = { onAskForReview(RateAppReviewReason.GoToSettings) },
+                            onEntriesRearranged = { onAskForReview(RateAppReviewReason.MoveItem) }
                         ) { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }

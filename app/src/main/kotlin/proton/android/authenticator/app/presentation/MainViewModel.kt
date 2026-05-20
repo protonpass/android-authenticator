@@ -44,6 +44,7 @@ import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
@@ -52,6 +53,7 @@ import proton.android.authenticator.features.shared.usecases.featureflag.Observe
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
+import proton.android.authenticator.navigation.domain.flows.RateAppReviewReason
 import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.providers.TimeProvider
 import java.util.concurrent.TimeUnit
@@ -104,7 +106,7 @@ internal class MainViewModel @Inject constructor(
         initialValue = MainState.Loading
     )
 
-    internal val requestReview = MutableStateFlow<Unit?>(null)
+    internal val requestReview = MutableStateFlow<AuthenticatorTelemetryEvent.RateAppRequested.Source?>(null)
 
     internal fun onRegisterOrchestrators(context: ComponentActivity) {
         authOrchestrator.register(context as ActivityResultCaller)
@@ -156,16 +158,23 @@ internal class MainViewModel @Inject constructor(
         }
     }
 
-    internal fun askForReviewIfApplicable(state: MainState.Ready) {
+    internal fun askForReviewIfApplicable(state: MainState.Ready, reason: RateAppReviewReason) {
         if (!shouldRequestReview(state)) return
 
         when (getBuildFlavorUseCase().type) {
             BuildFlavorType.Fdroid -> Unit
             BuildFlavorType.Alpha,
             BuildFlavorType.Dev,
-            BuildFlavorType.PlayStore -> requestReview.value = Unit
+            BuildFlavorType.PlayStore -> requestReview.value = reason.toTelemetrySource()
         }
     }
+
+    private fun RateAppReviewReason.toTelemetrySource(): AuthenticatorTelemetryEvent.RateAppRequested.Source =
+        when (this) {
+            RateAppReviewReason.CreateItems -> AuthenticatorTelemetryEvent.RateAppRequested.Source.CreateItems
+            RateAppReviewReason.GoToSettings -> AuthenticatorTelemetryEvent.RateAppRequested.Source.GoToSettings
+            RateAppReviewReason.MoveItem -> AuthenticatorTelemetryEvent.RateAppRequested.Source.MoveItem
+        }
 
     private fun shouldRequestReview(state: MainState.Ready): Boolean {
         if (isNewReviewTriggersEnabled.value) {

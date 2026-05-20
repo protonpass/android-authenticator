@@ -42,4 +42,11 @@ sealed class AuthenticatorTelemetryEvent {
     }
     data object Export : AuthenticatorTelemetryEvent()
     data object OpenApp : AuthenticatorTelemetryEvent()
+    data class RateAppRequested(val source: Source) : AuthenticatorTelemetryEvent() {
+        enum class Source(val value: String) {
+            MoveItem("move_item"),
+            GoToSettings("go_to_settings"),
+            CreateItems("create_items")
+        }
+    }
 }

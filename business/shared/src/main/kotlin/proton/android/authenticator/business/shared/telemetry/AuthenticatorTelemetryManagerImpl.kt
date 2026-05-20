@@ -77,6 +77,11 @@ internal class AuthenticatorTelemetryManagerImpl @Inject constructor(
             group = TELEMETRY_GROUP,
             name = "open_app"
         )
+        is AuthenticatorTelemetryEvent.RateAppRequested -> TelemetryEvent(
+            group = TELEMETRY_GROUP,
+            name = "rate_app_requested",
+            dimensions = mapOf("rateAppTrigger" to source.value)
+        )
     }
 
     companion object {

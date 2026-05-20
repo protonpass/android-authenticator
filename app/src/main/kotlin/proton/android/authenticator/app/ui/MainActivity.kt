@@ -22,6 +22,7 @@ import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -47,11 +48,15 @@ import proton.android.authenticator.app.presentation.MainState
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryEvent
+import proton.android.authenticator.business.shared.telemetry.AuthenticatorTelemetryManager
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
 import proton.android.authenticator.features.unlock.master.ui.UnlockMasterScreen
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
+import proton.android.authenticator.shared.common.domain.configs.AppConfig
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import javax.inject.Inject
@@ -73,6 +78,12 @@ internal class MainActivity : FragmentActivity() {
     @Inject
     internal lateinit var navigationCommandHandler: NavigationCommandHandler
 
+    @Inject
+    internal lateinit var telemetryManager: AuthenticatorTelemetryManager
+
+    @Inject
+    internal lateinit var appConfig: AppConfig
+
     @SuppressWarnings("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +93,9 @@ internal class MainActivity : FragmentActivity() {
         enableEdgeToEdge()
 
         lifecycleScope.launch {
-            viewModel.requestReview.filterNotNull().collectLatest {
+            viewModel.requestReview.filterNotNull().collectLatest { source ->
+                telemetryManager.sendEvent(AuthenticatorTelemetryEvent.RateAppRequested(source))
+                showRateRequestDebugToast()
                 requestReviewHandler.request(this@MainActivity)
             }
         }
@@ -107,8 +120,8 @@ internal class MainActivity : FragmentActivity() {
                                     isDarkTheme = isDarkTheme,
                                     bottomSheetNavigator = bottomSheetNavigator,
                                     navController = navController,
-                                    onAskForReview = {
-                                        viewModel.askForReviewIfApplicable(state)
+                                    onAskForReview = { reason ->
+                                        viewModel.askForReviewIfApplicable(state, reason)
                                     },
                                     onFinishLaunching = {
                                         viewModel.setInstallationTimeIfFirstRun(state)
@@ -155,6 +168,17 @@ internal class MainActivity : FragmentActivity() {
             updateAppLockStateUseCase(state = AppLockState.AuthNotRequired)
 
             super.onActivityResult(requestCode, resultCode, data, caller)
+        }
+    }
+
+    private fun showRateRequestDebugToast() {
+        when (appConfig.buildFlavor.type) {
+            BuildFlavorType.Alpha,
+            BuildFlavorType.Dev ->
+                Toast.makeText(this, "Launching rate request", Toast.LENGTH_SHORT).show()
+
+            BuildFlavorType.Fdroid,
+            BuildFlavorType.PlayStore -> Unit
         }
     }
 
