@@ -303,6 +303,7 @@ internal class EntriesSyncer @Inject constructor(
         coroutineScope {
             entryOperations.map { entryOperation ->
                 with(entryOperation) {
+                    val nonNullRemoteId = requireNotNull(remoteId)
                     async {
                         withContext(appDispatchers.default) {
                             authenticatorClient.serializeEntry(entry)
@@ -311,16 +312,17 @@ internal class EntriesSyncer @Inject constructor(
                                 encrypt(modelContent, EncryptionTag.EntryContent)
                             }
                         }.let { encryptedModelContent ->
+                            val remoteData = remoteEntriesMap.getValue(nonNullRemoteId)
                             Entry(
                                 id = entry.id,
                                 content = encryptedModelContent,
-                                createdAt = remoteEntriesMap.getValue(remoteId!!).createdAt,
-                                modifiedAt = remoteEntriesMap.getValue(remoteId!!).modifiedAt,
+                                createdAt = remoteData.createdAt,
+                                modifiedAt = remoteData.modifiedAt,
                                 isDeleted = false,
                                 isSynced = true,
                                 position = searchLocalEntry(entry)
                                     ?.position
-                                    ?: remoteEntriesMap.getValue(remoteId!!).position
+                                    ?: remoteData.position
                             )
                         }
                     }
@@ -406,6 +408,8 @@ internal class EntriesSyncer @Inject constructor(
 
     private suspend fun searchLocalEntry(entryModel: AuthenticatorEntryModel) = try {
         repository.find(entryModel.id).first()
+    } catch (_: IllegalStateException) {
+        null
     } catch (_: NullPointerException) {
         null
     }
