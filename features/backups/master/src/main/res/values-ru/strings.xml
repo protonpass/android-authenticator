@@ -38,6 +38,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Резервная копия успешно создана</string>
   <string name="backups_snackbar_message_update_error">Произошла ошибка при обновлении конфигурации резервного копирования</string>
+  <string name="backups_snackbar_message_folder_not_supported">This folder doesn\'t support backups. Please select a different location.</string>
   <string name="backups_password_alert_dialog_title">Encrypted backup is now available</string>
   <string name="backups_password_alert_dialog_message">For enhanced security, automatic non-encrypted backup has been disabled. You can re-enable it in the Settings.</string>
   <string name="backups_password_alert_dialog_warning">You have some backup(s) on your device. Make sure to remove them.</string>

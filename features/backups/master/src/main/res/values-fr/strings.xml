@@ -36,6 +36,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">La sauvegarde a été créée.</string>
   <string name="backups_snackbar_message_update_error">Une erreur s\'est produite lors de la mise à jour de la configuration de sauvegarde</string>
+  <string name="backups_snackbar_message_folder_not_supported">Ce dossier ne supporte pas les sauvegardes. Veuillez sélectionner un emplacement différent.</string>
   <string name="backups_password_alert_dialog_title">La sauvegarde chiffrée est maintenant disponible</string>
   <string name="backups_password_alert_dialog_message">Pour plus de sécurité, la sauvegarde automatique non chiffrée a été désactivée. Vous pouvez la réactiver dans les Paramètres.</string>
   <string name="backups_password_alert_dialog_warning">Vous avez des sauvegardes sur votre appareil. Veillez à les supprimer.</string>

@@ -36,6 +36,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Sicherung erfolgreich erstellt</string>
   <string name="backups_snackbar_message_update_error">Beim Aktualisieren der Sicherungskonfiguration ist ein Fehler aufgetreten</string>
+  <string name="backups_snackbar_message_folder_not_supported">Dieser Ordner kann nicht für die Datensicherung genutzt werden. Bitte wähle einen anderen Speicherort.</string>
   <string name="backups_password_alert_dialog_title">Verschlüsselte Datensicherung jetzt verfügbar</string>
   <string name="backups_password_alert_dialog_message">Zur Erhöhung der Sicherheit wurde die automatische unverschlüsselte Sicherung deaktiviert. Sie kann in den Einstellungen wieder aktiviert werden.</string>
   <string name="backups_password_alert_dialog_warning">Auf dem Gerät befinden sich einige Sicherungskopien. Stelle sicher, dass diese entfernt werden.</string>

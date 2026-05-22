@@ -36,6 +36,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Backup criado com sucesso</string>
   <string name="backups_snackbar_message_update_error">Ocorreu um erro ao atualizar a configuração do backup</string>
+  <string name="backups_snackbar_message_folder_not_supported">This folder doesn\'t support backups. Please select a different location.</string>
   <string name="backups_password_alert_dialog_title">Backup criptografado está disponível agora</string>
   <string name="backups_password_alert_dialog_message">Para maior segurança, o backup automático não criptografado foi desativado. Você pode reativá-lo nas Configurações.</string>
   <string name="backups_password_alert_dialog_warning">Você tem algum(ns) backup(s) no seu dispositivo. Certifique-se de removê-los.</string>

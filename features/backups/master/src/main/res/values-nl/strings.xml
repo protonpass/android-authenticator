@@ -36,6 +36,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Back-up succesvol aangemaakt</string>
   <string name="backups_snackbar_message_update_error">Er is een fout opgetreden bij het bijwerken van de back-upconfiguratie</string>
+  <string name="backups_snackbar_message_folder_not_supported">Deze map ondersteunt geen back-ups. Selecteer alstublieft een andere locatie.</string>
   <string name="backups_password_alert_dialog_title">Versleutelde backup is nu beschikbaar</string>
   <string name="backups_password_alert_dialog_message">Voor geavanceerde beveiliging, automatische niet-versleutelde back-ups zijn uitgeschakeld. U kan deze terug aanzetten in de Instellingen.</string>
   <string name="backups_password_alert_dialog_warning">Er staan back-ups op uw apparaat. Zorg ervoor dat u deze verwijdert.</string>

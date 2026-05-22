@@ -36,6 +36,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Yedek oluşturuldu</string>
   <string name="backups_snackbar_message_update_error">Yedekleme yapılandırması güncellenirken bir sorun çıktı</string>
+  <string name="backups_snackbar_message_folder_not_supported">Bu klasör yedeklemeyi desteklemiyor. Lütfen farklı bir konum seçin.</string>
   <string name="backups_password_alert_dialog_title">Şifrelenmiş yedek kullanılabilir</string>
   <string name="backups_password_alert_dialog_message">Güvenliği artırmak için otomatik şifrelenmemiş yedekleme kapatıldı. Ayarlar bölümünden yeniden açabilirsiniz.</string>
   <string name="backups_password_alert_dialog_warning">Aygıtınızda bazı yedekler var. Onları sildiğinizden emin olun.</string>

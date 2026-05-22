@@ -36,6 +36,7 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Copia de seguridad creada correctamente</string>
   <string name="backups_snackbar_message_update_error">Hubo un error al actualizar la configuración de la copia de seguridad.</string>
+  <string name="backups_snackbar_message_folder_not_supported">Esta carpeta no soporta copias de seguridad. Seleccione una ubicación diferente.</string>
   <string name="backups_password_alert_dialog_title">La copia de seguridad cifrada ya está disponible.</string>
   <string name="backups_password_alert_dialog_message">Para mayor seguridad, se desactivó la copia de seguridad automática sin cifrar. Puede volver a activarla en los ajustes.</string>
   <string name="backups_password_alert_dialog_warning">Tiene copias de seguridad en su dispositivo. Asegúrese de eliminarlas.</string>
