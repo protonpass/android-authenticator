@@ -20,12 +20,22 @@ import com.android.build.api.dsl.VariantDimension
 import configuration.extensions.protonEnvironment
 import configuration.util.toBuildConfigValue
 import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig
+import java.util.Properties
 
 plugins {
     id("proton.android.authenticator.plugins.applications.authenticator")
 }
 
+val privateProperties = Properties().apply {
+    try {
+        load(rootDir.resolve("private.properties").inputStream())
+    } catch (exception: java.io.FileNotFoundException) {
+        Properties()
+    }
+}
+
 val sentryDSN: String? = System.getenv("SENTRY_DSN")
+val atlasProxyToken: String? = privateProperties.getProperty("PROXY_TOKEN")
 
 fun VariantDimension.setAssetLinksResValue(host: String) {
     resValue(
@@ -43,6 +53,11 @@ android {
     defaultConfig {
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         setAssetLinksResValue("proton.me")
+
+        protonEnvironment {
+            proxyToken = atlasProxyToken
+            apiPrefix = "authenticator-api"
+        }
     }
 
     buildTypes {
@@ -88,14 +103,12 @@ android {
             applicationIdSuffix = ".black"
 
             protonEnvironment {
-                apiPrefix = "authenticator-api"
                 host = "proton.black"
             }
         }
         create("prod") {
             dimension = "env"
             protonEnvironment {
-                apiPrefix = "authenticator-api"
                 host = host
                 useDefaultPins = true
             }
