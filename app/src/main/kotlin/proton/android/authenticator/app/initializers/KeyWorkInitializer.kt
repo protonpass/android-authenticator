@@ -19,7 +19,9 @@
 package proton.android.authenticator.app.initializers
 
 import android.content.Context
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.eventFlow
 import androidx.lifecycle.flowWithLifecycle
 import androidx.startup.Initializer
 import androidx.work.BackoffPolicy
@@ -32,12 +34,16 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import me.proton.core.presentation.app.AppLifecycleProvider
 import proton.android.authenticator.app.workers.KeyWorker
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
 import java.util.concurrent.TimeUnit
 
@@ -50,13 +56,28 @@ internal class KeyWorkInitializer : Initializer<Unit> {
                 KeyWorkInitializerDependencies::class.java
             )
         ) {
-            getIsUserAuthenticatedObserver()
+            val lifecycle = getAppLifecycleProvider().lifecycle
+            val workManager = getWorkManager()
+
+            val isAuthenticatedFlow = getIsUserAuthenticatedObserver()
                 .invoke()
-                .distinctUntilChanged()
+                .stateIn(lifecycle.coroutineScope, SharingStarted.Eagerly, false)
+
+            isAuthenticatedFlow
                 .filter { isAuthenticated -> isAuthenticated }
-                .onEach { executeKeyWork(getWorkManager()) }
-                .flowWithLifecycle(getAppLifecycleProvider().lifecycle)
-                .launchIn(getAppLifecycleProvider().lifecycle.coroutineScope)
+                .onEach { executeKeyWork(workManager) }
+                .flowWithLifecycle(lifecycle)
+                .launchIn(lifecycle.coroutineScope)
+
+            lifecycle.eventFlow
+                .filter { event -> event == Lifecycle.Event.ON_START }
+                .map { isAuthenticatedFlow.first() }
+                .filter { isAuthenticated -> isAuthenticated }
+                .onEach {
+                    AuthenticatorLogger.i(TAG, "Foreground detected, re-enqueuing key work")
+                    executeKeyWork(workManager)
+                }
+                .launchIn(lifecycle.coroutineScope)
         }
     }
 
@@ -98,6 +119,7 @@ internal class KeyWorkInitializer : Initializer<Unit> {
 
     private companion object {
 
+        private const val TAG = "KeyWorkInitializer"
         private const val KEY_WORK_TAG = "key_work"
         private const val KEY_WORK_UNIQUE_NAME = "key_work_unique"
 

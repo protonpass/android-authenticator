@@ -18,13 +18,17 @@
 
 package proton.android.authenticator.business.keys.application.findall
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.ApiException
+import me.proton.core.user.domain.repository.UserRepository
 import proton.android.authenticator.business.keys.application.create.KeyCreator
 import proton.android.authenticator.business.keys.domain.Key
 import proton.android.authenticator.business.keys.domain.KeysApi
@@ -36,7 +40,8 @@ import javax.inject.Inject
 internal class AllKeysFinder @Inject constructor(
     private val api: KeysApi,
     private val keyCreator: KeyCreator,
-    private val repository: KeysRepository
+    private val repository: KeysRepository,
+    private val userRepository: UserRepository
 ) {
 
     private val refreshMutex = Mutex()
@@ -46,8 +51,6 @@ internal class AllKeysFinder @Inject constructor(
 
     internal fun findAll(userId: String, forceRefresh: Boolean): Flow<List<Key>> = flow {
         val localKeys = repository.findAll().first()
-        AuthenticatorLogger.i(TAG, "Local keys count: ${localKeys.size}")
-
         val shouldRefresh = forceRefresh || localKeys.isEmpty() || shouldRefreshByStaleness()
         if (shouldRefresh) {
             refreshKeys(
@@ -56,7 +59,13 @@ internal class AllKeysFinder @Inject constructor(
             )
         }
 
-        emitAll(repository.findAll())
+        val primaryUserKeyId = getPrimaryUserKeyId(userId)
+        emitAll(
+            repository.findAll().map { keys ->
+                if (primaryUserKeyId != null) keys.sortedByDescending { it.userKeyId == primaryUserKeyId }
+                else keys
+            }
+        )
     }
 
     private suspend fun refreshKeys(userId: String, forceRefresh: Boolean) {
@@ -71,11 +80,10 @@ internal class AllKeysFinder @Inject constructor(
             runCatching {
                 api.fetchAll(userId = userId)
             }.onSuccess { remoteKeys ->
-                AuthenticatorLogger.i(TAG, "Remote keys count: ${remoteKeys.size}")
                 if (remoteKeys.isEmpty()) {
                     handleEmptyRemoteKeys(userId, latestLocalKeys)
                 } else {
-                    syncRemoteKeys(remoteKeys, latestLocalKeys)
+                    syncRemoteKeys(remoteKeys, latestLocalKeys, userId)
                 }
                 registerRefreshSuccess(now)
             }.onFailure { error ->
@@ -152,7 +160,7 @@ internal class AllKeysFinder @Inject constructor(
                 AuthenticatorLogger.w(TAG, "Key creation did not persist a replacement")
             }
         }.onFailure { error ->
-            if (error is kotlinx.coroutines.CancellationException) throw error
+            if (error is CancellationException) throw error
             AuthenticatorLogger.w(TAG, "Failed to create new key: ${error.message}")
         }
     }
@@ -164,12 +172,16 @@ internal class AllKeysFinder @Inject constructor(
             keyCreator.create(userId = userId)
             AuthenticatorLogger.i(TAG, "Successfully created initial key")
         }.onFailure { error ->
-            if (error is kotlinx.coroutines.CancellationException) throw error
+            if (error is CancellationException) throw error
             AuthenticatorLogger.w(TAG, "Failed to create initial key: ${error.message}")
         }
     }
 
-    private suspend fun syncRemoteKeys(remoteKeys: List<Key>, localKeys: List<Key>) {
+    private suspend fun syncRemoteKeys(
+        remoteKeys: List<Key>,
+        localKeys: List<Key>,
+        userId: String
+    ) {
         repository.saveAll(remoteKeys)
 
         val remoteKeyIds = remoteKeys.map { it.id }.toSet()
@@ -177,6 +189,37 @@ internal class AllKeysFinder @Inject constructor(
         if (staleLocalKeys.isNotEmpty()) {
             AuthenticatorLogger.w(TAG, "Removing ${staleLocalKeys.size} stale local keys")
             repository.deleteAll(staleLocalKeys)
+        }
+
+        migrateKeysToPrimaryUserKeyIfNeeded(remoteKeys, userId)
+    }
+
+    private suspend fun getPrimaryUserKeyId(userId: String): String? = runCatching {
+        userRepository.getUser(sessionUserId = UserId(id = userId)).keys
+            .firstOrNull { it.privateKey.isPrimary }
+            ?.keyId
+            ?.id
+    }.onFailure { error ->
+        if (error is CancellationException) throw error
+        AuthenticatorLogger.w(TAG, "Could not determine primary user key: ${error.message}")
+    }.getOrNull()
+
+    private suspend fun migrateKeysToPrimaryUserKeyIfNeeded(remoteKeys: List<Key>, userId: String) {
+        val primaryUserKeyId = getPrimaryUserKeyId(userId) ?: return
+
+        if (remoteKeys.none { it.userKeyId == primaryUserKeyId }) {
+            AuthenticatorLogger.i(
+                TAG,
+                "No authenticator key uses the primary user key, " +
+                    "migrating to current primary key"
+            )
+            runCatching {
+                keyCreator.create(userId = userId)
+                AuthenticatorLogger.i(TAG, "Successfully created migrated key using primary user key")
+            }.onFailure { error ->
+                if (error is CancellationException) throw error
+                AuthenticatorLogger.w(TAG, "Failed to migrate key to primary user key: ${error.message}")
+            }
         }
     }
 
@@ -186,10 +229,9 @@ internal class AllKeysFinder @Inject constructor(
         localKeys: List<Key>
     ): Boolean {
         when (error) {
-            is kotlinx.coroutines.CancellationException -> throw error
+            is CancellationException -> throw error
             is ApiException -> {
                 AuthenticatorLogger.w(TAG, "Failed to fetch keys from server: ${error.message}")
-                // On network error, use local keys if available
                 return false
             }
             is AllRemoteKeysUndecryptableException -> {

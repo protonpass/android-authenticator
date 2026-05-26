@@ -104,12 +104,14 @@ android {
 
             protonEnvironment {
                 host = "proton.black"
+                apiPrefix = "authenticator-api"
             }
         }
         create("prod") {
             dimension = "env"
             protonEnvironment {
                 host = host
+                apiPrefix = "authenticator-api"
                 useDefaultPins = true
             }
         }

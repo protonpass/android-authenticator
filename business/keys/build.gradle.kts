@@ -16,4 +16,8 @@ dependencies {
     implementation(libs.core.accountManager)
     implementation(libs.core.crypto)
     implementation(libs.core.key)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
