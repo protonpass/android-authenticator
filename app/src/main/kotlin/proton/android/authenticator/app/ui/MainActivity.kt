@@ -34,13 +34,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import proton.android.authenticator.app.handler.RequestReviewHandler
 import proton.android.authenticator.app.presentation.MainState
@@ -86,67 +83,63 @@ internal class MainActivity : FragmentActivity() {
 
         enableEdgeToEdge()
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.stateFlow.collectLatest { state ->
-                    when (state) {
-                        MainState.Loading -> Unit
-                        is MainState.Ready -> {
-                            setContent {
-                                val settingsState by viewModel.settingsStateFlow.collectAsStateWithLifecycle()
-                                val context = LocalContext.current
-                                val bottomSheetNavigator = rememberBottomSheetNavigator()
-                                val navController = rememberNavController(bottomSheetNavigator)
-                                setSecureMode(isSecure = state.isBiometricLockEnabled)
+        setContent {
+            val state by viewModel.stateFlow.collectAsStateWithLifecycle()
 
-                                val isDarkTheme = isDarkTheme(state.themeType)
-                                setStatusBarTheme(isDarkTheme)
+            when (val currentState = state) {
+                MainState.Loading -> Unit
+                is MainState.Ready -> {
+                    val settingsState by viewModel.settingsStateFlow.collectAsStateWithLifecycle()
+                    val context = LocalContext.current
+                    val bottomSheetNavigator = rememberBottomSheetNavigator()
+                    val navController = rememberNavController(bottomSheetNavigator)
+                    setSecureMode(isSecure = currentState.isBiometricLockEnabled)
 
-                                navigationNavigator.NavGraphs(
-                                    isDarkTheme = isDarkTheme,
-                                    bottomSheetNavigator = bottomSheetNavigator,
-                                    navController = navController,
-                                    onAskForReview = { reason ->
-                                        viewModel.askForReviewIfApplicable(
-                                            state = state,
-                                            reason = reason,
-                                            displayRating = {
-                                                showRateRequestDebugToast()
-                                                requestReviewHandler.request(this@MainActivity)
-                                            }
-                                        )
-                                    },
-                                    onFinishLaunching = {
-                                        viewModel.setInstallationTimeIfFirstRun(state)
-                                    },
-                                    onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow
-                                )
+                    val isDarkTheme = isDarkTheme(currentState.themeType)
+                    setStatusBarTheme(isDarkTheme)
 
-                                // The lock screen must be displayed immediately,
-                                // without relying on any asynchronous system
-                                AnimatedVisibility(
-                                    visible = settingsState.appLockType == SettingsAppLockType.Biometric &&
-                                        settingsState.appLockState == AppLockState.AuthRequired,
-                                    enter = EnterTransition.None,
-                                    exit = fadeOut()
-                                ) {
-                                    Theme(isDarkTheme = isDarkTheme) {
-                                        UnlockMasterScreen(
-                                            onUnlockClosed = {
-                                                NavigationCommand.FinishAffinity(
-                                                    context = context
-                                                ).also {
-                                                    navigationCommandHandler.handle(
-                                                        it,
-                                                        navController
-                                                    )
-                                                }
-                                            },
-                                            onUnlockSucceeded = {}
+                    navigationNavigator.NavGraphs(
+                        isDarkTheme = isDarkTheme,
+                        bottomSheetNavigator = bottomSheetNavigator,
+                        navController = navController,
+                        onAskForReview = { reason ->
+                            viewModel.askForReviewIfApplicable(
+                                state = currentState,
+                                reason = reason,
+                                displayRating = {
+                                    showRateRequestDebugToast()
+                                    requestReviewHandler.request(this@MainActivity)
+                                }
+                            )
+                        },
+                        onFinishLaunching = {
+                            viewModel.setInstallationTimeIfFirstRun(currentState)
+                        },
+                        onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow
+                    )
+
+                    // The lock screen must be displayed immediately,
+                    // without relying on any asynchronous system
+                    AnimatedVisibility(
+                        visible = settingsState.appLockType == SettingsAppLockType.Biometric &&
+                            settingsState.appLockState == AppLockState.AuthRequired,
+                        enter = EnterTransition.None,
+                        exit = fadeOut()
+                    ) {
+                        Theme(isDarkTheme = isDarkTheme) {
+                            UnlockMasterScreen(
+                                onUnlockClosed = {
+                                    NavigationCommand.FinishAffinity(
+                                        context = context
+                                    ).also {
+                                        navigationCommandHandler.handle(
+                                            it,
+                                            navController
                                         )
                                     }
-                                }
-                            }
+                                },
+                                onUnlockSucceeded = {}
+                            )
                         }
                     }
                 }
