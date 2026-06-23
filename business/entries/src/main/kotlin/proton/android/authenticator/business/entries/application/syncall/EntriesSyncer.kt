@@ -350,6 +350,15 @@ internal class EntriesSyncer @Inject constructor(
                         )
                     }
 
+                    !localEntry.isSynced -> {
+                        EntrySort(
+                            localId = localEntry.id,
+                            remoteId = remoteEntryId,
+                            position = localEntry.position,
+                            modifiedAt = localEntry.modifiedAt
+                        )
+                    }
+
                     localEntry.modifiedAt > remoteEntry.modifiedAt -> {
                         EntrySort(
                             localId = localEntry.id,

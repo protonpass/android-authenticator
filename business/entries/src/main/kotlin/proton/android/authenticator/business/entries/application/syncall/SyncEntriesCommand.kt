@@ -43,7 +43,7 @@ data class SyncEntry(
     private val type: EntryType,
     private val uri: String,
     private val isDeleted: Boolean,
-    private val isSynced: Boolean
+    internal val isSynced: Boolean
 ) {
 
     internal val model: AuthenticatorEntryModel = AuthenticatorEntryModel(

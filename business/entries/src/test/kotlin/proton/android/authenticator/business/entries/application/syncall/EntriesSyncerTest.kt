@@ -36,6 +36,7 @@ import org.junit.Test
 import proton.android.authenticator.business.entries.domain.EntriesApi
 import proton.android.authenticator.business.entries.domain.EntriesRepository
 import proton.android.authenticator.business.entries.domain.EntryRemote
+import proton.android.authenticator.business.entries.domain.EntryType
 import proton.android.authenticator.business.entries.domain.FetchEntriesResult
 import proton.android.authenticator.commonrust.EntryOperation
 import proton.android.authenticator.commonrust.OperationType
@@ -153,4 +154,61 @@ internal class EntriesSyncerTest {
 
         coVerify(exactly = 0) { repository.removeAll(any()) }
     }
+
+    @Test
+    fun `local reorder wins over stale remote order when entry is not yet synced`() = runTest {
+        // Remote still has the pre-reorder order: local1 at 0, local2 at 1.
+        val remote1 = mockk<EntryRemote>(relaxed = true) {
+            every { id } returns "server1"
+            every { localId } returns "local1"
+            every { position } returns 0
+            every { modifiedAt } returns 100L
+        }
+        val remote2 = mockk<EntryRemote>(relaxed = true) {
+            every { id } returns "server2"
+            every { localId } returns "local2"
+            every { position } returns 1
+            every { modifiedAt } returns 100L
+        }
+        coEvery { api.fetchAll(any(), any()) } returns FetchEntriesResult(listOf(remote1, remote2))
+        every { syncOperationChecker.calculateOperations(any(), any()) } returns emptyList()
+
+        // User just dragged local2 above local1. modifyTime ties with remote (same-second / clock skew),
+        // but the entries are not synced yet, so the local order must be authoritative.
+        val localEntries = listOf(
+            syncEntry(id = "local1", position = 1, modifyTime = 100L, isSynced = false),
+            syncEntry(id = "local2", position = 0, modifyTime = 100L, isSynced = false)
+        )
+
+        syncer.sync(userId = "user-id", keys = listOf(fakeSyncKey), entries = localEntries)
+
+        // local order [local2, local1] -> remote ids [server2, server1]
+        coVerify {
+            api.sortAll(
+                userId = "user-id",
+                startingPosition = 0,
+                entryIds = listOf("server2", "server1")
+            )
+        }
+    }
+
+    private fun syncEntry(
+        id: String,
+        position: Int,
+        modifyTime: Long,
+        isSynced: Boolean
+    ) = SyncEntry(
+        id = id,
+        position = position,
+        modifyTime = modifyTime,
+        name = "name-$id",
+        issuer = "issuer-$id",
+        note = null,
+        period = 30,
+        secret = "secret",
+        type = EntryType.TOTP,
+        uri = "uri",
+        isDeleted = false,
+        isSynced = isSynced
+    )
 }

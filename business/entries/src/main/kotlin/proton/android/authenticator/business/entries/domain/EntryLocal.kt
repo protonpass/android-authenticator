@@ -30,6 +30,8 @@ internal data class EntryLocal(private val syncEntry: SyncEntry) {
 
     internal val modifiedAt: Long = syncEntry.modifyTime
 
+    internal val isSynced: Boolean = syncEntry.isSynced
+
     internal val operation: LocalEntry = LocalEntry(
         entry = syncEntry.model,
         state = syncEntry.state,
