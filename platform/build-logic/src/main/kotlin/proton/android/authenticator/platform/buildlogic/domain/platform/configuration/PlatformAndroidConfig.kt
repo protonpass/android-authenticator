@@ -27,7 +27,7 @@ object PlatformAndroidConfig {
 
     internal const val USES_COMPOSE: Boolean = true
 
-    internal const val VERSION_NAME: String = "1.3.8"
+    internal const val VERSION_NAME: String = "1.3.9"
 
     fun getVersionCode(): Int {
         val jobId: Int = System.getenv("CI_JOB_ID")?.take(3)?.toInt() ?: 0
