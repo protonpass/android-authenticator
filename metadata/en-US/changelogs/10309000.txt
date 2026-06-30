@@ -1,0 +1,6 @@
+## 1.3.9 (2026-06-30)
+
+### Other
+
+- Updated core libraries.
+- Translation updates.

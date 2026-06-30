@@ -6,6 +6,13 @@
 
 ### Other
 
+## 1.3.9 (2026-06-30)
+
+### Other
+
+- Updated core libraries.
+- Translation updates.
+
 ## 1.3.8 (2026-06-29)
 
 ### Fixes :bug:
