@@ -78,6 +78,11 @@
     <string name="settings_discover_drive_title" translatable="false">Proton Drive</string>
     <string name="settings_discover_drive_description">Give your precious photos and files the safe home they deserve.</string>
 
+    <string name="settings_spread_the_word_section">Spread the word</string>
+    <string name="settings_spread_the_word_title_tell_a_friend">Tell a friend</string>
+    <string name="settings_spread_the_word_title_rate">Rate Proton Authenticator</string>
+    <string name="settings_spread_the_word_share_message">I\'m using Proton Authenticator for secure two-factor authentication. Try it: https://proton.me/authenticator/download</string>
+
     <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Version %1$s</string>
 
     <string name="settings_snackbar_message_anonymous_data_sharing_error">There was an error updating anonymous data sharing</string>

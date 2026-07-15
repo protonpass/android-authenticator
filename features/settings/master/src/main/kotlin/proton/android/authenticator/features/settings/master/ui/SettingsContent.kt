@@ -44,10 +44,12 @@ import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
+import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
+import proton.android.authenticator.shared.ui.R as uiR
 
 @[Composable OptIn(ExperimentalFoundationApi::class)]
 internal fun SettingsContent(
@@ -70,10 +72,13 @@ internal fun SettingsContent(
     onShareTelemetryChange: (AnonymousData, Boolean) -> Unit,
     onShareCrashReportChange: (AnonymousData, Boolean) -> Unit,
     onDiscoverAppClick: (String, String, BuildFlavorType) -> Unit,
+    onTellAFriendClick: (String) -> Unit,
+    onRateClick: (BuildFlavorType) -> Unit,
     onVersionNameClick: () -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     val context = LocalContext.current
+    val shareMessage = stringResource(id = R.string.settings_spread_the_word_share_message)
 
     Column(
         modifier = modifier,
@@ -308,6 +313,28 @@ internal fun SettingsContent(
                 }
             )
         }
+
+        SettingsSection(
+            title = stringResource(id = R.string.settings_spread_the_word_section),
+            contents = listOf(
+                {
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_spread_the_word_title_tell_a_friend),
+                        leadingIcon = UiIcon.Resource(id = uiR.drawable.ic_tell_a_friend),
+                        showNavigationIcon = true,
+                        onClick = { onTellAFriendClick(shareMessage) }
+                    )
+                },
+                {
+                    NavigationRow(
+                        titleText = UiText.Resource(id = R.string.settings_spread_the_word_title_rate),
+                        leadingIcon = UiIcon.Resource(id = uiR.drawable.ic_rate),
+                        showNavigationIcon = true,
+                        onClick = { onRateClick(state.appConfig.buildFlavor.type) }
+                    )
+                }
+            )
+        )
 
         SettingsVersionRow(
             modifier = Modifier

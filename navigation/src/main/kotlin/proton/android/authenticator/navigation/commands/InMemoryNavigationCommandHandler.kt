@@ -133,6 +133,23 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
                         }
                     }
             }
+
+            is NavigationCommand.ShareText -> {
+                Intent(Intent.ACTION_SEND)
+                    .apply {
+                        type = command.mimeType
+                        putExtra(Intent.EXTRA_TEXT, command.text)
+                    }
+                    .let { intent -> Intent.createChooser(intent, command.chooserTitle) }
+                    .also { chooserIntent ->
+                        try {
+                            command.context.startActivity(chooserIntent)
+                        } catch (error: ActivityNotFoundException) {
+                            AuthenticatorLogger.w(TAG, "Cannot share text")
+                            AuthenticatorLogger.w(TAG, error)
+                        }
+                    }
+            }
         }
     }
 

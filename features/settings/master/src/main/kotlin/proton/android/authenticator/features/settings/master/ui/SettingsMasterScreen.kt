@@ -58,6 +58,8 @@ fun SettingsMasterScreen(
     onFeedbackClick: (String) -> Unit,
     onViewLogsClick: () -> Unit,
     onDiscoverAppClick: (String, String, BuildFlavorType) -> Unit,
+    onTellAFriendClick: (String) -> Unit,
+    onRateClick: (BuildFlavorType) -> Unit,
     onVersionNameClick: () -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()
@@ -124,6 +126,8 @@ fun SettingsMasterScreen(
                     onHowToClick = onHowToClick,
                     onFeedbackClick = onFeedbackClick,
                     onDiscoverAppClick = onDiscoverAppClick,
+                    onTellAFriendClick = onTellAFriendClick,
+                    onRateClick = onRateClick,
                     onViewLogsClick = onViewLogsClick,
                     onShareTelemetryChange = ::onToggleShareTelemetry,
                     onShareCrashReportChange = ::onToggleShareCrashReport,

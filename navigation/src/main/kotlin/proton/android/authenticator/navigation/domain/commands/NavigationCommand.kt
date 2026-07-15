@@ -57,4 +57,15 @@ sealed interface NavigationCommand {
 
     }
 
+    data class ShareText(
+        internal val context: Context,
+        internal val text: String
+    ) : NavigationCommand {
+
+        internal val chooserTitle: String = context.getString(R.string.action_share)
+
+        internal val mimeType: String = MimeType.Text.value
+
+    }
+
 }

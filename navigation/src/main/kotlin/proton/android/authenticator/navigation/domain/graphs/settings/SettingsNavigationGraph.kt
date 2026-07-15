@@ -107,6 +107,20 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                         buildFlavorType = buildFlavorType
                     ).also(onNavigate)
                 },
+                onTellAFriendClick = { shareText ->
+                    NavigationCommand.ShareText(
+                        context = context,
+                        text = shareText
+                    ).also(onNavigate)
+                },
+                onRateClick = { buildFlavorType ->
+                    NavigationCommand.NavigateToPlayStore(
+                        appPackageName = context.packageName,
+                        context = context,
+                        fallbackUrl = null,
+                        buildFlavorType = buildFlavorType
+                    ).also(onNavigate)
+                },
                 onVersionNameClick = {
                     NavigationCommand.NavigateTo(
                         destination = QaMenuNavigationDestination
