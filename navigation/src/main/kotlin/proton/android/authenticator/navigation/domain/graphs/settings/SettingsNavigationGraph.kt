@@ -42,6 +42,16 @@ import proton.android.authenticator.navigation.domain.graphs.exports.ExportsNavi
 import proton.android.authenticator.navigation.domain.graphs.qa.QaMenuNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncDisableNavigationDestination
 import proton.android.authenticator.navigation.domain.graphs.sync.SyncNavigationDestination
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
+
+private const val PLAY_STORE_APP_PACKAGE_NAME = "proton.android.authenticator"
+
+private const val PLAY_STORE_APP_URL =
+    "https://play.google.com/store/apps/details?id=$PLAY_STORE_APP_PACKAGE_NAME"
+
+private const val FDROID_APP_PACKAGE_NAME = "proton.android.authenticator.fdroid"
+
+private const val FDROID_APP_URL = "https://f-droid.org/packages/$FDROID_APP_PACKAGE_NAME/"
 
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.settingsNavigationGraph(
@@ -115,9 +125,15 @@ internal fun NavGraphBuilder.settingsNavigationGraph(
                 },
                 onRateClick = { buildFlavorType ->
                     NavigationCommand.NavigateToPlayStore(
-                        appPackageName = context.packageName,
+                        appPackageName = when (buildFlavorType) {
+                            BuildFlavorType.Fdroid -> FDROID_APP_PACKAGE_NAME
+                            else -> PLAY_STORE_APP_PACKAGE_NAME
+                        },
                         context = context,
-                        fallbackUrl = null,
+                        fallbackUrl = when (buildFlavorType) {
+                            BuildFlavorType.Fdroid -> FDROID_APP_URL
+                            else -> PLAY_STORE_APP_URL
+                        },
                         buildFlavorType = buildFlavorType
                     ).also(onNavigate)
                 },
