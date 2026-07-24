@@ -65,6 +65,10 @@
   <string name="settings_discover_mail_description">Schütze deinen Posteingang vor Spam, Tracking und gezielter Werbung.</string>
   <string name="settings_discover_calendar_description">Organisiere deinen Zeitplan und behalte deine Pläne für dich.</string>
   <string name="settings_discover_drive_description">Gib deinen wertvollen Fotos und Dateien das sichere Zuhause, das sie verdienen.</string>
+  <string name="settings_spread_the_word_section">Erzähl es weiter</string>
+  <string name="settings_spread_the_word_title_tell_a_friend">Erzähle es einem Freund</string>
+  <string name="settings_spread_the_word_title_rate">Proton Authenticator bewerten</string>
+  <string name="settings_spread_the_word_share_message">Ich nutze Proton Authenticator für die sichere Zwei-Faktor-Authentifizierung. Probiere es aus: https://proton.me/authenticator/download</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Version %1$s</string>
   <string name="settings_snackbar_message_anonymous_data_sharing_error">Bei der Aktualisierung der anonymen Datenfreigabe ist ein Fehler aufgetreten</string>
   <string name="settings_snackbar_message_biometric_error">Bei der biometrischen Authentifizierung ist ein Fehler aufgetreten.</string>

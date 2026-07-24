@@ -65,6 +65,10 @@
   <string name="settings_discover_mail_description">Bescherm uw inbox tegen spam, tracking en gerichte advertenties.</string>
   <string name="settings_discover_calendar_description">Organiseer uw planning en houd uw plannen voor uzelf.</string>
   <string name="settings_discover_drive_description">Geef uw kostbare foto\'s en bestanden de veilige plek die ze verdienen.</string>
+  <string name="settings_spread_the_word_section">Vertel het verder</string>
+  <string name="settings_spread_the_word_title_tell_a_friend">Deel met een vriend</string>
+  <string name="settings_spread_the_word_title_rate">Beoordeel Proton Authenticator</string>
+  <string name="settings_spread_the_word_share_message">Ik gebruik Proton Authenticator voor veilige tweefactorauthenticatie. Probeer het: https://proton.me/authenticator/download</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Versie %1$s</string>
   <string name="settings_snackbar_message_anonymous_data_sharing_error">Fout bij het bijwerken van anonieme data deling</string>
   <string name="settings_snackbar_message_biometric_error">Er is een fout opgetreden bij het authenticeren van biometrie</string>

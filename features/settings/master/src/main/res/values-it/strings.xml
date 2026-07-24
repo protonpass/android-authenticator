@@ -65,6 +65,10 @@
   <string name="settings_discover_mail_description">Proteggi la casella di posta da spam, tracker e pubblicità mirate</string>
   <string name="settings_discover_calendar_description">Organizza l\'agenda mantenendo privati i tuoi piani</string>
   <string name="settings_discover_drive_description">Assegna ai file e alle foto un posto sicuro dove stare</string>
+  <string name="settings_spread_the_word_section">Spread the word</string>
+  <string name="settings_spread_the_word_title_tell_a_friend">Tell a friend</string>
+  <string name="settings_spread_the_word_title_rate">Rate Proton Authenticator</string>
+  <string name="settings_spread_the_word_share_message">I\'m using Proton Authenticator for secure two-factor authentication. Try it: https://proton.me/authenticator/download</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Versione %1$s</string>
   <string name="settings_snackbar_message_anonymous_data_sharing_error">Modifica delle impostazioni non riuscita</string>
   <string name="settings_snackbar_message_biometric_error">Autenticazione biometrica non riuscita</string>
